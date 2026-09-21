@@ -1,0 +1,64 @@
+/**
+ * Centralized Vietnamese string table. The interface ships in exactly one
+ * language for this release (FR-068), so components import strings from here
+ * rather than hard-coding text inline — no runtime locale switch is in scope,
+ * but keeping text out of templates avoids a bigger rewrite if that changes.
+ */
+export const vi = {
+  common: {
+    appName: 'Luyện Tập Mỗi Ngày',
+    start: 'Bắt đầu',
+    next: 'Tiếp theo',
+    submit: 'Nộp bài',
+    ok: 'Đồng ý',
+    cancel: 'Hủy',
+    save: 'Lưu',
+    delete: 'Xóa',
+    edit: 'Sửa',
+    duplicate: 'Nhân bản',
+    archive: 'Lưu trữ',
+    restore: 'Khôi phục',
+    preview: 'Xem trước',
+    confirm: 'Xác nhận',
+    back: 'Quay lại',
+    home: 'Trang chủ',
+    logout: 'Đăng xuất',
+    loading: 'Đang tải…',
+    yes: 'Có',
+    no: 'Không',
+  },
+  auth: {
+    chooseProfile: 'Chọn hồ sơ của bạn',
+    child1: 'Nam',
+    child2: 'Vũ',
+    parent: 'Phụ huynh',
+    enterPassword: 'Nhập mật khẩu của bạn',
+    login: 'Đăng nhập',
+    wrongCredential: 'Chưa đúng rồi, thử lại nhé!',
+  },
+  childHome: {
+    todayExercise: 'Bài tập hôm nay',
+    streak: 'Chuỗi ngày liên tiếp',
+    stars: 'Số sao',
+    badges: 'Huy hiệu',
+    last7Days: '7 ngày gần đây',
+    noExerciseYet: 'Chưa có bài tập nào được giao. Hãy nhờ phụ huynh thêm bài nhé!',
+  },
+  exercise: {
+    lives: 'Số lượt sai còn lại',
+    timeLimit: 'Thời gian làm bài',
+    possibleReward: 'Phần thưởng có thể nhận',
+    questionOf: 'Câu {current} / {total}',
+    timeRemaining: 'Thời gian còn lại',
+    correct: 'Chính xác!',
+    incorrect: 'Chưa đúng, cố lên!',
+    resultCompleted: 'Hoàn thành',
+    resultTimeUp: 'Hết giờ',
+    resultTryAgain: 'Thử lại nhé',
+  },
+  dashboard: {
+    overview: 'Tổng quan',
+    accuracy: 'Độ chính xác',
+    weakAreas: 'Cần luyện thêm',
+  },
+} as const;

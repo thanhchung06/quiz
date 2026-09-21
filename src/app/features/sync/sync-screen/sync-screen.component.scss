@@ -1,0 +1,127 @@
+.sync-screen {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dfe3ec;
+    background: white;
+
+    &.primary {
+      background: #2f6fed;
+      color: white;
+      border-color: #2f6fed;
+    }
+  }
+}
+
+.setup,
+.google-account {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f7f8fb;
+  border-radius: 0.5rem;
+}
+
+.connected-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #1e7a34;
+  font-weight: 600;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.confirm-box {
+  background: #fff6e5;
+  padding: 1rem;
+  border-radius: 0.5rem;
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  button {
+    display: inline-flex;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+li {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.conflict-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #1e7a34;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #b3261e;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}

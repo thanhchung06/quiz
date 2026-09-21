@@ -1,0 +1,91 @@
+.backup-screen {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+
+  section {
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.05rem;
+    color: #4a5a7a;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 1.1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dfe3ec;
+    background: white;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0;
+  }
+}
+
+.file-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px dashed #b7c6e8;
+  border-radius: 0.5rem;
+  background: #f7f8fb;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+
+  input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #1e7a34;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #b3261e;
+}
+
+.danger {
+  border: 1px solid #f0c0c0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+
+  .warning {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #8a5a00;
+  }
+
+  .danger-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .confirm-danger {
+    background: #b3261e;
+    color: white;
+    border: none;
+  }
+}

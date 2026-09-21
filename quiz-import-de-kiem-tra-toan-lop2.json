@@ -1,0 +1,8859 @@
+{
+  "formatVersion": "1.0",
+  "packageTitle": "Đề thi, đề kiểm tra Toán lớp 2 — Kết nối tri thức (loigiaihay.com)",
+  "language": "vi",
+  "quizzes": [
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 6 chục và 7 đơn vị được viết là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "76"
+        },
+        {
+          "id": "b",
+          "text": "67"
+        },
+        {
+          "id": "c",
+          "text": "70"
+        },
+        {
+          "id": "d",
+          "text": "60"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền số thích hợp vào chỗ chấm: 54 = 50 + .....",
+      "choices": [
+        {
+          "id": "a",
+          "text": "4"
+        },
+        {
+          "id": "b",
+          "text": "5"
+        },
+        {
+          "id": "c",
+          "text": "50"
+        },
+        {
+          "id": "d",
+          "text": "40"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số bị trừ là 24, số trừ là 6. Vậy hiệu là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "19"
+        },
+        {
+          "id": "b",
+          "text": "20"
+        },
+        {
+          "id": "c",
+          "text": "21"
+        },
+        {
+          "id": "d",
+          "text": "18"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau số 89 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "86"
+        },
+        {
+          "id": "b",
+          "text": "87"
+        },
+        {
+          "id": "c",
+          "text": "88"
+        },
+        {
+          "id": "d",
+          "text": "90"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tổng của 46 và 13 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "57"
+        },
+        {
+          "id": "b",
+          "text": "58"
+        },
+        {
+          "id": "c",
+          "text": "59"
+        },
+        {
+          "id": "d",
+          "text": "60"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu thích hợp vào chỗ chấm: 40 + 40 ..... 90",
+      "choices": [
+        {
+          "id": "a",
+          "text": ">"
+        },
+        {
+          "id": "b",
+          "text": "<"
+        },
+        {
+          "id": "c",
+          "text": "="
+        },
+        {
+          "id": "d",
+          "text": "+"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Đặt tính rồi tính:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "25 + 12"
+        },
+        {
+          "id": "b",
+          "text": "18 + 3"
+        },
+        {
+          "id": "c",
+          "text": "78 – 31"
+        },
+        {
+          "id": "d",
+          "text": "79 – 25"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "7 dm = ..... cm.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "7"
+        },
+        {
+          "id": "b",
+          "text": "70"
+        },
+        {
+          "id": "c",
+          "text": "700"
+        },
+        {
+          "id": "d",
+          "text": "50"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của số lớn nhất có một chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "8"
+        },
+        {
+          "id": "b",
+          "text": "10"
+        },
+        {
+          "id": "c",
+          "text": "99"
+        },
+        {
+          "id": "d",
+          "text": "101"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính 58 + 31 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "89"
+        },
+        {
+          "id": "b",
+          "text": "98"
+        },
+        {
+          "id": "c",
+          "text": "27"
+        },
+        {
+          "id": "d",
+          "text": "99"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Khoanh vào chữ cái đặt trước phép tính có kết quả lớn nhất:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "5 + 9"
+        },
+        {
+          "id": "b",
+          "text": "6 + 7"
+        },
+        {
+          "id": "c",
+          "text": "9 + 6"
+        },
+        {
+          "id": "d",
+          "text": "8 + 8"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số lớn nhất có hai chữ số khác nhau là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "99"
+        },
+        {
+          "id": "b",
+          "text": "100"
+        },
+        {
+          "id": "c",
+          "text": "98"
+        },
+        {
+          "id": "d",
+          "text": "89"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính 87 – 22 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "65"
+        },
+        {
+          "id": "b",
+          "text": "56"
+        },
+        {
+          "id": "c",
+          "text": "55"
+        },
+        {
+          "id": "d",
+          "text": "66"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Các số tròn chục nhỏ hơn 50 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "10; 20; 30; 50"
+        },
+        {
+          "id": "b",
+          "text": "10; 20; 30; 40"
+        },
+        {
+          "id": "c",
+          "text": "0; 10; 20; 30"
+        },
+        {
+          "id": "d",
+          "text": "20; 10; 30; 50"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số thích hợp viết vào chỗ chấm cho đúng thứ tự: 90; ..........; ..........; 87 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "91; 92"
+        },
+        {
+          "id": "b",
+          "text": "88; 89"
+        },
+        {
+          "id": "c",
+          "text": "89; 88"
+        },
+        {
+          "id": "d",
+          "text": "98; 97"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "90 cm = .......... dm. Số thích hợp viết vào chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "10"
+        },
+        {
+          "id": "b",
+          "text": "90"
+        },
+        {
+          "id": "c",
+          "text": "9"
+        },
+        {
+          "id": "d",
+          "text": "900"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong bãi có 58 chiếc xe tải. Có 38 chiếc xe rời bãi. Hỏi xe tải còn lại trong bãi là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "20 chiếc"
+        },
+        {
+          "id": "b",
+          "text": "96 chiếc"
+        },
+        {
+          "id": "c",
+          "text": "30 chiếc"
+        },
+        {
+          "id": "d",
+          "text": "26 chiếc"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Dấu thích hợp điền vào chỗ chấm là: 40 cm .......... 40 dm.",
+      "choices": [
+        {
+          "id": "a",
+          "text": ">"
+        },
+        {
+          "id": "b",
+          "text": "<"
+        },
+        {
+          "id": "c",
+          "text": "="
+        },
+        {
+          "id": "d",
+          "text": "Không xác định được"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Viết dấu (>; <; =) thích hợp vào chỗ chấm:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "14 – 6 ....... 5"
+        },
+        {
+          "id": "b",
+          "text": "76 – 30 ....... 26 + 20"
+        },
+        {
+          "id": "c",
+          "text": "17 – 8 ....... 9"
+        },
+        {
+          "id": "d",
+          "text": "13 – 7 ....... 16 – 8"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 85 đọc là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Tám năm"
+        },
+        {
+          "id": "b",
+          "text": "Tám lăm"
+        },
+        {
+          "id": "c",
+          "text": "Tám mươi năm"
+        },
+        {
+          "id": "d",
+          "text": "Tám mươi lăm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Khoanh tròn vào chữ cái đặt trước phép tính có kết quả bé nhất:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "13 – 7"
+        },
+        {
+          "id": "b",
+          "text": "14 – 6"
+        },
+        {
+          "id": "c",
+          "text": "17 – 9"
+        },
+        {
+          "id": "d",
+          "text": "15 – 6"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số nhỏ nhất có ba chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "99"
+        },
+        {
+          "id": "b",
+          "text": "9"
+        },
+        {
+          "id": "c",
+          "text": "9"
+        },
+        {
+          "id": "d",
+          "text": "11"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "56 bằng tổng của hai số nào trong các cặp số sau đây?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "42 và 12"
+        },
+        {
+          "id": "b",
+          "text": "43 và 13"
+        },
+        {
+          "id": "c",
+          "text": "44 và 14"
+        },
+        {
+          "id": "d",
+          "text": "45 và 14"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Nam có 17 viên bi, Hồng có ít hơn Nam 3 viên bi. Hỏi Hồng có bao nhiêu viên bi?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "13 viên bi"
+        },
+        {
+          "id": "b",
+          "text": "20 viên bi"
+        },
+        {
+          "id": "c",
+          "text": "14 viên bi"
+        },
+        {
+          "id": "d",
+          "text": "4 viên bi"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số bé nhất có hai chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "01"
+        },
+        {
+          "id": "b",
+          "text": "10"
+        },
+        {
+          "id": "c",
+          "text": "11"
+        },
+        {
+          "id": "d",
+          "text": "9"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của 79 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "69"
+        },
+        {
+          "id": "b",
+          "text": "78"
+        },
+        {
+          "id": "c",
+          "text": "80"
+        },
+        {
+          "id": "d",
+          "text": "70"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính 6 + 9 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "5"
+        },
+        {
+          "id": "b",
+          "text": "15"
+        },
+        {
+          "id": "c",
+          "text": "25"
+        },
+        {
+          "id": "d",
+          "text": "10"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Hiệu của 79 và 25 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "44"
+        },
+        {
+          "id": "b",
+          "text": "34"
+        },
+        {
+          "id": "c",
+          "text": "54"
+        },
+        {
+          "id": "d",
+          "text": "64"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền số thích hợp vào chỗ chấm: 3 dm = ... cm.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "300"
+        },
+        {
+          "id": "b",
+          "text": "3"
+        },
+        {
+          "id": "c",
+          "text": "30"
+        },
+        {
+          "id": "d",
+          "text": "13"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 8 chục 6 đơn vị là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "68"
+        },
+        {
+          "id": "b",
+          "text": "88"
+        },
+        {
+          "id": "c",
+          "text": "86"
+        },
+        {
+          "id": "d",
+          "text": "62"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số tròn chục lớn nhất có hai chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "90"
+        },
+        {
+          "id": "b",
+          "text": "89"
+        },
+        {
+          "id": "c",
+          "text": "91"
+        },
+        {
+          "id": "d",
+          "text": "99"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số lớn nhất trong dãy số 46, 75, 52, 68 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "46"
+        },
+        {
+          "id": "b",
+          "text": "75"
+        },
+        {
+          "id": "c",
+          "text": "52"
+        },
+        {
+          "id": "d",
+          "text": "68"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số thích hợp để điền vào chỗ chấm 33 dm + 57 dm = …….. dm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "90"
+        },
+        {
+          "id": "b",
+          "text": "80"
+        },
+        {
+          "id": "c",
+          "text": "91"
+        },
+        {
+          "id": "d",
+          "text": "89"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Bác Hà mang 75 quả trứng ra chợ bán trong đó có 18 quả trứng vịt, còn lại là trứng gà. Hỏi số quả trứng gà bác Hà mang ra chợ là bao nhiêu quả?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "93 quả"
+        },
+        {
+          "id": "b",
+          "text": "57 quả"
+        },
+        {
+          "id": "c",
+          "text": "67 quả"
+        },
+        {
+          "id": "d",
+          "text": "66 quả"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "18 giờ còn được gọi là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "4 giờ chiều"
+        },
+        {
+          "id": "b",
+          "text": "6 giờ chiều"
+        },
+        {
+          "id": "c",
+          "text": "5 giờ chiều"
+        },
+        {
+          "id": "d",
+          "text": "6 giờ tối"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Ngày 26 tháng 10 là thứ Tư. Sinh nhật Nam vào ngày 30 tháng 10. Hỏi sinh nhật Nam vào ngày thứ mấy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ sáu"
+        },
+        {
+          "id": "b",
+          "text": "Thứ bảy"
+        },
+        {
+          "id": "c",
+          "text": "Chủ nhật"
+        },
+        {
+          "id": "d",
+          "text": "Thứ hai"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số 87 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "88"
+        },
+        {
+          "id": "b",
+          "text": "89"
+        },
+        {
+          "id": "c",
+          "text": "86"
+        },
+        {
+          "id": "d",
+          "text": "85"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Giá trị của X thỏa mãn X + 26 = 74 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "100"
+        },
+        {
+          "id": "b",
+          "text": "48"
+        },
+        {
+          "id": "c",
+          "text": "90"
+        },
+        {
+          "id": "d",
+          "text": "58"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Các số 79, 87, 68; 59 được viết theo thứ tự từ bé đến lớn là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "59; 79; 68; 87"
+        },
+        {
+          "id": "b",
+          "text": "87; 79; 68; 59"
+        },
+        {
+          "id": "c",
+          "text": "68; 59; 79; 87"
+        },
+        {
+          "id": "d",
+          "text": "59; 68; 79; 87"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cho dãy số: 2; 7; 12; 17; 22; … Hai số tiếp theo trong dãy là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "27; 32"
+        },
+        {
+          "id": "b",
+          "text": "24; 28"
+        },
+        {
+          "id": "c",
+          "text": "26; 30"
+        },
+        {
+          "id": "d",
+          "text": "25; 30"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Thứ năm tuần này là ngày 29 tháng 12. Thứ năm tuần trước là ngày:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "21"
+        },
+        {
+          "id": "b",
+          "text": "22"
+        },
+        {
+          "id": "c",
+          "text": "5"
+        },
+        {
+          "id": "d",
+          "text": "23"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Mạnh có 64 viên bi. Huy có ít hơn mạnh 27 viên bi. Huy có số viên bi là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "44"
+        },
+        {
+          "id": "b",
+          "text": "47"
+        },
+        {
+          "id": "c",
+          "text": "54"
+        },
+        {
+          "id": "d",
+          "text": "37"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số 78 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "87"
+        },
+        {
+          "id": "b",
+          "text": "77"
+        },
+        {
+          "id": "c",
+          "text": "79"
+        },
+        {
+          "id": "d",
+          "text": "86"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 65 được đọc là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Sáu lăm"
+        },
+        {
+          "id": "b",
+          "text": "Sáu mươi năm"
+        },
+        {
+          "id": "c",
+          "text": "Sáu mươi lăm"
+        },
+        {
+          "id": "d",
+          "text": "Sáu năm"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tổng của 46 + 38 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "84"
+        },
+        {
+          "id": "b",
+          "text": "74"
+        },
+        {
+          "id": "c",
+          "text": "75"
+        },
+        {
+          "id": "d",
+          "text": "83"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Lan cho Thu 12 viên phấn thì Lan còn lại ba chục viên phấn. Lúc đầu Lan có số viên phấn là?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "15 viên"
+        },
+        {
+          "id": "b",
+          "text": "18 viên"
+        },
+        {
+          "id": "c",
+          "text": "52 viên"
+        },
+        {
+          "id": "d",
+          "text": "42 viên"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "5 dm + 37 cm = ……..",
+      "choices": [
+        {
+          "id": "a",
+          "text": "87"
+        },
+        {
+          "id": "b",
+          "text": "42 cm"
+        },
+        {
+          "id": "c",
+          "text": "42 dm"
+        },
+        {
+          "id": "d",
+          "text": "87 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính sau là 53 – 8 + 17 = …….",
+      "choices": [
+        {
+          "id": "a",
+          "text": "45"
+        },
+        {
+          "id": "b",
+          "text": "52"
+        },
+        {
+          "id": "c",
+          "text": "63"
+        },
+        {
+          "id": "d",
+          "text": "62"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "23 giờ còn được gọi là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "10 giờ đêm"
+        },
+        {
+          "id": "b",
+          "text": "11 giờ đêm"
+        },
+        {
+          "id": "c",
+          "text": "11 giờ trưa"
+        },
+        {
+          "id": "d",
+          "text": "10 giờ sáng"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 7 chục 6 đơn vị là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "67"
+        },
+        {
+          "id": "b",
+          "text": "70"
+        },
+        {
+          "id": "c",
+          "text": "76"
+        },
+        {
+          "id": "d",
+          "text": "66"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Các số 89, 87, 98, 65 được viết theo thứ tự từ bé đến lớn là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "89; 87; 98, 65"
+        },
+        {
+          "id": "b",
+          "text": "65, 89, 98, 87"
+        },
+        {
+          "id": "c",
+          "text": "87, 89, 98, 65"
+        },
+        {
+          "id": "d",
+          "text": "65, 87, 89, 98"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tổ 1 trồng được 48 cây xanh, tổ 2 trồng được 37 cây xanh. Hỏi cả hai tổ trồng được bao nhiêu cây xanh?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "85 cây"
+        },
+        {
+          "id": "b",
+          "text": "75 cây"
+        },
+        {
+          "id": "c",
+          "text": "11 cây"
+        },
+        {
+          "id": "d",
+          "text": "84 cây"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Nếu ngày 20 tháng 11 là thứ Ba thì ngày 24 tháng 11 là thứ mấy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ Bảy"
+        },
+        {
+          "id": "b",
+          "text": "Chủ nhật"
+        },
+        {
+          "id": "c",
+          "text": "Thứ Tư"
+        },
+        {
+          "id": "d",
+          "text": "Thứ Sáu"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số tròn chục lớn nhất có hai chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "90"
+        },
+        {
+          "id": "b",
+          "text": "98"
+        },
+        {
+          "id": "c",
+          "text": "99"
+        },
+        {
+          "id": "d",
+          "text": "100"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Độ dài đường gấp khúc ABCD là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "7 cm"
+        },
+        {
+          "id": "b",
+          "text": "8 cm"
+        },
+        {
+          "id": "c",
+          "text": "9 cm"
+        },
+        {
+          "id": "d",
+          "text": "10 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính sau là 82 – 28 + 15 = ……",
+      "choices": [
+        {
+          "id": "a",
+          "text": "79"
+        },
+        {
+          "id": "b",
+          "text": "68"
+        },
+        {
+          "id": "c",
+          "text": "69"
+        },
+        {
+          "id": "d",
+          "text": "59"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Một cửa hàng ngày thứ nhất bán được 18 bao gạo. Ngày thứ hai cửa hàng bán nhiều hơn ngày thứ nhất 24 bao gạo. Hỏi ngày thứ hai cửa hàng bán được bao nhiêu bao gạo?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "32 bao gạo"
+        },
+        {
+          "id": "b",
+          "text": "42 bao gạo"
+        },
+        {
+          "id": "c",
+          "text": "16 bao gạo"
+        },
+        {
+          "id": "d",
+          "text": "43 bao gạo"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 5 đơn vị và 6 chục là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "56"
+        },
+        {
+          "id": "b",
+          "text": "60"
+        },
+        {
+          "id": "c",
+          "text": "65"
+        },
+        {
+          "id": "d",
+          "text": "650"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Hôm nay là thứ Ba, hỏi 16 ngày nữa là thứ mấy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ Ba"
+        },
+        {
+          "id": "b",
+          "text": "Thứ Tư"
+        },
+        {
+          "id": "c",
+          "text": "Thứ Năm"
+        },
+        {
+          "id": "d",
+          "text": "Thứ Sáu"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính 52 + 25 = ….",
+      "choices": [
+        {
+          "id": "a",
+          "text": "65"
+        },
+        {
+          "id": "b",
+          "text": "67"
+        },
+        {
+          "id": "c",
+          "text": "75"
+        },
+        {
+          "id": "d",
+          "text": "77"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Dấu cần điền vào chỗ chấm 50 + 24 …. 20 + 56. Dấu cần điền vào chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "<"
+        },
+        {
+          "id": "b",
+          "text": ">"
+        },
+        {
+          "id": "c",
+          "text": "="
+        },
+        {
+          "id": "d",
+          "text": "Không xác định được"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Nam có 40 viên bi, Việt có ít hơn Nam 12 viên bi. Việt có số viên bi là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "28"
+        },
+        {
+          "id": "b",
+          "text": "38"
+        },
+        {
+          "id": "c",
+          "text": "52"
+        },
+        {
+          "id": "d",
+          "text": "42"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của 78 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "80"
+        },
+        {
+          "id": "b",
+          "text": "76"
+        },
+        {
+          "id": "c",
+          "text": "77"
+        },
+        {
+          "id": "d",
+          "text": "79"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số thích hợp điền vào chỗ chấm 24 kg + 5 kg + 26 kg = ……. kg là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "50 kg"
+        },
+        {
+          "id": "b",
+          "text": "45 kg"
+        },
+        {
+          "id": "c",
+          "text": "55 kg"
+        },
+        {
+          "id": "d",
+          "text": "60 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tính tổng, biết các số hạng là 48 và 17:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "31"
+        },
+        {
+          "id": "b",
+          "text": "65"
+        },
+        {
+          "id": "c",
+          "text": "41"
+        },
+        {
+          "id": "d",
+          "text": "55"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Bàn học của em dài khoảng bao nhiêu đề-xi-mét?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "11 dm"
+        },
+        {
+          "id": "b",
+          "text": "30 dm"
+        },
+        {
+          "id": "c",
+          "text": "2 dm"
+        },
+        {
+          "id": "d",
+          "text": "100 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Mẹ vắt được 67 lít sữa bò, chị vắt được 33 lít sữa bò. Hỏi mẹ và chị vắt được bao nhiêu lít sữa bò?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "34 lít"
+        },
+        {
+          "id": "b",
+          "text": "100 lít"
+        },
+        {
+          "id": "c",
+          "text": "44 lít"
+        },
+        {
+          "id": "d",
+          "text": "90 lít"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 85 được đọc là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Tám lăm"
+        },
+        {
+          "id": "b",
+          "text": "Tám mươi năm"
+        },
+        {
+          "id": "c",
+          "text": "Năm mươi tám"
+        },
+        {
+          "id": "d",
+          "text": "Tám mươi lăm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số lẻ liền trước số 63 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "61"
+        },
+        {
+          "id": "b",
+          "text": "62"
+        },
+        {
+          "id": "c",
+          "text": "64"
+        },
+        {
+          "id": "d",
+          "text": "65"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "x – 33 = 38. Giá trị của x là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "7"
+        },
+        {
+          "id": "b",
+          "text": "61"
+        },
+        {
+          "id": "c",
+          "text": "71"
+        },
+        {
+          "id": "d",
+          "text": "72"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Một cửa hàng bán bánh mở cửa từ 8 giờ sáng đến 9 giờ tối. Hỏi cửa hàng mở cửa bao nhiêu giờ mỗi ngày?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "8 giờ"
+        },
+        {
+          "id": "b",
+          "text": "9 giờ"
+        },
+        {
+          "id": "c",
+          "text": "12 giờ"
+        },
+        {
+          "id": "d",
+          "text": "13 giờ"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Dấu thích hợp điền vào chỗ chấm 35 + 17 …... 80 – 12 – 15 là",
+      "choices": [
+        {
+          "id": "a",
+          "text": ">"
+        },
+        {
+          "id": "b",
+          "text": "<"
+        },
+        {
+          "id": "c",
+          "text": "="
+        },
+        {
+          "id": "d",
+          "text": "Không xác định được"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số lớn nhất có hai chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "10"
+        },
+        {
+          "id": "b",
+          "text": "90"
+        },
+        {
+          "id": "c",
+          "text": "99"
+        },
+        {
+          "id": "d",
+          "text": "100"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của 69 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "60"
+        },
+        {
+          "id": "b",
+          "text": "68"
+        },
+        {
+          "id": "c",
+          "text": "70"
+        },
+        {
+          "id": "d",
+          "text": "80"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Hiệu là 18, số trừ là 24, số bị trừ là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "6"
+        },
+        {
+          "id": "b",
+          "text": "42"
+        },
+        {
+          "id": "c",
+          "text": "32"
+        },
+        {
+          "id": "d",
+          "text": "43"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "28 + 72 – 20 = ……. Kết quả của phép tính là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "60 B. 100"
+        },
+        {
+          "id": "c",
+          "text": "70"
+        },
+        {
+          "id": "d",
+          "text": "80"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Chuông reo vào học lúc 7 giờ. Bạn An đến trường lúc 8 giờ. Vậy An đi học muộn bao nhiêu phút?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "10"
+        },
+        {
+          "id": "b",
+          "text": "30"
+        },
+        {
+          "id": "c",
+          "text": "40"
+        },
+        {
+          "id": "d",
+          "text": "60"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Một ngày có ….. giờ. Số cần điền vào chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "12"
+        },
+        {
+          "id": "b",
+          "text": "24"
+        },
+        {
+          "id": "c",
+          "text": "14"
+        },
+        {
+          "id": "d",
+          "text": "15"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của 69 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "60"
+        },
+        {
+          "id": "b",
+          "text": "68"
+        },
+        {
+          "id": "c",
+          "text": "80"
+        },
+        {
+          "id": "d",
+          "text": "70"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Dấu thích hợp điền vào chỗ chấm 23 + 48 …. 90 – 32 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "<"
+        },
+        {
+          "id": "b",
+          "text": ">"
+        },
+        {
+          "id": "c",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "4 giờ chiều hay còn gọi là ……… giờ.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "18 giờ"
+        },
+        {
+          "id": "b",
+          "text": "15 giờ"
+        },
+        {
+          "id": "c",
+          "text": "16 giờ"
+        },
+        {
+          "id": "d",
+          "text": "17 giờ"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Thứ tư tuần này là ngày 13 tháng 12 thì thứ tư tuần sau là ngày …….. tháng 12.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "20"
+        },
+        {
+          "id": "b",
+          "text": "21"
+        },
+        {
+          "id": "c",
+          "text": "22"
+        },
+        {
+          "id": "d",
+          "text": "23"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Đoạn thẳng AC dài là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "31 dm"
+        },
+        {
+          "id": "b",
+          "text": "30 dm"
+        },
+        {
+          "id": "c",
+          "text": "94 dm"
+        },
+        {
+          "id": "d",
+          "text": "31 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "8 dm = …… cm",
+      "choices": [
+        {
+          "id": "a",
+          "text": "40"
+        },
+        {
+          "id": "b",
+          "text": "80"
+        },
+        {
+          "id": "c",
+          "text": "8"
+        },
+        {
+          "id": "d",
+          "text": "60"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Bao ngô cân nặng 46 kg, bao thóc nặng hơn bao ngô 18 kg. Hỏi bao thóc nặng bao nhiêu ki-lô-gam?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "64 kg"
+        },
+        {
+          "id": "b",
+          "text": "28 kg"
+        },
+        {
+          "id": "c",
+          "text": "54 kg"
+        },
+        {
+          "id": "d",
+          "text": "63 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của 89 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "100"
+        },
+        {
+          "id": "b",
+          "text": "88"
+        },
+        {
+          "id": "c",
+          "text": "90"
+        },
+        {
+          "id": "d",
+          "text": "91"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 11"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cho dãy số 41; 36; 31; 26; 21; …. Số cần điền vào chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "20"
+        },
+        {
+          "id": "b",
+          "text": "16"
+        },
+        {
+          "id": "c",
+          "text": "15"
+        },
+        {
+          "id": "d",
+          "text": "17"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 11"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả phép tính 81 – 33 – 10 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "38"
+        },
+        {
+          "id": "b",
+          "text": "48"
+        },
+        {
+          "id": "c",
+          "text": "58"
+        },
+        {
+          "id": "d",
+          "text": "28"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 11"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "22 giờ còn được gọi là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "10 giờ sáng"
+        },
+        {
+          "id": "b",
+          "text": "5 giờ chiều"
+        },
+        {
+          "id": "c",
+          "text": "9 giờ tối"
+        },
+        {
+          "id": "d",
+          "text": "10 giờ tối"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 11"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Hai số có tổng bằng 50, biết số bé là 19. Số lớn là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "50"
+        },
+        {
+          "id": "b",
+          "text": "19"
+        },
+        {
+          "id": "c",
+          "text": "21"
+        },
+        {
+          "id": "d",
+          "text": "31"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 11"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tham dự lễ phát động “Tết nhân ái”, lớp 2A ủng hộ 27 chiếc bánh chưng, lớp 2B ủng hộ 35 chiếc bánh chưng. Hỏi cả hai lớp ủng hộ tất cả bao nhiêu chiếc bánh chưng?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "62 chiếc"
+        },
+        {
+          "id": "b",
+          "text": "52 chiếc"
+        },
+        {
+          "id": "c",
+          "text": "8 chiếc"
+        },
+        {
+          "id": "d",
+          "text": "53 chiếc"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 11"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số lớn nhất có hai chữ số là số nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "97"
+        },
+        {
+          "id": "b",
+          "text": "100"
+        },
+        {
+          "id": "c",
+          "text": "98"
+        },
+        {
+          "id": "d",
+          "text": "89"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 12"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Chủ nhật tuần này là ngày 26 tháng 11. Chủ nhật tuần trước là ngày:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "18"
+        },
+        {
+          "id": "b",
+          "text": "19"
+        },
+        {
+          "id": "c",
+          "text": "20"
+        },
+        {
+          "id": "d",
+          "text": "21"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 12"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số thích hợp điền vào chỗ chấm 20 cm + 65 cm – 38 cm = …… cm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "85"
+        },
+        {
+          "id": "b",
+          "text": "47"
+        },
+        {
+          "id": "c",
+          "text": "57"
+        },
+        {
+          "id": "d",
+          "text": "46"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 12"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Lan hái được 36 bông hoa cúc và hoa hồng. Trong đó số bông hoa hồng Lan hái được là 1 chục bông. Hỏi Lan hái được bao nhiêu bông hoa cúc?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "37 bông"
+        },
+        {
+          "id": "b",
+          "text": "35 bông"
+        },
+        {
+          "id": "c",
+          "text": "26 bông"
+        },
+        {
+          "id": "d",
+          "text": "16 bông"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 12"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cho dãy số sau: 92; 90; 88; 86; ….; Hai số tiếp theo cần điền vào chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "84; 82"
+        },
+        {
+          "id": "b",
+          "text": "85; 84"
+        },
+        {
+          "id": "c",
+          "text": "82; 84"
+        },
+        {
+          "id": "d",
+          "text": "84; 83"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 12"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 8 chục và 3 đơn vị là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "38"
+        },
+        {
+          "id": "b",
+          "text": "83"
+        },
+        {
+          "id": "c",
+          "text": "82"
+        },
+        {
+          "id": "d",
+          "text": "80"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 13"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong phép tính 82 – 28 = 54, số 82 được gọi là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Hiệu"
+        },
+        {
+          "id": "b",
+          "text": "Số trừ"
+        },
+        {
+          "id": "c",
+          "text": "Số bị trừ"
+        },
+        {
+          "id": "d",
+          "text": "Số hạng"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 13"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Thứ Tư tuần này là ngày 25 tháng 12. Vậy thứ Tư tuần sau là ngày nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "18 tháng 12"
+        },
+        {
+          "id": "b",
+          "text": "18 tháng 12"
+        },
+        {
+          "id": "c",
+          "text": "1 tháng 1"
+        },
+        {
+          "id": "d",
+          "text": "2 tháng 1"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 13"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Một người nông dân nuôi 52 con cừu. Ông mới mua thêm 19 con cừu nữa. Hỏi bây giờ ông có tất cả bao nhiêu con cừu?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "71 con"
+        },
+        {
+          "id": "b",
+          "text": "60 con"
+        },
+        {
+          "id": "c",
+          "text": "61 con"
+        },
+        {
+          "id": "d",
+          "text": "73 con"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 13"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của số lớn nhất có hai chữ số khác nhau là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "100"
+        },
+        {
+          "id": "b",
+          "text": "99"
+        },
+        {
+          "id": "c",
+          "text": "98"
+        },
+        {
+          "id": "d",
+          "text": "89"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 14"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Dấu thích hợp điền vào chỗ chấm 15 + 36 ….. 82 – 29 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": ">"
+        },
+        {
+          "id": "b",
+          "text": "<"
+        },
+        {
+          "id": "c",
+          "text": "="
+        },
+        {
+          "id": "d",
+          "text": "Không xác định"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 14"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính 26 + 15 – 11 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "20"
+        },
+        {
+          "id": "b",
+          "text": "29"
+        },
+        {
+          "id": "c",
+          "text": "32"
+        },
+        {
+          "id": "d",
+          "text": "30"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 14"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Mẹ mang ra chợ bán 38 quả trứng gà và 27 quả trứng vịt. Hỏi mẹ mang ra chợ bán tất cả bao nhiêu quả trứng gà và trứng vịt?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "65 quả"
+        },
+        {
+          "id": "b",
+          "text": "11 quả"
+        },
+        {
+          "id": "c",
+          "text": "64 quả"
+        },
+        {
+          "id": "d",
+          "text": "55 quả"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 14"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số thích hợp điền vào dãy số 23, 26, 29, 32, …., 41, 44 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "34, 36"
+        },
+        {
+          "id": "b",
+          "text": "35; 37"
+        },
+        {
+          "id": "c",
+          "text": "35; 38"
+        },
+        {
+          "id": "d",
+          "text": "36; 39"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 14"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Hôm nay là thứ Sáu ngày 24 tháng 7. Ba ngày trước là sinh nhật mẹ Chi. Vậy sinh nhật mẹ Chi vào thứ:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ Hai"
+        },
+        {
+          "id": "b",
+          "text": "Thứ Ba"
+        },
+        {
+          "id": "c",
+          "text": "Thứ Tư"
+        },
+        {
+          "id": "d",
+          "text": "Thứ Năm"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 14"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số 79 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "77"
+        },
+        {
+          "id": "b",
+          "text": "78"
+        },
+        {
+          "id": "c",
+          "text": "80"
+        },
+        {
+          "id": "d",
+          "text": "81"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 15"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cho dãy số 60, 55, 50, 45, …, số tiếp theo là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "30"
+        },
+        {
+          "id": "b",
+          "text": "35"
+        },
+        {
+          "id": "c",
+          "text": "34"
+        },
+        {
+          "id": "d",
+          "text": "40"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 15"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số bị trừ là 78 và số trừ là 29. Hiệu là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "50"
+        },
+        {
+          "id": "b",
+          "text": "49"
+        },
+        {
+          "id": "c",
+          "text": "49"
+        },
+        {
+          "id": "d",
+          "text": "69"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 15"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cô giáo có 72 quyển vở. Sau khi phát cho học sinh một số quyển vở cô giáo còn 38 quyển. Hỏi cô giáo đã phát cho học sinh bao nhiêu quyển vở?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "44 quyển"
+        },
+        {
+          "id": "b",
+          "text": "100 quyển"
+        },
+        {
+          "id": "c",
+          "text": "34 quyển"
+        },
+        {
+          "id": "d",
+          "text": "35 quyển"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 15"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của số tròn chục nhỏ nhất là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "9"
+        },
+        {
+          "id": "b",
+          "text": "10"
+        },
+        {
+          "id": "c",
+          "text": "11"
+        },
+        {
+          "id": "d",
+          "text": "12"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 16"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Nếu ngày 19 tháng 10 là thứ ba thì ngày 11 tháng 10 là thứ mấy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ hai"
+        },
+        {
+          "id": "b",
+          "text": "Thứ ba"
+        },
+        {
+          "id": "c",
+          "text": "Thứ tư"
+        },
+        {
+          "id": "d",
+          "text": "Thứ năm"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 16"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Nhà Minh có nuôi 3 chục con gà và 15 con vịt. Số con vịt kém số con gà là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "5 con"
+        },
+        {
+          "id": "b",
+          "text": "10 con"
+        },
+        {
+          "id": "c",
+          "text": "15"
+        },
+        {
+          "id": "d",
+          "text": "20"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 16"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tổng lớn nhất của hai số có một chữ số khác nhau là?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "16"
+        },
+        {
+          "id": "b",
+          "text": "17"
+        },
+        {
+          "id": "c",
+          "text": "18"
+        },
+        {
+          "id": "d",
+          "text": "19"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 16"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tổng của số 44 và số liền trước của nó là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "80"
+        },
+        {
+          "id": "b",
+          "text": "85"
+        },
+        {
+          "id": "c",
+          "text": "87"
+        },
+        {
+          "id": "d",
+          "text": "89"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Thứ bảy tuần này là ngày 20 tháng 11. Thứ sáu tuần sau là ngày mấy:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "19"
+        },
+        {
+          "id": "b",
+          "text": "27"
+        },
+        {
+          "id": "c",
+          "text": "28"
+        },
+        {
+          "id": "d",
+          "text": "26"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số lớn nhất trong các số 35; 72; 56; 18 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "35"
+        },
+        {
+          "id": "b",
+          "text": "72"
+        },
+        {
+          "id": "c",
+          "text": "56"
+        },
+        {
+          "id": "d",
+          "text": "18"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Minh nặng 23 kg, Hưng nặng 28 kg, Liên nặng 17 kg và Linh nặng 26 kg. Bốn bạn cùng đi thuyền qua sông nhưng thuyền chỉ có thể chở thêm được 40kg nữa. Theo em, hai bạn nào nên qua sông trước?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Minh và Hưng"
+        },
+        {
+          "id": "b",
+          "text": "Hưng và Liên"
+        },
+        {
+          "id": "c",
+          "text": "Liên và Minh"
+        },
+        {
+          "id": "d",
+          "text": "Linh và Minh"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tìm số liền sau của số bé nhất có hai chữ số mà tổng của hai chữ số là 9",
+      "choices": [
+        {
+          "id": "a",
+          "text": "11"
+        },
+        {
+          "id": "b",
+          "text": "18"
+        },
+        {
+          "id": "c",
+          "text": "19"
+        },
+        {
+          "id": "d",
+          "text": "27"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kiên có nhiều hơn Vinh 6 viên bi, Nam có nhiều hơn Kiên 9 viên bi. Hỏi Nam có nhiều hơn Vinh bao nhiêu viên bi?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "8"
+        },
+        {
+          "id": "b",
+          "text": "9"
+        },
+        {
+          "id": "c",
+          "text": "16"
+        },
+        {
+          "id": "d",
+          "text": "15"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền số thích hợp vào chỗ chấm:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "13 + 48 – 24 = ………..."
+        },
+        {
+          "id": "b",
+          "text": "69 – 27 + 18 = …………"
+        },
+        {
+          "id": "c",
+          "text": "81 – …….... = 43"
+        },
+        {
+          "id": "d",
+          "text": "36 + ……… = 82 – 37"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền số thích hợp vào chỗ trống",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Số chẵn lớn nhất có một chữ số là: …………….."
+        },
+        {
+          "id": "b",
+          "text": "Số tròn chục lớn nhất có hai chữ số là: …………"
+        },
+        {
+          "id": "c",
+          "text": "Tổng của hai số trên là: …………………………"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 17"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Anh nặng 18 kg, em nặng 12 kg. Vậy em nhẹ hơn anh bao nhiêu ki-lô-gam?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "4 kg"
+        },
+        {
+          "id": "b",
+          "text": "5 kg"
+        },
+        {
+          "id": "c",
+          "text": "6 kg"
+        },
+        {
+          "id": "d",
+          "text": "7kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 18"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tuần này thứ hai là ngày 9 tháng 5. Vậy thứ năm tuần này là ngày bao nhiêu?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "ngày 10"
+        },
+        {
+          "id": "b",
+          "text": "ngày 11"
+        },
+        {
+          "id": "c",
+          "text": "ngày 12"
+        },
+        {
+          "id": "d",
+          "text": "ngày 10"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 18"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền số thích hợp vào chỗ chấm: .....?..... + 28 = 76 + 24 – 59",
+      "choices": [
+        {
+          "id": "a",
+          "text": "6"
+        },
+        {
+          "id": "b",
+          "text": "9"
+        },
+        {
+          "id": "c",
+          "text": "8"
+        },
+        {
+          "id": "d",
+          "text": "13"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 18"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số lớn nhất có hai chữ số mà hiệu của hai chữ số là 5:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "38"
+        },
+        {
+          "id": "b",
+          "text": "93"
+        },
+        {
+          "id": "c",
+          "text": "96"
+        },
+        {
+          "id": "d",
+          "text": "49"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 18"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điều các dấu >; a) 72 + 18 ........... 99 - 16",
+      "choices": [
+        {
+          "id": "b",
+          "text": "83 – 27 ............ 62"
+        },
+        {
+          "id": "c",
+          "text": "54 – 23 ........... 21 + 10"
+        },
+        {
+          "id": "d",
+          "text": "63 + 19................... 93 – 11"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 1 - Đề số 18"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "7 là thương của hai số nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "16 và 2"
+        },
+        {
+          "id": "b",
+          "text": "18 và 2"
+        },
+        {
+          "id": "c",
+          "text": "35 và 5"
+        },
+        {
+          "id": "d",
+          "text": "25 và 5"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cho dãy số 5; 10; 15; 20; ...;...;...;...; 45; 50. Các số thích hợp lần lượt điền vào những chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "21; 22; 23; 24"
+        },
+        {
+          "id": "b",
+          "text": "25; 30; 35; 40"
+        },
+        {
+          "id": "c",
+          "text": "30; 35; 40; 45"
+        },
+        {
+          "id": "d",
+          "text": "41; 42; 43; 44"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của 800 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "799"
+        },
+        {
+          "id": "b",
+          "text": "801"
+        },
+        {
+          "id": "c",
+          "text": "798"
+        },
+        {
+          "id": "d",
+          "text": "802"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong các số 672, 127, 373, 553; số lớn nhất là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "672"
+        },
+        {
+          "id": "b",
+          "text": "127"
+        },
+        {
+          "id": "c",
+          "text": "373"
+        },
+        {
+          "id": "d",
+          "text": "553"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong mỗi bữa cơm, nhà Mai có 8 người lớn ăn cơm bằng đũa. Để đủ cho mỗi người lớn có một đôi đũa, số chiếc đũa Mai cần lấy là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "8 chiếc"
+        },
+        {
+          "id": "b",
+          "text": "14 chiếc"
+        },
+        {
+          "id": "c",
+          "text": "18 chiếc"
+        },
+        {
+          "id": "d",
+          "text": "16 chiếc"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? 2 x … = 18",
+      "acceptedAnswer": "9",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? 5 x … = 45",
+      "acceptedAnswer": "9",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? … : 2 = 5",
+      "acceptedAnswer": "10",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? … : 5 = 6",
+      "acceptedAnswer": "30",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Cuộc thi đua thuyền rồng năm nay có sự tham gia của 8 đội đua. Mỗi đội có 5 tay đua. Hỏi có bao nhiêu tay đua tham gia cuộc thi đua thuyền rồng năm nay?",
+      "acceptedAnswer": "40",
+      "explanation": "Bài giải\nCó số tay đua tham gia cuộc thi đua thuyền rồng năm nay là:\n5 x 8 = 40 (tay đua)\nĐáp số: 40 tay đua.",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "14 là tích của hai số nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "5 và 3"
+        },
+        {
+          "id": "b",
+          "text": "2 và 8"
+        },
+        {
+          "id": "c",
+          "text": "7 và 2"
+        },
+        {
+          "id": "d",
+          "text": "4 và 5"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 3 trăm, 5 chục và 8 đơn vị viết là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "385"
+        },
+        {
+          "id": "b",
+          "text": "358"
+        },
+        {
+          "id": "c",
+          "text": "538"
+        },
+        {
+          "id": "d",
+          "text": "835"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong các số: 372, 505, 318, 299; số nhỏ nhất là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "372"
+        },
+        {
+          "id": "b",
+          "text": "505"
+        },
+        {
+          "id": "c",
+          "text": "318"
+        },
+        {
+          "id": "d",
+          "text": "299"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cho dãy số 2; 4; 6; 8; ...; ...; ...; ...; 18; 20. Các số thích hợp lần lượt điền vào những chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "9; 10; 11; 12"
+        },
+        {
+          "id": "b",
+          "text": "10; 11; 12; 13"
+        },
+        {
+          "id": "c",
+          "text": "10; 12; 14; 16"
+        },
+        {
+          "id": "d",
+          "text": "9; 11; 13; 15"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Một chương trình truyền hình bắt đầu lúc 8 giờ 15 phút và kết thúc lúc 8 giờ rưỡi. Vậy thời gian chương trình truyền hình đó kéo dài là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "10 phút"
+        },
+        {
+          "id": "b",
+          "text": "15 phút"
+        },
+        {
+          "id": "c",
+          "text": "20 phút"
+        },
+        {
+          "id": "d",
+          "text": "30 phút"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? 5 x … = 35",
+      "acceptedAnswer": "7",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? … : 5 = 4",
+      "acceptedAnswer": "20",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? … : 2 = 7",
+      "acceptedAnswer": "14",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Thùng chứa nhà Hà đựng được 50 l nước. Với một chiếc xô 5 l, Hà đã giúp mẹ xách nước đổ đầy thùng chứa. Hỏi Hà đã xách bao nhiêu xô nước?",
+      "acceptedAnswer": "10",
+      "explanation": "Bài giải\nSố xô nước Hà đã xách là:\n50: 5 = 10 (xô nước)\nĐáp số: 10 xô nước.",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 6 trăm và 3 đơn vị viết là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "63"
+        },
+        {
+          "id": "b",
+          "text": "36"
+        },
+        {
+          "id": "c",
+          "text": "630"
+        },
+        {
+          "id": "d",
+          "text": "603"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "50 là tích của hai số nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "7 và 2"
+        },
+        {
+          "id": "b",
+          "text": "2 và 10"
+        },
+        {
+          "id": "c",
+          "text": "10 và 5"
+        },
+        {
+          "id": "d",
+          "text": "5 và 9"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong các số: 653, 271, 290, 451; số nhỏ nhất là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "653"
+        },
+        {
+          "id": "b",
+          "text": "271"
+        },
+        {
+          "id": "c",
+          "text": "290"
+        },
+        {
+          "id": "d",
+          "text": "451"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số? 40 – 26 < 5 x? < 2 x 8",
+      "choices": [
+        {
+          "id": "a",
+          "text": "1"
+        },
+        {
+          "id": "b",
+          "text": "2"
+        },
+        {
+          "id": "c",
+          "text": "3"
+        },
+        {
+          "id": "d",
+          "text": "4"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong mỗi bữa cơm, nhà Mai có 6 người lớn ăn cơm bằng đũa. Để đủ cho mỗi người lớn một có đôi đũa, số chiếc đũa Mai cần lấy là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "12 chiếc"
+        },
+        {
+          "id": "b",
+          "text": "10 chiếc"
+        },
+        {
+          "id": "c",
+          "text": "8 chiếc"
+        },
+        {
+          "id": "d",
+          "text": "14 chiếc"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? 2 x … = 16",
+      "acceptedAnswer": "8",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? 5 x … = 30",
+      "acceptedAnswer": "6",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? … : 5 = 8",
+      "acceptedAnswer": "40",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Hôm nay, mẹ làm bánh. Mẹ xếp số bánh vừa làm được vào vừa đủ 6 đĩa, mỗi đĩa có 5 cái bánh. Hỏi mẹ làm được bao nhiêu cái bánh?",
+      "acceptedAnswer": "30",
+      "explanation": "Bài giải\nMẹ làm được số cái bánh là:\n5 x 6 = 30 (cái)\nĐáp số: 30 cái bánh.",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 5 trăm và 5 đơn vị đọc là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "năm mươi lăm"
+        },
+        {
+          "id": "b",
+          "text": "năm trăm linh năm"
+        },
+        {
+          "id": "c",
+          "text": "năm trăm năm"
+        },
+        {
+          "id": "d",
+          "text": "năm trăm linh lăm"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tích của 5 và số liền sau của số lớn nhất có một chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "50"
+        },
+        {
+          "id": "b",
+          "text": "35"
+        },
+        {
+          "id": "c",
+          "text": "45"
+        },
+        {
+          "id": "d",
+          "text": "40"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong các số: 825, 627, 958, 609; số lớn nhất là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "825"
+        },
+        {
+          "id": "b",
+          "text": "627"
+        },
+        {
+          "id": "c",
+          "text": "958"
+        },
+        {
+          "id": "d",
+          "text": "609"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Độ dài của đường gấp khúc ABCD là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "25 cm"
+        },
+        {
+          "id": "b",
+          "text": "28 cm"
+        },
+        {
+          "id": "c",
+          "text": "3 dm"
+        },
+        {
+          "id": "d",
+          "text": "4 dm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Số? 2 x … = 20",
+      "acceptedAnswer": "10",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 700 + 30 … 500 + 80 + 2",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "shuffleChoices": false,
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 4"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Nhà An có 8 chuồng thỏ, mỗi chuồng có 5 con thỏ. Hỏi nhà An nuôi bao nhiêu con thỏ?",
+      "acceptedAnswer": "40",
+      "explanation": "Bài giải\nSố con thỏ nhà An nuôi là:\n5 x 8 = 40 (con)\nĐáp số: 40 con thỏ.",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "4 là thương của hai số nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "8 và 2"
+        },
+        {
+          "id": "b",
+          "text": "20 và 4"
+        },
+        {
+          "id": "c",
+          "text": "16 và 2"
+        },
+        {
+          "id": "d",
+          "text": "10 và 5"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số tám trăm chín mươi tư viết là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "849"
+        },
+        {
+          "id": "b",
+          "text": "498"
+        },
+        {
+          "id": "c",
+          "text": "894"
+        },
+        {
+          "id": "d",
+          "text": "984"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số tròn chục lớn nhất có ba chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "900"
+        },
+        {
+          "id": "b",
+          "text": "980"
+        },
+        {
+          "id": "c",
+          "text": "999"
+        },
+        {
+          "id": "d",
+          "text": "990"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền sau của 15 là tích của hai số nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "2 và 7"
+        },
+        {
+          "id": "b",
+          "text": "2 và 8"
+        },
+        {
+          "id": "c",
+          "text": "3 và 5"
+        },
+        {
+          "id": "d",
+          "text": "5 và 5"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Từ 100 đến 1 000 có tất cả bao nhiêu số tròn trăm?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "9 số"
+        },
+        {
+          "id": "b",
+          "text": "10 số"
+        },
+        {
+          "id": "c",
+          "text": "11 số"
+        },
+        {
+          "id": "d",
+          "text": "12 số"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cân nặng của mỗi con gà như nhau. Mỗi con gà cân nặng là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "5kg"
+        },
+        {
+          "id": "b",
+          "text": "4kg"
+        },
+        {
+          "id": "c",
+          "text": "3kg"
+        },
+        {
+          "id": "d",
+          "text": "2 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Nhóm của My có 10 bạn, muốn thuê xe đạp để đi tham quan thành phố. 2 bạn sẽ đi chung một xe. Hỏi nhóm của My cần thuê mấy chiếc xe đạp?",
+      "acceptedAnswer": "5",
+      "explanation": "Bài giải\nSố chiếc xe đạp nhóm của My cần thuê là:\n10 : 2 = 5 (chiếc)\nĐáp số: 5 chiếc xe đạp.",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra giữa học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 8 trăm, 3 chục, 9 đơn vị viết là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "893"
+        },
+        {
+          "id": "b",
+          "text": "839"
+        },
+        {
+          "id": "c",
+          "text": "938"
+        },
+        {
+          "id": "d",
+          "text": "389"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số tròn chục lớn nhất có ba chữ số là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "899"
+        },
+        {
+          "id": "b",
+          "text": "911"
+        },
+        {
+          "id": "c",
+          "text": "998"
+        },
+        {
+          "id": "d",
+          "text": "989"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Để về nhà, kiến cần đi quãng đường dài bao nhiêu mét?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "45 m"
+        },
+        {
+          "id": "b",
+          "text": "60 m"
+        },
+        {
+          "id": "c",
+          "text": "5m"
+        },
+        {
+          "id": "d",
+          "text": "500 m"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 257 được viết thành:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "2 + 5 + 7"
+        },
+        {
+          "id": "b",
+          "text": "500 + 20 + 7"
+        },
+        {
+          "id": "c",
+          "text": "200 + 50 + 7"
+        },
+        {
+          "id": "d",
+          "text": "700 + 20 + 5"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Con chó cân nặng là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "5 kg"
+        },
+        {
+          "id": "b",
+          "text": "10 kg"
+        },
+        {
+          "id": "c",
+          "text": "15 kg"
+        },
+        {
+          "id": "d",
+          "text": "20 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 385 – 167",
+      "acceptedAnswer": "218",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 119 + 602",
+      "acceptedAnswer": "721",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 742 – 38",
+      "acceptedAnswer": "704",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 518 + 36",
+      "acceptedAnswer": "554",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 313 + 418 – 240",
+      "acceptedAnswer": "491",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Hôm qua, bảo tàng đón 235 lượt khách tham quan. Hôm nay, bảo tàng đón số khách tham quan ít hơn ngày hôm qua 38 người. Hỏi hôm nay, bảo tàng có bao nhiêu lượt khách tham quan?",
+      "acceptedAnswer": "197",
+      "explanation": "Hôm qua, bảo tàng đón 235 lượt khách tham quan. Hôm nay, bảo tàng đón lượng khách tham quan ít hơn ngày hôm qua 38 người. Hỏi hôm nay, bảo tàng có bao nhiêu lượt khách tham quan?\nPhương pháp\nSố lượt khách tham quan bảo tàng ngày hôm nay = Số lượt khách tham quan bảo tàng hôm qua – 38 người\nCách giải\nSố lượt khách tham quan bảo tàng ngày hôm nay là\n235 – 38 = 197 (lượt khách)\nĐáp số: 197 lượt khách",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 1"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 709 được viết thành tổng nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "70 + 9"
+        },
+        {
+          "id": "b",
+          "text": "900 + 7"
+        },
+        {
+          "id": "c",
+          "text": "700 + 9"
+        },
+        {
+          "id": "d",
+          "text": "700 + 90"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu (>, <, =) vào chỗ chấm thích hợp: 135 + 127 ….. 261",
+      "choices": [
+        {
+          "id": "a",
+          "text": ">"
+        },
+        {
+          "id": "b",
+          "text": "<"
+        },
+        {
+          "id": "c",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Giá trị của x thỏa mãn x – 301 = 452",
+      "choices": [
+        {
+          "id": "a",
+          "text": "151"
+        },
+        {
+          "id": "b",
+          "text": "753"
+        },
+        {
+          "id": "c",
+          "text": "794"
+        },
+        {
+          "id": "d",
+          "text": "853"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Hôm nay là thứ Năm, ngày 12 tháng 5. Vậy sinh nhật Tú vào ngày 20 tháng 5 là thứ mấy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ Tư"
+        },
+        {
+          "id": "b",
+          "text": "Thứ Năm"
+        },
+        {
+          "id": "c",
+          "text": "Thứ Sáu"
+        },
+        {
+          "id": "d",
+          "text": "Thứ Bảy"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong hộp có 2 viên bi đỏ, 3 viên bi xanh, 1 viên bi vàng. Minh nhắm mắt lấy ra 2 viên bi. Điền từ “Chắc chắn”, “có thể”, “không thể” vào chỗ chấm cho thích hợp:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "……….. lấy được một viên bi màu tím."
+        },
+        {
+          "id": "b",
+          "text": "………… lấy được 1 viên bi đỏ và 1 viên bi xanh"
+        },
+        {
+          "id": "c",
+          "text": "………….. lấy 2 viên bi xanh"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 195 + 144",
+      "acceptedAnswer": "339",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 507 – 135",
+      "acceptedAnswer": "372",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 800 – 64",
+      "acceptedAnswer": "736",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 485 – 69",
+      "acceptedAnswer": "416",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Một nông trại buổi sáng bán được 350 kg rau. Buổi chiều bán ít hơn buổi sáng là 126 kg rau. Hỏi buổi chiều nông trại bán được bao nhiêu ki-lô-gam rau?",
+      "acceptedAnswer": "224",
+      "explanation": "Một nông trại buổi sáng bán được 350 kg rau. Buổi chiều bán ít hơn buổi sáng là 126 kg rau. Hỏi buổi chiều nông trại bán được bao nhiêu ki-lô-gam rau?\nPhương pháp\nSố kg rau bán được buổi chiều = Số kg rau bán buổi sáng – 126 kg\nCách giải\nBuổi chiều nông trại bán được số ki-lô-gam rau là\n350 – 126 = 224 (kg)\nĐáp số: 224 kg",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Hiệu của số lớn nhất và số nhỏ nhất có ba chữ số khác nhau lập từ các chữ số 4, 7, 9, 2 là bao nhiêu?",
+      "acceptedAnswer": "727",
+      "explanation": "Hiệu của số lớn nhất và số nhỏ nhất có ba chữ số khác nhau lập từ các chữ số 4, 7, 9, 2 là bao nhiêu?\nPhương pháp\n- Tìm số lớn nhất và số nhỏ nhất có ba chữ số khác nhau lập từ các số 4, 7, 9, 2\n- Tìm hiệu hai số đó\nCách giải\n- Số lớn nhất có ba chữ số khác nhau lập từ các chữ số 4, 7, 9, 2 là 974.\n- Số bé nhất có ba chữ số khác nhau lập từ các chữ số 4, 7, 9, 2 là 247\nHiệu của hai số là\n974 – 247 = 727\nĐáp số: 727",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 2"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số lẻ bé nhất có ba chữ số khác nhau là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "100"
+        },
+        {
+          "id": "b",
+          "text": "101"
+        },
+        {
+          "id": "c",
+          "text": "102"
+        },
+        {
+          "id": "d",
+          "text": "103"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong một tuần, Tú đi học từ thứ Hai đến thứ Sáu, nghỉ thứ Bảy, Chủ Nhật. Vậy trong 7 tuần số ngày Tú đi học là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "24 ngày"
+        },
+        {
+          "id": "b",
+          "text": "35 ngày"
+        },
+        {
+          "id": "c",
+          "text": "20 ngày"
+        },
+        {
+          "id": "d",
+          "text": "42 ngày"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Giá trị của x thỏa mãn x + 120 = 455 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "335"
+        },
+        {
+          "id": "b",
+          "text": "575"
+        },
+        {
+          "id": "c",
+          "text": "325"
+        },
+        {
+          "id": "d",
+          "text": "605"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Giờ vào lớp học bơi buổi chiều là 3 giờ. Hôm qua, Minh đến lớp muộn 10 phút. Vậy Minh đến lớp học bơi lúc mấy giờ?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "13 giờ 50 phút"
+        },
+        {
+          "id": "b",
+          "text": "15 giờ 10 phút"
+        },
+        {
+          "id": "c",
+          "text": "14 giờ 50 phút"
+        },
+        {
+          "id": "d",
+          "text": "14 giờ 10 phút"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Một cửa hàng buổi sáng bán 154 kg gạo, buổi chiều bán 126 kg gạo. Hỏi cả hai buổi cửa hàng đó bán được bao nhiêu ki-lô-gam gạo?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "270 kg"
+        },
+        {
+          "id": "b",
+          "text": "285 kg"
+        },
+        {
+          "id": "c",
+          "text": "280 kg"
+        },
+        {
+          "id": "d",
+          "text": "28 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 459 + 35",
+      "acceptedAnswer": "494",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 1 000 – 209",
+      "acceptedAnswer": "791",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 576 + 106",
+      "acceptedAnswer": "682",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 719 – 291",
+      "acceptedAnswer": "428",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 612 – 340 + 219",
+      "acceptedAnswer": "491",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 578 + 407 – 673",
+      "acceptedAnswer": "312",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Một trại chăn nuôi có 380 con gà mái, số gà trống ít hơn số gà mái 125 con. Hỏi trại chăn nuôi có bao nhiêu con gà trống.",
+      "acceptedAnswer": "255",
+      "explanation": "Một trại chăn nuôi có 380 con gà mái, số gà trống ít hơn số gà mái 125 con. Hỏi trại chăn nuôi có bao nhiêu con gà trống.\nPhương pháp\nSố con gà trống = Số con gà mái – 125 con\nCách giải\nTrại chăn nuôi có số con gà trống là\n380 – 125 = 255 (con)\nĐáp số: 255 con gà trống",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 3"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 4 trăm, 6 chục, 1 đơn vị viết là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "146"
+        },
+        {
+          "id": "b",
+          "text": "461"
+        },
+        {
+          "id": "c",
+          "text": "416"
+        },
+        {
+          "id": "d",
+          "text": "164"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cho dãy số: 102; 112; 122; ….; ….; 152; 162. Hai số điền vào chỗ trống lần lượt là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "132; 133"
+        },
+        {
+          "id": "b",
+          "text": "132; 142"
+        },
+        {
+          "id": "c",
+          "text": "142; 152"
+        },
+        {
+          "id": "d",
+          "text": "122; 132"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 769 được viết thành:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "7 + 6 + 9"
+        },
+        {
+          "id": "b",
+          "text": "700 + 90 + 6"
+        },
+        {
+          "id": "c",
+          "text": "900 + 60 + 7"
+        },
+        {
+          "id": "d",
+          "text": "700 + 60 + 9"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số liền trước của số lớn nhất có ba chữ số khác nhau là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "986"
+        },
+        {
+          "id": "b",
+          "text": "987"
+        },
+        {
+          "id": "c",
+          "text": "989"
+        },
+        {
+          "id": "d",
+          "text": "998"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Con chó cân nặng hơn con vịt bao nhiêu ki-lô-gam?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "13 kg"
+        },
+        {
+          "id": "b",
+          "text": "10 kg"
+        },
+        {
+          "id": "c",
+          "text": "7 kg"
+        },
+        {
+          "id": "d",
+          "text": "3 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Độ dài đường gấp khúc ABCD có các đoạn thẳng AB = 123 cm, BC = 1m, CD = 34 dm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "158 cm"
+        },
+        {
+          "id": "b",
+          "text": "257 cm"
+        },
+        {
+          "id": "c",
+          "text": "563 cm"
+        },
+        {
+          "id": "d",
+          "text": "167 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 246 + 47",
+      "acceptedAnswer": "293",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 195 + 243",
+      "acceptedAnswer": "438",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 940 – 627",
+      "acceptedAnswer": "313",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 667 – 48",
+      "acceptedAnswer": "619",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 315 + 37 – 228",
+      "acceptedAnswer": "124",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 506 – 81 + 265",
+      "acceptedAnswer": "690",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Thùng thứ nhất chứa 467 lít dầu, thùng thứ hai chứa nhiều hơn thùng thứ nhất 35 lít dầu. Hỏi thùng thứ hai chứa bao nhiêu lít dầu?",
+      "acceptedAnswer": "502",
+      "explanation": "Thùng thứ nhất chứa 467 lít dầu, thùng thứ hai chứa nhiều hơn thùng thứ nhất 35 lít dầu. Hỏi thùng thứ hai chứa bao nhiêu lít dầu?\nPhương pháp\nSố lít dầu ở thùng thứ hai = số lít dầu ở thùng thứ nhất + 35 lít\nCách giải\nThùng thứ hai chứa số lít dầu là\n467 + 35 = 502 (lít)\nĐáp số: 502 lít dầu",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 4"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số chẵn bé nhất có ba chữ số khác nhau là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "100"
+        },
+        {
+          "id": "b",
+          "text": "101"
+        },
+        {
+          "id": "c",
+          "text": "102"
+        },
+        {
+          "id": "d",
+          "text": "124"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Minh cao 144 cm, Bình cao 162 cm. Hỏi Bình cao hơn Minh bao nhiêu xăng-ti-mét?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "28 cm"
+        },
+        {
+          "id": "b",
+          "text": "20 cm"
+        },
+        {
+          "id": "c",
+          "text": "22 cm"
+        },
+        {
+          "id": "d",
+          "text": "18 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số thích hợp để viết vào chỗ chấm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "30"
+        },
+        {
+          "id": "b",
+          "text": "50"
+        },
+        {
+          "id": "c",
+          "text": "20"
+        },
+        {
+          "id": "d",
+          "text": "10"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Xe đi từ A lúc 10 giờ sáng và đến B lúc 5 giờ chiều cùng ngày. Thời gian xe đi từ A đến B là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "5 giờ"
+        },
+        {
+          "id": "b",
+          "text": "6 giờ"
+        },
+        {
+          "id": "c",
+          "text": "7 giờ"
+        },
+        {
+          "id": "d",
+          "text": "8 giờ"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tính độ dài đường gấp khúc có các đoạn thẳng dài 12 cm, 14 cm, 17 cm, 23 cm.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "43 cm"
+        },
+        {
+          "id": "b",
+          "text": "66 dm"
+        },
+        {
+          "id": "c",
+          "text": "56 cm"
+        },
+        {
+          "id": "d",
+          "text": "66 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong giỏ có 3 quả táo và 2 quả lê. Ba bạn Bình, Minh, Hoa mỗi người lấy ra 1 quả từ giỏ. Khả năng nào xảy ra trong mỗi trường hợp sau:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Trong giỏ không thể còn lại 3 quả"
+        },
+        {
+          "id": "b",
+          "text": "Trong giỏ chắc chắn còn lại 2 quả"
+        },
+        {
+          "id": "c",
+          "text": "Trong giỏ có thể còn lại hai quả lê"
+        },
+        {
+          "id": "d",
+          "text": "Cả ba đáp án trên đều đúng."
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 556 – 130",
+      "acceptedAnswer": "426",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 85 + 608",
+      "acceptedAnswer": "693",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 295 – 69",
+      "acceptedAnswer": "226",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 272 + 319",
+      "acceptedAnswer": "591",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Một cửa hàng ngày thứ nhất bán được 200 kg gạo, ngày thứ hai bán được nhiều hơn ngày thứ nhất 21 kg gạo, ngày thứ ba bán được nhiều hơn ngày thứ hai 114 kg gạo. Hỏi trong ba ngày cửa hàng bán được tất cả bao nhiêu ki-lô-gam gạo?",
+      "acceptedAnswer": "756",
+      "explanation": "Một cửa hàng ngày thứ nhất bán được 200 kg gạo, ngày thứ hai bán được nhiều hơn ngày thứ nhất 21 kg gạo, ngày thứ ba bán được nhiều hơn ngày thứ hai 114 kg gạo. Hỏi trong ba ngày cửa hàng bán được tất cả bao nhiêu ki-lô-gam gạo?\nPhương pháp\n- Số kg gạo bán được trong ngày thứ hai = Số kg gạo bán được trong ngày thứ nhất + 21 kg\n- Số kg gạo bán được trong ngày thứ ba = Số kg gạo bán được trong ngày thứ hai + 114 kg\n- Tìm tổng số kg gạo bán được trong cả 3 ngày.\nCách giải\nSố kg gạo bán được trong ngày thứ hai là\n200 + 21 = 221 (kg)\nSố kg gạo bán được trong ngày thứ ba là\n221 + 114 = 335 (kg)\nTrong ba ngày cửa hàng bán được số ki-lô-gam gạo là\n200 + 221 + 335 = 756 (kg)\nĐáp số: 756 kg gạo",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 5"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong các phép tính sau, phép tính có kết quả nhỏ nhất là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "543 – 319"
+        },
+        {
+          "id": "b",
+          "text": "638 – 455"
+        },
+        {
+          "id": "c",
+          "text": "454 + 27"
+        },
+        {
+          "id": "d",
+          "text": "547 + 80"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Hồng muốn biết sinh nhật của mình 16 tháng 6 là vào thứ mấy. Bạn Lan cho biết sinh nhật của bạn ấy là 1 tháng 6 vào thứ Năm. Theo em thì sinh nhật bạn Hồng vào thứ mấy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ Tư"
+        },
+        {
+          "id": "b",
+          "text": "Thứ Năm"
+        },
+        {
+          "id": "c",
+          "text": "Thứ Sáu"
+        },
+        {
+          "id": "d",
+          "text": "Thứ Bảy"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số thích hợp điền vào chỗ chấm 4m 8dm = …… cm là",
+      "choices": [
+        {
+          "id": "a",
+          "text": "48"
+        },
+        {
+          "id": "b",
+          "text": "408"
+        },
+        {
+          "id": "c",
+          "text": "480"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Độ dài đường gấp khúc ABCD có đoạn thẳng AB = 10 cm, BC = 5 cm, CD = 2 dm là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "17 cm"
+        },
+        {
+          "id": "b",
+          "text": "15 cm"
+        },
+        {
+          "id": "c",
+          "text": "17 dm"
+        },
+        {
+          "id": "d",
+          "text": "35 cm"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Cuộn dây điện màu xanh dài 145 m, cuộn dây điện màu vàng dài hơn cuộn dây điện màu xanh 17 m. Hỏi cuộn dây điện màu vàng dài bao nhiêu mét?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "162 m"
+        },
+        {
+          "id": "b",
+          "text": "152 m"
+        },
+        {
+          "id": "c",
+          "text": "128 m"
+        },
+        {
+          "id": "d",
+          "text": "138 m"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 247 + 335",
+      "acceptedAnswer": "582",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 1 000 – 365",
+      "acceptedAnswer": "635",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 771 – 153",
+      "acceptedAnswer": "618",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 576 + 253",
+      "acceptedAnswer": "829",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Vì dịch bệnh nên gia đình bạn Hùng phải rời thành phố Hồ Chí Minh để trở về quê nhà Quảng Ngãi. Cả gia đình đã đi được 470 km và còn phải đi 280 km nữa mới về đến nhà. Hỏi quãng đường gia đình bạn Hùng đi từ thành phố Hồ Chí Minh về đến nhà dài bao nhiêu ki-lô-mét?",
+      "acceptedAnswer": "750",
+      "explanation": "Vì dịch bệnh nên gia đình bạn Hùng phải rời thành phố Hồ Chí Minh để trở về quê nhà Quảng Ngãi. Cả gia đình đã đi được 470 km và còn phải đi 280 km nữa mới về đến nhà. Hỏi quãng đường gia đình bạn Hùng đi từ thành phố Hồ Chí Minh về đến nhà dài bao nhiêu ki-lô-mét?\nPhương pháp\nQuãng đường gia đình Hùng đi từ thành phố Hồ Chí Minh về đến nhà = quãng đường đã đi được + quãng đường còn phải đi\nCách giải\nQuãng đường gia đình bạn Hùng đi từ thành phố Hồ Chí Minh về đến nhà dài số km là\n470 + 280 = 750 (km)\nĐáp số: 750 km",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 6"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 703 được viết thành tổng nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "70 + 0 + 3"
+        },
+        {
+          "id": "b",
+          "text": "300 + 70"
+        },
+        {
+          "id": "c",
+          "text": "700 + 3"
+        },
+        {
+          "id": "d",
+          "text": "700 + 30"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Một ô tô đi từ Hà Nội lúc 10 giờ sáng và đến Nghệ An lúc 3 giờ chiều. Hỏi ô tô đó đi từ Hà Nội đến Nghệ An hết bao nhiêu giờ?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "4 giờ"
+        },
+        {
+          "id": "b",
+          "text": "5 giờ"
+        },
+        {
+          "id": "c",
+          "text": "6 giờ"
+        },
+        {
+          "id": "d",
+          "text": "7 giờ"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Con bò cân nặng 215 kg, con trâu cân nặng hơn con bò 48 kg. Hỏi con trâu cân nặng bao nhiêu ki-lô-gam?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "254 kg"
+        },
+        {
+          "id": "b",
+          "text": "263kg"
+        },
+        {
+          "id": "c",
+          "text": "167 kg"
+        },
+        {
+          "id": "d",
+          "text": "177 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 556 – 138",
+      "acceptedAnswer": "418",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 89 + 504",
+      "acceptedAnswer": "593",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 582 – 315",
+      "acceptedAnswer": "267",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 172 + 336",
+      "acceptedAnswer": "508",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Chiều nay trạm y tế phường đã tiêm vắc xin cho 286 người, ít hơn sáng nay 160 người. Hỏi sáng nay trạm y tế phường đã tiêm vắc xin cho bao nhiêu người?",
+      "acceptedAnswer": "446",
+      "explanation": "Chiều nay trạm y tế phường đã tiêm vắc xin cho 286 người, ít hơn sáng nay 160 người. Hỏi sáng nay trạm y tế phường đã tiêm vắc xin cho bao nhiêu người?\nPhương pháp\nSố người đã tiêm vào buổi sáng = Số người đã tiêm vào buổi chiều + 160 người\nCách giải\nSáng nay trạm y tế phường đã tiêm vắc xin cho số người là\n286 + 160 = 446 (người)\nĐáp số: 446 người",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 7"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 4 chục, 2 trăm, 5 đơn vị là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "245"
+        },
+        {
+          "id": "b",
+          "text": "254"
+        },
+        {
+          "id": "c",
+          "text": "452"
+        },
+        {
+          "id": "d",
+          "text": "425"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số bé nhất có ba chữ số khác nhau là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "100"
+        },
+        {
+          "id": "b",
+          "text": "101"
+        },
+        {
+          "id": "c",
+          "text": "123"
+        },
+        {
+          "id": "d",
+          "text": "102"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Kết quả của phép tính 5 x 8 + 135 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "170"
+        },
+        {
+          "id": "b",
+          "text": "175"
+        },
+        {
+          "id": "c",
+          "text": "180"
+        },
+        {
+          "id": "d",
+          "text": "185"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Tổ Một xếp được 321 chiếc thuyền giấy, tổ Hai xếp được ít hơn tổ Một 50 chiếc thuyền giấy. Hỏi tổ Hai xếp được bao nhiêu chiếc thuyền giấy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "371 chiếc"
+        },
+        {
+          "id": "b",
+          "text": "281 chiếc"
+        },
+        {
+          "id": "c",
+          "text": "271 chiếc"
+        },
+        {
+          "id": "d",
+          "text": "160 chiếc"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 152 + 238",
+      "acceptedAnswer": "390",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 451 + 372",
+      "acceptedAnswer": "823",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 748 – 465",
+      "acceptedAnswer": "283",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 691 – 259",
+      "acceptedAnswer": "432",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Một trường tiểu học có 358 học sinh nam và 324 học sinh nữ. Hỏi trường đó có tất cả bao nhiêu học sinh?",
+      "acceptedAnswer": "682",
+      "explanation": "Một trường tiểu học có 358 học sinh nam và 324 học sinh nữ. Hỏi trường đó có tất cả bao nhiêu học sinh?\nPhương pháp\nSố học sinh của trường = số học sinh nam + số học sinh nữ\nCách giải\nTrường đó có tất cả số học sinh là\n358 + 324 = 682 (học sinh)\nĐáp số: 682 học sinh",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm một số biết rằng nếu lấy số đó cộng với 345 sẽ được kết quả là số lớn nhất có ba chữ số khác nhau?",
+      "acceptedAnswer": "642",
+      "explanation": "Tìm một số biết rằng nếu lấy số đó cộng với 345 sẽ được kết quả là số lớn nhất có ba chữ số khác nhau?\nPhương pháp\n- Tìm số lớn nhất có ba chữ số khác nhau\n- Số cần tìm = Số lớn nhất có ba chữ số khác nhau – 345\nCách giải\nSố lớn nhất có ba chữ số khác nhau là 987\nSố cần tìm là 987 – 345 = 642\nĐáp số: 642",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 8"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 457 đọc là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Bốn năm bảy"
+        },
+        {
+          "id": "b",
+          "text": "Bốn trăm năm mươi bảy"
+        },
+        {
+          "id": "c",
+          "text": "Bốn trăm lăm mươi ba"
+        },
+        {
+          "id": "d",
+          "text": "Bốn trăm năm bảy"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 780 được viết thành:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "7 + 8 + 0"
+        },
+        {
+          "id": "b",
+          "text": "800 + 70"
+        },
+        {
+          "id": "c",
+          "text": "700 + 8"
+        },
+        {
+          "id": "d",
+          "text": "700 + 80"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Có 42 kg khoai tây chia đều vào 6 túi. Hỏi mỗi túi có bao nhiêu ki-lô-gam khoai tây?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "36 kg"
+        },
+        {
+          "id": "b",
+          "text": "48 kg"
+        },
+        {
+          "id": "c",
+          "text": "7 kg"
+        },
+        {
+          "id": "d",
+          "text": "8 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Chị Mai đi làm ca chiều bắt đầu từ 2 giờ chiều đến 22 giờ. Hỏi chị Mai đã làm trong mấy giờ?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "6 giờ"
+        },
+        {
+          "id": "b",
+          "text": "10 giờ"
+        },
+        {
+          "id": "c",
+          "text": "12 giờ"
+        },
+        {
+          "id": "d",
+          "text": "8 giờ"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Mẹ An đóng 4 bao thóc có cân nặng lần lượt là: 51 kg, 45 kg, 52 kg và 60 kg. Bố An dùng xe máy chở các bao thóc đi bán. Vì xe chỉ chở nhiều nhất 150 kg nên bố đã để lại một bao thóc. Bao thóc để lại cân nặng là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "51 kg"
+        },
+        {
+          "id": "b",
+          "text": "45 kg"
+        },
+        {
+          "id": "c",
+          "text": "52 kg"
+        },
+        {
+          "id": "d",
+          "text": "60 kg"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 655 + 37",
+      "acceptedAnswer": "692",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 327 – 35",
+      "acceptedAnswer": "292",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 656 – 349",
+      "acceptedAnswer": "307",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 295 + 450",
+      "acceptedAnswer": "745",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 167 + 218 – 190",
+      "acceptedAnswer": "195",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 873 – 535 + 271",
+      "acceptedAnswer": "609",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 635 + 109 … 920 – 118",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "shuffleChoices": false,
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Hà Tĩnh cách Hà Nội 350 km. Hà Tĩnh ở cách xa Hà Nội hơn so với Thanh Hóa là 203 km. Hỏi Thanh Hóa cách Hà Nội bao nhiêu ki-lô-mét?",
+      "acceptedAnswer": "147",
+      "explanation": "Hà Tĩnh cách Hà Nội 350 km. Hà Tĩnh ở cách xa Hà Nội hơn so với Thanh Hóa là 203 km. Hỏi Thanh Hóa cách Hà Nội bao nhiêu ki-lô-mét?\nPhương pháp\nKhoảng cách từ Thanh Hóa đến Hà Nội = Khoảng cách từ Hà Tĩnh đến Hà Nội – 203 km\nCách giải\nThanh Hóa cách Hà Nội số ki-lô-mét là\n350 – 203 = 147 (km)\nĐáp số: 147 km",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 9"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số gồm 8 trăm và 5 đơn vị viết là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "85"
+        },
+        {
+          "id": "b",
+          "text": "508"
+        },
+        {
+          "id": "c",
+          "text": "805"
+        },
+        {
+          "id": "d",
+          "text": "850"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số 429 là số liền trước của số nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "428"
+        },
+        {
+          "id": "b",
+          "text": "430"
+        },
+        {
+          "id": "c",
+          "text": "438"
+        },
+        {
+          "id": "d",
+          "text": "420"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Số lớn nhất có ba chữ số ghép được từ các số 7; 3; 2; 9 là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "973"
+        },
+        {
+          "id": "b",
+          "text": "379"
+        },
+        {
+          "id": "c",
+          "text": "739"
+        },
+        {
+          "id": "d",
+          "text": "297"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong các số 473, 626, 701, 399, số nhỏ nhất là:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "473"
+        },
+        {
+          "id": "b",
+          "text": "626"
+        },
+        {
+          "id": "c",
+          "text": "701"
+        },
+        {
+          "id": "d",
+          "text": "399"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Trong túi có 3 quả táo và 5 quả lê. Bình không nhìn vào túi, lấy ra 4 quả. Vậy Bình chắc chắn lấy được ít nhất mấy quả lê?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "3 quả"
+        },
+        {
+          "id": "b",
+          "text": "2 quả"
+        },
+        {
+          "id": "c",
+          "text": "1 quả"
+        },
+        {
+          "id": "d",
+          "text": "4 quả"
+        }
+      ],
+      "correctAnswerIds": [
+        "c"
+      ],
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 415 + 355",
+      "acceptedAnswer": "770",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 843 – 471",
+      "acceptedAnswer": "372",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 466 – 148",
+      "acceptedAnswer": "318",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 236 + 380",
+      "acceptedAnswer": "616",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 284 + 309 – 425",
+      "acceptedAnswer": "168",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 465 – 85 + 396",
+      "acceptedAnswer": "776",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 815 – 207 … 732 – 84",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "shuffleChoices": false,
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 1,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Điền vào chỗ trống:\nQuãng đường từ nhà kiến đến nhà sâu là …….. m.",
+      "acceptedAnswer": "6",
+      "explanation": "Điền vào chỗ trống:\nQuãng đường từ nhà kiến đến nhà sâu là …….. m.\nPhương pháp\n- Quãng đường từ nhà kiến đến nhà sâu bằng tổng độ dài các đoạn thẳng trên đường gấp khúc.\n- Áp dụng cách đổi:\n10 dm = 1m ; 100 cm = 1 m\nCách giải\nĐổi 20 dm = 2 m ; 200 cm = 2 m\nQuãng đường từ nhà kiến đến nhà sâu dài là\n2 + 2 + 2 = 6 (m)\nĐáp số: 6 m",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    },
+    {
+      "type": "number",
+      "prompt": "Cửa hàng nhà An sau khi bán đi 152 kg gạo thì còn lại 483 kg gạo. Hỏi lúc đầu cửa hàng nhà An có bao nhiêu ki-lô-gam gạo?",
+      "acceptedAnswer": "635",
+      "explanation": "Cửa hàng nhà An sau khi bán đi 152 kg gạo thì còn lại 483 kg gạo. Hỏi lúc đầu cửa hàng nhà An có bao nhiêu ki-lô-gam gạo?\nPhương pháp\nSố kg gạo có lúc đầu = Số kg gạo đã bán + số kg gạo còn lại\nCách giải\nLúc đầu cửa hàng nhà An có số ki-lô-gam gạo là\n152 + 483 = 635 (kg)\nĐáp số: 635 kg gạo",
+      "subject": "math",
+      "grade": 2,
+      "difficulty": 2,
+      "category": {
+        "name": "Đề kiểm tra Toán 2",
+        "subject": "math"
+      },
+      "tags": [
+        "Toán 2",
+        "Đề kiểm tra học kì 2 - Đề số 10"
+      ],
+      "shuffleChoices": true
+    }
+  ]
+}

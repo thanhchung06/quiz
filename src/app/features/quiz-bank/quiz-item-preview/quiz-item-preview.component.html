@@ -1,0 +1,46 @@
+@if (item(); as q) {
+  <main class="preview-screen">
+    <p class="badge">Xem trước — không tính vào tiến trình của trẻ</p>
+
+    @if (q.passage; as p) {
+      <div class="passage-panel">
+        <p class="passage-heading">
+          <app-icon name="auto_stories" />
+          {{ p.title }}
+          <span class="passage-progress">Câu {{ p.order }}/{{ p.total }}</span>
+        </p>
+        <p class="passage-text">{{ p.text }}</p>
+      </div>
+    }
+
+    <p class="prompt">{{ q.prompt }}</p>
+
+    @if (q.choices) {
+      <div class="choices">
+        @for (id of displayedChoiceIds(); track id) {
+          <button
+            type="button"
+            class="choice"
+            [class.selected]="selected().includes(id)"
+            (click)="toggle(id)"
+          >
+            {{ choiceText(id) }}
+          </button>
+        }
+      </div>
+    }
+
+    @if (!submitted()) {
+      <button type="button" (click)="submit()">Nộp bài</button>
+    } @else {
+      <p [class.correct]="isCorrect()" [class.incorrect]="!isCorrect()">
+        {{ isCorrect() ? 'Chính xác!' : 'Chưa đúng' }}
+      </p>
+      @if (q.explanation) {
+        <p class="explanation">{{ q.explanation }}</p>
+      }
+    }
+
+    <button type="button" (click)="shuffleAgain()">Xáo trộn lại</button>
+  </main>
+}

@@ -1,0 +1,140 @@
+/* Global styles. Drifting decorative background blobs sit fixed behind every
+   screen (pure CSS, no images — keeps the offline-first bundle small) so
+   parent and child screens alike feel less flat than plain white cards. */
+html,
+body {
+  margin: 0;
+  background: #f4f6fb;
+}
+
+body {
+  position: relative;
+  min-height: 100dvh;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+body::before {
+  top: -10%;
+  left: -8%;
+  width: 26rem;
+  height: 26rem;
+  background: radial-gradient(circle, #8fb6ff 0%, transparent 70%);
+  animation: drift-one 26s ease-in-out infinite;
+}
+
+body::after {
+  bottom: -12%;
+  right: -10%;
+  width: 30rem;
+  height: 30rem;
+  background: radial-gradient(circle, #ffd88f 0%, transparent 70%);
+  animation: drift-two 32s ease-in-out infinite;
+}
+
+@keyframes drift-one {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(4%, 6%) scale(1.1);
+  }
+}
+
+@keyframes drift-two {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5%, -4%) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    animation: none;
+  }
+}
+
+/* Shared across parent-facing screens so each one doesn't redefine it. */
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+
+  app-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: #2f6fed;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.correct {
+  color: #1e7a34;
+}
+
+.incorrect {
+  color: #b3261e;
+}
+
+/* Shared reading-passage / problem-statement panel (question screen + preview screen). */
+.passage-panel {
+  text-align: left;
+  background: #fdf8ee;
+  border: 1px solid #ecdfb8;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .passage-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    color: #8a6d1f;
+
+    app-icon {
+      color: #c99b1f;
+    }
+  }
+
+  .passage-progress {
+    margin-left: auto;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: #a08a4c;
+  }
+
+  .passage-text {
+    white-space: pre-wrap;
+    line-height: 1.5;
+    color: #3a2f10;
+    max-height: 12rem;
+    overflow-y: auto;
+  }
+}
+

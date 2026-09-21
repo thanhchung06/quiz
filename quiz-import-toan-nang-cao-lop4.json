@@ -1,0 +1,1519 @@
+{
+  "formatVersion": "1.0",
+  "packageTitle": "Toán nâng cao lớp 4 — bài tập có đáp số (loigiaihay.com)",
+  "language": "vi",
+  "quizzes": [
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm số tự nhiên có 2 chữ số biết rằng nếu ta viết thêm chữ số 9 vào bên trái số đó ta được số mới gấp 13 lần số cần tìm.",
+      "acceptedAnswer": "75",
+      "explanation": "Gọi số cần tìm là a̅b̅\nNếu ta viết thêm chữ số 9 vào bên trái số đó ta được số mới là 9̅a̅b̅\nTa có 9̅a̅b̅ = a̅b̅ × 13\n900 + a̅b̅ = a̅b̅ × 13\na̅b̅ × 12 = 900 (bớt cả hai vế đi a̅b̅ )\na̅b̅ = 900:12\na̅b̅ = 75\nĐáp số: 75",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Viết thêm một số chữ số vào bên phải, bên trái hoặc "
+      ],
+      "externalId": "m4-00-vd0"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Khi viết thêm chữ số 2 vào bên phải một số tự nhiên có ba chữ số thì số đó tăng thêm 4106 đơn vị. Tìm số có ba chữ số đó.",
+      "acceptedAnswer": "456",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅\nKhi viết thêm chữ số 2 vào bên phải ta được số a̅b̅c̅2̅\nTheo đề bài ta có:\na̅b̅c̅2̅ = a̅b̅c̅ + 4106\na̅b̅c̅ × 10 + 2 = a̅b̅c̅ + 4106\na̅b̅c̅ × 10 - a̅b̅c̅ = 4106 - 2\na̅b̅c̅ × 9 = 4104\na̅b̅c̅ = 4104:9 = 456\nThử lại: 4562 – 456 = 4106\nVậy số cần tìm là 456.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Viết thêm một số chữ số vào bên phải, bên trái hoặc "
+      ],
+      "externalId": "m4-00-vd1"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm số có 2 chữ số biết rằng khi ta viết thêm chữ số 2 vào bên phải và bên trái số đó ta được số mới gấp 36 lần số cần tìm.",
+      "acceptedAnswer": "77",
+      "explanation": "Gọi số cần tìm là a̅b̅\nKhi ta viết thêm chữ số 2 vào bên phải và bên trái số đó được số mới là 2̅a̅b̅2̅\nTa có 2̅a̅b̅2̅ = a̅b̅ × 36\n2002 + a̅b̅ × 10 = a̅b̅ × 36\na̅b̅ × 26 = 2002\na̅b̅ = 77\nVậy số cần tìm là 77.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Viết thêm một số chữ số vào bên phải, bên trái hoặc "
+      ],
+      "externalId": "m4-00-vd2"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm một số có hai chữ số biết nếu viết số 0 vào giữa hai chữ số của số đó ta được số mới gấp 7 lần số phải tìm?",
+      "acceptedAnswer": "15",
+      "explanation": "Gọi số cần tìm là a̅b̅\nNếu viết số 0 vào giữa hai chữ số của số đó ta được số mới là a̅0̅b̅\nTa có a̅0̅b̅ = a̅b̅ × 7\na x 100 + b = (a x 10 + b) x 7 (phân tích cấu tạo số)\na x 100 + b = a x 70 + b x 7 (Bỏ ngoặc ở vế phải)\na x 30 = b x 6 (trừ cả hai vế cho a x 70 + b)\na x 5 = b (Chia cả 2 vế cho 6)\nVậy a = 1 và b = 5\nĐáp số: 15",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Viết thêm một số chữ số vào bên phải, bên trái hoặc "
+      ],
+      "externalId": "m4-00-vd3"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Khi xóa đi chữ số hàng trăm của một số tự nhiên có ba chữ số thì số đó giảm đi 7 lần. Tìm số có ba chữ số đó.",
+      "acceptedAnswer": "350",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅ . Xóa đi chữ số hàng trăm ta được số b̅c̅ .\nTheo đề bài ta có:\na̅b̅c̅ = 7 × b̅c̅\na̅0̅0̅ + b̅c̅ = 7 × b̅c̅\na̅0̅0̅ = 7 × b̅c̅ - b̅c̅\na̅0̅0̅ = (7 - 1) × b̅c̅\na̅0̅0̅ = 6 × b̅c̅\nVì 6 chia hết cho 3 nên a̅0̅0̅ chia hết cho 3. Do đó a chia hết cho 3.\nMặt khác, vì b̅c̅ < 100 nên 6 × b̅c̅ < 600 . Từ đó suy ra a < 6\nVậy a = 3 (a khác 0). Thay vào ta tính được b̅c̅ = 50\nVậy số cần tìm là 350.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Xóa đi một số chữ số của một số tự nhiên"
+      ],
+      "externalId": "m4-01-vd4"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm số tự nhiên có hai chữ số, biết rằng: Số đó gấp 5 lần tổng các chữ số của nó?",
+      "acceptedAnswer": "45",
+      "explanation": "Gọi số cần tìm là a̅b̅ . Theo đề bài ta có:\na̅b̅ = 5 × (a + b)\n10 x a + b = 5 x a + 5 x b\n10 x a – 5 x a = 5 x b – b\n(10 – 5) x a = (5 – 1) x b\n5 x a = 4 x b\nTừ đây ta suy ra b chia hết cho 5. Vậy b = 0 hoặc 5\n- Nếu b = 0 thì a = 0 (loại)\n- Nếu b = 5 thì 5 x a = 20, vậy a = 4\nVậy số cần tìm là 45.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Các bài toán về số tự nhiên và tổng, hiệu, tích các "
+      ],
+      "externalId": "m4-02-vd5"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm một số tự nhiên có ba chữ số, biết rằng số đó gấp 5 lần tích các chữ số của nó.",
+      "acceptedAnswer": "175",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅ .\nTheo đề bài ta có:\na̅b̅c̅ = 5 × a × b × c\nVì 5 × a × b × c chia hết cho 5 nên a̅b̅c̅ chia hết cho 5.\nVậy c = 0 hoặc 5. Nhưng c không thể bằng 0, vậy c = 5\nSố cần tìm có dạng a̅b̅5̅ . Thay vào ta có:\na̅b̅5̅ = 5 × a × b × 5\na̅b̅5̅ = 25 × a × b\nVì 25 × a × b chia hết cho 25 nên a̅b̅5̅ chia hết cho 25. Suy ra b = 2 hoặc 7.\nVì 25 x a x b là số lẻ nên b = 7.\nThay vào ta có a̅7̅5̅ = 25 × a × 7\nTìm được a = 1\nVậy số cần tìm là 175.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Các bài toán về số tự nhiên và tổng, hiệu, tích các "
+      ],
+      "externalId": "m4-02-vd6"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Một quyển sách có 256 trang. Hỏi để đánh số trang của quyển sách đó người ta phải dùng bao nhiêu chữ số?",
+      "acceptedAnswer": "660",
+      "explanation": "Từ trang 1 đến trang 9 có 9 trang: có 9 x 1 = 9 chữ số\nTừ trang 10 đến trang 99 có 90 trang: có 90 x 2 = 180 chữ số\nTừ trang 100 đến trang 256 có 157 trang: có 157 x 3 = 471 chữ số\nVậy để đánh số trang của quyển sách đó người ta phải dùng:\n9 + 180 + 471 = 660 (chữ số)\nĐáp số: 660 chữ số",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 5: Bài toán đánh số trang sách, dãy chữ"
+      ],
+      "externalId": "m4-08-vd7"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Để đánh số trang của một cuốn sách người ta phải dùng tất cả 645 chữ số. Hỏi quyển sách đó có bao nhiêu trang?",
+      "acceptedAnswer": "251",
+      "explanation": "Để đánh số trang của 1 cuốn sách, người ta phải viết liên tiếp các số tự nhiên từ 1, 2, 3, 4, …..\nTừ trang 1 đến trang 9 có 9 trang: cần 9 x 1 = 9 chữ số\nTừ trang 10 đến trang 99 có 90 trang: cần 90 x 2 = 180 chữ số\nSố chữ số còn lại là\n645 – (9 + 180) = 456 (chữ số)\nSố trang được đánh bằng số có 3 chữ số là\n456 : 3 = 152 (trang)\nQuyển sách có số trang là\n9 + 90 + 152 = 251 (trang)\nĐáp số: 251 trang",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 5: Bài toán đánh số trang sách, dãy chữ"
+      ],
+      "externalId": "m4-08-vd8"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phép tính và biểu thức",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Khi cộng một số tự nhiên với 305, do sơ suất, một học sinh đã bỏ quên chữ số 0 của số hạng thứ hai nên nhận được kết quả bằng 380. Tìm kết quả đúng của phép tính đó?",
+      "acceptedAnswer": "650",
+      "explanation": "Khi bỏ quên chữ số 0 của số hạng thứ hai thì thực chất học sinh đó đã cộng số hạng thứ nhất với 35.\nSố hạng thứ nhất là:\n380 – 35 = 345\nKết quả đúng của phép tính đó là:\n345 + 305 = 650\nĐáp số: 650",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Các phép tính với số tự nhiên"
+      ],
+      "externalId": "m4-10-vd9"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Đội 1 sửa được 45 m đường, đội 2 sửa được 49 m đường. Đội 3 sửa được số mét đường bằng trung bình cộng số mét đường của đội 1 và đội 2 đã sửa. Hỏi cả ba đội sửa được bao nhiêu mét đường?",
+      "acceptedAnswer": "141",
+      "explanation": "Số mét đường đội 3 đã sửa là: (45 + 49) : 2 = 47 (m)\nCả 3 đội sửa được số mét đường là: 45 + 49 + 47 = 141 (m)\nĐáp số: 141 m",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Tìm số trung bình cộng"
+      ],
+      "externalId": "m4-13-vd10"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm trung bình cộng của các số thuộc dãy số: 1, 2, 3, 4, 5 ….., 99",
+      "acceptedAnswer": "50",
+      "explanation": "Cách 1:\nTổng các số từ 1 đến 99 là:\n(99 + 1) x 99 : 2 = 4 950\nTừ 1 đến 99 có 99 số. Trung bình cộng các số này là:\n4 950 : 99 = 50\nĐáp số: 50\nCách 2:\nTrung bình cộng của các số thuộc dãy trên là (99 + 1) : 2 = 50\nĐáp số: 50",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Trung bình cộng của dãy số cách đều"
+      ],
+      "externalId": "m4-14-vd11"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm trung bình cộng của tất cả các số thuộc dãy số:\n1, 3, 5, 7, 9, …., 199",
+      "acceptedAnswer": "100",
+      "explanation": "Cách 1:\nDãy trên có số số hạng là:\n(199 – 1) : 2 + 1 = 100 (số hạng)\nTổng các số hạng thuộc dãy trên là:\n(199 + 1) x 100 : 2 = 10 000\nTrung bình cộng các số thuộc dãy trên là:\n10 000 : 100 = 100\nĐáp số: 100\nCách 2:\nTrung bình cộng của các số thuộc dãy trên là: (199 + 1) : 2 = 100\nĐáp số: 100",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Trung bình cộng của dãy số cách đều"
+      ],
+      "externalId": "m4-14-vd12"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Tìm trung bình cộng của dãy số 3, 7, 11, 15, 19, ….., 2015",
+      "acceptedAnswer": "1009",
+      "explanation": "Trung bình cộng các số thuộc dãy trên là:\n(2015 + 3) : 2 = 1009\nĐáp số: 1009",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Trung bình cộng của dãy số cách đều"
+      ],
+      "externalId": "m4-14-vd13"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "An có 24 cái kẹo, Bình có 28 cái kẹo. Cường có số cái kẹo bằng trung bình cộng của 3 bạn. hỏi Cường có bao nhiêu cái kẹo?",
+      "acceptedAnswer": "26",
+      "explanation": "Ta có sơ đồ:\nTa thấy: Số kẹo của An và Bình ứng với 2 phần\nSố kẹo của Cường là (24 + 28) : 2 = 26 (cái kẹo)\nĐáp số: 26 cái kẹo",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán ít hơn, nhiều hơn hoặc bằng trung bình cộng"
+      ],
+      "externalId": "m4-15-vd14"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Lan có 30 viên kẹo, Bình có 12 viên kẹo. Hoa có số viên kẹo lớn hơn trung bình cộng của cả ba bạn là 4 viên. Hỏi Hoa có bao nhiêu viên kẹo?",
+      "acceptedAnswer": "27",
+      "explanation": "Ta có sơ đồ:\nSố kẹo của Lan và Bình là 30 + 12 = 42 (cái kẹo)\nTrung bình cộng số kẹo của ba bạn là (42 + 4) : 2 = 23 (cái kẹo)\nSố kẹo của Hoa là 23 + 4 = 27 (cái kẹo)\nĐáp số: 27 cái kẹo",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán ít hơn, nhiều hơn hoặc bằng trung bình cộng"
+      ],
+      "externalId": "m4-15-vd15"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Khánh có 20 viên bi, Bảo có 31 viên bi. Nam có số bi ít hơn trung bình cộng của cả ba bạn là 5 viên bi. Hỏi Nam có bao nhiêu viên bi?",
+      "acceptedAnswer": "18",
+      "explanation": "Ta có sơ đồ:\nSố bi của Khánh và Bảo là: 20 + 31 = 51 (viên)\nTrung bình cộng số bi của ba bạn là (51 – 5) : 2 = 23 (viên)\nBạn Nam có số viên bi là:\n23 – 5 = 18 (viên)\nĐáp số: 18 viên bi",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán ít hơn, nhiều hơn hoặc bằng trung bình cộng"
+      ],
+      "externalId": "m4-15-vd16"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Tìm hai số khi biết tổng/hiệu và tỉ số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Một trại nuôi gà có số gà mái hơn số gà trống là 345 con. Sau khi mua thêm 25 con gà trống thì số gà trống bằng 3/7 số gà mái. Tìm tổng số gà ban đầu.",
+      "acceptedAnswer": "775",
+      "explanation": "Sau khi mua thêm 25 con gà trống thì gà mái nhiều hơn gà trống số con là:\n345 – 25 = 320 (con)\nHiệu số phần bằng nhau là:\n7 – 3 = 4 (phần)\nSố con gà trống sau khi mua thêm là:\n320 : 4 x 3 = 240 (con)\nSố con gà trống ban đầu là:\n240 – 25 = 215 (con)\nSố gà mái ban đầu là:\n215 + 345 = 560 (con)\nTổng số gà ban đầu là:\n215 + 560 = 775 (con)\nĐáp số: 775 con",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Tìm hai số khi biết hiệu và tỉ số của hai số đó"
+      ],
+      "externalId": "m4-25-vd17"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Tìm hai số khi biết tổng/hiệu và tỉ số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 3,
+      "prompt": "Một lớp học có số học sinh nữ bằng 2/3 số học sinh nam. Sang học kì 2, có thêm 5 em học sinh nữ chuyển vào, lúc này số học sinh nam bằng 6/5 số học sinh nữ. hỏi ban đầu lớp đó có bao nhiêu học sinh nữ.",
+      "acceptedAnswer": "20",
+      "explanation": "Vì số học sinh nam không thay đổi nên ta chọn số học sinh nam làm đơn vị.\nBan đầu, số học sinh nữ so với số học sinh nam là: 2/3 (học sinh nam)\nSau khi có thêm 5 học sinh nữ thì số học sinh nữ so với số học sinh nam là: 5/6 (học sinh nam)\nPhân số chỉ 5 học sinh là:\n5/6 - 2/3 = 1/6 (học sinh nam)\nSố học sinh nam ban là:\n5:1/6 = 30 (học sinh)\nSố học sinh nữ ban đầu là:\n30 × 2/3 = 20 (học sinh)\nĐáp số: 20 học sinh",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán hai tỉ số"
+      ],
+      "externalId": "m4-26-vd18"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số có ba chữ số biết rằng nếu thêm chữ số 9 vào bên trái số đó ta được số mới bằng 41 lần số phải tìm.",
+      "acceptedAnswer": "225",
+      "explanation": "Gọi số phải tìm là a̅b̅c̅ (a khác 0)\nTheo đề bài ta có 9̅a̅b̅c̅ = 41 × a̅b̅c̅\n9000 + a̅b̅c̅ = 41 × a̅b̅c̅\n40 × a̅b̅c̅ = 9000 (bớt cả hai vế đi a̅b̅c̅ )\na̅b̅c̅ = 9000:40 = 225\nVậy số phải tìm là 225.\nĐáp số: 225",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Viết thêm một số chữ số vào bên phải, bên trái hoặc "
+      ],
+      "externalId": "m4-148892"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm một số tự nhiên, biết rằng nếu viết thêm một chữ số 6 vào bên phải số đó thì số đó tăng thêm 3228 đơn vị.",
+      "acceptedAnswer": "358",
+      "explanation": "Khi viết thêm một chữ số 6 vào bên phải số cần tìm ta đã gấp số cần tìm lên 10 lần và cộng thêm 6 đơn vị.\n9 lần số cần tìm bằng:\n3228 – 6 = 3222\nSố cần tìm là:\n3222 : 9 = 358\nĐáp số: 358",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Viết thêm một số chữ số vào bên phải, bên trái hoặc "
+      ],
+      "externalId": "m4-148893"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm một số có hai chữ số biết rằng, nếu viết thêm vào bên trái số đó một chữ số 3 thì ta được số mới mà tổng số đã cho và số mới bằng 414.",
+      "acceptedAnswer": "57",
+      "explanation": "Gọi số cần tìm là a̅b̅ (a khác 0)\nKhi viết thêm một chữ số 3 vào bên trái ta được số 3̅a̅b̅\nTa có: 3̅a̅b̅ = 300 + a̅b̅ hay số mới hơn số ban đầu 300 đơn vị.\nSố ban đầu là: (414 – 300) : 2 = 57\nĐáp số: 57",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Viết thêm một số chữ số vào bên phải, bên trái hoặc "
+      ],
+      "externalId": "m4-148894"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số có ba chữ số, biết rằng nếu bỏ chữ số hàng trăm thì số đó sẽ giảm đi 3 lần.",
+      "acceptedAnswer": "150",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅ (a khác 0). Xóa đi chữ số hàng trăm ta được số b̅c̅ .\nTheo đề bài ta có:\na̅b̅c̅ = 3 × b̅c̅\na̅0̅0̅ + b̅c̅ = 3 × b̅c̅\na̅0̅0̅ = 3 × b̅c̅ - b̅c̅\na̅0̅0̅ = 2 × b̅c̅\nVì b̅c̅ < 100 nên 2 × b̅c̅ < 200 . Suy ra a̅0̅0̅ < 200\nVậy a̅0̅0̅ = 100. Ta có:\n100 = 2 × b̅c̅\nb̅c̅ = 50\nVậy số cần tìm là 150.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Xóa đi một số chữ số của một số tự nhiên"
+      ],
+      "externalId": "m4-148896"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm một số tự nhiên, biết rằng nếu xóa đi 2 chữ số cuối thì số đó giảm đi 4491 đơn vị.",
+      "acceptedAnswer": "4536",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅d̅ . Xóa đi chữ số hàng chục và hàng đơn vị được số a̅b̅ .\nTheo đề bài ta có: a̅b̅c̅d̅ - a̅b̅ = 4491\na̅b̅ × 100 + c̅d̅ - a̅b̅ = 4491\nc̅d̅ + a̅b̅ × ( 100 - 1 ) = 4491\nc̅d̅ + a̅b̅ × 99 = 4491\nTa có 4491 : 99 = 45 (dư 36)\nHay 4491 = 45 x 99 + 36\nVậy ab là 45, cd là 36\nVậy số cần tìm là 4536\nĐáp số: 4536",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Xóa đi một số chữ số của một số tự nhiên"
+      ],
+      "externalId": "m4-148897"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số tự nhiên có hai chữ số biết rằng số đó gấp 6 lần tổng các chữ số của nó.",
+      "acceptedAnswer": "54",
+      "explanation": "Gọi số cần tìm là a̅b̅ (a khác 0)\nTa có: a̅b̅ = 6 × (a + b)\n10 × a + b = 6 × a + 6 × b\nHay 4 × a = 5 × b\nVậy số cần tìm là 54",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Các bài toán về số tự nhiên và tổng, hiệu, tích các "
+      ],
+      "externalId": "m4-148899"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số tự nhiên có 2 chữ số biết rằng nếu ta viết thêm số 21 vào bên trái số đó ta được số mới gấp 31 lần số cần tìm.",
+      "acceptedAnswer": "70",
+      "explanation": "Gọi số cần tìm là a̅b̅\nNếu ta viết thêm số 21 vào bên trái số đó ta được số mới là 2̅1̅a̅b̅\nTa có 2̅1̅a̅b̅ = a̅b̅ × 31\n2100 + a̅b̅ = a̅b̅ × 31\na̅b̅ × 30 = 2100 (bớt cả hai vế đi a̅b̅ )\na̅b̅ = 2100:30\na̅b̅ = 70\nĐáp số: 70",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137531"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số tự nhiên có 3 chữ số biết rằng nếu ta viết thêm chữ số 9 vào bên trái số đó ta được số mới gấp 26 lần số cần tìm?",
+      "acceptedAnswer": "360",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅\nNếu ta viết thêm chữ số 9 vào bên trái số đó ta được số mới là 9̅a̅b̅c̅\nTa có 9̅a̅b̅c̅ = a̅b̅c̅ × 26\n9000 + a̅b̅c̅ = a̅b̅c̅ × 26\na̅b̅c̅ × 25 = 9000 (bớt cả hai vế đi a̅b̅c̅ )\na̅b̅c̅ = 9000:25\na̅b̅c̅ = 360\nĐáp số: 360",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137532"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Trong một kỳ thi học sinh giỏi lớp 5, để đánh số báo danh cho các thí sinh dự thi người ta phải dùng 516 lượt chữ số. Hỏi kỳ thi đó có bao nhiêu thí sinh tham dự?",
+      "acceptedAnswer": "208",
+      "explanation": "Từ 1 đến 9 có 9 số ứng với 9 x 1 = 9 chữ số\nTừ 10 đến 99 có 90 số ứng với: 90 x 2 = 180 chữ số\nSố chữ số còn lại là\n516 – (9 + 180) = 327 (chữ số)\nSố thí sinh có số báo danh là số có 3 chữ số là\n327 : 3 = 109 (thí sinh)\nKì thi có số thí sinh tham dự là\n9 + 90 + 109 = 208 (thí sinh)\nĐáp số: 208 thí sinh",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137537"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số có 3 chữ số biết rằng khi viết thêm vào bên trái số đó số 32 thì số đó tăng lên 81 lần?",
+      "acceptedAnswer": "400",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅\nNếu ta viết thêm số 32 vào bên trái số đó ta được số mới là 3̅2̅a̅b̅c̅\nTa có 3̅2̅a̅b̅c̅ = a̅b̅c̅ × 81\n32000 + a̅b̅c̅ = a̅b̅c̅ × 81\na̅b̅c̅ × 80 = 32000 (bớt cả hai vế đi a̅b̅c̅ )\na̅b̅c̅ = 32000:80\na̅b̅c̅ = 400\nĐáp số: 400",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137539"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm một số tự nhiên có hai chữ số, biết rằng khi viết thêm chữ số 5 vào bên phải số đó thì nó tăng thêm 230 đơn vị.",
+      "acceptedAnswer": "25",
+      "explanation": "Gọi số cần tìm là a̅b̅\nKhi viết thêm chữ số 5 vào bên phải ta được số a̅b̅5̅\nTheo đề bài ta có:\na̅b̅5̅ = a̅b̅ + 230\na̅b̅ × 10 + 5 = a̅b̅ + 230\na̅b̅ × 10 - a̅b̅ = 230 - 5\na̅b̅ × 9 = 225\na̅b̅ = 225:9 = 25\nThử lại: 255 – 25 = 230\nVậy số cần tìm là 25.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137542"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Khi viết thêm số 12 vào bên phải một số tự nhiên có ba chữ số thì số đó tăng thêm 53769 đơn vị. Tìm số có ba chữ số đó.",
+      "acceptedAnswer": "543",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅\nKhi viết thêm số 12 vào bên phải ta được số a̅b̅c̅1̅2̅\nTheo đề bài ta có:\na̅b̅c̅1̅2̅ = a̅b̅c̅ + 53769\na̅b̅c̅ × 100 + 12 = a̅b̅c̅ + 53769\na̅b̅c̅ × 100 - a̅b̅c̅ = 53769 - 12\na̅b̅c̅ × 99 = 53757\na̅b̅c̅ = 53757:99 = 543\nThử lại: 54312 – 543 = 53769\nVậy số cần tìm là 543.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137543"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số có 3 chữ số biết rằng nếu ta viết thêm chữ số 0 xen giữa chữ số hàng trăm và chữ số hàng chục ta được số mới gấp 7 lần số cần tìm.",
+      "acceptedAnswer": "150",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅\nNếu viết số 0 vào giữa hai chữ số của số đó ta được số mới là a̅0̅b̅c̅\nTa có a̅0̅b̅c̅ = a̅b̅c̅ × 7\na x 1000 + bc = (a x 100 + bc) x 7 (phân tích cấu tạo số)\na x 1000 + bc = a x 700 + bc x 7 (Bỏ ngoặc ở vế phải)\na x 300 = bc x 6 (trừ cả hai vế cho a x 700 + bc)\na x 50 = bc (Chia cả 2 vế cho 6)\nVậy a = 1 và bc = 50\nĐáp số: 150",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137544"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số có hai chữ số biết rằng khi ta viết thêm số 12 xen giữa hai chữ số của nó ta sẽ được số mới gấp 85 lần số cần tìm.",
+      "acceptedAnswer": "25",
+      "explanation": "Gọi số cần tìm là a̅b̅\nNếu viết số 12 vào giữa hai chữ số của số đó ta được số mới là a̅1̅2̅b̅\nTa có a̅1̅2̅b̅ = a̅b̅ × 85\na x 1000 + 120 + b = (a x 10 + b) x 85 (phân tích cấu tạo số)\na x 1000 + 120 + b = a x 850 + b x 85 (Bỏ ngoặc ở vế phải)\na x 150 + 120 = b x 84 (trừ cả hai vế cho a x 150 + b)\na x 25 + 20 = b x 14 (Chia cả 2 vế cho 6)\nTa có a x 25 + 20 chia hết cho 5 nên b x 14 chia hết cho 5.\n⇒ b chia hết cho 5. Mà b không thể bằng 0 vì khi đó a < 0.\nDo đó b = 5 ⇒ a = 2\nThử lại: 2125 = 25 x 85\nVậy số cần tìm là 25.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137545"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số tự nhiên có hai chữ số, biết rằng nếu lấy số đó chia cho tổng các chữ số của nó ta được thương bằng 5 và dư 12.",
+      "acceptedAnswer": "87",
+      "explanation": "Gọi số cần tìm là a̅b̅ . Ta có:\na̅b̅ = 5 × (a + b) + 12\na + b > 12 (vì số chia luôn lớn hơn số dư)\n10 × a + b = 5 × a + 5 × b + 12\n5 × a = 4 × b + 12 (1)\nVế phải chia hết cho 4 nên 5 × a chia hết cho 4.\nVậy a = 4 hoặc a = 8.\n- Thay a = 4 vào (1) tìm được b = 2 (loại vì a + b = 6 - Thay a = 8 vào (1) tìm được b = 7 (thỏa mãn)\nVậy số cần tìm là 87.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137552"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số có hai chữ số, biết rằng nếu lấy số đó chia cho hiệu của chữ số hàng chục và hàng đơn vị của nó ta được thương là 26 và dư 1.",
+      "acceptedAnswer": "53",
+      "explanation": "Gọi số cần tìm là a̅b̅ (a khác 0) và hiệu các chữ số của nó bằng c\nTheo bài ra ta có a̅b̅ = c × 26 + 1\nVì a̅b̅ là số có hai chữ số nên c = 1 hoặc c = 2 hoặc c = 3\n- Nếu c = 1 thì a̅b̅ = 27 . Thử lại 7 – 2 = 5 khác 1 (loại)\n- Nếu c = 2 thì a̅b̅ = 53.\nThử lại: 5 – 3 = 2; 53 : 2 = 26 dư 1 (chọn)\n- Nếu c = 3 thì a̅b̅ = 79 . Thử lại 9 -7 = 2 khác 3 (loại)\nVậy số cần tìm là 53.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137553"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số tự nhiên có ba chữ số, biết rằng khi chia số đó cho tổng các chữ số của nó ta được thương bằng 11.",
+      "acceptedAnswer": "198",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅ . Ta có:\na̅b̅c̅ = ( a + b + c ) × 11\n100 × a + 10 × b + c = 11 × a + 11 × b + 11 × c\n89 × a = b + 10 × c\n89 × a = c̅b̅\nVới a = 1 thì b = 9; c = 8\nVậy số cần tìm là 198",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137554"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số có bốn chữ số mà chữ số tận cùng là 5. Nếu chuyển chữ số 5 này lên đầu thì ta được một số kém số đó 531 đơn vị.",
+      "acceptedAnswer": "6145",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅5̅\nTheo đề bài ta có: a̅b̅c̅5̅ - 531 = 5̅a̅b̅c̅\na̅b̅c̅ × 10 + 5 - 531 = 5000 + a̅b̅c̅\na̅b̅c̅ × 9 + 5 - 531 = 5000\na̅b̅c̅ × 9 = 5000 + 531 - 5\na̅b̅c̅ × 9 = 5526\na̅b̅c̅ = 5526:9 = 614\nVậy số cần tìm là 6145",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137555"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm số tự nhiên có ba chữ số, biết rằng nếu chuyển chữ số 7 tận cùng của số đó lên đầu thì được một số mới gấp 2 lần số cũ và thêm 21 đơn vị.",
+      "acceptedAnswer": "357",
+      "explanation": "Gọi số cần tìm là a̅b̅7̅\nTheo đề bài ta có 7̅a̅b̅ = a̅b̅7̅ × 2 + 21\n700 + a̅b̅ = (a̅b̅ × 10 + 7) × 2 + 21\n700 + a̅b̅ = a̅b̅ × 20 + 14 + 21\n665 = a̅b̅ × 19 (Bớt cả hai vế đi 14 + 21 và a̅b̅ )\na̅b̅ = 665:19 = 35\nVậy số cần tìm là 357.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137556"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân tích cấu tạo số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm một số có ba chữ số, biết rằng nếu chuyển chữ số cuối lên đầu ta được một số hơn 5 lần số đã cho là 25 đơn vị.",
+      "acceptedAnswer": "158",
+      "explanation": "Gọi số cần tìm là a̅b̅c̅\nTheo đề bài ta có a̅b̅c̅ × 5 + 25 = c̅a̅b̅\n(a̅b̅ × 10 + c) × 5 + 25 = c × 100 + a̅b̅\na̅b̅ × 50 + c × 5 + 25 = c × 100 + a̅b̅ (nhân một tổng với một số)\na̅b̅ × 49 + 25 = c × 95 (cùng bớt cả 2 vế đi a̅b̅ + c × 5 )\na̅b̅ × 49 = c × 95 - 25\nVì c < 10 nên c x 95 – 25 < 925\nDo đó a̅b̅ < 20 nên a = 1.\nTa có 1̅b̅ × 49 = c × 95 - 25\nVì c x 95 – 25 chia hết cho 5 nên 1̅b̅ × 49 chia hết cho 5. Do đó b = 0 hoặc 5.\n- Nếu b = 0 thì 10 x 49 = c x 95 – 25 hay 515 = c x 95 (Loại vì 515 không chia hết cho 95)\n- Nếu b = 5 thì 15 x 49 = c x 95 – 25 hay 760 = c x 95 ⇒ c = 8\nVậy số cần tìm là 158.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán giải bằng phân tích cấu tạo s"
+      ],
+      "externalId": "m4-137580"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Cho dãy số: 2 ; 6 ; 12 ; 20 ; …. ; 10100\nHỏi dãy trên có bao nhiêu số hạng?",
+      "acceptedAnswer": "100",
+      "explanation": "Số thứ nhất là 2 = 1 x 2\nSố thứ hai là 6 = 2 x 3\nSố thứ ba là 12 = 3 x 4\nSố thứ tư là 20 = 4 x 5\n….\nSố thứ 100 là 10100 = 100 x 101\nVậy dãy trên có 100 số hạng.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Tìm số số hạng của dãy số"
+      ],
+      "externalId": "m4-137902"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tính nhanh: 1 + 9 + 17 + …. + 73",
+      "acceptedAnswer": "370",
+      "explanation": "Số số hạng của dãy là\n(73 – 1) : 8 + 1 = 10 (số hạng)\nTổng của dãy số trên là\n(73 + 1) x 10 : 2 = 370\nĐáp số: 370",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 4: Tính tổng dãy số cách đều"
+      ],
+      "externalId": "m4-137906"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Cho tổng sau A = 2 + 4 + 6 + 8 + … + 246\nHỏi phải thêm vào A bao nhiêu đơn vị để A chia hết cho 100.",
+      "acceptedAnswer": "48",
+      "explanation": "Số số hạng của dãy là (246 – 2) : 2 + 1 = 123 (số)\nTổng của dãy số là: (246 + 2) x 123 : 2 = 15252\nTa có 15252 + a = 15300 chia hết cho 100\nVậy a = 48\nĐáp số: 48",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 4: Tính tổng dãy số cách đều"
+      ],
+      "externalId": "m4-137910"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tính tổng 50 số lẻ liên tiếp biết số lẻ lớn nhất trong dãy đó là 2019.",
+      "acceptedAnswer": "98500",
+      "explanation": "50 số lẻ liên tiếp thì có số khoảng cách là\n50 – 1 = 49 (khoảng cách)\nSố đầu tiên của dãy số trên là\n2019 – 49 x 2 = 1921\nTổng của 50 số lẻ liên tiếp nêu trên là:\n(2019 + 1921) x 50 : 2 = 98500\nĐáp số: 98500",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 4: Tính tổng dãy số cách đều"
+      ],
+      "externalId": "m4-137913"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Một bạn học sinh viết 1 ; 2 ; 3 ; 4 ; 5 ; 1 ; 2 ; 3 ; 4 ; 5; 1 ; 2 ; 3 ; ….\nvà tiếp tục như thế để được một dãy số. Em hãy tính xem số thứ 1996 của dãy số là số nào?",
+      "acceptedAnswer": "1",
+      "explanation": "Trong dãy số, bạn học sinh đã viết cứ 5 số thì lặp lại như cũ.\nTa có: 1996 : 5 = 399 (dư 1)\nNhư thế bạn học sinh viết 399 lần các số 1, 2, 3, 4, 5 thì được:\n5 x 399 = 1995 (số)\nVậy số thứ 1996 là số 1.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 5: Bài toán đánh số trang sách, dãy chữ"
+      ],
+      "externalId": "m4-148583"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Sách giáo khoa Toán 5 có 184 trang. Hỏi người ta đã dùng bao nhiêu lượt chữ số để đánh số thứ tự các trang của cuốn sách đó?",
+      "acceptedAnswer": "444",
+      "explanation": "Từ trang 1 đến trang 9 có 9 trang: có 9 x 1 = 9 chữ số\nTừ trang 10 đến trang 99 có 90 trang: có 90 x 2 = 180 chữ số\nTừ trang 100 đến trang 184 có 85 trang: có 85 x 3 = 255 chữ số\nVậy để đánh số trang của quyển sách đó người ta phải dùng:\n9 + 180 + 255 = 444 (chữ số)\nĐáp số: 444 chữ số",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 5: Bài toán đánh số trang sách, dãy chữ"
+      ],
+      "externalId": "m4-148584"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Để đánh số thứ tự các trang của một cuốn sách, người ta đã dùng 216 lượt chữ số. Hỏi cuốn sách đó có bao nhiêu trang?",
+      "acceptedAnswer": "108",
+      "explanation": "Để đánh số trang của 1 cuốn sách, người ta phải viết liên tiếp các số tự nhiên từ 1, 2, 3, 4, …..\nTừ trang 1 đến trang 9 có 9 trang: cần 9 x 1 = 9 chữ số\nTừ trang 10 đến trang 99 có 90 trang: cần 90 x 2 = 180 chữ số\nSố chữ số còn lại là\n216 – (9 + 180) = 27 (chữ số)\nSố trang được đánh bằng số có 3 chữ số là\n27 : 3 = 9 (trang)\nQuyển sách có số trang là\n9 + 90 + 9 = 108 (trang)\nĐáp số: 108 trang",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 5: Bài toán đánh số trang sách, dãy chữ"
+      ],
+      "externalId": "m4-148585"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Cho dãy số 6, 7, 9 , 12 , 16, …. Tìm số hạng thứ 50 của dãy số trên?",
+      "acceptedAnswer": "1231",
+      "explanation": "Số hạng thứ hai là 7 = 6 + 1\nSố hạng thứ ba là 9 = 6 + 1 + 2\nSố hạng thứ tư là 12 = 6 + 1 + 2 + 3\nSố hạng thứ năm là 16 = 6 + 1 + 2 + 3 + 4\n…..\nSố hạng thứ n là 6 + 1 + 2 + 3 + …+ n - 1\nVậy số thứ 50 là 6 + 1 + 2 + 3 + … + 49\n6 + 1 + 2 + 3 + … + 49 = 6 + (1 + 49) x 49 : 2 = 1231\nVậy số hạng thứ 50 của dãy trên là 1231.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về dãy số"
+      ],
+      "externalId": "m4-137505"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Cho dãy các số chẵn liên tiếp 2 ; 4 ; 6 ; 8 ; …. Hỏi số 1996 là số hạng thứ mấy của dãy này ? Giải thích cách tìm.",
+      "acceptedAnswer": "998",
+      "explanation": "Dãy trên là dãy số chẵn cách đều 2 đơn vị nên số 1996 là số hạng thứ 1996 : 2 = 998\nVậy số 1996 là số hạng thứ 998 của dãy số trên.",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về dãy số"
+      ],
+      "externalId": "m4-137507"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Trong một kỳ thi có 327 thí sinh dự thi. Hỏi người ta phải dùng bao nhiêu lượt chữ số để đánh\nsố báo danh cho các thí sinh dự thi?",
+      "acceptedAnswer": "873",
+      "explanation": "Từ 1 đến 9 gồm 9 số ứng với 9 x 1 = 9 chữ số\nTừ 10 đến 99 gồm 90 số ứng với 90 x 2 = 180 chữ số\nTừ 100 đến 327 có 228 số ứng với 228 x 3 = 684 chữ số\nVậy để đánh số báo danh của 327 thí sinh người ta phải dùng:\n9 + 180 + 684 = 873 (chữ số)\nĐáp số: 873 chữ số",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về dãy số"
+      ],
+      "externalId": "m4-137534"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Để đánh số trang một quyển truyện người ta phải dùng tất cả 1242 chữ số. Hỏi quyển truyện dày bao nhiêu trang?",
+      "acceptedAnswer": "450",
+      "explanation": "Để đánh số trang của 1 cuốn sách, người ta phải viết liên tiếp các số tự nhiên từ 1, 2, 3, 4, …..\nTừ trang 1 đến trang 9 có 9 trang: cần 9 x 1 = 9 chữ số\nTừ trang 10 đến trang 99 có 90 trang: cần 90 x 2 = 180 chữ số\nSố chữ số còn lại là\n1242 – (9 + 180) = 1053 (chữ số)\nSố trang được đánh bằng số có 3 chữ số là\n1053 : 3 = 351 (trang)\nQuyển sách có số trang là\n9 + 90 + 351 = 450 (trang)\nĐáp số: 450 trang",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về dãy số"
+      ],
+      "externalId": "m4-137535"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Dãy số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Trường Tiểu học Thành Công có 987 học sinh. Hỏi để ghi số thứ tự học sinh trường đó người ta phải dùng bao nhiêu chữ số?",
+      "acceptedAnswer": "2853",
+      "explanation": "Từ 1 đến 9 gồm 9 số ứng với 9 x 1 = 9 chữ số\nTừ 10 đến 99 gồm 90 số ứng với 90 x 2 = 180 chữ số\nTừ 100 đến 987 có 888 số ứng với 888 x 3 = 2664 chữ số\nVậy để ghi số thứ tự của 987 học sinh người ta phải dùng:\n9 + 180 + 2664 = 2853 (chữ số)\nĐáp số: 2853 chữ số",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về dãy số"
+      ],
+      "externalId": "m4-137536"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phép tính và biểu thức",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Khi trừ một số tự nhiên đi 208, do sơ suất, một học sinh đã bỏ quên chữ số 0 của số trừ, đồng thời viết nhầm dấu trừ thành dấu cộng nên nhận được kết quả bằng 1050. Tìm kết quả đúng của phép tính đó?",
+      "acceptedAnswer": "814",
+      "explanation": "Do sơ suất, thực chất học sinh đó đã cộng số bị trừ với 28.\nSố bị trừ (hay số hạng thứ nhất trong phép tính viết nhầm) là:\n1050 – 28 = 1022\nKết quả đúng của phép tính đó là:\n1022 – 208 = 814\nĐáp số: 814",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Các phép tính với số tự nhiên"
+      ],
+      "externalId": "m4-148553"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phép tính và biểu thức",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Khi nhân một số tự nhiên với 104, do sơ suất, một học sinh đã bỏ quên chữ số 0 của thừa số thứ hai nên nhận được kết quả bằng 4550. Tìm tích đúng của phép nhân đó.",
+      "acceptedAnswer": "33800",
+      "explanation": "Khi bỏ quên chữ số 0 của thừa số thứ hai thì thực chất học sinh đó đã nhân thừa số thứ nhất với 14.\nThừa số thứ nhất là:\n4550 : 14 = 325\nTích đúng của phép nhân đó là:\n325 x 104 = 33800\nĐáp số: 33800",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Các phép tính với số tự nhiên"
+      ],
+      "externalId": "m4-148554"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phép tính và biểu thức",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm tổng của hai số biết hiệu của chúng bằng 248 và hiệu đó bằng 1/3 số bé.",
+      "acceptedAnswer": "1736",
+      "explanation": "Số bé là:\n248 x 3 = 744\nSố lớn là:\n248 + 744 = 992\nTổng cần tìm là:\n992 + 744 = 1736\nĐáp số: 1736",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các phép tính với số tự nhiên - Biểu thức"
+      ],
+      "externalId": "m4-148559"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phép tính và biểu thức",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Một học sinh khi làm phép nhân, đáng lẽ phải nhân với 103 nhưng quên viết số 0 ở thừa số thứ hai nên tích giảm đi 37 080 đơn vị. Hỏi bạn đó định nhân số nào với 103.",
+      "acceptedAnswer": "412",
+      "explanation": "Thực chất học sinh đã nhân thừa số thứ nhất với 13 nên tích giảm đi số lần là:\n103 – 13 = 90 (lần)\nTích giảm đi 37 080 đơn vị bằng 90 lần thừa số thứ nhất\nThừa số thứ nhất là:\n37 080 : 90 = 412\nĐáp số: 412",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các phép tính với số tự nhiên - Biểu thức"
+      ],
+      "externalId": "m4-148574"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phép tính và biểu thức",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Khi trừ một số tự nhiên đi 223, do sơ suất, một học sinh đã viết nhầm số trừ là 23 đồng thời viết nhầm dấu trừ thành dấu cộng nên nhận được kết quả bằng 1462. Tìm kết quả đúng của phép tính đó.",
+      "acceptedAnswer": "1216",
+      "explanation": "Số bị trừ (hay số hạng thứ nhất trong phép tính viết nhầm) là:\n1462 – 23 = 1439\nKết quả đúng của phép tính đó là:\n1439 – 223 = 1216\nĐáp số: 1216",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các phép tính với số tự nhiên - Biểu thức"
+      ],
+      "externalId": "m4-148575"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phép tính và biểu thức",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Người ta cần chuyển một số lít nước mắm, đầu tiên số lít nước mắm được chứa trong các thùng 20 lít, nhưng sau đó lại rót sang các thùng 5 lít thì thấy số thùng 5 lít nhiều hơn số thùng 20 lít là 27 thùng. Hỏi tất cả có bao nhiêu lít nước mắm?",
+      "acceptedAnswer": "180",
+      "explanation": "Số thùng 5 lít gấp số thùng 20 lít là:\n20 : 5 = 4 (lần)\nTa có sơ đồ:\nSố thùng 20 lít là\n27 : (4 – 1) = 9 (thùng)\nSố lít nước mắm có tất cả là:\n20 x 9 = 180 (lít)\nĐáp số: 180 lít",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các phép tính với số tự nhiên - Biểu thức"
+      ],
+      "externalId": "m4-148576"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Có 3 bạn An, Bình, Hà. Tìm cân nặng trung bình của 3 bạn, biết rằng: tổng cân nặng của An và Bình là 50 kg, tổng cân nặng của Bình và Hà là 63 kg, tổng cân nặng của của Hà và An là 55 kg.",
+      "acceptedAnswer": "28",
+      "explanation": "Tổng cân nặng của 3 bạn là: (50 + 63 + 55) : 2 = 84 (kg)\nCân nặng trung bình của mỗi bạn là: 84 : 3 = 28 (kg)\nĐáp số: 28 kg",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Tìm số trung bình cộng"
+      ],
+      "externalId": "m4-148524"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tính trung bình cộng của các số trong dãy số 3, 6, 9, …., 105",
+      "acceptedAnswer": "54",
+      "explanation": "Vì dãy số trên là dãy số cách đều nên trung bình cộng của các số hạng trong dãy là:\n(3 + 105) : 2 = 54\nĐáp số: 54",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Trung bình cộng của dãy số cách đều"
+      ],
+      "externalId": "m4-148525"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tính trung bình cộng của các số trong dãy 10, 20, 30, 40, …., 240.",
+      "acceptedAnswer": "125",
+      "explanation": "Vì dãy số trên là dãy số cách đều nên trung bình cộng của các số hạng trong dãy là:\n(10 + 240) : 2 = 125\nĐáp số: 125",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Trung bình cộng của dãy số cách đều"
+      ],
+      "externalId": "m4-148526"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tính trung bình cộng của các số trong dãy 14, 18, 22, …, 142",
+      "acceptedAnswer": "78",
+      "explanation": "Vì dãy số trên là dãy số cách đều nên trung bình cộng của các số hạng trong dãy là:\n(14 + 142) : 2 = 78\nĐáp số: 78",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Trung bình cộng của dãy số cách đều"
+      ],
+      "externalId": "m4-148527"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Hải có 14 cái nhãn vở, Lâm có 20 cái nhãn vở. Số nhãn vở của Hà bằng trung bình cộng số nhãn vở của cả ba bạn. Hỏi Hà có bao nhiêu cái nhãn vở?",
+      "acceptedAnswer": "17",
+      "explanation": "Ta có sơ đồ:\nSố nhãn vở của Hà là (14 + 20) : 2 = 17 (nhãn vở)\nĐáp số: 17 nhãn vở",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán ít hơn, nhiều hơn hoặc bằng trung bình cộng"
+      ],
+      "externalId": "m4-148529"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Số thứ nhất là 98, số thứ hai gấp 2 lần số thứ nhất. Số thứ ba bằng trung bình cộng của ba số. Tìm số thứ ba?",
+      "acceptedAnswer": "147",
+      "explanation": "Số thứ hai là: 98 x 2 = 196\nTa có sơ đồ:\nSố thứ ba là (98 + 196) : 2 = 147\nĐáp số: 147",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán ít hơn, nhiều hơn hoặc bằng trung bình cộng"
+      ],
+      "externalId": "m4-148530"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Thùng thứ nhất có 50 lít dầu, thùng thứ hai có 37 lít dầu. Thùng thứ ba có nhiều hơn trung bình cộng số dầu của cả ba thùng là 9 lít dầu. Hỏi thùng thứ ba có bao nhiêu lít dầu?",
+      "acceptedAnswer": "57",
+      "explanation": "Ta có sơ đồ:\nSố lít dầu ở thùng thứ nhất và thùng thứ hai là: 50 + 37 = 87 (lít)\nSố trung bình cộng là: (87 + 9) : 2 = 48\nThùng thứ ba có số lít dầu là: 48 + 9 = 57 (lít)\nĐáp số: 57 lít dầu",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán ít hơn, nhiều hơn hoặc bằng trung bình cộng"
+      ],
+      "externalId": "m4-148531"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Túi kẹo thứ nhất có 25 viên, túi thứ hai nhiều hơn túi thứ nhất 7 viên kẹo. Túi thứ ba ít hơn trung bình cộng số kẹo của cả ba túi là 3 viên kẹo. Hỏi túi thứ ba có bao nhiêu viên kẹo?",
+      "acceptedAnswer": "24",
+      "explanation": "Túi thứ hai có số viên kẹo là 25 + 7 = 32 (viên)\nTa có sơ đồ:\nTúi thứ nhất và túi thứ hai có số viên kẹo là 25 + 32 = 57 (viên)\nSố trung bình cộng là (57 – 3) : 2 = 27 (viên)\nTúi thứ ba có số viên kẹo là: 27 – 3 = 24 (viên)\nĐáp số: 24 viên kẹo",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 3: Bài toán ít hơn, nhiều hơn hoặc bằng trung bình cộng"
+      ],
+      "externalId": "m4-148532"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tuổi trung bình của 6 cầu thủ trong đội tuyển bóng chuyền Việt Nam là 24. Nếu không tính tuổi đội trưởng thì tuổi trung bình của 5 cầu thủ còn lại là 23. Tính tuổi của đội trưởng.",
+      "acceptedAnswer": "29",
+      "explanation": "Tổng số tuổi của 6 cầu thủ là:\n24 x 6 = 144 (tuổi)\nNếu không tính tuổi đội trưởng thì tổng số tuổi của 5 cầu thủ còn lại là:\n23 x 5 = 115 (tuổi)\nSố tuổi của đội trưởng là:\n144 – 115 = 29 (tuổi)\nĐáp số: 29 tuổi",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148533"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Điểm 4 bài kiểm tra môn Toán của bạn Cúc đạt được là 7 ; 8 ; 8 ; 9. Hỏi để điểm trung bình môn Toán tăng lên 0,4 điểm nữa thì bài kiểm tra tiếp theo bạn Cúc phải đạt bao nhiêu điểm?",
+      "acceptedAnswer": "10",
+      "explanation": "Điểm trung bình của 4 bài đã kiểm tra là:\n(7 + 8 x 2 + 9) : 4 = 8 (điểm)\nKhi tăng điểm trung bình thêm 0,4 điểm thì điểm trung bình của 5 bài kiểm tra môn Toán là:\n8 + 0,4 = 8,4 (điểm)\nTổng số điểm của 5 bài kiểm tra sẽ là:\n8,4 x 5 = 42 (điểm)\nĐiểm bài kiểm tra tiếp theo phải đạt là:\n42 – 8 x 4 = 10 (điểm)\nĐáp số: 10 điểm",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148534"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Tìm trung bình cộng của các số lẻ có 3 chữ số.",
+      "acceptedAnswer": "550",
+      "explanation": "Các số lẻ có 3 chữ số là 101, 103, 105, …., 999\nTrung bình cộng của các số lẻ có 3 chữ số là: (101 + 999) : 2 = 550\nĐáp số: 550",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148535"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Một lần, Nam, Hùng, Dũng đi câu cá. Dũng câu được 15 con cá, Hùng câu được 11 con cá. Nam câu được số cá đúng bằng trung bình cộng số cá của ba bạn. Hỏi Nam câu được mấy con cá?",
+      "acceptedAnswer": "13",
+      "explanation": "Ta có sơ đồ:\nDũng và Hùng câu được số con cá là: 15 + 11 = 26 (con cá)\nTa thấy, số cá của Dũng và Hùng ứng với 2 phần bằng nhau\nVậy Nam câu được số con cá là: 26 : 2 = 13 (con cá)\nĐáp số: 13 con cá",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148539"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Có 4 bạn chơi bi: An, Bình, Dũng, Minh. Biết An có 18 viên bi, Bình có 16 viên bi, Dũng có số bi bằng trung bình cộng số bi của An và Bình. Minh có số bi bằng trung bình cộng số bi của cả 4 bạn. Hỏi Minh có bao nhiêu viên bi?",
+      "acceptedAnswer": "17",
+      "explanation": "Số bi của Dũng là: (18 + 16) : 2 = 17 (viên bi)\nTa có sơ đồ:\nSố bi của An, Bình và Dũng là: 18 + 16 + 17 = 51 (viên)\nSố bi của Minh là 51 : 3 = 17 (viên bi)\nĐáp số: 17 viên bi",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148540"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Số thứ nhất là 155, số thứ hai là 279. Số thứ ba hơn trung bình cộng của cả ba số là 26 đơn vị. Tìm số thứ ba.",
+      "acceptedAnswer": "256",
+      "explanation": "Ta có sơ đồ:\nTổng của số thứ nhất và số thứ hai là: 155 + 279 = 434\nTrung bình cộng của ba số là: (434 + 26) : 2 = 230\nSố thứ ba là: 230 + 26 = 256\nĐáp số: 256",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148541"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Số thứ nhất là 267. Số thứ hai hơn số thứ nhất là 32 đơn vị nhưng kém số thứ ba 51 đơn vị. Số thứ tư hơn trung bình cộng của cả bốn số là 8 đơn vị. Tìm số thứ tư.",
+      "acceptedAnswer": "316",
+      "explanation": "Số thứ hai là 267 + 32 = 299\nSố thứ ba là 299 + 51 = 350\nTa có sơ đồ:\nTổng của số thứ nhất, số thứ hai và số thứ ba là: 267 + 299 + 350 = 916\nSố trung bình cộng là: (916 + 8) : 3 = 308\nSố thứ tư là: 308 + 8 = 316\nĐáp số: 316",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148543"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Khối lớp 4 của trường tiểu học Kim Liên tham gia trồng cây trong vườn sinh thái của trường. Lớp 4A trồng được 35 cây, lớp 4B trồng được nhiều hơn lớp 4A 12 cây, lớp 4C trồng ít hơn lớp 4B 5 cây. Lớp 4D trồng được ít hơn trung bình số cây bốn lớp trồng được là 7 cây. Hỏi khối lớp 4 trồng được tất cả bao nhiêu cây?",
+      "acceptedAnswer": "156",
+      "explanation": "Lớp 4B trồng được số cây là: 35 + 12 = 47 (cây)\nLớp 4C trồng được số cây là: 47 – 5 = 42 (cây)\nTa có sơ đồ:\nSố cây của các lớp 4A, 4B và 4C là: 35 + 47 + 42 = 124 (cây)\nTrung bình cộng số cây của bốn lớp là: (124 – 7) : 3 = 39 (cây)\nSố cây của lớp 4D là 39 – 7 = 32 (cây)\nKhối lớp 4 trồng được số cây là: 124 + 32 = 156 (cây)\nĐáp số: 156 cây",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148548"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Trung bình cộng",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Xe thứ nhất chở được 25 tấn hàng, xe thứ hai chở 35 tấn hàng. Xe thứ ba chở nhiều hơn trung bình cộng ba xe là 10 tấn hàng. Hỏi xe thứ ba chở bao nhiêu tấn hàng?",
+      "acceptedAnswer": "45",
+      "explanation": "Ta có sơ đồ:\nXe thứ nhất và xe thứ hai chở số tấn hàng là: 25 + 35 = 60 (tấn)\nTrung bình cộng mỗi xe chở số tấn hàng là: (60 + 10) : 2 = 35 (tấn)\nXe thứ ba chở số tấn hàng là: 35 + 10 = 45 (tấn)\nĐáp số: 45 tấn hàng",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Các bài toán về trung bình cộng"
+      ],
+      "externalId": "m4-148551"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Cho phân số 3/7 . Cộng thêm vào cả tử số và mẫu số của phân số đó với cùng một số tự nhiên ta được một phân số bằng 7/9 . Tìm số tự nhiên đó.",
+      "acceptedAnswer": "11",
+      "explanation": "Hiệu giữa tử số và mẫu số của phân số là:\n7 – 3 = 4\nKhi ta cộng thêm vào tử số và mẫu số của một phân số với cùng một số tự nhiên thì hiệu giữa tử số và mẫu số không thay đổi.\nTa có sơ đồ biểu diễn tử số và mẫu số của phân số mới:\nTử số của phân số mới là 4 : (9 – 7) x 7 = 14\nSố cộng thêm vào là: 14 – 3 = 11\nĐáp số: 11",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Các bài toán về thêm, bớt ở tử số và mẫu số"
+      ],
+      "externalId": "m4-138146"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "(Cầu Giấy 2019 – 2020)\nCho một số bóng xanh và vàng. Số bóng vàng bằng 1/3 bóng xanh. Nếu thêm 6 bóng vàng thì bóng vàng bằng 5/9 bóng xanh. Tính số bóng xanh.",
+      "acceptedAnswer": "27",
+      "explanation": "6 quả bóng ứng với số phần bóng xanh là\n5/9 - 1/3 = 2/9 (bóng xanh)\nSố bóng xanh là\n6:2/9 = 27 (quả)\nĐáp số: 27 bóng xanh",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Phân số"
+      ],
+      "externalId": "m4-138030"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Một người bán hàng vải, lần thứ nhất bán 1/2 tấm vải, lần thứ hai bán 1/3 tấm vải đó thì tấm vải chỉ còn lại 7 m. Hỏi tấm vải đó dài bao nhiêu mét?",
+      "acceptedAnswer": "42",
+      "explanation": "Phân số chỉ số vải bán hai lần đầu là:\n1/2 + 1/3 = 5/6 (tấm vải)\nPhân số chỉ số vải còn lại là\n1 - 5/6 = 1/6 (tấm vải)\nTấm vải dài là:\n7:1/6 = 42 (m)\nĐáp số: 42 m",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Phân số"
+      ],
+      "externalId": "m4-138038"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Một cửa hàng bán 1 bao đường làm ba lần. Lần thứ nhất cửa hàng bán 1/3 bao đường và 5kg, lần thứ hai bán 3/7 chỗ còn lại và 3kg, lần thứ ba bán 17 kg thì hết bao đường. Hỏi bao đường có bao nhiêu kilôgam?",
+      "acceptedAnswer": "60",
+      "explanation": "Nếu lần thứ hai không bán thêm 3 kg đường thì số đường còn lại sau khi bán lần thứ hai là\n17+ 3 = 20 (kg)\n20 kg đường tương ứng với:\n1 - 3/7 = 4/7 (số đường còn lại sau khi bán lần thứ nhất)\nSố đường còn lại sau khi bán lần thứ nhất là\n20:4/7 = 35 (kg)\nNếu lần thứ nhất không bán thêm 5 kg thì số đường còn lại sau khi bán lần thứ nhất là\n35 + 5 = 40 (kg)\n40 kg đường bằng:\n1 - 1/3 = 2/3 (bao đường)\nSố đường có trong bao là:\n40:2/3 = 60 (kg)\nĐáp số: 60 kg",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Phân số"
+      ],
+      "externalId": "m4-138051"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Phân số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Một người bán hết 63 kg gạo trong bốn lần. Lần đầu bán 1/2 số gạo và 1/2 kg gạo. Lần thứ hai bán 1/2 số gạo còn lại và 1/2 kg gạo. Lần thứ ba bán 1/2 số gạo còn lại sau hai lần bán và 1/2 kg gạo. Hỏi lần thứ tư người đó bán được bao nhiêu ki-lô-gam gạo?",
+      "acceptedAnswer": "7",
+      "explanation": "Ngày đầu bán số kg gạo là\n63 × 1/2 + 1/2 = 32 (kg)\nNgày thứ hai bán số kg gạo là\n( 63 - 32 ) × 1/2 + 1/2 = 16 (kg)\nNgày thứ ba bán được số kg là\n( 63 - 32 - 16 ) × 1/2 + 1/2 = 8 (kg)\nNgày thứ tư bán được số kg là\n63 – (32 + 16 + 8) = 7 (kg)\nĐáp số: 7 kg",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Phân số"
+      ],
+      "externalId": "m4-138096"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Tìm hai số khi biết tổng/hiệu và tỉ số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Cho một số tự nhiên, biết rằng khi ta thêm vào bên phải số đó một chữ số 0 thì ta được số mới. Trung bình cộng của số mới và số cũ là 132. Tìm số đó.",
+      "acceptedAnswer": "24",
+      "explanation": "Tổng của số mới và số cũ là: 132 × 2 = 264\nNếu thêm vào bên phải số cần tìm một chữ số 0 thì được số mới. Do đó số mới gấp 10 lần số cần tìm. Ta coi số cần tìm là 1 phần thì số mới là 10 phần.\nTổng số phần bằng nhau là:\n1 + 10 = 11 (phần)\nSố tự nhiên đó là:\n264 : 11 = 24\nĐáp số: 24",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 1: Tìm hai số khi biết tổng và tỉ số của hai số đó"
+      ],
+      "externalId": "m4-148858"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Tìm hai số khi biết tổng/hiệu và tỉ số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Biết hiện nay bố 32 tuổi, con 4 tuổi. Hỏi bao nhiêu năm nữa bố gấp 5 lần tuổi con?",
+      "acceptedAnswer": "3",
+      "explanation": "Tuổi bố hơn tuổi con là:\n32 – 4 = 28 (tuổi)\nKhi tuổi bố gấp 5 lần tuổi con thì hiệu số phần bằng nhau là:\n5 – 1 = 4 (phần)\nLúc đó tuổi con là:\n28 : 4 = 7 (phần)\nVậy để tuổi bố gấp 5 lần tuổi con thì cần số năm là:\n7 – 4 = 3 (năm)\nĐáp số: 3 năm",
+      "tags": [
+        "Toán nâng cao 4",
+        "Dạng 2: Tìm hai số khi biết hiệu và tỉ số của hai số đó"
+      ],
+      "externalId": "m4-148863"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Tìm hai số khi biết tổng/hiệu và tỉ số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Hiện nay, tuổi ông và tuổi cháu cộng lại được 72 tuổi, tuổi ông gấp 5 lần tuổi cháu. Hỏi trước đây mấy năm tuổi ông gấp 9 lần tuổi cháu.",
+      "acceptedAnswer": "6",
+      "explanation": "Hiện nay tổng số phần bằng nhau của tuổi ông và tuổi cháu là:\n1 + 5 = 6 (phần)\nHiện nay tuổi cháu là:\n72 : 6 = 12 (tuổi)\nHiện nay tuổi ông là:\n72 – 12 = 60 (tuổi)\nHiện nay tuổi ông hơn tuổi cháu là:\n60 – 12 = 48 (tuổi)\nLúc tuổi ông gấp 9 lần tuổi cháu thì hiệu số phần bằng nhau là:\n9 – 1 = 8 (phần)\nLúc đó tuổi cháu là: 48 : 8 = 6 (tuổi)\nThời gian trước đây để tuổi ông gấp 9 lần tuổi cháu là\n12 – 6 = 6 (năm)\nĐáp số: 6 năm",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Tìm hai số khi biết tổng hoặc hiệu và tỉ s"
+      ],
+      "externalId": "m4-148880"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Tìm hai số khi biết tổng/hiệu và tỉ số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Biết 1/2 tuổi An cách nay 6 năm bằng 1/5 tuổi An 6 năm tới. Hỏi hiện nay An bao nhiêu tuổi?",
+      "acceptedAnswer": "14",
+      "explanation": "Tuổi An 6 năm tới so với tuổi An cách nay 6 năm thì hơn:\n6 + 6 = 12 (tuổi)\nTa có sơ đồ:\nHiệu số phần bằng nhau là:\n5 – 2 = 3 (phần)\nTuổi An 6 năm trước là:\n12 : 3 x 2 = 8 (tuổi)\nTuổi An hiện nay là:\n8 + 6 = 14 (tuổi)\nĐáp số: 14 tuổi",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Tìm hai số khi biết tổng hoặc hiệu và tỉ s"
+      ],
+      "externalId": "m4-148881"
+    },
+    {
+      "subject": "math",
+      "grade": 4,
+      "category": {
+        "name": "Toán nâng cao lớp 4 - Tìm hai số khi biết tổng/hiệu và tỉ số",
+        "subject": "math"
+      },
+      "type": "number",
+      "difficulty": 4,
+      "prompt": "Một cửa hàng bán hai loại áo: áo sơ mi và áo cộc tay. Buổi sáng, chủ cửa hàng đếm thấy số lượng áo sơ mi nhiều gấp 4 lần áo cộc tay. Buổi chiều, sau khi bán được 16 chiếc áo sơ mi thì số lượng áo cộc tay bằng 1/2 số lượng áo sơ mi. Hỏi ban đầu cửa hàng có bao nhiêu chiếc áo sơ mi?",
+      "acceptedAnswer": "32",
+      "explanation": "Vì số lượng áo cộc tay không thay đổi nên ta chọn số lượng áo cộc tay làm đơn vị.\nBan đầu, số lượng áo sơ mi so với áo cộc tay là: 4/1 (áo cộc tay)\nSau khi bán được 16 cái áo sơ mi, số lượng áo sơ mi so với áo cộc tay là: 2/1 (áo cộc tay)\nPhân số chỉ 16 cái áo là:4 – 2 = 2 (áo cộc tay)\nBan đầu cửa hàng có số áo cộc tay là:\n16 : 2 x 1 = 8 (chiếc áo)\nBan đầu cửa hàng có số áo sơ mi là:\n8 x 4 = 32 (chiếc áo)\nĐáp số: 32 chiếc áo",
+      "tags": [
+        "Toán nâng cao 4",
+        "Bài tập tự luyện: Tìm hai số khi biết tổng hoặc hiệu và tỉ s"
+      ],
+      "externalId": "m4-148891"
+    }
+  ]
+}

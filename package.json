@@ -1,0 +1,54 @@
+{
+  "name": "quiz-app",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "generate:build-info": "node scripts/generate-build-info.mjs",
+
+    "start": "node scripts/angular-with-build-info.mjs serve",
+
+    "prebuild": "npm run generate:build-info",
+    "build": "ng build",
+
+    "watch": "node scripts/angular-with-build-info.mjs build --watch --configuration development",
+
+    "test": "jest",
+    "e2e": "playwright test",
+    "lint": "eslint ."
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/cdk": "^19.2.0",
+    "@angular/common": "^19.2.0",
+    "@angular/compiler": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "@angular/forms": "^19.2.0",
+    "@angular/platform-browser": "^19.2.0",
+    "@angular/platform-browser-dynamic": "^19.2.0",
+    "@angular/router": "^19.2.0",
+    "@angular/service-worker": "^19.2.0",
+    "ajv": "^8.17.1",
+    "dexie": "^4.0.10",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-builders/jest": "^19.0.0",
+    "@angular-devkit/build-angular": "^19.2.27",
+    "@angular/cli": "^19.2.27",
+    "@angular/compiler-cli": "^19.2.0",
+    "@material-symbols/svg-400": "^0.47.2",
+    "@playwright/test": "^1.49.0",
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.17.0",
+    "fake-indexeddb": "^6.2.5",
+    "jest": "^29.7.0",
+    "jest-preset-angular": "^14.5.0",
+    "prettier": "^3.4.2",
+    "serve": "^14.2.6",
+    "typescript": "~5.7.2"
+  }
+}

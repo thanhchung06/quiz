@@ -1,0 +1,3069 @@
+{
+  "formatVersion": "1.1",
+  "packageTitle": "Đề thi, đề kiểm tra Tiếng Việt lớp 4 — Kết nối tri thức (loigiaihay.com)",
+  "language": "vi",
+  "quizzes": [],
+  "passages": [
+    {
+      "externalKey": "tv4-00-1",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Luyện cho tằm tự dệt chăn tơ",
+      "text": "Nuôi hàng vạn con tằm, luyện cho chúng nhả tơ và tự dệt chăn, đó là bí quyết độc nhất trên thế giới của nghệ nhân Phan Thị Thuận.\n\nBà sinh ra và lớn lên trong một làng nghề trồng dâu nuôi tằm ở làng Phù Xá, huyện Mỹ Đức, thành phố Hà Nội. Nhưng, làng nghề ngày càng gặp khó khăn do khó cạnh tranh với lụa tơ tằm Trung Quốc. Bà đã trăn trở tìm cách tạo ra sản phẩm tơ tằm thật đặc biệt giúp người dân trong làng sống được bằng nghề của mình.\n\nNhiều lần ngồi quan sát con tằm nhả tơ đan kén, ngoáy đầu ra sao, rút ruột thế nào, bà bỗng nảy ra ý định: rõ ràng, con tằm tự dệt cho mình một chiếc kén bền chặt không kĩ thuật dệt tay nào của con người có thể đạt được, tại sao mình không biến con tằm thành những công nhân tự dệt nên những tấm chăn tơ?\n\nThế là, bà huấn luyện tằm thay đổi tập tính nhả tơ. Sau khi tính toán khoảng cách thích hợp, bà để cho hàng ngàn con tằm cùng nằm trên một mặt phẳng mà nhả tơ. Dần dần, các sợi tơ tự động quấn vào nhau, đan thành tấm thảm phẳng, mịn, gắn kết bền chắc tự nhiên. Chỉ cần thêm một vài thao tác khâu, may, người thợ sẽ biến nó thành một tấm chăn siêu nhẹ, mềm mại và ấm áp. Vì vậy, chăn tơ tằm tự dệt rất được ưa chuộng, luôn cháy hàng, kể cả vào những ngày hè oi bức.\n\nTừ đó, bà Thuận không những có thêm thu nhập mà còn tạo công ăn việc làm cho người dân quanh vùng. Mỗi dịp hè, hàng trăm bạn nhỏ được bố mẹ gửi đến xưởng dệt của bà để tìm hiểu và yêu hơn nghề của cha ông.\n\n(Theo Bảo Hân, báo VietNamnet)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bà Phan Thị Thuận có bí quyết gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Làm chăn từ tơ rối."
+            },
+            {
+              "id": "b",
+              "text": "Làm chăn từ vải lụa tơ tằm."
+            },
+            {
+              "id": "c",
+              "text": "Làm chăn từ thảm tơ do tằm dệt."
+            },
+            {
+              "id": "d",
+              "text": "Làm chăn từ kén tằm."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào không phải lí do bà Thuận muốn tạo ra “loại sản phẩm tơ tằm đặc biệt”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì muốn tìm hướng đi mới cho làng nghề."
+            },
+            {
+              "id": "b",
+              "text": "Vì muốn cạnh tranh với tơ lụa Trung Quốc."
+            },
+            {
+              "id": "c",
+              "text": "Vì muốn bà con sống được bằng nghề dệt lụa."
+            },
+            {
+              "id": "d",
+              "text": "Vì muốn làm gương cho thế hệ sau."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào nói về sáng kiến của bà Thuận?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Quan sát tằm nhả tơ đan kén."
+            },
+            {
+              "id": "b",
+              "text": "Huấn luyện tằm thay đổi tập tính nhả tơ."
+            },
+            {
+              "id": "c",
+              "text": "Nâng cao kĩ thuật dệt tay."
+            },
+            {
+              "id": "d",
+              "text": "Đào tạo công nhân ươm tơ."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Sáng kiến của bà Thuận được đánh giá cao thông qua chi tiết nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Chăn tơ tằm tự dệt rất được ưa chuộng, luôn cháy hàng."
+            },
+            {
+              "id": "b",
+              "text": "Trăn trở tìm cách tạo ra sản phẩm tơ tằm thật đặc biệt."
+            },
+            {
+              "id": "c",
+              "text": "Ngồi quan sát con tằm nhả tơ đan kén."
+            },
+            {
+              "id": "d",
+              "text": "Các sợi tơ tự động quấn vào nhau, đan thành tấm thảm phẳng, mịn."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-01-2",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Kinh nghiệm huấn luyện ngựa",
+      "text": "Một người Ả-rập rất giỏi huấn luyện ngựa thành những con thiên lí mã, nên được tôn xưng là “mã thần”.\n\nMỗi buổi sáng, ông cho đàn ngựa chạy theo vòng tròn, trong đàn có cả những con ngựa to khoẻ và những con ngựa còn rất nhỏ. Trong khi đó, trợ thủ của ông vừa chỉ huy đàn ngựa vừa bám lấy yên ngựa, nhảy sang trái rồi nhảy sang phải như biểu diễn xiếc.\n\nĐến trưa, lúc mặt trời gay gắt nhất, hai thầy trò \"mã thần\" cho đàn ngựa phi thẳng về phía sa mạc. Đến chiều, họ trở về với hai con dao cong trong tay, hệt như đi đánh trận.\n\nCó người hỏi:\n\n- Tại sao ông lại cho cả đàn ngựa chạy vòng quanh vậy?\n\n- Bởi vì tôi muốn dạy những con ngựa con biết đi sau những con ngựa lớn, học nghe khẩu lệnh và phục tùng. Không có ngựa lớn dẫn dắt thì rất khó dạy ngựa con. Nếu tôi là người thầy, thì ngựa lớn chính là phụ huynh. Tôi giáo dục ở trường, cha mẹ dẫn dắt ở nhà, bất kể mặt nào cũng không thể thiếu.\n\n- Vậy trợ thủ của ông bám vào yên ngựa, nhảy qua nhảy lại để làm gì?\n\n- Để dạy cho ngựa biết cách giữ thăng bằng.\n\nThấy người đó háo hức nghe, ông nói tiếp:\n\n- Còn cưỡi ngựa lúc giữa trưa vào sa mạc nóng như thiêu như đốt là cách để dạy ngựa phi nhanh, chúng phải biết rằng nếu không chạy thật nhanh thi sẽ không thoát khỏi sa mạc. Con dao cong được dùng để kích thích mắt ngựa, đồng thời âm thanh loảng xoảng của các vòng kim loại gắn trên thân dạo cũng thử thách sự bình tĩnh của ngựa. Sau quá trình huấn luyện khắc nghiệt này, chúng tôi sẽ nhận ra con nào có khả năng trở thành thiên lí mã.\n\n(Theo Điều bình dị thông thái)\n\nThiên lí mã: ngựa đi ngàn dặm đường (thiên: một nghìn, lí: dặm đường, mã: ngựa), ý chỉ ngựa khoẻ và chạy rất nhanh.",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Một con ngựa tốt được gọi là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mã thần"
+            },
+            {
+              "id": "b",
+              "text": "Thiên lí mã"
+            },
+            {
+              "id": "c",
+              "text": "Bạch mã"
+            },
+            {
+              "id": "d",
+              "text": "Chiến mã"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao người Ả Rập trong bài được gọi là “mã thần”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì ông huấn luyện ngựa giỏi như thần."
+            },
+            {
+              "id": "b",
+              "text": "Vì ông chỉ huấn luyện ngựa thần."
+            },
+            {
+              "id": "c",
+              "text": "Vì ông luyện ngựa bằng phép thần."
+            },
+            {
+              "id": "d",
+              "text": "Vì ngựa của ông làm xiếc như thần."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Người huấn luyện ngựa nhảy qua nhảy lại hai bên yên ngựa để làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Để ngựa biết biểu diễn xiếc."
+            },
+            {
+              "id": "b",
+              "text": "Để ngựa giữ thăng bằng."
+            },
+            {
+              "id": "c",
+              "text": "Để ngựa biết phục tùng."
+            },
+            {
+              "id": "d",
+              "text": "Để ngựa biết nghe hiệu lệnh."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mã thần cưỡi ngựa vào sa mạc lúc giữa trưa để làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Để luyện cho ngựa phi nhanh."
+            },
+            {
+              "id": "b",
+              "text": "Để luyện cho ngựa chịu nắng nóng."
+            },
+            {
+              "id": "c",
+              "text": "Để luyện cho ngựa chịu được cát bỏng."
+            },
+            {
+              "id": "d",
+              "text": "Để luyện cho ngựa chịu được cơn khát."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-02-3",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Tình bạn",
+      "text": "Thỏ và Sóc rủ nhau vào rừng hái quả. Mùa thu, khu rừng thơm phức hương quả chín. Ở trên một cây cao chót vót, Thỏ reo lên sung sướng:\n\n- Ồ chùm quả vàng mọng kia, ngon quá!\n\nThấy chùm quả vắt vẻo cao tít, Sóc vội vàng ngăn bạn:\n\n- Cậu đừng lấy, nguy hiểm lắm!\n\nNhưng Thỏ đã men ra. Nó cố với. Trượt chân, Thỏ ngã nhào. Sóc nhanh nhẹn túm được áo Thỏ còn tay kia kịp với được vào một cành cây nhỏ nên cả hai chỉ bị treo lơ lửng trên không chứ không bị rơi xuống khe núi đầy đá nhọn. Cái cành cây cong gập hẳn lại.\n\nSóc vẫn cố sức giữ chặt áo Thỏ. Tiếng răng rắc trên cành cây kêu to hơn.\n\n- Cậu bỏ tớ ra đi kẻo cậu cũng bị rơi theo đấy.\n\nThỏ nói với Sóc rồi khóc òa.\n\n- Tớ không bỏ cậu đâu.\n\nSóc cương quyết.\n\nBác Voi cao lớn đang làm việc gần đấy nghe tiếng kêu cứu chạy tới. Bác rướn mình đưa chiếc vòi dài đỡ được cả hai xuống an toàn. Bác âu yếm khen:\n\n- Các cháu có một tình bạn thật đẹp.\n\n(Theo Hà Mạnh Hùng)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Thỏ và Sóc rủ nhau vào rừng làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Rủ nhau vào rừng hái hoa."
+            },
+            {
+              "id": "b",
+              "text": "Rủ nhau vào rừng hái nấm."
+            },
+            {
+              "id": "c",
+              "text": "Rủ nhau vào rừng tìm bạn."
+            },
+            {
+              "id": "d",
+              "text": "Rủ nhau vào rừng hái quả."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi Thỏ bị trượt chân ngã, Sóc đã làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vội vàng ngăn Thỏ."
+            },
+            {
+              "id": "b",
+              "text": "Túm lấy áo Thỏ và cương quyết không bỏ rơi bạn."
+            },
+            {
+              "id": "c",
+              "text": "Cùng với Thỏ túm lấy cành cây."
+            },
+            {
+              "id": "d",
+              "text": "Sóc tự lo bản thân mình để mặc kệ Thỏ."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Thỏ đã nói với Sóc như thế nào khi mình gặp nạn?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tiếng răng rắc trên cành cây càng kêu to hơn."
+            },
+            {
+              "id": "b",
+              "text": "Cái cây cong hẳn lại sắp gãy rồi."
+            },
+            {
+              "id": "c",
+              "text": "Cậu bỏ tớ ra đi kẻo cậu cũng bị rơi theo đấy."
+            },
+            {
+              "id": "d",
+              "text": "Nhờ bác Voi cao lớn đang làm việc gần đấy chạy tới cứu giúp."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Việc làm của Sóc nói lên điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Sóc là người bạn rất khỏe."
+            },
+            {
+              "id": "b",
+              "text": "Sóc là người thật thà và siêng năng."
+            },
+            {
+              "id": "c",
+              "text": "Sóc là người bạn chăm chỉ."
+            },
+            {
+              "id": "d",
+              "text": "Sóc là người sẵn sàng quên bản thân mình để cứu bạn."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-03-4",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Chú chim sâu",
+      "text": "Một hôm, chim sâu vào rừng chơi và được nghe hoạ mi hót. Trở về cái tổ trong vườn, chim sâu phụng phịu nói với bố mẹ:\n\n- Bố mẹ ơi! Con có thể trở thành hoạ mi được không?\n\n- Tại sao con muốn trở thành hoạ mi? - Chim mẹ ngạc nhiên hỏi.\n\n- Vì con muốn có tiếng hót hay để được mọi người yêu quý.\n\nChim bố nói:\n\n- Người ta yêu quý chim không chỉ vì tiếng hót đâu, con ạ. Con hãy cứ là chim sâu. Bắt thật nhiều sâu, bảo vệ cây cối, hoa màu, con sẽ được mọi người yêu quý.\n\nMột buổi chiều, trời đầy dông bão. Chim sâu bị gió thổi bạt vào một khung cửa sổ và rơi xuống nền nhà. Một cậu bé chạy tới nâng chim sâu lên và đặt nó vào trong một chiếc hộp cứng. Sáng hôm sau, trời quang mây tạnh, cậu bé đến mở nắp hộp, nhẹ nhàng nâng chim sâu trên tay. Bố cậu bé nói:\n\n- Con hãy thả chim sâu ra. Loài chim này có ích với vườn cây lắm đấy!\n\nCậu bé vuốt ve chim sâu rồi khẽ tung nó lên. Chim sâu chợt nhớ đến lời bố ngày nào. Chú vội vã bay về phía vườn cây.\n\n(Theo Nguyễn Đình Quảng)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chim sâu muốn trở thành loài chim nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hoạ mi"
+            },
+            {
+              "id": "b",
+              "text": "Cú mèo"
+            },
+            {
+              "id": "c",
+              "text": "Phượng hoàng"
+            },
+            {
+              "id": "d",
+              "text": "Chèo bẻo"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao chim sâu muốn trở thành loài chim đó?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì muốn có tiếng hót hay."
+            },
+            {
+              "id": "b",
+              "text": "Vì muốn được mọi người yêu quý."
+            },
+            {
+              "id": "c",
+              "text": "Vì cho rằng loài chim đó có ích với vườn cây."
+            },
+            {
+              "id": "d",
+              "text": "Cả A và B."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chim bố đã nói gì với chim con?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Người ta yêu quý chim không chỉ vì tiếng hót."
+            },
+            {
+              "id": "b",
+              "text": "Con hãy thả chim sâu ra."
+            },
+            {
+              "id": "c",
+              "text": "Tại sao con muốn trở thành hoạ mi?"
+            },
+            {
+              "id": "d",
+              "text": "Loài chim này có ích với vườn cây lắm đấy!"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vào hôm trời dông bão, chuyện gì đã xảy đến với chim sâu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nó bị gió thổi bạt vào cửa sổ và rơi xuống nền nhà."
+            },
+            {
+              "id": "b",
+              "text": "Nó bị gió thổi bạt vào cửa sổ và rơi vào một cái hộp."
+            },
+            {
+              "id": "c",
+              "text": "Nó bị gió thổi bạt vào một đám lá ẩm ướt."
+            },
+            {
+              "id": "d",
+              "text": "Nó bị gió thổi bạt vào một cái hộp."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi được cậu bé thả ra, chim sâu nhớ đến lời nói nào của bố?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bắt thật nhiều sâu, bảo vê cây cối, hoa màu, con sẽ được mọi người yêu quý."
+            },
+            {
+              "id": "b",
+              "text": "Loài chim này có ích với vườn cây lắm đấy!"
+            },
+            {
+              "id": "c",
+              "text": "Con hãy thả chim sâu ra."
+            },
+            {
+              "id": "d",
+              "text": "Con hãy cứ là chim sâu."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào dưới đây viết đúng tên các cơ quan, tổ chức?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Báo nhi Đồng, Hội Chữ thập đỏ Hà Nội, Mặt trận tổ quốc Việt Nam."
+            },
+            {
+              "id": "b",
+              "text": "Báo Nhi đồng, Hội Chữ thập đỏ Hà Nội, Mặt trận Tổ quốc Việt Nam."
+            },
+            {
+              "id": "c",
+              "text": "Báo Nhi đồng, Hội chữ thập đỏ Hà nội, mặt trận tổ quốc Việt Nam."
+            },
+            {
+              "id": "d",
+              "text": "Báo Nhi đồng, Hội chữ thập đỏ Hà Nội, Mặt trận tổ quốc Việt Nam."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-04-5",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Chuyện về hai hạt lúa",
+      "text": "Có hai hạt lúa nọ được giữ lại để làm hạt giống cho vụ sau vì cả hai đều là những hạt lúa tốt, đều to khoẻ và chắc mẩy.\n\nMột hôm, người chủ định đem gieo chúng trên cánh đồng gần đó. Hạt thứ nhất nhủ thầm: \"Dại gì phải theo ông chủ ra đồng. Ta không muốn cả thân mình phải nát tan trong đất. Tốt nhất ta hãy giữ lại tất cả chất dinh dưỡng trong lớp vỏ này và tìm một nơi lí tưởng để trú ngụ\". Thế là nó chọn một góc khuất trong kho lúa để lăn vào đó.\n\nCòn hạt lúa thứ hai thì ngày đêm mong được ông chủ mang gieo xuống đất. Nó thật sự sung sướng khi được bắt đầu một cuộc đời mới mẻ ở ngoài cánh đồng.\n\nThời gian trôi qua, hạt lúa thứ nhất bị héo khô nơi góc nhà bởi vì nó chẳng nhận được nước và ánh sáng. Lúc này chất dinh dưỡng chẳng giúp ích được gì, nó chết dần chết mòn. Trong khi đó, dù hạt lúa thứ hai bi nát tan trong đất nhưng từ thân nó lại mọc lên cây lúa vàng óng, trĩu hạt. Nó lại mang đến cho đời những hạt lúa mới.\n\n(Hạt giống tâm hồn)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hai hạt lúa trong bài có đặc điểm như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tốt, xinh đẹp, vàng óng."
+            },
+            {
+              "id": "b",
+              "text": "Tốt, to khoẻ và chắc mẩy."
+            },
+            {
+              "id": "c",
+              "text": "Vàng óng, trĩu hạt, chắc mẩy."
+            },
+            {
+              "id": "d",
+              "text": "Vàng óng, to khoẻ và trĩu hạt."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hạt lúa thứ nhất có suy nghĩ và hành động như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Muốn được cuộc sống mới của cây lúa."
+            },
+            {
+              "id": "b",
+              "text": "Muốn mãi mãi là hạt lúa đầy chất dinh dưỡng và lăn vào góc khuất để yên thân."
+            },
+            {
+              "id": "c",
+              "text": "Lăn vào góc khuất để được yên thân và mọc thành cây lúa."
+            },
+            {
+              "id": "d",
+              "text": "Muốn bắt đầu cuộc đời mới ở ngoài cánh đồng."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao hạt lúa thứ nhất không muốn được đem gieo xuống đất mà lại \"chọn một góc khuất trong kho lúa để lăn vào đó\"?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì hạt lúa nghĩ ở đó có đủ nước và chất dinh dưỡng nuôi sống nó."
+            },
+            {
+              "id": "b",
+              "text": "Vì hạt lúa nghĩ rằng đó là nơi trú ngụ an toàn, điều kiện sống tốt, giúp nó phát triển."
+            },
+            {
+              "id": "c",
+              "text": "Vì hạt lúa sợ gặp nguy hiểm, sợ thân mình bị tan nát trong đất."
+            },
+            {
+              "id": "d",
+              "text": "Vì hạt lúa sợ sẽ bị mang đi bán cho người khác."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tại sao hạt lúa thứ hai lại mong muốn được gieo xuống đất?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì hạt lúa thấy sung sướng khi bắt đầu một cuộc đời mới."
+            },
+            {
+              "id": "b",
+              "text": "Vì hạt lúa thấy thích thú khi được thay đổi chỗ ở mới."
+            },
+            {
+              "id": "c",
+              "text": "Vì hạt lúa nghĩ rằng ở trong lòng đất sẽ được an toàn."
+            },
+            {
+              "id": "d",
+              "text": "Vì hạt lúa muốn được lăn mình xuống đồng ruộng có nước."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-05-6",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Bàn tay người nghệ sĩ",
+      "text": "Ngay từ nhỏ, Trương Bạch đã rất yêu thích thiên nhiên. Lúc nhàn rỗi, cậu nặn những con giống bằng đất sét trông y như thật. Lớn lên, Trương Bạch xin đi làm ở một cửa hàng đồ ngọc. Anh say mê làm việc hết mình, không bao giờ chịu dừng khi thấy những chỗ cần gia công tinh tế mà mình chưa làm được. Sự kiên nhẫn, sáng tạo của Trương Bạch khiến người dạy nghề cũng phải kinh ngạc. Một hôm có người mang một khối ngọc thạch đến và nhờ anh tạc cho một pho tượng Quan Âm. Trương Bạch tự nhủ sẽ gắng công tạo nên một tác phẩm tuyệt trần, mĩ mãn.\n\nPho tượng làm xong, quả là một tác phẩm trác tuyệt. Từ dung mạo đến dáng vẻ của Quan Âm đều toát lên sự ung dung và cực kì mĩ lệ. Điều vô cùng lí thú là pho tượng sống động đến lạ lùng, giống như một người sống vậy. Nếu đi một vòng xung quanh pho tượng, đôi mắt Quan Âm như biết nhìn theo. Hiển nhiên đây là điều không thể nào tưởng tượng nổi.\n\n(Theo Lâm Ngũ Đường)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Lúc nhàn rỗi Trương Bạch đã làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nặn những con giống bằng đất sét."
+            },
+            {
+              "id": "b",
+              "text": "Tạc những pho tượng."
+            },
+            {
+              "id": "c",
+              "text": "Nặn những con giống bằng đất màu."
+            },
+            {
+              "id": "d",
+              "text": "Làm các đồ thủ công."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Điều không thể tưởng tượng nổi ở pho tượng là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đôi mắt tượng Quan Âm như biết nhìn theo."
+            },
+            {
+              "id": "b",
+              "text": "Đôi mắt pho tượng nhìn long lanh như mắt người."
+            },
+            {
+              "id": "c",
+              "text": "Pho tượng toát lên sự ung dung và cực kì mĩ lệ."
+            },
+            {
+              "id": "d",
+              "text": "Pho tượng sống động đến lạ lùng giống như một người sống vậy."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Qua câu chuyện, em thấy Trương Bạch là người như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Là một người chăm chỉ, chịu khó và sáng tạo."
+            },
+            {
+              "id": "b",
+              "text": "Là một người hiền lành và nhiệt huyết với công việc làm gốm."
+            },
+            {
+              "id": "c",
+              "text": "Là một người yêu thích sự hoàn hảo."
+            },
+            {
+              "id": "d",
+              "text": "Là một người say mê nghệ thuật có tính kiên nhẫn và sáng tạo."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tên cơ quan tổ chức nào viết đúng:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đài truyền hình hà Nội."
+            },
+            {
+              "id": "b",
+              "text": "Trường Tiểu học Lê Hồng Phong."
+            },
+            {
+              "id": "c",
+              "text": "Bộ Giáo dục và đào tạo."
+            },
+            {
+              "id": "d",
+              "text": "Công ty thuốc lá Thăng long."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-06-7",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Tấm lòng thầm lặng",
+      "text": "Ngày nọ, bố tôi lái xe đưa ông chủ đi tham dự một buổi họp quan trọng tại một thành phố khác. Trong lúc nghỉ ở giữa đường, mấy cậu bé đang chơi quanh đấy hiếu kì kéo đến vây quanh, ngắm nghía và sờ mó chiếc xe sang trọng. Thấy một cậu bé trong nhóm đi cà nhắc vì bị tật ở chân, ông chủ liền bước ra khỏi xe, đến chỗ cậu bé và hỏi:\n\n- Cháu có muốn đôi chân được lành lặn bình thường không?\n\n- Chắc chắn là muốn ạ! Nhưng sao ông lại hỏi cháu như thế? - Cậu bé ngạc nhiên trước sự quan tâm của người xa lạ.\n\nChiều hôm đó, theo lời dặn của ông chủ, bố tôi đã đến gặp gia đình cậu bé có đôi chân tật nguyền ấy.\n\n- Chào chị! – Bố tôi lên tiếng trước. - Chị có phải là mẹ cháu Giêm-mi không? Tôi đến đây để xin phép chị cho chúng tôi đưa Giêm-mi đi phẫu thuật để đôi chân cháu trở lại bình thường.\n\n- Thế điều kiện của ông là gì? Đời này chẳng có ai có gì cho không cả. - Mẹ Giêm-mi nghi ngờ nói.\n\nTrong gần một tiếng đồng hồ sau đó, bố tôi kiên nhẫn giải thích mọi chuyện và trả lời mọi câu hỏi của hai vợ chồng. Cuối cùng, hai người đồng ý cho Giêm-mi phẫu thuật.\n\nKết quả cuối cùng hết sức tốt đẹp. Đôi chân Giêm-mi đã khoẻ mạnh và lành lặn trở lại. Giêm-mi kể cho bố tôi nghe ước mơ được trở thành doanh nhân thành công và sẽ giúp đỡ những người có hoàn cảnh không may mắn như cậu.\n\nVề sau, cậu bé Giêm-mi may mắn ấy trở thành một nhà kinh doanh rất thành đạt như ước mơ của mình. Đến tận khi qua đời, theo tôi biết, Giêm-mi vẫn không biết ai là người đã giúp đỡ ông chữa bệnh hồi đó... Nhiều năm trôi qua, tôi luôn ghi nhớ lời ông chủ đã nói với bố tôi: \"Cho đi mà không cần phải nhận lại sẽ là niềm vui lâu dài\".\n\n(Theo Bích Thủy)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Cậu bé trong câu chuyện gặp điều không may gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bị tật ở chân"
+            },
+            {
+              "id": "b",
+              "text": "Bị ốm nặng"
+            },
+            {
+              "id": "c",
+              "text": "Bị khiếm thị"
+            },
+            {
+              "id": "d",
+              "text": "Bị khiếm thính"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Ông chủ đã giúp đỡ cậu bé như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhận cậu bé về làm con nuôi rồi chữa bệnh và cho cậu ăn học đàng hoàng."
+            },
+            {
+              "id": "b",
+              "text": "Đến nhà và đích thân chữa bệnh cho cậu bé."
+            },
+            {
+              "id": "c",
+              "text": "Cho người lái xe riêng đến thuyết phục cha mẹ cậu để ông được trả tiền chữa bệnh cho cậu bé."
+            },
+            {
+              "id": "d",
+              "text": "Cho một số tiền lớn để cậu bé có vốn làm ăn buôn bán."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao ông chủ lại bảo người lái xe của mình làm việc đó?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì ông đang ở nước ngoài, chưa thể về nước được."
+            },
+            {
+              "id": "b",
+              "text": "Vì ông không muốn gia đình người được giúp đỡ biết mình là ai."
+            },
+            {
+              "id": "c",
+              "text": "Vì ông không có thời gian tới gặp họ."
+            },
+            {
+              "id": "d",
+              "text": "Vì ông muốn nhận cháu bé làm con nuôi nhưng sợ bố mẹ cậu bé từ chối."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Cậu bé được ông chủ giúp đỡ đã trở thành một người như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trở thành một bác sĩ phẫu thuật vô cùng tài năng."
+            },
+            {
+              "id": "b",
+              "text": "Trở thành một doanh nhân thành đạt và biết giúp đỡ những người có hoàn cảnh khó khăn như mình."
+            },
+            {
+              "id": "c",
+              "text": "Trở thành một nhà hảo tâm chuyên giúp đỡ những người gặp khó khăn trong cuộc sống."
+            },
+            {
+              "id": "d",
+              "text": "Trở thành con nuôi của ông chủ và biết giúp đỡ những người có hoàn cảnh khó khăn như mình."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-07-8",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Ông tổ nghề thêu",
+      "text": "Hồi còn nhỏ, cậu bé Trần Quốc Khái rất ham học. Cậu học khi đi đốn củi, lúc kéo vó tôm. Tối đến, nhà không có đèn, cậu bắt đom đóm bỏ vào vỏ trứng, lấy ánh sáng đọc sách. Chẳng bao lâu, Trần Quốc Khái đỗ tiến sĩ, rồi làm quan to trong triều đình nhà Lê.\n\nMột lần, Trần Quốc Khái được triều đình cử đi sứ bên Trung Quốc. Vua Trung Quốc muốn thử tài sứ thần, sai dựng một cái lầu cao, mời ông lên chơi rồi cất thang đi. Không còn lối xuống, ông đành ở lại trên lầu. Lầu chỉ có hai pho tượng Phật, hai cái lọng, một bức trướng thêu ba chữ “Phật trong lòng” và một vò nước.\n\nBụng đói mà không có cơm ăn, Trần Quốc Khái lẩm nhẩm đọc ba chữ trên bức trướng, rồi mỉm cười. Ông bẻ tay pho tượng nếm thử. Thì ra hai pho tượng ấy nặn bằng chè lam. Từ đó, ngày hai bữa, ông cứ ung dung bẻ dần tượng mà ăn. Nhân được nhàn rỗi, ông mày mò quan sát, nhớ nhập tâm cách thêu và làm lọng.\n\nHọc được cách thêu và làm lọng rồi, ông tìm đường xuống. Thấy những con dơi xòe cánh chao đi chao lại như chiếc lá bay, ông liền ôm lọng nhảy xuống đất bình an vô sự. Vua Trung Quốc khen ông là người tài, đặt tiệc to tiễn về nước.\n\nVề đến nước nhà, Trần Quốc Khái truyền dạy cho dân nghề thêu và nghề làm lọng. Dần dần, nghề thêu lan rộng ra khắp nơi. Nhân dân vùng Thường Tín, quê ông, lập đền thờ và tôn ông là ông tổ nghề thêu.\n\n(Theo Ngọc Vũ)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hồi nhỏ, Trần Quốc Khái ham học như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cậu học cả khi đi đốn củi, lúc kéo vó tôm. Tối đến, cậu bắt đom đóm bỏ vào vỏ trứng làm đèn để đọc sách."
+            },
+            {
+              "id": "b",
+              "text": "Cậu chăm chỉ đến trường, không nghỉ học một ngày nào."
+            },
+            {
+              "id": "c",
+              "text": "Cậu chăm chú nghe thầy giảng bài."
+            },
+            {
+              "id": "d",
+              "text": "Cậu chăm chỉ khi được ở nhà."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vua Trung Quốc nghĩ ra cách gì để thử tài sứ thần Việt Nam?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vua sai dựng một cái lầu cao, mời ông lên để làm một chiếc lọng."
+            },
+            {
+              "id": "b",
+              "text": "Vua sai dựng một cái lầu cao, mời ông lên để tạc một pho tượng Phật."
+            },
+            {
+              "id": "c",
+              "text": "Vua sai dựng một cái lầu cao, mời ông lên chơi, rồi cất thang đi."
+            },
+            {
+              "id": "d",
+              "text": "Vua sai dựng một cái lầu cao, thách ông lên lầu rồi bay xuống đất."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trần Quốc Khái đã làm gì để không bị đói?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ông nhờ cung nữ đem thức ăn đến cho ông."
+            },
+            {
+              "id": "b",
+              "text": "Ông hái trái cây gần đó để ăn."
+            },
+            {
+              "id": "c",
+              "text": "Ông ăn thức ăn trên bàn cúng Phật."
+            },
+            {
+              "id": "d",
+              "text": "Ông bẻ tay pho tượng nếm thử và ung dung bẻ dần tượng mà ăn."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-08-9",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Hà Nội - mùa hoa tháng Năm",
+      "text": "Mẹ Lan là người Hà Nội, sau khi kết hôn thì theo bố vào Nam. Mỗi năm vào dịp nghỉ hè, bố mẹ sẽ đưa Lan về Hà Nội thăm ông bà ngoại. Với Lan, mùa hè ở quê ngoại luôn rạng rỡ, nồng nhiệt và lãng mạn đến nao lòng.\n\nTháng Năm, khi những cơn gió bỏng rát của mùa hạ bắt đầu xua tan đi sương mù ẩm ướt thì mùa bằng lăng cũng bắt đầu. Bằng lăng tím biếc phảng phất nét e ấp, dịu dàng, tinh tế như vẻ đẹp của những cô thiếu nữ Hà thành, càng làm cho những con phố thêm thi vị. Đi dạo trên phố phường Hà Nội vào mùa hoa tháng Năm sẽ thấy cái nắng oi ả của mùa hè miền Bắc cũng trở nên thơ mộng, nhẹ nhàng hơn.\n\nNhững hàng phượng vĩ già cũng trổ hoa rực rỡ. Sắc đỏ thắm, chói chang của hoa phượng giữa nắng hè bỏng rát đã hằn lên trái tim biết bao thế hệ học trò những kỉ niệm không thể phai mờ theo năm tháng. Loài hoa biểu tượng của tuổi thanh xuân, của những mùa hè xốn xang, li biệt không chỉ được trồng trong những ngôi trường mà có mặt ở hầu hết các tuyến đường lớn, ven sông, hồ ở Hà Nội.\n\nCuối tháng Năm, những chùm hoa điệp vàng rực rỡ cũng bắt đầu khoe sắc. Hoa điệp thường nở trên ngọn cây, những cây cao lớn, tán rộng, xanh mát càng làm cho sắc vàng trở nên nổi bật.\n\nMùa hè Hà Nội trong tâm trí của Lan là những sắc hoa rực rỡ nối tiếp nhau qua từng con phố trải dài đi đến bất tận. Những con phố thâm trầm, cổ kính cũng trở nên sôi nổi, rạng ngời sức sống tươi trẻ, vô cùng ấm áp, vô cùng thân thương mỗi khi nhớ về.\n\nTheo Giang Anh",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Lan cảm thấy mùa hè ở quê ngoại như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Rạng rỡ, nồng nhiệt và lãng mạn đến nao lòng."
+            },
+            {
+              "id": "b",
+              "text": "Nắng chói chang cùng với tiết trời oi nồng."
+            },
+            {
+              "id": "c",
+              "text": "Ấm áp, tràn đầy hương thơm."
+            },
+            {
+              "id": "d",
+              "text": "Nóng nực, oi ả."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hoa bằng lăng được tác giả so sánh với cái gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Biểu tượng của tuổi thanh xuân."
+            },
+            {
+              "id": "b",
+              "text": "Sức sống tươi trẻ của thiếu niên."
+            },
+            {
+              "id": "c",
+              "text": "Vẻ đẹp của những con phố bất tận."
+            },
+            {
+              "id": "d",
+              "text": "Vẻ đẹp của những cô thiếu nữ Hà thành."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo bài đọc, loài hoa nào là biểu tượng của tuổi thanh xuân?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hoa điệp vàng."
+            },
+            {
+              "id": "b",
+              "text": "Hoa bằng lăng."
+            },
+            {
+              "id": "c",
+              "text": "Hoa phượng vĩ."
+            },
+            {
+              "id": "d",
+              "text": "Hoa sữa."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mùa hè Hà Nội trông như thế nào trong tâm trí của Lan?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Là những sắc hoa rực rỡ nối tiếp nhau qua từng con phố trải dài đi đến bất tận."
+            },
+            {
+              "id": "b",
+              "text": "Là những ly kem mát lạnh giải nhiệt giữa tiết trời nắng nóng."
+            },
+            {
+              "id": "c",
+              "text": "Là những chùm vải ngọt lịm bà dậy sớm đi mua."
+            },
+            {
+              "id": "d",
+              "text": "Là những ánh nắng chói chang giữa trưa hè oi ả."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Dấu gạch ngang trong câu “Chiến dịch Huế - Đà Nẵng đã giúp quân ta giành thế chủ động trên chiến trường.” có tác dụng gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đánh dấu lời nói trực tiếp của nhân vật."
+            },
+            {
+              "id": "b",
+              "text": "Đánh dấu các ý trong một đoạn liệt kê."
+            },
+            {
+              "id": "c",
+              "text": "Nối các từ ngữ trong một liên danh."
+            },
+            {
+              "id": "d",
+              "text": "Đánh dấu phần chú thích."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-09-10",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Ba con búp bê đầu tiên",
+      "text": "Ngày đó, gia đình tôi còn rất nghèo. Ba làm thợ mộc, mẹ làm ở vườn ươm, nuôi anh trai tôi đi học và tôi – một con bé lên năm tuổi.\n\nAnh em tôi không có nhiều đồ chơi: vài mẩu đồ gỗ ba cho để xếp hình, mấy lọn tơ rối làm tóc giả để chơi biểu diễn thời trang mẹ xin ở xưởng. Hôm nào mà ba mẹ không bắt ngủ trưa là tôi phóng vọt sang nhà cái Ngọc hàng xóm chơi ké. Nhà nó rất giàu, có nhiều đồ chơi và đương nhiên, có cả những con búp bê. Lúc nào tôi cũng mong ước có được một con búp bê như thế. Một hôm cha tôi bảo:\n\n– Hôm nay là ngày Nô-en, trước khi ngủ, con hãy cầu nguyện xin ông già Nô-en cho con một con búp bê. Điều ước sẽ thành sự thật.\n\nSáng hôm sau, tôi hét toáng lên sung sướng khi thấy trong chiếc tất tôi treo ở đầu giường ló ra một cái đầu búp bê. Tôi dốc ngược chiếc tất ra, không phải là một đâu nhé, mà có tới ba em búp bê: một bé trai bằng gỗ, một bé gái bằng vải tóc xoăn bạch kim và một bé gái nhỏ mũm mĩm bằng giấy bìa bồi. Có một mẩu giấy nhỏ rơi ra từ em búp bê trai và anh tôi đã đọc cho tôi nghe những lời như sau:\n\n“Bé Giang thân mến!\n\nDù cháu chỉ xin ông một con búp bê nhưng vì cháu là một em bé ngoan nên ông đã cho cháu một gia đình búp bê. Hãy luôn ngoan và hiếu thảo cháu nhé!\n\nÔng già Nô-en”\n\nMười lăm năm sau, tôi đã lớn khôn, đã trưởng thành. Anh tôi cho tôi biết sự thật về sự ra đời của những con búp bê.\n\nThì ra chẳng có một ông già Nô-en áo đỏ nào tặng quà cho tôi, mà có tới ba ông già Nô-en mặc áo màu đỏ là ba, mẹ và anh tôi. Tối hôm ấy, ba đã tỉ mẩn gọt đẽo khúc gỗ thành con búp bê trai; mẹ cần mẫn chắp những mẩu vải vụn thành bé búp bê; còn anh tôi, loay hoay cả buổi tối để làm xong con búp bê bằng bìa bồi…\n\nNhững ông già Nô-en của con ơi, con thương mọi người nhiều lắm!\n\n(Theo Nguyễn Thị Trà Giang)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bạn nhỏ mong ước điều gì nhất khi còn nhỏ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Có một con búp bê."
+            },
+            {
+              "id": "b",
+              "text": "Có nhiều đồ chơi bằng gỗ."
+            },
+            {
+              "id": "c",
+              "text": "Được sang nhà bạn chơi."
+            },
+            {
+              "id": "d",
+              "text": "Được ba mẹ cho tiền."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bạn nhỏ đã nhận được gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Một con búp bê thật xinh."
+            },
+            {
+              "id": "b",
+              "text": "Một gia đình búp bê."
+            },
+            {
+              "id": "c",
+              "text": "Một chiếc tất chứa đầy đồ chơi đẹp."
+            },
+            {
+              "id": "d",
+              "text": "Hai con búp bê."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Ai đã gửi món quà cho bạn nhỏ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bố mẹ."
+            },
+            {
+              "id": "b",
+              "text": "Bố, mẹ và anh trai."
+            },
+            {
+              "id": "c",
+              "text": "Ông già Nô-en."
+            },
+            {
+              "id": "d",
+              "text": "Những ông già Nô-en."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu chuyện muốn nói với chúng ta điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Muốn được quà Nô-en hãy cầu nguyện xin ông gia Nô-en."
+            },
+            {
+              "id": "b",
+              "text": "Muốn được quà Nô-en hãy là một người con ngoan hiếu thảo."
+            },
+            {
+              "id": "c",
+              "text": "Thật là hạnh phúc khi được sống trong sự quan tâm, yêu thương của mọi người trong gia đình."
+            },
+            {
+              "id": "d",
+              "text": "Hãy đặt chiếc tất ở đầu giường để nhận được quà từ ông già Nô-en."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi cuối học kì 1 - Đề số 5"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-10-11",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Quê hương nghĩa nặng",
+      "text": "Từ lúc thoát li gia đình cho đến ngày về yên nghỉ trên đất mẹ, Đại tướng Võ Nguyên Giáp luôn tâm niệm: “Quảng Bình là nhà tôi, khi nào rảnh việc nước thì tôi về nhà.”.\n\nLần đầu tiên Đại tướng về thăm nhà sau chiến thắng Điện Biên Phủ là mùa hạ năm 1959. Hình ảnh oai phong mà gần gũi của ông đã được ghi tạc trong tâm trí người dân An Xá. Ông mặc lễ phục quân nhân, đứng thẳng trên một chiếc xe com-măng-ca được tháo bạt. Tay trái ông nắm thanh sắt khung xe, tay phải giơ ngang vành mũ, mắt nhìn thẳng nghiêm cẩn chào người dân quê đang háo hức nồng nhiệt chờ đón. Mặc những dòng mô hội chảy từ gáy xuống cổ, tay phải ông vẫn giữ nghiêm trên vành mũ.\n\nNhững lần ông về quê nhằm ngày lễ hội đua thuyền trên sông Kiến Giang luôn khiến bầu không khí thêm đặc biệt. Ngày hội năm 1986, nhân dân khắp nơi tụ về đứng chật hai bờ sông. Bất ngờ, một giọng nói vang lên trên loa phóng thanh: “Kính thưa bà con nhân dân huyện nhà, hôm nay tôi về quê...”. Cả hai bờ sông im bặt vì xúc động, rồi nhiều người mừng rỡ kêu lên: “Ông Giáp! Ông Giáp về!”. Ai cũng nhận ra đó là giọng nói của ông, giọng Lệ Thuỷ của một người dù gót chân bám bụi trăm miền vẫn vẹn nguyên âm sắc mộc mạc mà ấm áp. Trong buổi giao lưu hôm đó, mọi người đều ấn tượng với lời ông nói: “Chưa bao giờ tôi quên quê hương và gia đình đã hun đúc nên nhân cách của tôi, quyết định con đường đi của tôi...”.\n\nLần cuối cùng, năm 2013, Đại tướng đã thực sự về với quê hương Vũng Chùa – Đảo Yến. Kể từ đó, người dân cả nước thường xuyên đến viếng thăm nơi này.\n\n(Tường Vy tổng hợp)\n\nTừ ngữ\n\nXe com-măng-ca: xe quân sự loại nhỏ, nóc xe được làm bằng vải bạt.",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bài đọc cho em biết điều gì về Đại tướng Võ Nguyên Giáp?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Chỉ huy nhiều chiến dịch quan trọng."
+            },
+            {
+              "id": "b",
+              "text": "Dành tình cảm sâu nặng cho quê hương."
+            },
+            {
+              "id": "c",
+              "text": "Được tôn vinh là “vị tướng của nhân dân”."
+            },
+            {
+              "id": "d",
+              "text": "Là học trò giỏi của Bác Hồ."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Điều gì khiến bà con dự lễ hội đua thuyền năm 1986 xúc động?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Lễ hội năm đó được tổ chức long trọng nhất."
+            },
+            {
+              "id": "b",
+              "text": "Bà con được biết trước là Đại tướng sẽ về."
+            },
+            {
+              "id": "c",
+              "text": "Chưa bao giờ mọi người đi xem hội đông như vậy."
+            },
+            {
+              "id": "d",
+              "text": "Được nghe giọng Lệ Thuỷ mộc mạc mà ấm áp của Đại tướng."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo em, câu: “Chưa bao giờ tôi quên quê hương và gia đình đã hun đúc nên nhân cách của tôi, quyết định con đường đi của tôi...” ý nói gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Lòng biết ơn quê hương và gia đình của Đại tướng."
+            },
+            {
+              "id": "b",
+              "text": "Nỗi nhớ quê hương sâu nặng của Đại tướng."
+            },
+            {
+              "id": "c",
+              "text": "Niềm thương mến với người dân quê hương của Đại tướng."
+            },
+            {
+              "id": "d",
+              "text": "Niềm tin vào sự phát triển của quê hương của Đại tướng."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-12-12",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Trạng Nguyên Nguyễn Kỳ",
+      "text": "Bố mẹ Thời Lượng rất nghèo, ăn ở hiền lành, tuổi đã ngoài tứ tuần mà vẫn chưa có con. Có người biết tướng số trong vùng bảo rằng: ông bà sẽ sinh quý tử nhưng số ông bà phải hầu cửa Phật. Từ đấy, ông bà họ Nguyễn sớm hôm lên chùa dâng hoa, đèn nhang thờ Phật. Sau đấy hai năm thì sinh ra Thời Lượng.\n\nKhi Thời Lượng lên ba, bố mẹ gửi cậu vào chùa cho làm con nuôi sư thầy. Thời Lượng lớn nhanh và thông minh. Mới bốn tuổi, chỉ nghe sư thầy đọc kinh mà thuộc lòng kinh tụng niệm hằng ngày. Sư thầy thấy vậy yêu quý cậu như con và cho cậu đi học. Thời Lượng học một biết mười. Vừa học giỏi lại chuyên cần, ngoan ngoãn nên được sư thầy yêu, bạn mến. Đêm nào cũng vậy, vì không có tiền mua dầu thắp đèn nên cậu bé cắp sách vào Tam bảo ngồi dưới chân tượng, học bài nhờ ánh sáng cây nến. Khi nến tắt hết mới đi ngủ. Sư thầy thấy vậy bèn thửa những cây nến dài hơn để cho cậu học.\n\nĐến kì thi Đình, sư thầy nằm mơ thấy có người tên là Nguyễn Kỳ đỗ Trạng nguyên, bèn đổi tên Nguyễn Thời Lượng thành Nguyễn Kỳ. Quả nhiên khoa thi Đình năm ấy, Thời Lượng đỗ Trạng nguyên, lúc đó ông mới có 21 tuổi.\n\nNgày vinh quy, tân Trạng nguyên đề nghị dân làng đón ông tại chùa để ông tạ ơn Phật và sư thầy đã có công dưỡng dục mình thành tài, sau ông mới về thăm tổ tiên, cha mẹ. Biết tin, nhà vua khen ông là người tận trung, tận hiếu và bổ ông vào làm việc ở Viện Hàn lâm để có điều kiện giúp vua, giúp nước.\n\nTheo Mai Hồng",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi Thời Lượng lên ba, bố mẹ gửi cậu cho ai?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cho sư thầy."
+            },
+            {
+              "id": "b",
+              "text": "Cho người biết xem tướng số."
+            },
+            {
+              "id": "c",
+              "text": "Cho người thợ mộc."
+            },
+            {
+              "id": "d",
+              "text": "Cho thầy đồ."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao Thời Lượng được sư thầy yêu, bạn mến?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì cậu là người thông minh và hay giúp đỡ người nghèo."
+            },
+            {
+              "id": "b",
+              "text": "Vì cậu là người khéo ăn khéo nói."
+            },
+            {
+              "id": "c",
+              "text": "Vì cậu là người hay giúp những người yếu thế."
+            },
+            {
+              "id": "d",
+              "text": "Vì cậu là người vừa học giỏi lại chuyên cần, ngoan ngoãn."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chi tiết cho thấy Thời Lượng là người “uống nước nhớ nguồn”:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ông đã giúp xây đền, chùa cho làng và giúp đỡ những đứa trẻ nghèo đi học."
+            },
+            {
+              "id": "b",
+              "text": "Ông đã đưa người nhà và người thầy dạy mình lên kinh thành."
+            },
+            {
+              "id": "c",
+              "text": "Ông đề nghị đón mình tại chùa để tạ ơn Phật, sư thầy rồi về thăm cha mẹ."
+            },
+            {
+              "id": "d",
+              "text": "Ông đã giúp vua có nhiều chính sách cải thiện đất nước."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Nhờ đâu Nguyễn Thời Lượng đỗ Trạng Nguyên?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhờ được đổi tên thành Nguyễn Kỳ."
+            },
+            {
+              "id": "b",
+              "text": "Vì sống nương nhờ cửa Phật, do sáng dạ, chăm chỉ đèn sách."
+            },
+            {
+              "id": "c",
+              "text": "Vì sống nương nhờ cửa Phật, do nhà nghèo, ăn ở hiền lành."
+            },
+            {
+              "id": "d",
+              "text": "Vì ăn ở hiền lành."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-13-13",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Nước về đồng",
+      "text": "Tiếng nổ xình xịch giòn giã vang động cánh đồng. Con mương rộng, nước về đầy ắp, chảy từ thôn Thượng qua thôn Trung xuống thôn Hạ, chảy qua bãi Bò Liếm thì nó dừng lại. Cứ gặp đá ngầm, nó dựng đứng sôi sục, cuộn tròn, tung mình lên để vượt qua, nhưng không thoát được, đành ngoan ngoãn chui đầu xuống trước sức hút của vòi bơm. Phía trên, từ miệng ống, một vùng nước xoã rộng ra, trắng xoá, cuồn cuộn, ồn ào dồn vào trong mương. Con mương trôi miên miết, oà vào các cánh đồng...\n\nNhững khối nước to lớn, mát lạnh từ sông xa về thấm dần, tràn vào các thớ đất khô cứng nứt nẻ. Mặt đất ọc ạch, chuyển động, run rẩy, quấn riết lấy nước như đứa bé đói tìm được bầu vú mẹ... Tiếng nước chảy rí rách, rì rầm, liu riu... như tiếng gió rất nhẹ, như tiếng lá rụng, như tiếng đàn cá quẫy. Trời đất như mát hơn, như rộng ra. Trăng đầu tháng mờ xanh. Mặt nước pha một chút lơ mỏng, phơn phớt. Những chiếc lá lúa, những cụm lúa quẫy quẫy rung rung, trông xa như những cái đuôi nhỏ xíu đang chạy.\n\n(Nguyễn Thị Ngọc Tú)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nước chảy qua mương nước để đổ về đâu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đổ về mương nước"
+            },
+            {
+              "id": "b",
+              "text": "Đổ về thôn Hạ"
+            },
+            {
+              "id": "c",
+              "text": "Đổ về bãi Bò Liếm"
+            },
+            {
+              "id": "d",
+              "text": "Đổ về cánh đồng"
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Người dân đưa nước từ con mương về bằng cách nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đào mương nhỏ"
+            },
+            {
+              "id": "b",
+              "text": "Dùng máy kéo"
+            },
+            {
+              "id": "c",
+              "text": "Dùng vòi bơm"
+            },
+            {
+              "id": "d",
+              "text": "Dùng máy cày"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao người dân cần phải dẫn nước về ruộng lúa?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì bao đời nay người dân vẫn làm như thế."
+            },
+            {
+              "id": "b",
+              "text": "Vì nước mương chứa nhiều khoáng chất, tốt cho sự phát triển của cây lúa."
+            },
+            {
+              "id": "c",
+              "text": "Vì cánh đồng đang rơi vào mùa cạn, đất khô cứng, nứt nẻ."
+            },
+            {
+              "id": "d",
+              "text": "Vì nước ở con mương là miễn phí."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tìm từ ngữ miêu tả âm thanh tiếng nước chảy ở đoạn 2 bài đọc.",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Quẫy quẫy, rung rung"
+            },
+            {
+              "id": "b",
+              "text": "Chuyển động, run rẩy"
+            },
+            {
+              "id": "c",
+              "text": "Rí rách, rì rầm"
+            },
+            {
+              "id": "d",
+              "text": "Lơ mỏng, phơn phớt"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-14-14",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Cô thợ gạch trên sông đà",
+      "text": "Đêm trăng, Lụa và mấy cô bạn ra bờ sông hóng mát. Mùa này, nước sông còn cạn, dòng sông hẹp, tiếng trẻ con đùa tắm trên bãi bên kia vọng sang nghe rõ mồn một. Mảnh đất mà Lụa đang đứng, mai đây sẽ mọc lên một thành phố thủy điện. “Công trình thủy điện sông Đà” - điều vào hai năm trước đây với Lụa như một ước mơ vô cùng đẹp đẽ nhưng hết sức xa xôi. Thế mà hôm nay đã bắt đầu hình thành một cái gì cụ thể.\n\nCái hôm mới đến công trường, được nghe trình bày về quy hoạch của công trình thuỷ điện, Lụa có cảm giác như đang xem một bộ phim màu. Trên tường hôm ấy treo một tấm bản đồ lớn. Con sông Đà từ Tây Bắc chảy về, đến Hoà Bình thì uốn cong thành một vòng cánh cung. Giữa vòng cung ấy sẽ hiện lên một thành phố chừng bốn vạn dân. Trên bản đồ thành phố tương lai, màu xanh là khu nhà ở cho công nhân, màu đỏ là khu vực xây những công trình như nhà máy cơ khí, nhà máy bê-tông, bến cảng... Công trình chính được tô màu tím: con đập lớn ngăn sông và nhà máy thủy điện có công suất lớn do Liên Xô giúp ta xây dựng.\n\nĐể kiến thiết các khu vực này, ngoài xi-măng, sắt thép, cần phải có hàng triệu hàng triệu viên gạch mà Lụa đang góp phần sản xuất ra. Lụa sung sướng cảm thấy sự có mặt của mình ở công trường này có ý nghĩa biết bao!\n\n(Ngô Quân Miện)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Nhân vật Lụa và các bạn của mình đã ra bờ sông hóng mát vào lúc nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vào một buổi chiều hè."
+            },
+            {
+              "id": "b",
+              "text": "Vào một buổi tối."
+            },
+            {
+              "id": "c",
+              "text": "Vào một đêm trăng."
+            },
+            {
+              "id": "d",
+              "text": "Vào giữa giờ giải lao."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hai năm trước đây, ước mơ vô cùng đẹp đẽ nhưng hết sức xa xôi của Lụa là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Là một công việc ổn định."
+            },
+            {
+              "id": "b",
+              "text": "Là một thước phim màu ấn tượng."
+            },
+            {
+              "id": "c",
+              "text": "Là một thành phố thủy điện lớn."
+            },
+            {
+              "id": "d",
+              "text": "Là công trình thủy điện sông Đà."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao Lụa lại cảm thấy sự có mặt của mình ở công trường có ý nghĩa?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì Lụa là một công nhân chăm chỉ và năng động."
+            },
+            {
+              "id": "b",
+              "text": "Vì Lụa tham gia thiết kế nên bản đồ của thành phố thủy điện."
+            },
+            {
+              "id": "c",
+              "text": "Vì Lụa tham gia sản xuất những viên gạch đang xây dựng nên thành phố."
+            },
+            {
+              "id": "d",
+              "text": "Vì Lụa là một trong những công nhân đầu tiên ở công trường."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi giữa học kì 2 - Đề số 5"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-15-15",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Đỉnh Fansipan Sa Pa",
+      "text": "Trong năm 2017, Sapa là một trong những điểm du lịch trong nước và quốc tế đặc biệt yêu thích. Nơi đây sở hữu những dãy núi hùng vĩ hay ruộng lúa bậc thang uốn lượn hút tầm mắt. Đặc biệt nhất trong đó là đỉnh Fansipan với độ cao 3143m và được mệnh danh là “Nóc nhà Đông Dương”. Đỉnh Fansipan thuộc dãy núi Hoàng Liên Sơn, nằm cách trung tâm thị trấn Sapa chừng 5km.\n\nFansipan theo tiếng địa phương có nghĩa là “phiến đá khổng lồ chênh vênh”. Trước đây, để chạm tay vào nóc nhà Fansipan, du khách phải có sự can đảm, ý chí và quan trọng nhất là một thể trạng sức khỏe tốt. Bởi điều đó đồng nghĩa với việc du khách sẽ phải băng qua những cánh rừng, vượt qua những con suối với thời gian tối thiểu để chinh phục là những bốn đến năm ngày (Tùy thể trạng sức khỏe và tốc độ).\n\nThế nhưng giờ đây việc chinh phục đã trở nên đơn giản hơn rất nhiều nhờ hệ thống cáp treo nối tuyến thẳng chỉ mất 15 phút di chuyển nên đây càng được xem là điểm đến yêu thích nhất của năm 2017. Fansipan phù hợp cho những du khách đi du lịch một mình, du lịch cặp đôi, du lịch cùng gia đình,… theo hướng trải nghiệm và khám phá.\n\nTheo “Văn hóa, phong tục Việt Nam”\n\n* Dựa vào nội dung bài đọc, hãy khoanh tròn vào chữ cái đặt trước ý trả lời đúng nhất và hoàn thành tiếp các bài tập:",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Đến Sapa, du khách được chiêm ngưỡng những cảnh đẹp nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Những dãy núi hùng vĩ hay ruộng lúa bậc thang uốn lượn hút tầm mắt; đặc biệt nhất là đỉnh Fansipan"
+            },
+            {
+              "id": "b",
+              "text": "Những dòng suối thơ mộng, những dãy núi hùng vĩ"
+            },
+            {
+              "id": "c",
+              "text": "Những đàn bò gặm cỏ ven đường, những thác nước bọt tung trắng xóa"
+            },
+            {
+              "id": "d",
+              "text": "Những dãy núi cao hùng vĩ, đặc biệt là đỉnh Fansipan"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Đỉnh Fansipan có độ cao bao nhiêu mét và còn được gọi với cái tên nào khác?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đỉnh Fansipan cao 3143m. Đỉnh Fansipan còn được gọi là “Nóc nhà của châu Á”"
+            },
+            {
+              "id": "b",
+              "text": "Đỉnh Fansipan cao 3143m. Đỉnh Fansipan còn được gọi là “Nóc nhà Đông Dương”."
+            },
+            {
+              "id": "c",
+              "text": "Đỉnh Fansipan cao 3413m. Đỉnh Fansipan còn được gọi là “Nóc nhà Đông Dương”."
+            },
+            {
+              "id": "d",
+              "text": "Đỉnh Fansipan cao 3143m. Đỉnh Fansipan còn được gọi là “Ngôi nhà của Đông Dương”."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Đỉnh Fansipan thuộc dãy núi nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Dãy núi Trường Sơn"
+            },
+            {
+              "id": "b",
+              "text": "Dãy núi Bà Đen"
+            },
+            {
+              "id": "c",
+              "text": "Dãy núi Hoàng Liên Sơn"
+            },
+            {
+              "id": "d",
+              "text": "Dãy núi Sa Pa"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo tiếng địa phương Fansipan có nghĩa là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nóc nhà Đông Dương"
+            },
+            {
+              "id": "b",
+              "text": "Phiến đá khổng lồ chênh vênh"
+            },
+            {
+              "id": "c",
+              "text": "Những thửa ruộng bậc thang"
+            },
+            {
+              "id": "d",
+              "text": "Tất cả các ý trên"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trước đây, để lên đỉnh Fansipan, du khách cần có những tố chất gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cần có tiền mua vé để leo núi"
+            },
+            {
+              "id": "b",
+              "text": "Không cần gì cả"
+            },
+            {
+              "id": "c",
+              "text": "Cần đi theo một nhóm"
+            },
+            {
+              "id": "d",
+              "text": "Cần có sự can đảm, ý chí và quan trọng nhất là một thể trạng sức khỏe tốt."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Dòng nào nêu đúng bộ phận chủ ngữ của câu sau: “Trong năm 2017, Sapa là một trong những điểm du lịch được khách du lịch trong nước và quốc tế đặc biệt yêu thích.”",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trong năm 2017, Sapa"
+            },
+            {
+              "id": "b",
+              "text": "Một trong những điểm du lịch"
+            },
+            {
+              "id": "c",
+              "text": "Sapa"
+            },
+            {
+              "id": "d",
+              "text": "Khách du lịch trong nước và quốc tế"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Những hoạt động nào được gọi là du lịch?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đi chơi ở công viên, bể nước gần nhà"
+            },
+            {
+              "id": "b",
+              "text": "Đi chơi xa để nghỉ ngơi, ngắm cảnh"
+            },
+            {
+              "id": "c",
+              "text": "Đi làm việc xa nhà một thời gian"
+            },
+            {
+              "id": "d",
+              "text": "Thăm dò, tìm hiểu những nơi xa lạ, khó khăn"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-16-16",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Chiền chiện bay lên",
+      "text": "Đã vào mùa thu.\n\nĐám cỏ may đã hết cái thời hoa giăng một dải tím ngắt mặt đê, cỏ đã vào quả để lại những chấm bạc có đuôi nhọn như kim, găm vào đầy hai ống quần, mỗi khi ai sơ ý đi qua lối cỏ.\n\nChim chiền chiện vẫn lang thang kiếm ăn trong các bụi cỏ may già, trên đồng, trên bãi. Chiền chiện giống sẻ đồng nhưng áo không một màu nâu sồng như chim sẻ. Áo của chiền chiện màu đồng thau, đốm đậm đốm nhạt rất hài hoà. Chiền chiện chân cao và mảnh, đầu rất đẹp. Trông dáng vẻ của chiền chiện như thể một kị sĩ đồng xưa bị tội ở trên trời, nên Thượng đế đã hoá phép ẩn mình trong kiếp chim bé nhỏ.\n\nChiều thu, chiền chiện đã kiếm ăn no nê, trên bãi. Từ một bờ sông, bỗng một cánh chiền chiện bay lên.Thoạt đầu như một viên đá ném vút lên trời. Nhưng viên đá ấy như có một sức thần không rơi xuống, nó cứ lao vút, lao vút mãi trên chín tầng mây.\n\nÔi, chiền chiện bay lên đấy!\n\nTheo với tiếng chim bay lên, từ không trung vọng xuống một tiếng hót trong sáng diệu kỳ, giọng ríu ran đổ hồi, âm điệu hài hoà đến tinh tế. Giọng hót vừa đượm vẻ hồn nhiên, vừa thơ thới, thanh thản... Chim gieo niềm yêu đời vô tư cho những người lam lũ trên mặt đất. Đến như tôi, một cậu bé chăn trâu bảy, tám tuổi đầu cũng mê đi trong tiếng hót chiền chiện giữa chiều mà bầu trời, mặt đất, hồn người đều trong sáng.... Tiếng chim là tiếng nói của thiên sứ gửi lời chào mặt đất.\n\nChiền chiện đã bay lên và đang hót.\n\n(Theo Ngô Văn Phú)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chim chiền chiện đi kiếm ăn ở đâu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trong các ao ven làng."
+            },
+            {
+              "id": "b",
+              "text": "Trong các bụi cỏ may già, trên đồng, trên bãi."
+            },
+            {
+              "id": "c",
+              "text": "Trong các ruộng lúa đang gặt."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chiền chiện hót khi nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Khi đã kiếm ăn no nê, đang nghỉ ngơi."
+            },
+            {
+              "id": "b",
+              "text": "Khi đang đi kiếm mồi."
+            },
+            {
+              "id": "c",
+              "text": "Khi đã kiếm ăn no nê và trong lúc bay lên."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tác giả miêu tả tiếng hót của chim chiền chiện như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trong sáng, diệu kì, âm điệu hài hòa đến tinh tế."
+            },
+            {
+              "id": "b",
+              "text": "Trong veo, líu lo, thánh thót, như hàng trăm chiếc đàn cùng hòa âm."
+            },
+            {
+              "id": "c",
+              "text": "Lảnh lót, vui tươi, tràn đầy tình yêu cuộc sống."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tiếng chim đã mang lại điều gì cho người nông dân?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Làm cho tâm hồn con người thêm trong sáng."
+            },
+            {
+              "id": "b",
+              "text": "Làm cho tâm hồn con người thêm hồn hậu"
+            },
+            {
+              "id": "c",
+              "text": "Gieo niềm yêu đời vô tư cho những con người đang lam lũ lao động."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo em, nội dung của bài là:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Giới thiệu cảnh đẹp của mùa thu."
+            },
+            {
+              "id": "b",
+              "text": "Miêu tả đám cỏ may khi mùa thu đến."
+            },
+            {
+              "id": "c",
+              "text": "Miêu tả chú chim chiền chiện."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-17-17",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Con Vàng",
+      "text": "Bố tôi xin được con chó nhỏ về nuôi. Con chó khá xinh, lông vàng, cổ khoang trắng. Nhưng tôi chẳng bận tâm đến nó vì còn mải mê bắt châu chấu, nuôi sáo, đá bóng, chọi gà…\n\nCái Liên em tôi thì khác. Nó đặt tên cho con chó là Vàng và chăm sóc, chiều chuộng hết mực. Đi học về, vừa thấy Vàng vẫy đuôi chạy ra, Liên vồn vã:\n\n- Ôi, em Vàng của chị! Ở nhà có ai bắt nạt em không?\n\nRồi Liên bế thốc Vàng lên để vuốt ve, vào bếp kiếm ngay cơm cho Vàng ăn.\n\nMột hôm, thấy con Vàng đang rượt đuổi chú sáo mỏ vàng cực đẹp của tôi, thuận chân, tôi đá Vàng một cú mạnh như sút bóng. Con chó bay ra sân, rơi huỵch xuống đất, kêu oăng oẳng một lúc rồi nằm rên ư ử.\n\nLiên đi học về, thấy con Vàng cá nhắc, bèn làm toáng lên. Nhưng tôi chối bay chối biến. Liên đành kiếm dầu xoa bóp cho Vàng. Hôm sau, Liên nấu cả cháo thịt mà Vàng cũng chỉ liếm được lưng thìa rồi nằm thở dốc, thỉng thoảng lại co giật, nước mắt tràn ra.\n\nChiều ngày thứ ba, tôi vừa về đến nhà thấy Liên ngồi bệt trước cửa khóc thút thít. Sau lưng nó, con Vàng nằm bất động trên tờ báo.\n\nTôi lấm lét nhìn Liên rồi lẳng lặng vào buồng, ngồi lặng lẽ. Nước mắt cứ ứa ra, tôi chẳng buồn nghĩ đến con sáo nữa…\n\nTheo Nguyễn Bá\n\n* Dựa vào nội dung bài đọc, hãy khoanh tròn vào chữ cái đặt trước ý trả lời đúng nhất và hoàn thành tiếp các bài tập:",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu chuyện tập trung kể về những nhân vật nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Người bố, hai anh em (“tôi” và Liên)."
+            },
+            {
+              "id": "b",
+              "text": "Hai anh em (“tôi” và Liên), con Vàng."
+            },
+            {
+              "id": "c",
+              "text": "Hai anh em (“tôi” và Liên), con sáo."
+            },
+            {
+              "id": "d",
+              "text": "Người bố, con Vàng, con sáo mỏ."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao người anh không bận tâm đến con chó nhỏ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì mải mê bắt châu chấu, đá bóng, đi học."
+            },
+            {
+              "id": "b",
+              "text": "Vì bận học và tham gia hoạt động ở trường."
+            },
+            {
+              "id": "c",
+              "text": "Vì bận chăm sóc con sáo mỏ vàng cực đẹp."
+            },
+            {
+              "id": "d",
+              "text": "Vì mải mê với những thú vui của riêng mình."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chi tiết nào cho thấy Liên coi Vàng như người thân trong nhà?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đặt tên con chó là Vàng."
+            },
+            {
+              "id": "b",
+              "text": "Gọi Vàng là “em của chị”."
+            },
+            {
+              "id": "c",
+              "text": "Bế thốc Vàng lên để vuốt ve."
+            },
+            {
+              "id": "d",
+              "text": "Vào bếp kiếm cơm cho Vàng ăn"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Điền từ ngữ thích hợp vào chỗ trống để được ý đúng: Người anh đá Vàng một cú mạnh như...................................khiến Vàng đau đớn nằm rên ư ử.",
+          "choices": [
+            {
+              "id": "a",
+              "text": "đánh nhau"
+            },
+            {
+              "id": "b",
+              "text": "trời giáng"
+            },
+            {
+              "id": "c",
+              "text": "sút bóng"
+            },
+            {
+              "id": "d",
+              "text": "đánh tạ"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trong câu sau có mấy tính từ “Tôi lấm lét nhìn cái Liên rồi lẳng lặng vào buồng, ngồi lặng lẽ.”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Một tính từ. Đó là:…………………"
+            },
+            {
+              "id": "b",
+              "text": "Hai tính từ. Đó là:…………………"
+            },
+            {
+              "id": "c",
+              "text": "Ba tính từ. Đó là:……………………"
+            },
+            {
+              "id": "d",
+              "text": "Bốn tính từ. Đó là:…………………"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-18-18",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Chim khuyên non muốn bay",
+      "text": "Những ngày nằm chờ cho lông cánh, lông đuôi mọc đủ, hai chú chim khuyên khao khát được bay để ngắm vòm trời xanh ngắt, ngắm thảm cỏ mịn màng, nhìn ra nơi mịt mù xa xa kia biết bao nhiêu là thứ lạ lùng. Chim anh nở trước, được mẹ dìu rời tổ trước. Khi về nghe chim anh kể, chim em cứ rộn cả lên:\n\n– Mẹ ơi! Mai mẹ cho con đi với nhé!\n\n– Con chưa đủ sức bay đâu. Đợi một hai hôm nữa.\n\nChim em cho rằng mẹ cưng anh hơn. Đợi lúc mẹ và anh bay đi rồi, chim em gắng dùng đôi cánh còn run run bám vào miệng tổ, kiễng chân lấy đà nhướn ra ngoài. Vì chưa học cách rời tổ, chim em bị ngã. May sao, dưới gốc cây có lớp lá mục, chim em không bị thương nhưng cũng hết cả hồn vía.\n\nChim em đứng lên rũ cánh, định bay trở về tổ. Nhưng buồn quá, chú ta chỉ bốc mình lên khỏi mặt đất được một đoạn ngắn thì lại rơi bịch xuống đất. Cứ thế, chim em vừa rên rỉ vừa nhảy chuyền quanh gốc cây, không bay về tổ được. Chim em sợ quá vội chui vào một lùm cây gần đấy chờ mẹ về. Chờ mãi, chờ mãi, chim em ngủ thiếp đi lúc nào không biết nữa.\n\nBỗng có tiếng gọi, chim em mở choàng mắt, thì ra là mẹ. Chim em vừa khóc vừa kể cho mẹ nghe. Chim mẹ phẩy những hạt đất cát, vụn lá bám trên mình chim em và dặn:\n\n– Con đừng dại dột như thế nữa nhé!\n\nChim em ngoan ngoãn rúc vào cánh mẹ thay cho lời vâng ạ. Chim anh cũng ôm lấy em rồi cùng mẹ dìu em lên tổ.\n\n(Theo Phong Thu)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Những ngày nằm chờ đủ lông đủ cánh, hai chú chim khuyên non khao khát điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Được mẹ cưng hơn."
+            },
+            {
+              "id": "b",
+              "text": "Được xuống mặt đất."
+            },
+            {
+              "id": "c",
+              "text": "Được chuyền quanh gốc."
+            },
+            {
+              "id": "d",
+              "text": "Được bay đi khám phá những điều mới lạ."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chuyện gì đã xảy ra với chim em khi nó tự ý rời tổ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Chim em bị ngã xuống gốc cây."
+            },
+            {
+              "id": "b",
+              "text": "Chim em bị thương."
+            },
+            {
+              "id": "c",
+              "text": "Chim em bị mẹ quở trách."
+            },
+            {
+              "id": "d",
+              "text": "Chim em bị rơi xuống vực."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao chim em không bay về tổ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì chim em không muốn bay về tổ."
+            },
+            {
+              "id": "b",
+              "text": "Vì chim em không thể bay được về tổ."
+            },
+            {
+              "id": "c",
+              "text": "Vì chim em muốn bay đi tìm mẹ."
+            },
+            {
+              "id": "d",
+              "text": "Vì chim em mải chơi."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chim em tự ý bay ra khỏi tổ vì điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Chim em cho rằng mẹ cưng anh hơn."
+            },
+            {
+              "id": "b",
+              "text": "Chim em khao khát được bay để ngắm vòm trời xanh ngắt."
+            },
+            {
+              "id": "c",
+              "text": "Chim em nghĩ rằng mình có thể bay được."
+            },
+            {
+              "id": "d",
+              "text": "Tất cả đáp án đều đúng."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Dấu ngoặc kép trong trường hợp sau có tác dụng gì? Chim mẹ phẩy những hạt đất cát, vụn lá bám trên mình chim em và dặn: “Con đừng dại dột như thế nữa nhé!”",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đánh dấu phần trích dẫn trực tiếp."
+            },
+            {
+              "id": "b",
+              "text": "Đánh dấu lời đối thoại."
+            },
+            {
+              "id": "c",
+              "text": "Đánh dấu tên tác phẩm tài liệu."
+            },
+            {
+              "id": "d",
+              "text": "Đánh dấu phần chú thích."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trạng ngữ trong câu sau chỉ gì? Vì chưa học cách rời tổ, chim em bị ngã.",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trạng ngữ chỉ nơi chốn."
+            },
+            {
+              "id": "b",
+              "text": "Trạng ngữ chỉ thời gian."
+            },
+            {
+              "id": "c",
+              "text": "Trạng ngữ chỉ nguyên nhân."
+            },
+            {
+              "id": "d",
+              "text": "Trạng ngữ chỉ phương tiện."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-19-19",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Hoa tóc tiên",
+      "text": "Thầy giáo dạy cấp một của tôi có một khoảnh vườn tí tẹo, chỉ độ vài mét vuông. Mọc um tùm với nhau là những thứ quen thuộc: xương sông, lá lốt, bạc hà, kinh giới. Có cả cây ớt lẫn cây hoa hồng lúc nào cũng bừng lên bông hoa rức rỡ. Đặc biệt là viền bốn xung quanh mảnh vườn có hàng tóc tiên, xanh và mềm quanh năm. Chắc là những cô tiên không bao giờ già, tóc không bao giờ bạc nên thứ cỏ này mới có tên gọi như thế.\n\nMùa hè, tôi thường đến nhà thầy, đúng mùa hoa tóc tiên. Sáng sáng hoa tóc tiên đua nhau nở rộ như đua nhau khoe màu, biến đường viền xanh thành đường viền hồng cánh sen. Cầm một bông tóc tiên thường là năm cánh, mỏng như lụa, còn mát sương đêm, sẽ thấy mùi hương ngòn ngọt và thơm thơm của phong bánh đậu Hải Dương, muốn ăn ngay.\n\nThầy thường sai tôi ra ngắt dăm bông cắm vào chiếc cốc thủy tinh trong suốt, có nước mưa cũng trong suốt, để lên bàn thầy. Cốc hoa tóc tiên trông mới tinh khiết làm sao, tưởng như tôi vừa cắm cả buổi sáng vào trong cốc, mà cũng tưởng như đó là nếp sống của thầy, tinh khiết, giản dị, trong sáng, trong sáng từ trong đến ngoài.\n\nBây giờ nhiều nơi trồng tóc tiên, hoa tóc tiên có ở nhiều nhà nhiều vườn, có cả hoa màu trắng, nhưng ít ai cắm hoa tóc tiên trong bình.\n\nRiêng tôi, tôi nhớ cốc hoa tóc tiên trên bàn thầy giáo cách đây mấy chục năm ở một cái thôn hẻo lánh, hoa có màu cánh sen nhẹ, lá thì xanh biếc, còn hương thơm thì thoảng nhẹ và ngon lành như một thứ bánh. Thầy giáo tôi đã mất. Nhưng chắc ở trên trời, thầy vẫn có cốc hoa tóc tiên tinh khiết của mình...\n\n(Theo Băng Sơn)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mảnh vườn của thầy giáo trồng những loại cây gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Xương xông, lá lốt, bạc hà, hoa hồng, tóc tiên."
+            },
+            {
+              "id": "b",
+              "text": "Xương xông, lá lốt, bạc hà, kinh giới, ớt, hoa hồng, tóc tiên."
+            },
+            {
+              "id": "c",
+              "text": "Lá lốt, bạc hà, kinh giới, ớt, tóc tiên."
+            },
+            {
+              "id": "d",
+              "text": "Xương xông, lá lốt, kinh giới, ớt, bạc hà."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mùi thơm của hoa tóc tiên được so sánh với gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mùi thơm mát của sương đêm"
+            },
+            {
+              "id": "b",
+              "text": "Mùi thơm ngọt của phong bánh đậu Hải Dương"
+            },
+            {
+              "id": "c",
+              "text": "Mùi thơm của một loại bánh"
+            },
+            {
+              "id": "d",
+              "text": "Hương thơm thoảng nhẹ và ngon lành"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Ngắm cốc hoa tóc tiên tinh khiết, tác giả đã liên tưởng đến những điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tưởng như vừa cắm cả buổi sáng vào trong cốc."
+            },
+            {
+              "id": "b",
+              "text": "Một thứ lụa mỏng manh và tóc những cô tiên."
+            },
+            {
+              "id": "c",
+              "text": "Tưởng như nếp sống của thầy."
+            },
+            {
+              "id": "d",
+              "text": "Liên tưởng đến buổi sáng và nếp sống của thầy giáo."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Để miêu tả cốc hoa tóc tiên trên bàn của thầy giáo tác giả quan sát bằng những giác quan nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Thị giác, khứu giác"
+            },
+            {
+              "id": "b",
+              "text": "Thị giác, xúc giác"
+            },
+            {
+              "id": "c",
+              "text": "Khứu giác, vị giác"
+            },
+            {
+              "id": "d",
+              "text": "Thị giác, vị giác"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Chủ ngữ trong câu: \"Thầy giáo dạy cấp một của tôi có một khoảnh vườn tí tẹo, chỉ độ vài mét vuông.\" là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Thầy giáo"
+            },
+            {
+              "id": "b",
+              "text": "Thầy giáo dạy cấp một"
+            },
+            {
+              "id": "c",
+              "text": "Thầy giáo dạy cấp một của tôi"
+            },
+            {
+              "id": "d",
+              "text": "Có một khoảnh vườn tí tẹo"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trạng ngữ có trong câu: “Sáng sáng, hoa tóc tiên nở rộ như đua nhau khoe màu, biến đường viền xanh thành đường viền hồng cánh sen”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trạng ngữ chỉ thời gian"
+            },
+            {
+              "id": "b",
+              "text": "Trạng ngữ chỉ nơi chốn"
+            },
+            {
+              "id": "c",
+              "text": "Trạng ngữ chỉ nguyên nhân"
+            },
+            {
+              "id": "d",
+              "text": "Trạng ngữ chỉ mục đích"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv4-20-20",
+      "subject": "language",
+      "grade": 4,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 4",
+        "subject": "language"
+      },
+      "title": "Người xây cuộc sống",
+      "text": "Một người thợ xây nọ đã làm việc rất chuyên cần trong nhiều năm cho một hãng thầu xây dựng. Một ngày kia, ông ngỏ ý với hãng muốn xin nghỉ việc, về hưu để vui thú với gia đình và sống thanh nhàn trong suốt quãng đời còn lại. Người chủ thầu rất tiếc khi thấy người công nhân tận tụy của mình ra đi. Ông hỏi người thợ xem có thể xây một căn nhà trước khi thôi việc như một sự chiếu cố đặc biệt không.\n\nNgười thợ đáp “vâng” nhưng ngay lúc đó ông đã không còn để tâm vào công việc. Vì biết mình sẽ giải nghệ, ông ta làm việc qua quýt, miễn cưỡng, xây dựng căn nhà một cách tắc trách với những vật liệu không được chọn lọc kỹ càng.\n\nMấy tháng sau, căn nhà hoàn thành. Người chủ thầu mời ông đến, trao cho ông chiếc chìa khóa của ngôi nhà và nói:\n\n- Ông đã gắn bó và làm việc tận tụy với hãng trong nhiều năm. Để khen thưởng về sự đóng góp của ông cho sự thịnh vượng của hãng, chúng tôi xin tặng ông ngôi nhà vừa mới xây xong.\n\nThật là một cú sốc, một sự xấu hổ vô cùng! Cầm chiếc chìa khóa của căn nhà trên tay, người thợ xây không thể ngờ được rằng nó lại dành cho ông. Nếu người thợ xây biết được đang xây ngôi nhà cho chính mình thì ông đã xây dựng nó hoàn toàn khác rồi. Giờ đây người thợ xây đang phải sống trong ngôi nhà không ra làm sao cả do ông tự tay làm nên với sự cầu thả trước kia chưa từng có và ông thấy vô cùng ân hận.\n\n(Theo bản dịch của Nhị Tường)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi người thợ xây xin nghỉ hưu, chủ thầu yêu cầu ông làm việc gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mua vật liệu để xây dựng một công trình mới."
+            },
+            {
+              "id": "b",
+              "text": "Xây dựng một căn nhà nữa như một sự chiếu cố đặc biệt."
+            },
+            {
+              "id": "c",
+              "text": "Kéo dài thời gian làm việc thêm một năm."
+            },
+            {
+              "id": "d",
+              "text": "Kéo dài thời gian làm việc và tăng lương cho ông."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 6"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Người thợ xây đã xây dựng ngôi nhà cuối cùng trong sự nghiệp của mình như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Xây rất nhanh và hoàn thành sớm."
+            },
+            {
+              "id": "b",
+              "text": "Rất cẩn thận và tỉ mỉ như trước kia ông vẫn làm."
+            },
+            {
+              "id": "c",
+              "text": "Xây một cách hời hợt qua quýt và sử dụng những nguyên liệu không được chọn lọc kỹ."
+            },
+            {
+              "id": "d",
+              "text": "Xây cẩn thận, cố gắng để hoàn thành trước thời hạn."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 6"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Điều gì bất ngờ xảy ra đối với người thợ xây?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Người chủ thầu đã tặng cho người thợ xây chính ngôi nhà mà ông vừa mới xây xong."
+            },
+            {
+              "id": "b",
+              "text": "Ngôi nhà cuối cùng ông xây được bán với giá rất cao."
+            },
+            {
+              "id": "c",
+              "text": "Ông được thưởng vì những thành tích lao động của mình."
+            },
+            {
+              "id": "d",
+              "text": "Ông rất vui vì đã được nghỉ làm."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 6"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu chuyện muốn nói với chúng ta điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hãy làm việc chăm chỉ để được thưởng."
+            },
+            {
+              "id": "b",
+              "text": "Hãy luôn làm việc tận tâm, có trách nhiệm với mình và mọi người xung quanh."
+            },
+            {
+              "id": "c",
+              "text": "Xây nhà là một công việc khó khăn, vất vả."
+            },
+            {
+              "id": "d",
+              "text": "Hãy làm việc cẩn thận khi xây nhà cho chính mình."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 6"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Từ “giải nghệ” trong văn bản trên có thể thay thế bằng từ nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nghỉ phép"
+            },
+            {
+              "id": "b",
+              "text": "Nghỉ giải lao"
+            },
+            {
+              "id": "c",
+              "text": "Nghỉ dưỡng"
+            },
+            {
+              "id": "d",
+              "text": "Nghỉ hưu"
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 6"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trạng ngữ có trong câu: “Để khen thưởng về sự đóng góp của ông cho sự thịnh vượng của hãng, chúng tôi xin tặng ông ngôi nhà vừa mới xây xong.”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trạng ngữ chỉ thời gian"
+            },
+            {
+              "id": "b",
+              "text": "Trạng ngữ chỉ nơi chốn"
+            },
+            {
+              "id": "c",
+              "text": "Trạng ngữ chỉ nguyên nhân"
+            },
+            {
+              "id": "d",
+              "text": "Trạng ngữ chỉ mục đích"
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 4",
+            "Đề thi học kì 2 - Đề số 6"
+          ]
+        }
+      ]
+    }
+  ]
+}

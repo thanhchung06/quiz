@@ -1,0 +1,7 @@
+<div class="treasure-path">
+  @for (step of steps; track step) {
+    <span class="step" [class.reached]="step <= currentStep">
+      {{ step === totalSteps - 1 ? '🏆' : step <= currentStep ? '⭐' : '·' }}
+    </span>
+  }
+</div>

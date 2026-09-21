@@ -1,0 +1,30 @@
+<main class="settings-screen">
+  <header class="screen-header">
+    <app-icon name="settings" />
+    <h1>Cài đặt</h1>
+  </header>
+
+  @if (savedMessage()) {
+    <p class="saved" role="status"><app-icon name="check_circle" />{{ savedMessage() }}</p>
+  }
+
+  @for (profile of profiles(); track profile.id) {
+    <section class="profile-row">
+      <app-icon [name]="profile.role === 'parent' ? 'person' : 'school'" class="profile-icon" />
+      <label>
+        Tên hiển thị
+        <input
+          [value]="profile.displayName"
+          #nameInput
+          (change)="saveDisplayName(profile, nameInput.value)"
+        />
+      </label>
+      @if (profile.role === 'parent') {
+        <label>
+          Mật khẩu mới
+          <input type="password" #credInput (change)="saveCredential(profile, credInput.value); credInput.value = ''" />
+        </label>
+      }
+    </section>
+  }
+</main>

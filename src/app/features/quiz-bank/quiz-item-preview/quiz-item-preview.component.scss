@@ -1,0 +1,44 @@
+.preview-screen {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  text-align: center;
+
+  .badge {
+    color: #8a5a00;
+    background: #fff6e5;
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .prompt {
+    font-size: 1.3rem;
+    margin: 1rem 0;
+  }
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.choice {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 2px solid #d0d0d0;
+
+  &.selected {
+    border-color: #2f6fed;
+  }
+}
+
+.correct {
+  color: #1e7a34;
+}
+
+.incorrect {
+  color: #b3261e;
+}

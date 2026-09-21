@@ -1,0 +1,65 @@
+<main class="categories-screen">
+  <header class="screen-header">
+    <app-icon name="category" />
+    <h1>Danh mục</h1>
+  </header>
+
+  <form class="create-form" (ngSubmit)="create()">
+    <input placeholder="Tên danh mục" [ngModel]="newName()" (ngModelChange)="newName.set($event)" name="newName" />
+    <select [ngModel]="newSubject()" (ngModelChange)="newSubject.set($event)" name="newSubject">
+      <option value="math">Toán</option>
+      <option value="language">Tiếng Việt</option>
+      <option value="both">Cả hai</option>
+    </select>
+    <button type="submit"><app-icon name="add" />Thêm</button>
+  </form>
+  @if (errorMessage()) {
+    <p class="error"><app-icon name="warning" />{{ errorMessage() }}</p>
+  }
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Tên</th>
+          <th>Môn</th>
+          <th>Số câu</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows(); track row.category.id) {
+          <tr>
+            <td>
+              <input [value]="row.category.name" #nameInput (change)="rename(row.category, nameInput.value)" />
+            </td>
+            <td>{{ row.category.subject }}</td>
+            <td>{{ row.itemCount }}</td>
+            <td>{{ row.category.status }}</td>
+            <td class="actions">
+              @if (row.category.status === 'active') {
+                <button type="button" title="Lưu trữ" (click)="archive(row.category)">
+                  <app-icon name="archive" label="Lưu trữ" />
+                </button>
+              } @else {
+                <button type="button" title="Khôi phục" (click)="restore(row.category)">
+                  <app-icon name="restore_page" label="Khôi phục" />
+                </button>
+              }
+              @if (mergeSource() && mergeSource() !== row.category.id) {
+                <button type="button" title="Gộp vào đây" (click)="mergeInto(row.category)">
+                  <app-icon name="swap_horiz" label="Gộp vào đây" />
+                </button>
+              } @else {
+                <button type="button" title="Gộp…" (click)="startMerge(row.category)">
+                  <app-icon name="content_copy" label="Gộp…" />
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</main>

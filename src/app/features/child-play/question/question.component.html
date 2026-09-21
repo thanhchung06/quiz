@@ -1,0 +1,115 @@
+@if (item(); as q) {
+  <main class="question-screen">
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="progressPercent()"></div>
+    </div>
+
+    <header>
+      <span class="position">Câu {{ index() + 1 }} / {{ total() }}</span>
+
+      <span class="lives" aria-label="Số lượt sai còn lại">
+        @if (isUnlimitedLives()) {
+          <app-icon name="favorite" />
+          <span class="unlimited-mark">∞</span>
+        } @else {
+          @for (held of livesDots(); track $index) {
+            <app-icon [name]="held ? 'favorite' : 'close'" [class.lost]="!held" />
+          }
+        }
+      </span>
+
+      <span class="timer" [class.low]="timeIsLow()" [style.--pct]="timeRatio()">
+        <span class="fuse-ring" aria-hidden="true"></span>
+        <app-icon [name]="timeIsLow() ? 'bomb' : 'timer'" />
+        {{ timeLabel() }}
+      </span>
+
+      @if (hasQuestionTimer()) {
+        <span class="question-timer" [class.low]="questionTimeIsLow()" aria-label="Thời gian cho câu này">
+          <app-icon name="hourglass_bottom" />
+          {{ questionTimeLabel() }}
+        </span>
+      }
+    </header>
+
+    @if (q.passage; as p) {
+      <div class="passage-panel">
+        <p class="passage-heading">
+          <app-icon name="auto_stories" />
+          {{ p.title }}
+          <span class="passage-progress">Câu {{ p.order }}/{{ p.total }} của đoạn này</span>
+        </p>
+        <p class="passage-text">{{ p.text }}</p>
+      </div>
+    }
+
+    <p class="prompt">{{ q.prompt }}</p>
+
+    <div class="answer-area">
+      @if (q.type === 'single-choice' || q.type === 'true-false') {
+        <div class="choices">
+          @for (choice of q.choices; track choice.id; let i = $index) {
+            <button
+              type="button"
+              class="choice"
+              [class.selected]="choiceAnswer().includes(choice.id)"
+              (click)="toggleChoice(choice.id, false)"
+            >
+              <span class="choice-letter">{{ choiceLetters[i] }}</span>
+              <span class="choice-text">{{ choice.text }}</span>
+            </button>
+          }
+        </div>
+      }
+      @if (q.type === 'multiple-choice') {
+        <div class="choices">
+          @for (choice of q.choices; track choice.id; let i = $index) {
+            <button
+              type="button"
+              class="choice"
+              [class.selected]="choiceAnswer().includes(choice.id)"
+              (click)="toggleChoice(choice.id, true)"
+            >
+              <span class="choice-letter">{{ choiceLetters[i] }}</span>
+              <span class="choice-text">{{ choice.text }}</span>
+            </button>
+          }
+        </div>
+      }
+      @if (q.type === 'short-text') {
+        <input
+          class="text-answer"
+          type="text"
+          [ngModel]="textAnswer()"
+          (ngModelChange)="textAnswer.set($event)"
+          name="textAnswer"
+          placeholder="Nhập câu trả lời…"
+        />
+      }
+      @if (q.type === 'number') {
+        <!--
+          type="text" (not "number") deliberately: Angular's
+          NumberValueAccessor coerces type="number" ngModel values to an
+          actual `number`, which would silently break the string-typed
+          numberAnswer signal below. inputmode="numeric" still gives a
+          numeric keypad on mobile.
+        -->
+        <input
+          class="text-answer number"
+          type="text"
+          inputmode="numeric"
+          pattern="-?[0-9]*"
+          [ngModel]="numberAnswer()"
+          (ngModelChange)="numberAnswer.set($event)"
+          name="numberAnswer"
+          placeholder="Nhập số…"
+        />
+      }
+
+      <button type="button" class="submit" [disabled]="!isValidResponse() || isEvaluating()" (click)="submit()">
+        <app-icon name="check_circle" />
+        {{ strings.common.submit }}
+      </button>
+    </div>
+  </main>
+}

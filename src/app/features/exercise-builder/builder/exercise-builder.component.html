@@ -1,0 +1,140 @@
+<main class="builder-screen">
+  <h1>Tạo bài tập</h1>
+
+  @if (warnings().length) {
+    <ul class="warnings">
+      @for (w of warnings(); track w) {
+        <li>{{ w }}</li>
+      }
+    </ul>
+  }
+
+  <label>Tiêu đề <input [ngModel]="title()" (ngModelChange)="title.set($event)" /></label>
+
+  <label>
+    Môn
+    <select [ngModel]="subject()" (ngModelChange)="subject.set($event)">
+      <option value="math">Toán</option>
+      <option value="language">Tiếng Việt</option>
+      <option value="mixed">Kết hợp</option>
+    </select>
+  </label>
+
+  <label>
+    Lớp
+    <select [ngModel]="grade()" (ngModelChange)="grade.set(+$event)">
+      @for (g of [1, 2, 3, 4, 5]; track g) {
+        <option [value]="g">{{ g }}</option>
+      }
+    </select>
+  </label>
+
+  <label>Thời gian (phút) <input type="number" min="1" max="60" [ngModel]="timeLimitMinutes()" (ngModelChange)="timeLimitMinutes.set($event)" /></label>
+  <label>Ngưỡng đạt (%) <input type="number" [ngModel]="passingPercent()" (ngModelChange)="passingPercent.set($event)" /></label>
+
+  <label>
+    Số lượt sai tối đa (lives)
+    <select [ngModel]="lives()" (ngModelChange)="setLives($event)">
+      @for (n of [3, 4, 5, 6, 7, 8, 9, 10]; track n) {
+        <option [value]="n">{{ n }}</option>
+      }
+      <option value="unlimited">Không giới hạn</option>
+    </select>
+  </label>
+  @if (isDaily()) {
+    <p class="hint">Bài tập hàng ngày có thể làm một lần mỗi ngày — hết lượt sai hoặc làm xong đều kết thúc lượt hôm nay, đổi mới vào ngày hôm sau.</p>
+  } @else {
+    <p class="hint">Bài tập chỉ được làm một lần — hết lượt sai hoặc làm xong đều kết thúc bài, không thể làm lại.</p>
+  }
+
+  <label><input type="checkbox" [ngModel]="orderMode() === 'randomized'" (ngModelChange)="orderMode.set($event ? 'randomized' : 'fixed')" /> Xáo trộn thứ tự câu hỏi</label>
+  <label><input type="checkbox" [ngModel]="correctionReviewEnabled()" (ngModelChange)="correctionReviewEnabled.set($event)" /> Xem lại đáp án</label>
+  <label><input type="checkbox" [ngModel]="isDaily()" (ngModelChange)="setDaily($event)" /> Bài tập hàng ngày (đổi mới mỗi ngày, câu hỏi chọn ngẫu nhiên)</label>
+  @if (isDaily()) {
+    <p class="hint">
+      Bài tập hàng ngày chỉ chứa các mục ngẫu nhiên theo danh mục (không thêm được câu hỏi cụ thể); trẻ có thể làm lại
+      mỗi ngày, mỗi lần câu hỏi được chọn ngẫu nhiên và không lặp lại trong cùng một lượt làm bài.
+    </p>
+  }
+
+  <label>
+    Thời gian mỗi câu hỏi
+    <select [ngModel]="questionTimingMode()" (ngModelChange)="questionTimingMode.set($event)">
+      <option value="none">Không giới hạn (chỉ áp dụng thời gian tổng của cả bài)</option>
+      <option value="distribute">Chia đều thời gian tổng cho từng câu</option>
+      <option value="custom">Tùy chỉnh thời gian riêng cho từng câu</option>
+    </select>
+  </label>
+  @if (questionTimingMode() === 'distribute') {
+    <p class="hint">Mỗi câu sẽ có khoảng {{ distributedSecondsPreview() }} giây (thời gian tổng ÷ số câu).</p>
+  }
+  @if (questionTimingMode() === 'custom') {
+    <p class="hint">Nhập số giây cho từng câu bên dưới — để trống nghĩa là câu đó không giới hạn riêng.</p>
+  }
+
+  <h2>Câu hỏi trong bài</h2>
+  <ol class="item-list">
+    @for (item of items(); track item.id; let i = $index) {
+      <li>
+        @if (item.kind === 'fixed') {
+          <span>{{ quizItemLabel(item.quizItemId) }}</span>
+        } @else {
+          <span>
+            Ngẫu nhiên: {{ item.randomGroup.count }} câu · {{ randomGroupSummaryLabel(item.randomGroup) }}
+          </span>
+        }
+        @if (questionTimingMode() === 'custom') {
+          <!-- type="text" deliberately, not "number": NumberValueAccessor would coerce the ngModelChange value to an actual number, breaking the string-typed setter below. -->
+          <input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            class="item-seconds"
+            placeholder="giây"
+            [ngModel]="(item.kind === 'fixed' ? item.timeLimitSeconds : item.randomGroup.timeLimitSeconds) ?? ''"
+            (ngModelChange)="item.kind === 'fixed' ? setFixedItemSeconds(item.id, $event) : setRandomGroupSeconds(item.id, $event)"
+          />
+        }
+        @if (item.kind === 'fixed') {
+          <input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            class="item-points"
+            placeholder="điểm"
+            [ngModel]="item.points ?? ''"
+            (ngModelChange)="setFixedItemPoints(item.id, $event)"
+          />
+        }
+        <span class="controls">
+          <button type="button" (click)="moveItem(i, -1)">↑</button>
+          <button type="button" (click)="moveItem(i, 1)">↓</button>
+          <button type="button" (click)="removeItem(item.id)">Xóa</button>
+        </span>
+      </li>
+    }
+  </ol>
+
+  <div class="add-controls">
+    <button type="button" (click)="openPicker()">+ Thêm câu hỏi</button>
+    @if (!isDaily()) {
+      <button type="button" (click)="addRandomGroup()">+ Thêm nhóm ngẫu nhiên</button>
+    }
+  </div>
+
+  @if (showPicker()) {
+    <app-quiz-picker
+      [existingItems]="items()"
+      [questionTimingMode]="questionTimingMode()"
+      [grade]="grade()"
+      [exerciseSubject]="subject()"
+      [dailyMode]="isDaily()"
+      (picked)="onQuizPicked($event)"
+      (pickedMany)="onQuizPickedMany($event)"
+      (addedRandomGroup)="onAddedRandomGroup($event)"
+      (closed)="closePicker()"
+    />
+  }
+
+  <button type="button" class="save" (click)="save()">{{ 'Lưu' }}</button>
+</main>

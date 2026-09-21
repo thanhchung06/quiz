@@ -1,0 +1,1356 @@
+{
+  "formatVersion": "1.1",
+  "packageTitle": "35 Đề đọc hiểu ôn luyện Tiếng Việt lớp 5 — Đề 1–9 (baigiangdientu.edu.vn)",
+  "language": "vi",
+  "quizzes": [],
+  "passages": [
+    {
+      "externalKey": "docHieuL5-de1",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Mùa thu",
+      "text": "Không phải ngẫu nhiên mà ai đó đã nói rằng “mùa thu là mùa đẹp nhất”. Vì sao ư? Mùa thu với cái nắng ươm vàng, những sợi nắng mỏng manh như tơ trời cứ vương mãi xuống những cánh đồng đang chờ ngày lúa chín. Mùa thu, những con sẻ nâu thong thả tha những cọng rơm vàng về tổ. Những con dế khi đã uống say những giọt sương đêm chợt ngẫu hứng hát ca. Trên cánh đồng, những cánh cò trắng tinh cứ phân vân mãi khi chiều đã buông.\n\nMùa thu, sương bảng lảng tan và còn đọng long lanh trên lá cỏ mỗi sớm mai. Những giọt mưa thu cũng dịu dàng, se sẽ như tiếng bước chân nhón nhẹ nhàng trên thảm lá khô. Xào xạc, heo may theo cơn gió mùa thu nô đùa với những chiếc lá vàng rơi trong nắng chiều buông từng vạt mỏng.\n\nMùa thu, những khu vườn đầy lá vàng xao động, trái bưởi bỗng tròn căng đang chờ đêm hội rằm phá cỗ. Tiếng đám sẻ non tíu tít nhảy nhót nhặt những hạt thóc còn vương lại trên mảnh sân vuông. Đêm xuống, mảnh trăng nhẹ tênh, mỏng manh trôi bồng bềnh trên nền trời chi chít ánh sao. Rồi trăng không còn khuyết và tròn vành vạnh khi đến giữa mùa thu. Chưa bao giờ mặt trăng tròn và sáng đẹp như thế trong năm. Ánh trăng sáng vàng, ngọt lịm như rót xuống không gian cái không khí trong thanh của đất trời; cái dịu dàng, thanh tao của tự nhiên; cái mùi thơm ngai ngái của cỏ, của cây, của những cọng rơm vàng và cả mùi đất ẩm ướt hơi sương đều hòa quyện trong cảm giác hư ảo giữa mơ và thực, lẫn vào tiếng cười rộn rã mang dáng vẻ cổ tích của ngày hội đón trăng đêm rằm.\n\nMùa thu, tiết trời trong xanh dịu nhẹ, con đường làng bỗng như quen như lạ. Mỗi sớm đến trường, bước chân chợt ngập ngừng khi đánh thức những bụi cây non vẫn còn đang ngái ngủ. Tia nắng ban mai nghịch ngợm xuyên qua kẽ lá, soi vào chiếc tổ xinh xắn làm cho chú chim non bừng tỉnh giấc, bay vút lên trời rồi cất tiếng hót líu lo.\n\nMùa thu, vạt hoa cúc dại cũng nở bung hai bên đường. Những bông hoa cúc xinh xinh dịu dàng, lung linh như từng tia nắng nhỏ. Thảm cỏ may thì tím biếc đến nôn nao. Hoa cỏ may quấn quýt từng bước chân theo tận lớp học. Tiếng đọc bài ngân nga vang ra ngoài cửa lớp, lá cũng lích rích hót theo. Giọt nắng sớm mai như vô tình đậu lên trang vở mới, bừng sáng lung linh những ước mơ.\n\nMùa thu hiền dịu lắm! Không xôn xao rực rỡ như mùa xuân, không chói chang ánh nắng như mùa hè nhưng cũng không u buồn lạnh lẽo như mùa đông. Mùa thu là mùa của ba mùa cộng lại. Có phải chăng chỉ một mùa thu trăng thôi đã là mùa của bốn mùa?\n\n(Theo Huỳnh Thị Thu Hương)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Nắng mùa thu được tả trong bài đẹp như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nắng ươm vàng, những sợi nắng mỏng manh như tơ trời cứ vương mãi xuống cánh đồng."
+            },
+            {
+              "id": "b",
+              "text": "Nắng vàng óng như mật ong mới rót."
+            },
+            {
+              "id": "c",
+              "text": "Nắng lung linh như những giọt thủy tinh."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tác giả tả tiết trời mùa thu đẹp như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Da trời xanh ngắt."
+            },
+            {
+              "id": "b",
+              "text": "Tiết trời trong xanh dịu nhẹ."
+            },
+            {
+              "id": "c",
+              "text": "Tiết trời ấm áp."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tác giả có cảm nhận gì về những giọt mưa thu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bảng lảng tan và đọng lại long lanh trên lá cỏ."
+            },
+            {
+              "id": "b",
+              "text": "Long lanh như những giọt pha lê."
+            },
+            {
+              "id": "c",
+              "text": "Dịu dàng, se sẽ như tiếng bước chân nhón nhẹ nhàng trên thảm lá khô."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mặt trăng giữa mùa thu đẹp như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mảnh trăng nhẹ tênh, mỏng manh trôi bồng bềnh trên trời chi chít ánh sao."
+            },
+            {
+              "id": "b",
+              "text": "Mặt trăng tròn và sáng đẹp. Ánh trăng sáng vàng, ngọt lịm như rót xuống không gian."
+            },
+            {
+              "id": "c",
+              "text": "Vầng trăng tròn vành vạnh ở trên không và vi vu như sáo diều."
+            },
+            {
+              "id": "d",
+              "text": "Ánh trăng trong tràn ngập con đường trắng xóa."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao tác giả cho rằng “Mùa thu là mùa của 3 mùa cộng lại”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì mùa thu hiền dịu quá."
+            },
+            {
+              "id": "b",
+              "text": "Vì mùa thu là mùa đẹp nhất."
+            },
+            {
+              "id": "c",
+              "text": "Vì mùa thu có tất cả những gì đẹp nhất của các mùa cộng lại."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu văn “Những giọt mưa thu cũng dịu dàng, se sẽ như tiếng bước chân nhón nhẹ nhàng trên thảm lá khô.” sử dụng biện pháp nghệ thuật nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhân hóa."
+            },
+            {
+              "id": "b",
+              "text": "So sánh."
+            },
+            {
+              "id": "c",
+              "text": "Cả nhân hóa và so sánh."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de2",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Bầu trời ngoài cửa sổ",
+      "text": "Đó là khung cửa sổ có bầu trời bên ngoài thật đẹp. Bầu trời ngoài cửa sổ ấy lúc thì như bức tranh nhiều màu sắc, lúc thì như một trang sách hay. Bầu trời bên ngoài cửa sổ, Hà chỉ nhìn sắc mây thôi cũng có thể biết mưa hay nắng, dông bão hay yên lành.\n\nBầu trời ngoài cửa sổ của bé Hà thường đầy ánh sáng, đầy màu sắc. Ở đấy Hà thấy bao nhiêu điều lạ. Một đàn vàng anh, vàng như dát vàng lên lông, lên cánh ấy, mà con trống bao giờ cũng to hơn, óng ánh sắc lông hơn – chợt bay đến rồi chợt bay đi. Nhưng có lúc, đàn vàng anh ấy đậu lên ngọn chót vót những cây bạch đàn chanh cao nhất giữa bầu trời ngoài cửa sổ. Những ngọn bạch đàn chanh cao vút ấy bỗng chốc đâm những “búp vàng”. Rồi từ trên chót vót cao, vàng anh trống cất tiếng hót. Tiếng hót mang theo hương thơm lá bạch đàn chanh từ bầu trời bay vào cửa sổ. Đàn chim chớp cánh vàng khoe sắc với nắng rực rỡ, và tiếng chim lại như những chuỗi vàng lọc nắng bay đến với Hà. Chốc sau đàn chim chao cánh bay đi, nhưng tiếng hót như đọng mãi giữa bầu trời ngoài cửa sổ.\n\nBuổi sáng, ánh nắng dịu dàng, ngọt màu mật ong từ bầu trời ngoài cửa sổ rọi vào trong nhà, in hình hoa lá trên mặt bàn, nền gạch hoa. Còn về đêm, trăng khi thì như chiếc thuyền vàng trôi trong mây trên bầu trời ngoài cửa sổ, lúc thì như chiếc đèn lồng thả ánh sáng xuống đầy sân.\n\nÔi, khung cửa sổ nhỏ! Hà yêu nó quá! Hà thích ngồi bên cửa sổ nhổ tóc sâu cho bà, nghe bà kể chuyện cổ tích “Ngày xửa, ngày xưa…”\n\n(Theo Nguyễn Quỳnh)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bầu trời bên ngoài cửa sổ của bé Hà được so sánh với những gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Một bức tranh giàu màu sắc."
+            },
+            {
+              "id": "b",
+              "text": "Một trang sách hay."
+            },
+            {
+              "id": "c",
+              "text": "Cả 2 ý trên."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chỉ ngắm sự vật gì của bầu trời bên ngoài cửa sổ, Hà có thể đoán biết được thời tiết?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ánh nắng"
+            },
+            {
+              "id": "b",
+              "text": "Sắc mây"
+            },
+            {
+              "id": "c",
+              "text": "Mặt trăng"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Qua khung cửa sổ nhà mình, Hà cảm nhận được những hình ảnh, âm thanh nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bầu trời đầy ánh sáng, đầy màu sắc, đàn vàng anh sắc lông óng ánh như dát vàng, tiếng hót như những chuỗi vàng lọc nắng, ánh nắng dịu dàng, ngọt màu mật ong."
+            },
+            {
+              "id": "b",
+              "text": "Bầu trời u ám, tiếng những giọt mưa thánh thót, những cành cây vật vã trong gió."
+            },
+            {
+              "id": "c",
+              "text": "Nắng như đổ lửa, trâu nằm lim dim dưới bụi tre già, ve kêu inh ỏi."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trong câu “Những ngọn bạch đàn chanh cao vút ấy bỗng chốc đâm những ‘búp vàng’”, từ “búp vàng” chỉ gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ngọn bạch đàn"
+            },
+            {
+              "id": "b",
+              "text": "Đàn vàng anh"
+            },
+            {
+              "id": "c",
+              "text": "Lá bạch đàn"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hà thích làm điều gì bên cửa sổ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ngắm nhìn bầu trời không chán."
+            },
+            {
+              "id": "b",
+              "text": "Ngửi hương thơm của trái cây."
+            },
+            {
+              "id": "c",
+              "text": "Nhổ tóc sâu cho bà, nghe bà kể chuyện cổ tích."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Từ “chao” trong câu “Chốc sau đàn chim chao cánh bay đi, nhưng tiếng hót như đọng mãi giữa bầu trời ngoài cửa sổ.” đồng nghĩa với từ nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "vỗ"
+            },
+            {
+              "id": "b",
+              "text": "đập"
+            },
+            {
+              "id": "c",
+              "text": "nghiêng"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Có những cặp từ đồng nghĩa nào trong bài văn?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "cao vút – chót vót"
+            },
+            {
+              "id": "b",
+              "text": "dịu dàng – dịu hiền"
+            },
+            {
+              "id": "c",
+              "text": "rực rỡ – sặc sỡ"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu “Bầu trời ngoài cửa sổ của bé Hà thường đầy ánh sáng, đầy màu sắc.” thuộc kiểu câu gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu kể Ai là gì?"
+            },
+            {
+              "id": "b",
+              "text": "Câu kể Ai làm gì?"
+            },
+            {
+              "id": "c",
+              "text": "Câu kể Ai thế nào?"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Chủ ngữ trong câu “Bầu trời ngoài cửa sổ của bé Hà thường đầy ánh sáng, đầy màu sắc.” là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bầu trời ngoài cửa sổ của bé Hà"
+            },
+            {
+              "id": "b",
+              "text": "Bầu trời ngoài cửa sổ"
+            },
+            {
+              "id": "c",
+              "text": "Bé Hà"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de3",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Cái ao làng",
+      "text": "Tấm gương trong sáng phản chiếu những nét sinh hoạt thân quen của làng quê là cái ao làng.\n\nQua nhiều làng quê đất nước ta, tôi đã gặp những ao làng trong mát, đàn vịt trắng hụp bơi lơ lửng. Bên bờ ao có cây muỗm già gốc sần sùi, lá xanh tốt tỏa bóng râm cho người làm đồng trưa tránh nắng đến ngồi nghỉ; cho trâu bò đến nằm nhai uể oải, vẫy tai, ngoe nguẩy đuổi xua ruồi muỗi, mắt khép hờ lim dim.\n\nNói đến cái ao làng là nhớ đến cái cầu ao bắc bằng tấm ván có duỗi xuyên ngang hai cọc tre cứng đóng chắc nhô lên khỏi mặt ao. Xưa nay, cầu ao vẫn là cái dấu nối tình làng, nghĩa xóm thân thương. Nơi người già, người trẻ gặp nhau thường ngày bên cầu ao hoặc bờ ao bày tỏ câu tâm tình, bầu bạn chuyện nhà, chuyện làng xóm. Cầu ao là nơi cọ, rửa, tắm, giặt, gánh nước tưới cho hoa màu, cây quả ở vườn nhà.\n\nTuổi thơ tôi gắn bó với cái ao làng từ những trưa hè nắng oi ả, tôi từng lội, bơi, tắm mát, đùa nghịch với trẻ con cùng làng hoặc cho trâu lội xuống ao đầm mình khi chiều về. Có trưa nắng, tôi vo áo gối đầu nằm thiu thiu ngủ dưới bóng cây bên bờ ao nghe tiếng cá quẫy và tiếng sáo diều vo ve, lơ lửng trên trời cao xanh ngắt.\n\nƠi, cái ao làng thân yêu gắn bó với tôi như làn khói bếp chiều lan tỏa vờn mái rạ, khóm khoai nước bên hàng rào râm bụt, tiếng lợn ỉ eo cậy chuồng, rịt mũi vòi ăn. Cái ao làng chứa chan tình quê mà những ngày thơ ấu tôi từng nằm võng với mẹ tôi, ôm tôi vào lòng, chầm bập vỗ về rót vào tâm hồn trong trắng, thơ ngây của tôi những lời ru nồng nàn, thiết tha, mộc mạc:\nCon cò mà đi ăn đêm\nĐậu phải cành mềm lộn cổ xuống ao.\n\n(Vũ Duy Huân)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Đặc điểm chung của những cái ao làng là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Có nước trong mát, đàn vịt trắng hụp bơi lơ lửng."
+            },
+            {
+              "id": "b",
+              "text": "Có gió đùa giỡn lá sen xanh bồng bềnh trên mặt nước."
+            },
+            {
+              "id": "c",
+              "text": "Là tấm gương phản chiếu những nét sinh hoạt thân quen của làng quê."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao tác giả cho rằng “Nói đến ao làng là nhớ đến cái cầu ao…”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì không có cái cầu ao thì không thể lấy được nước đem về."
+            },
+            {
+              "id": "b",
+              "text": "Vì cầu ao là cái dấu nối tình làng nghĩa xóm thân thương."
+            },
+            {
+              "id": "c",
+              "text": "Vì cầu ao có hai cái duỗi xuyên qua hai cọc tre rất đặc biệt."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao tác giả cho rằng: “Xưa nay, cầu ao vẫn là cái dấu nối tình làng, nghĩa xóm thân thương.”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì mọi người trong làng đều dùng nước ở ao."
+            },
+            {
+              "id": "b",
+              "text": "Vì cầu ao do tất cả dân làng xây dựng lên."
+            },
+            {
+              "id": "c",
+              "text": "Vì cầu ao là nơi mọi người vừa làm việc vừa chia sẻ tâm tình, bàn chuyện nhà, chuyện làng xóm."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu “Tấm gương trong sáng phản chiếu những nét sinh hoạt thân quen của làng quê là cái ao làng.” thuộc kiểu câu gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu kể Ai là gì?"
+            },
+            {
+              "id": "b",
+              "text": "Câu kể Ai làm gì?"
+            },
+            {
+              "id": "c",
+              "text": "Câu kể Ai thế nào?"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu ghép “Tuổi thơ tôi gắn bó với cái ao làng từ những trưa hè nắng oi ả, tôi từng lội, bơi, tắm mát, đùa nghịch với trẻ con cùng làng hoặc cho trâu lội xuống ao đầm mình khi chiều về.” có mấy vế câu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hai vế câu."
+            },
+            {
+              "id": "b",
+              "text": "Ba vế câu."
+            },
+            {
+              "id": "c",
+              "text": "Bốn vế câu."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de4",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Sau trận mưa rào",
+      "text": "Một giờ sau cơn dông, người ta hầu như không nhận thấy trời hè vừa ủ dột. Mùa hè mặt đất cũng chóng khô như đôi má em bé.\n\nKhông gì đẹp bằng cây lá vừa tắm mưa xong, đang được mặt trời lau ráo, lúc đó trông nó vừa tươi mát, vừa ấm áp. Khóm cây, luống cảnh trao đổi hương thơm và tia sáng. Trong tán lá, mấy cây sung và chích chòe huyên náo, chim sẻ tung hoành, gõ kiến leo dọc thân cây dẻ, mổ lách cách trên vỏ. Hoa cẩm chướng có mùi thơm nồng nàn. Ánh sáng mạ vàng những đóa hoa kim hương, vô số bướm chập chờn trông như những tia sáng lập lòe của đóa đèn hoa ấy.\n\nCây cỏ vừa tắm gội xong, trăm thức nhung gấm, bạc, vàng bày lên trên cánh hoa không một tí bụi. Thật là giàu sang mà cũng thật là trinh bạch. Cảnh vườn là cảnh vắng lặng dung hòa với nghìn thứ âm nhạc, có chim gù, có ong vo ve, có gió hồi hộp dưới lá.\n\n(Theo Vích-to Huy-gô)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mùa hè, sau trận mưa rào mặt đất được so sánh với gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đôi mắt của em bé."
+            },
+            {
+              "id": "b",
+              "text": "Đôi má của em bé."
+            },
+            {
+              "id": "c",
+              "text": "Mái tóc của em bé."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong bức tranh thiên nhiên “Sau trận mưa rào” này, em thấy cái đẹp nào nổi bật nhất?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cây lá."
+            },
+            {
+              "id": "b",
+              "text": "Chim chóc."
+            },
+            {
+              "id": "c",
+              "text": "Bầu trời."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào nêu đầy đủ những âm thanh trong khu vườn sau trận mưa rào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tiếng chim gù, tiếng ong vo ve."
+            },
+            {
+              "id": "b",
+              "text": "Tiếng gió hồi hộp dưới lá."
+            },
+            {
+              "id": "c",
+              "text": "Tiếng chim gù, tiếng ong vo ve, tiếng gió hồi hộp dưới lá."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trong bài có mấy hình ảnh so sánh?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Một hình ảnh"
+            },
+            {
+              "id": "b",
+              "text": "Hai hình ảnh"
+            },
+            {
+              "id": "c",
+              "text": "Ba hình ảnh"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào nêu đúng nhất nội dung bài văn?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tả khu vườn sau trận mưa rào."
+            },
+            {
+              "id": "b",
+              "text": "Tả vẻ đẹp tươi mát, rực rỡ của cảnh vật sau trận mưa rào."
+            },
+            {
+              "id": "c",
+              "text": "Tả bầu trời và mặt đất sau trận mưa rào."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de5",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Rừng xuân",
+      "text": "Trời xuân chỉ hơi lạnh một chút vừa đủ để giữ một vệt sương mỏng như chiếc khăn voan vắt hờ hững trên sườn đồi. Rừng hôm nay như một ngày hội của màu xanh, màu xanh với nhiều sắc độ đậm nhạt, dày mỏng khác nhau. Những mầm cây bụ bẫm còn đang ở màu nâu hồng chưa có đủ chất diệp lục để chuyển sang màu xanh. Những lá cời non mới thoáng một chút xanh vừa ra khỏi màu nâu vàng. Những lá sưa mỏng tang và xanh rờn như một thứ lụa xanh màu ngọc thạch với những chùm hoa li ti và trắng như những hạt mưa bay. Những chiếc lá ngõa non to như cái quạt lọc ánh sáng xanh mờ mờ. Tất cả những sắc xanh non tơ ấy in trên nền xanh sẫm đậm đặc của những tán lá già, của những cây quéo, cây vải, cây dâu da, cây đa, cây chùm bao.\n\nNhưng không phải chỉ có màu xanh mà thôi, giữa những đám lá sòi xanh, có những đốm lá già còn rơi lại đỏ như những viên hồng ngọc. Lác đác trên nhiều cành, còn có những lá già đốm vàng, đốm đỏ, đốm tím, và kìa, ở tận cuối xa, những chùm hoa lại vàng lên chói chang như những ngọn lửa thắp sáng cả một vùng. Nắng đậm dần lên chiếu qua các tầng lá đủ màu sắc rọi xuống tạo ra một vùng ánh sáng mờ tỏ chỗ lam, chỗ hồng, có chỗ nắng chiếu vào những hạt sương tóe lên những tia ngũ sắc ngời ngời như ta nhìn qua những ống kính vạn hoa.\n\nTrong bầu ánh sáng huyền ảo ấy, hôm nay diễn ra buổi hội của một số loài chim.\n\n(Ngô Quân Miện)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong bài, sự vật nào được so sánh với chiếc khăn voan?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trời xuân"
+            },
+            {
+              "id": "b",
+              "text": "Vệt sương"
+            },
+            {
+              "id": "c",
+              "text": "Rừng xuân"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Lá cây nào được so sánh với “thứ lụa xanh màu ngọc thạch”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Lá cời"
+            },
+            {
+              "id": "b",
+              "text": "Lá ngõa"
+            },
+            {
+              "id": "c",
+              "text": "Lá sưa"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Cây nào sót lại đốm lá già đỏ như viên hồng ngọc?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cây sòi"
+            },
+            {
+              "id": "b",
+              "text": "Cây vải"
+            },
+            {
+              "id": "c",
+              "text": "Cây dâu da"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bài văn miêu tả cảnh nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cảnh ngày hội mùa xuân."
+            },
+            {
+              "id": "b",
+              "text": "Cảnh ngày hội của các loài chim."
+            },
+            {
+              "id": "c",
+              "text": "Cảnh rừng xuân."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de6",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Đường vào bản",
+      "text": "Tôi sinh ra và lớn lên ở một bản hẻo lánh gần biên giới phía Bắc. Con đường từ huyện lị vào bản tôi rất đẹp.\n\nĐoạn đường dành riêng cho dân bản tôi đi về phải vượt qua một con suối to. Nước suối bốn mùa trong veo, rào rạt. Nước trườn qua kẽ đá, lách qua những mỏm đá ngầm tung bọt trắng xóa. Hoa nước bốn mùa xòe cánh trắng như trải thảm hoa đón mời khách gần xa đi về thăm bản.\n\nNhững ngày nắng đẹp, người đi trên đường nhìn xuống suối sẽ bắt gặp những đàn cá nhiều màu sắc tung tăng bơi lội. Cá như vẽ hoa, vẽ lá giữa dòng. Bên trên đường là sườn núi thoai thoải. Núi cứ vươn mình lên cao, cao mãi. Con đường men theo một bãi rừng vầu, cây mọc san sát, thẳng tắp, dày như ống đũa. Đi trên đường, thỉnh thoảng khách còn gặp những cây cổ thụ. Có cây trám trắng, trám đen thân cao vút như đến tận trời. Những con lợn ục ịch đi lại ở ven đường, thấy người, giật mình hộc lên những tiếng dữ dội rồi chạy lê cái bụng quét đất. Những con gà mái dẫn con đi kiếm ăn cạnh đường gọi nhau nháo nhác.\n\nCon đường đã nhiều lần đưa tiễn người bản tôi đi công tác xa và cũng đã từng đón mừng cô giáo về bản dạy chữ. Nhưng dù ai đi đâu về đâu, khi bàn chân đã bén hòn đá, hòn đất trên con đường thân thuộc ấy, thì chắc chắn sẽ hẹn ngày quay lại.\n\n(Vi Hồng – Hồ Thủy Giang)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Con đường vào bản có những cảnh đẹp gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Con suối, núi, rừng vầu, rừng trám."
+            },
+            {
+              "id": "b",
+              "text": "Con thác, núi, rừng vầu, rừng trám, lợn gà."
+            },
+            {
+              "id": "c",
+              "text": "Con suối, núi, rừng vầu, cây trám, lợn gà."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trong câu “Hoa nước bốn mùa xòe cánh trắng như trải thảm hoa đón mời khách gần xa đi về thăm bản.”, “hoa nước” là loại hoa gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Một loại hoa mọc ở dưới nước."
+            },
+            {
+              "id": "b",
+              "text": "Nước suối tung bọt trắng xóa xòe cánh như cánh hoa."
+            },
+            {
+              "id": "c",
+              "text": "Một loại hoa ưa nước."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu văn “Cá như vẽ hoa, vẽ lá giữa dòng.” ý nói gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đàn cá nhiều màu sắc bơi lội dưới suối đẹp như hoa như lá."
+            },
+            {
+              "id": "b",
+              "text": "Đàn cá nhiều màu sắc hình thù giống hoa giống lá."
+            },
+            {
+              "id": "c",
+              "text": "Đàn cá biết vẽ hoa, vẽ lá."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Những cây cổ thụ mà khách gặp trên đường đi vào bản là những loại cây gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cây đa, cây vầu."
+            },
+            {
+              "id": "b",
+              "text": "Cây vầu, cây trám."
+            },
+            {
+              "id": "c",
+              "text": "Cây lim, cây chò."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bài văn tả cảnh gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cảnh vật núi rừng biên giới phía Bắc."
+            },
+            {
+              "id": "b",
+              "text": "Cảnh vật trong rừng núi phía Bắc."
+            },
+            {
+              "id": "c",
+              "text": "Cảnh vật trên con đường vào bản ở vùng núi phía Bắc."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Chủ ngữ trong câu “Đoạn đường dành riêng cho dân bản tôi đi về phải vượt qua một con suối to.” là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đoạn đường"
+            },
+            {
+              "id": "b",
+              "text": "Đoạn đường dành cho dân bản tôi."
+            },
+            {
+              "id": "c",
+              "text": "Đoạn đường dành cho dân bản tôi đi về."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de7",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Biển đẹp",
+      "text": "Buổi sớm nắng sáng. Những cánh buồm nâu trên biển được nắng chiếu vào hồng rực lên như đàn bướm múa lượn giữa trời xanh.\n\nLại đến một buổi chiều gió mùa đông bắc vừa dừng. Biển lặng đỏ đục, đầy như mâm bánh đúc, loáng thoáng những con thuyền như những hạt lạc ai đem rắc lên trên.\n\nRồi ngày mưa rào. Mưa giăng giăng bốn phía. Có quãng nắng xuyên xuống biển óng ánh đủ màu: xanh lá mạ, tím phớt, hồng, xanh biếc,… Có quãng biển thâm xì, nặng trịch. Những cánh buồm ra khỏi cơn mưa, ướt đẫm, thẫm lại, khỏe nhẹ, bồi hồi, như ngực áo bác nông dân cày xong ruộng về bị ướt.\n\nCó buổi sớm nắng mờ, biển bốc hơi nước, không nom thấy núi xa, chỉ một màu trắng đục. Không có thuyền, không có sóng, không có mây, không có sắc biếc của da trời.\n\nMột buổi chiều lạnh, nắng tắt sớm. Những núi xa màu lam nhạt pha màu trắng sữa. Không có gió, mà sóng vẫn đổ đều đều, rì rầm. Nước biển dâng đầy, quánh đặc một màu bạc trắng, lăn tăn như bột phấn trên da quả nhót.\n\nChiều nắng tàn, mát dịu. Biển xanh veo màu mảnh chai. Núi xa tím pha hồng. Những con sóng nhè nhẹ liếm lên bãi cát, bọt sóng màu bưởi đào.\n\nMặt trời xế trưa bị mây che lỗ đỗ. Những tia nắng dát vàng một vùng biển tròn, làm nổi bật những cánh buồm duyên dáng như ánh sáng chiếc đèn sân khấu khổng lồ đang chiếu cho các nàng tiên biển múa vui.\n\nThế đấy, biển luôn thay đổi màu tùy theo sắc mây trời. Trời xanh thẳm, biển cũng thẳm xanh như dâng cao lên, chắc nịch. Trời rải mây trắng nhạt, biển mơ màng dịu hơi sương. Trời âm u mây mưa, biển xám xịt nặng nề. Trời ầm ầm dông gió, biển đục ngầu giận dữ. Như một con người biết buồn vui, biển lúc tẻ nhạt, lạnh lùng, lúc sôi nổi, hả hê, lúc đăm chiêu, gắt gỏng. Biển nhiều khi rất đẹp, ai cũng thấy như thế. Nhưng có một điều ít ai chú ý là: vẻ đẹp của biển, vẻ đẹp kì diệu muôn màu muôn sắc ấy phần rất lớn là do mây, trời và ánh sáng tạo nên.\n\n(Vũ Tú Nam)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi nào thì “Biển lặng đỏ đục, đầy như mâm bánh đúc, loáng thoáng những con thuyền như những hạt lạc ai đem rắc lên trên.”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Buổi sớm nắng sáng."
+            },
+            {
+              "id": "b",
+              "text": "Buổi sớm nắng mờ."
+            },
+            {
+              "id": "c",
+              "text": "Buổi chiều gió mùa đông bắc vừa dừng."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi nào thì “Nước biển dâng đầy, quánh đặc một màu bạc trắng, lăn tăn như bột phấn trên da quả nhót.”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Một buổi chiều lạnh."
+            },
+            {
+              "id": "b",
+              "text": "Một buổi chiều nắng tàn, mát dịu."
+            },
+            {
+              "id": "c",
+              "text": "Một buổi trưa, mặt trời bị mây che."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong bài, sự vật nào được so sánh với “ngực áo của bác nông dân”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cơn mưa"
+            },
+            {
+              "id": "b",
+              "text": "Cánh buồm"
+            },
+            {
+              "id": "c",
+              "text": "Biển"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Trong bài, sự vật nào được so sánh với “ánh sáng chiếc đèn sân khấu”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mặt trời"
+            },
+            {
+              "id": "b",
+              "text": "Cánh buồm"
+            },
+            {
+              "id": "c",
+              "text": "Tia nắng"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo tác giả Vũ Tú Nam, vẻ đẹp kì diệu muôn màu, muôn sắc của biển phần lớn do những gì tạo nên?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mây trời và nước biển."
+            },
+            {
+              "id": "b",
+              "text": "Mây trời và ánh sáng."
+            },
+            {
+              "id": "c",
+              "text": "Nước biển, những con thuyền và ánh sáng mặt trời."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de8",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Tôi yêu buổi trưa",
+      "text": "Buổi sáng, rất nhiều người yêu nó, yêu màn sương lãng mạn, yêu sự sống đang hồi sinh, yêu bầu không khí trong lành mát mẻ…\n\nBuổi chiều, ngọn gió mát thổi nhẹ, hoàng hôn với những vệt sáng đỏ kì quái, khói bếp cùng với làn sương lam buổi chiều… Những điều này tạo nên buổi chiều mà không ít người yêu thích.\n\nTôi thích buổi sáng, và cũng thích buổi chiều, nhưng tôi còn thích cái mà mọi người ghét: buổi trưa. Có những buổi trưa mùa đông ấm áp, buổi trưa mùa thu nắng vàng rót mật rất nên thơ, buổi trưa mùa xuân nhẹ, êm và dễ chịu. Còn buổi trưa mùa hè, nắng như đổ lửa, nhưng chính cái buổi trưa đổ lửa này làm tôi yêu nó nhất.\n\nTrưa hè, khi bước chân lên đám rơm, tôi thấy mùi thơm khô ngai ngái, những sợi rơm vàng óng khoe sắc, tôi thấy thóc đã khô theo bước chân đi thóc của bố mẹ tôi. Rồi bố mẹ tôi cứ thức trông thóc mà chẳng dám nghỉ trưa. Nhờ buổi trưa này mà mọi người có rơm, củi khô đun bếp, nhờ buổi trưa này mà thóc được hong khô, mọi người được no ấm, và hơn tất cả, nhờ buổi trưa này mà tôi hiểu ra những nhọc nhằn của cha mẹ tôi và của những người nông dân suốt đời một nắng hai sương. Tôi yêu lắm những buổi trưa mùa hè!\n\n(Theo Nguyễn Thùy Linh)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bạn nhỏ trong bài cho rằng nhiều người yêu buổi sáng vì lí do gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Có màn sương lãng mạn, sự sống đang hồi sinh."
+            },
+            {
+              "id": "b",
+              "text": "Có bầu không khí trong lành, mát mẻ."
+            },
+            {
+              "id": "c",
+              "text": "Cả hai ý trên."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo bạn nhỏ, nhiều người yêu buổi chiều vì lí do gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Có ngọn gió mát thổi nhẹ, có ánh sáng hoàng hôn."
+            },
+            {
+              "id": "b",
+              "text": "Có khói bếp cùng với làn sương lam."
+            },
+            {
+              "id": "c",
+              "text": "Cả hai ý trên."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào nêu đúng thời gian bạn nhỏ yêu thích nhất?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Buổi trưa."
+            },
+            {
+              "id": "b",
+              "text": "Buổi trưa mùa hè."
+            },
+            {
+              "id": "c",
+              "text": "Buổi trưa mùa đông."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "“Nhẹ, êm và dễ chịu” là đặc điểm của buổi trưa mùa nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mùa xuân."
+            },
+            {
+              "id": "b",
+              "text": "Mùa đông."
+            },
+            {
+              "id": "c",
+              "text": "Mùa thu."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Lí do quan trọng nhất để bạn nhỏ yêu thích buổi trưa mùa hè là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhờ buổi trưa hè mà mọi người có rơm, củi khô để đun bếp."
+            },
+            {
+              "id": "b",
+              "text": "Nhờ buổi trưa hè mà thóc được hong khô, mọi người được no ấm."
+            },
+            {
+              "id": "c",
+              "text": "Nhờ buổi trưa hè mà bạn nhỏ hiểu được nỗi nhọc nhằn của cha mẹ và của những người nông dân suốt đời một nắng hai sương."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Bài viết nhằm mục đích gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tả cảnh buổi sáng, buổi trưa, buổi chiều ở làng quê."
+            },
+            {
+              "id": "b",
+              "text": "Ca ngợi những người nông dân suốt đời một nắng hai sương và thấm thía một nỗi biết ơn họ."
+            },
+            {
+              "id": "c",
+              "text": "Kể ra những công việc người nông dân cần làm để tạo ra hạt thóc, hạt gạo."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "“Đi thóc” trong bài có nghĩa là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đem thóc ra phơi."
+            },
+            {
+              "id": "b",
+              "text": "Vun thóc lại thành đống."
+            },
+            {
+              "id": "c",
+              "text": "Dùng chân rê trên mặt sân có thóc đang phơi để trở đều cho thóc chóng khô."
+            },
+            {
+              "id": "d",
+              "text": "Giẫm lên thóc."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Thành ngữ nào không đồng nghĩa với “Một nắng hai sương”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Thức khuya dậy sớm."
+            },
+            {
+              "id": "b",
+              "text": "Cày sâu cuốc bẫm."
+            },
+            {
+              "id": "c",
+              "text": "Đầu tắt mặt tối."
+            },
+            {
+              "id": "d",
+              "text": "Chân lấm tay bùn."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu “Tôi yêu lắm những buổi trưa mùa hè!” thuộc kiểu câu gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu kể"
+            },
+            {
+              "id": "b",
+              "text": "Câu cảm"
+            },
+            {
+              "id": "c",
+              "text": "Câu khiến"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    },
+    {
+      "externalKey": "docHieuL5-de9",
+      "subject": "language",
+      "grade": 5,
+      "category": {
+        "name": "Đọc hiểu",
+        "subject": "language"
+      },
+      "title": "Hai cái quạt",
+      "text": "Thằng quạt cọ làm gì có gió. Xưa nay nó toàn mượn tay người khác để lấy tiếng cho mình. Đúng là cái thằng cơ hội. Quạt Điện thường nói với cô Bóng Đèn như vậy. Khổ thân cho Quạt Cọ, chẳng trêu ghẹo gì mà cứ bị chửi rủa luôn. Đêm đến thì nằm co ro một mình trên nóc tủ. Bức ngột ngạt mà vẫn luôn có cảm giác lạnh thấu xương.\n\nCho đến một hôm, trời tối đã rất lâu mà Bóng Đèn vẫn không bật sáng. Cả mấy gian nhà tối đen như mực. Nóng bức đến phát rồ lên được. Chiều tối, ông chủ về. Mồ hôi nhễ nhại như vừa nhúng dưới suối lên. Chẳng kịp bỏ mũ ra, ông chủ đã chạy ngay đến chỗ ổ điện. Quạt Cọ nghe rõ tiếng ngón tay ông chủ bật từng công tắc, hộp số. Nhưng bóng đèn vẫn tối om. Quạt Điện trên trần nhà vẫn không nhúc nhích.\n\nBiết là mất điện, ông chủ tìm đến Quạt Cọ. Sau khi phủi lớp bụi lâu ngày bám đầy trên áo xống, cầm Quạt Cọ, ông chủ quạt lấy quạt để. Thằng con ông chủ ngồi xích lại gần bố, cứ luôn mồm:\n– Bố quạt mạnh vào. Con nóng quá. Hôm nay không có cái quạt cọ này, khéo bố con mình chết ngột.\n\nNghe bố con ông chủ nói vậy Quạt Điện bị chạnh lòng tự ái. Nó định bước xuống giằng trong tay ông chủ cái Quạt Cọ vứt đi. Nhưng sợi dây đã buộc chặt nó vào xà ngang. Biết mình là kẻ vô dụng, đêm đó, lần đầu tiên trong đời, nó thấy cay tê trong sống mũi. Định bụng hôm sau sẽ có gió mạnh như bão, để Quạt Cọ hết “nghi ngoe”.\n\nNhưng tiếc thay, mấy hôm liền đều mất điện. Ông chủ chẳng còn ngó ngàng gì đến nó nữa, mà cứ luôn tay cầm cái Quạt Cọ. Quạt Điện như nhận ra điều gì đó, nó cứ ấp a ấp úng, định xin lỗi Quạt Cọ.\n\n(Theo báo Thiếu niên Tiền phong)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Quạt Điện nghĩ gì về Quạt Cọ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cho rằng Quạt Cọ là đồ cơ hội, vô tích sự."
+            },
+            {
+              "id": "b",
+              "text": "Cho rằng Quạt Cọ là kẻ lười biếng."
+            },
+            {
+              "id": "c",
+              "text": "Cho rằng Quạt Cọ là kẻ hay trêu ghẹo người khác."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao bố con ông chủ lại cần đến Quạt Cọ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì mất điện."
+            },
+            {
+              "id": "b",
+              "text": "Vì Quạt Điện bị hỏng."
+            },
+            {
+              "id": "c",
+              "text": "Vì Quạt Điện bị sợi dây cột chặt vào xà ngang."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi đã hiểu ra “điều gì đó”, Quạt Điện định làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bước xuống, giằng lấy Quạt Cọ trong tay ông chủ định vứt đi."
+            },
+            {
+              "id": "b",
+              "text": "Ấp a ấp úng, định xin lỗi Quạt Cọ."
+            },
+            {
+              "id": "c",
+              "text": "Cho gió mạnh như bão để thổi bay Quạt Cọ."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu chuyện muốn nói với em điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Khi có điện thì dùng quạt điện, khi mất điện thì dùng quạt cọ."
+            },
+            {
+              "id": "b",
+              "text": "Nên sử dụng cả hai loại quạt."
+            },
+            {
+              "id": "c",
+              "text": "Mỗi đồ vật có tác dụng tiện ích khác nhau. Chớ nên coi thường những đồ vật đơn giản, rẻ tiền."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true
+        }
+      ]
+    }
+  ]
+}

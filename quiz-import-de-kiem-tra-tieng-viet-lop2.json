@@ -1,0 +1,2970 @@
+{
+  "formatVersion": "1.1",
+  "packageTitle": "Đề thi, đề kiểm tra Tiếng Việt lớp 2 — Kết nối tri thức (loigiaihay.com)",
+  "language": "vi",
+  "quizzes": [],
+  "passages": [
+    {
+      "externalKey": "tv2-00-1",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Tình bạn",
+      "text": "Nếu có thể bạn hãy kể cho tôi\nNỗi buồn nào cũng có thể phai phôi\nNỗi đau nào trước sau rồi cũng đỡ\nHãy đứng lên khi ta còn hơi thở\nĐừng vì nó mà cản trở tương lai.\nCon đường đời nhiều cạm bẫy chông gai\nGặp khó khăn cùng ghé vai san sẻ\nĐừng e ngại mà một mình lặng lẽ\nVui hay buồn mình không thể quên nhau.\nLà bạn tốt phải sống trước như sau\nGiàu hay nghèo vẫn bền lâu tình bạn\nSang hay hèn chẳng bao giờ nghĩa cạn\nĐể tình bạn được trong sáng như gương!\nSưu tầm",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Ở câu thơ đầu tiên, tác giả muốn bạn mình kể điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tác giả muốn bạn kể cho mình những câu chuyện vui trong cuộc sống."
+            },
+            {
+              "id": "b",
+              "text": "Tác giả muốn bạn mình chia sẻ, nói ra những nỗi buồn để nhẹ lòng hơn."
+            },
+            {
+              "id": "c",
+              "text": "Tác giả muốn bạn mình kể những bí mật."
+            },
+            {
+              "id": "d",
+              "text": "Tác giả muốn bạn mình kể những câu chuyện riêng chỉ hai người biết."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong bài thơ, tác giả mong muốn điều gì với bạn bè của mình?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Muốn bạn bè kề bên sát vai nhau đến cuối đời."
+            },
+            {
+              "id": "b",
+              "text": "Muốn bạn bè luôn vượt qua khó khăn để tìm kiếm hạnh phúc."
+            },
+            {
+              "id": "c",
+              "text": "Muốn chia sẻ nỗi buồn, dù giàu nghèo, khó khăn để tình bạn được lâu bền."
+            },
+            {
+              "id": "d",
+              "text": "Muốn bạn mình phải tự mạnh mẽ vượt qua khó khăn trong cuộc sống."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-01-2",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Bé Chăm may áo",
+      "text": "Bé Chăm rất chăm làm nhưng cũng mau chán việc. Làm việc này chưa xong, em lại bỏ dở để làm việc khác. Bố em thường khuyên răn em, nhưng bé Chăm vẫn chưa sửa chữa được. Một hôm, bố dẫn Chăm đến bác thợ may ở trong làng để may một bộ quần áo mới. Chăm thích quá vì sắp có bộ quần áo đẹp để mặc Tết. Một ngày, hai ngày và ngày thứ ba, Chăm đến lấy quần áo mới. Nhưng bác thợ may chỉ may xong nửa cái áo và nửa cái quần. Bác bảo Chăm cứ thế mặc vào xem sao. Chăm bực tức nói:\n\n- Thế bác hãy may xong cái áo cho cháu đã có được không? Bác làm thế thành ra chẳng cái nào xong hẳn cả!\n\nBác thợ nghiêm trang bảo: “Cháu nói đúng, làm việc gì cũng phải làm đến nơi đến chốn mới khỏi phí công vô ích.”.\n\nSưu tầm",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bé Chăm là người như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Chăm là một cô bé lười biếng."
+            },
+            {
+              "id": "b",
+              "text": "Chăm là một cô bé chăm làm nhưng cũng hay chán việc."
+            },
+            {
+              "id": "c",
+              "text": "Chăm là một cô bé chăm chỉ."
+            },
+            {
+              "id": "d",
+              "text": "Chăm là một cậu bé ngoan, chăm chỉ làm việc nhà."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bác thợ may đã may quần áo cho Chăm như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bác may xong chiếc áo rồi may đến chiếc quần."
+            },
+            {
+              "id": "b",
+              "text": "Bác may xong chiếc quần rồi may đến chiếc áo."
+            },
+            {
+              "id": "c",
+              "text": "Bác chỉ may được nửa cái áo và nửa cái quần."
+            },
+            {
+              "id": "d",
+              "text": "Bác chỉ cắt xong vải rồi may áo với quần vào với nhau."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu chuyện khuyên em điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Khi làm việc gì, chúng ta cũng phải làm đến nơi đến chốn."
+            },
+            {
+              "id": "b",
+              "text": "Con cái phải biết vâng lời cha mẹ."
+            },
+            {
+              "id": "c",
+              "text": "Trẻ em chỉ nên làm những việc mình yêu thích."
+            },
+            {
+              "id": "d",
+              "text": "Chúng ta cần tập trung làm nhiều việc một lúc."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Từ nào dưới đây là từ chỉ sự vật?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Quần áo"
+            },
+            {
+              "id": "b",
+              "text": "Mới"
+            },
+            {
+              "id": "c",
+              "text": "May"
+            },
+            {
+              "id": "d",
+              "text": "Bực tức"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 2"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-02-3",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Tay thứ ba",
+      "text": "Khi còn nhỏ, Mô-da đã có biệt danh là \"thần đồng âm nhạc\".\n\nMột hôm, Mô-da nói với thầy giáo dạy đàn:\n\n- Thưa thầy, em có thể viết ra một bản nhạc mà thầy không đàn nổi.\n\nThầy của Mô-da cũng là một nhà soạn nhạc nổi tiếng. Ông bảo Mô-da cứ thoải mái viết rồi mang đến. Chẳng mấy chốc, Mô-da đã mang bản nhạc đến cho ông. Thầy giáo ngồi xuống bên cây dương cầm và bắt đầu chơi.\n\nThế nhưng tiếng đàn đột ngột ngừng lại. Thầy bực tức nói:\n\n- Bản nhạc gì kì lạ thế? Sao lúc hai bàn tay ta đang ở hai đầu của cây đàn thì lại có một nốt nhạc xuất hiện ở phím chính giữa vậy?\n\nMô-da cười, chậm rãi ngồi xuống, tay nhẹ nhàng lướt trên phím đàn. Thầy giáo không tin cậu bé này có thể làm được trừ phi có thêm một bàn tay.\n\nChẳng mấy chốc đã đến đoạn khó chơi kia. Đột nhiên, Mô-da cúi đầu, dùng mũi nhấn vào phím đàn.\n\nThầy giáo xuýt xoa khen ngợi cậu học trò nhỏ của mình.\n\n(Theo 100 câu chuyện hay dành cho bé trai, NXB Văn học, Hà Nội)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mô-da đã nói điều gì với thầy giáo dạy đàn?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mô-da nói sẽ viết ra một bản nhạc mà thầy không đàn nổi."
+            },
+            {
+              "id": "b",
+              "text": "Mô-da nói sẽ vẽ một bức tranh tặng thầy giáo."
+            },
+            {
+              "id": "c",
+              "text": "Mô-da nói sẽ viết ra một bài thơ tặng thầy giáo."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu văn nào giới thiệu về thầy giáo của Mô-da?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Một hôm, Mô-da nói với thầy giáo dạy đàn."
+            },
+            {
+              "id": "b",
+              "text": "Thầy của Mô-da cũng là một nhà soạn nhạc nổi tiếng."
+            },
+            {
+              "id": "c",
+              "text": "Thầy giáo ngồi xuống bên cây dương cầm và bắt đầu chơi."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao thầy giáo không chơi được đoạn cuối bản nhạc do Mô-da viết?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì thầy không nhớ được bản nhạc."
+            },
+            {
+              "id": "b",
+              "text": "Vì đôi tay của thầy không đủ nhanh."
+            },
+            {
+              "id": "c",
+              "text": "Vì có một nốt nhạc xuất hiện phím chính giữa đàn trong khi hai tay thầy đang ở hai đầu của cây đàn."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mô-da đã làm thế nào để chơi được nốt nhạc khó nhằn đó?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mô-da đưa nhanh tay về để nhấn nốt nhạc."
+            },
+            {
+              "id": "b",
+              "text": "Mô-da dùng mũi để nhấn nốt nhạc."
+            },
+            {
+              "id": "c",
+              "text": "Mô-da dùng cằm để nhấn nốt nhạc."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-03-4",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Thỏ Trắng đi học",
+      "text": "Thỏ Trắng rụt rè nhìn vào lớp xem có Sóc Nâu không. Khi thấy Sóc Nâu chăm chậu cây cảnh trong lớp, cậu nói: \"Mình cùng làm nhé!\"\n\nHai bạn say sưa làm nhiệm vụ. Có tiếng kêu: \"Thỏ Trắng đâu?\". Cậu ngước lên, tay vung vẩy, không may chậu cây rơi vỡ. Thỏ khóc oà lên. Cô giáo Hoạ Mi liền chạy đến hỏi: \"Sao Thỏ Trắng khóc?\". Sóc nói: \"Con lỡ tay làm vỡ chậu cây, bạn sợ nên khóc, cô ạ!\". Cô bảo hai bạn mang cây ra vườn trồng lại, còn chậu vỡ cô sẽ mang bỏ đi. Thỏ Trắng nhìn Sóc thầm cảm ơn.\n\nChiều về, Thỏ thủ thỉ với mẹ chuyện sáng nay. Mẹ khuyên Thỏ nên dũng cảm nói sự thật với cô. Sáng hôm sau, Thỏ Trắng rụt rè đến bên cô giáo: “Thưa cô, là con lỡ tay làm vỡ chậu cây, không phải Sóc ạ.\". Cô khen Thỏ ngoan và tặng quà. Thỏ mở ra là một chiếc chậu xinh xắn. Thỏ và Sóc reo lên sung sướng. Các bạn cảm ơn cô và bàn nhau gieo hạt, trồng cây vào chậu.\n\nTừ đó, Thỏ Trắng ngày nào cũng mong ước được đến trường để học và khám phá bao điều mới lạ và được gặp cô, bạn bè thật đáng yêu.\n\n(Theo Vũ Đình Bảy (Chủ biên), Truyện đọc Đạo đức 2, NXB Đại học Sư phạm, Hà Nội)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hai bạn Thỏ Trắng và Sóc Nâu cùng say sưa làm việc gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hai bạn say sưa học tập."
+            },
+            {
+              "id": "b",
+              "text": "Hai bạn say sưa quét dọn lớp."
+            },
+            {
+              "id": "c",
+              "text": "Hai bạn say sưa chăm chậu cây cảnh."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao Thỏ Trắng khóc?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì Thỏ Trắng giật mình khi có người gọi."
+            },
+            {
+              "id": "b",
+              "text": "Vì Thỏ Trắng sợ khi làm vỡ chậu cây."
+            },
+            {
+              "id": "c",
+              "text": "Vì Thỏ Trắng bị xước tay bởi chậu cây bị vỡ."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Thỏ Trắng cảm thấy thế nào khi Sóc Nâu nhận lỗi làm vỡ chậu hoa?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Thỏ Trắng cảm thấy bình thường."
+            },
+            {
+              "id": "b",
+              "text": "Thỏ Trắng vẫn sợ hãi, lo lắng."
+            },
+            {
+              "id": "c",
+              "text": "Thỏ Trắng yên tâm, thầm cảm ơn Sóc Nâu."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Nhờ đâu mà Thỏ Trắng đã dũng cảm nói sự thật với cô giáo?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhờ mẹ khuyên nhủ."
+            },
+            {
+              "id": "b",
+              "text": "Nhờ Thỏ Trắng cảm thấy xấu hổ khi để bạn nhận lỗi thay."
+            },
+            {
+              "id": "c",
+              "text": "Nhờ Sóc Nâu khuyên nhủ bớt rụt rè đi."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-04-5",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Trâu rừng",
+      "text": "Trâu rừng sống ở đồng cỏ dưới chân núi. Chúng chỉ di chuyển khi có hạn hán, đồng cỏ khô cháy. Khi có mưa, chúng lại trở về. Nơi chúng sinh sống bao giờ cũng có đầm nước hoặc dòng sông. Đó là nơi chúng ngâm mình sau lúc ăn no.\n\nBuổi chiều, trâu rừng đi kiếm ăn rồi trở về nơi ngủ đêm, nằm thành vòng tròn. Trâu già, trâu mẹ và nghé con nằm ở vòng trong, bên ngoài là trâu mộng. Con trâu mộng vạm vỡ, nằm canh giữ an toàn cho cả đàn. Nhiệm vụ canh gác sẽ được lũ trâu mộng truyền nhau, từ con này đến con khác ở vòng ngoài.\n\nTrâu rừng là chỗ dựa của loài thú ăn cỏ yếu ớt. Ban ngày, thú nhỏ ngủ trong hang ổ bí mật. Đêm đến, chúng kiếm ăn gần bầy trâu. Thấy hơi thú dữ, bầy trâu sẽ ngự. Lúc đó, bọn thú nhỏ không ngần ngại lẻn vào giữa vòng tròn, run rẩy đứng lẫn vào đám nghé non. Bầy trâu hào hiệp đồng loạt đứng lên trong tư thế phòng không bao giờ xua đuổi chúng.\n\nTheo VŨ HÙNG",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Nơi sinh sống của trâu rừng có gì đặc biệt?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Có nhiều cỏ."
+            },
+            {
+              "id": "b",
+              "text": "Có rừng cây."
+            },
+            {
+              "id": "c",
+              "text": "Khi mưa to."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi nào trâu rừng di chuyển khỏi nơi sinh sống?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Khi hạn hán."
+            },
+            {
+              "id": "b",
+              "text": "Có nước."
+            },
+            {
+              "id": "c",
+              "text": "Khi ăn no."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong đàn, con trâu nào làm nhiệm vụ canh gác?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trâu già."
+            },
+            {
+              "id": "b",
+              "text": "Trâu mẹ."
+            },
+            {
+              "id": "c",
+              "text": "Trâu mộng."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao bọn thú nhỏ thích kiếm ăn gần bầy trâu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì chúng thích kết bạn với nghé non."
+            },
+            {
+              "id": "b",
+              "text": "Vì bầy trâu sẽ bảo vệ thú nhỏ."
+            },
+            {
+              "id": "c",
+              "text": "Vì thú nhỏ ăn cỏ giống trâu rừng."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 1 - Đề số 5"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-05-6",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Thần đồng Lương Thế Vinh",
+      "text": "Lương Thế Vinh từ nhỏ đã nổi tiếng thông minh.\n\nCó lần, cậu đang chơi bên gốc đa cùng các bạn thì thấy một bà gánh bưởi đi qua. Đến gần gốc đa, bà bán bưởi vấp ngã, bưởi lăn tung tóe dưới đất. Có mấy trái lăn xuống một cái hố sâu bên đường. Bà bán bưởi chưa biết làm cách nào lấy bưởi lên thì Lương Thế Vinh đã bảo các bạn lấy nước đổ vào hố. Nước dâng đến đâu, bưởi nổi lên đến đó.\n\nMới 23 tuổi, Lương Thế Vinh đã đỗ Trạng nguyên. Ông được gọi là \" Trạng Lường\" vì rất giỏi tính toán.\n\nTheo CHUYỆN HAY NHỚ MÃI",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Từ nhỏ, Lương Thế Vinh đã nổi tiếng về điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Rất ngoan."
+            },
+            {
+              "id": "b",
+              "text": "Rất nghịch."
+            },
+            {
+              "id": "c",
+              "text": "Thông minh."
+            },
+            {
+              "id": "d",
+              "text": "Chậm chạp."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Lương Thế Vinh được gọi là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ông Lương"
+            },
+            {
+              "id": "b",
+              "text": "Trạng Lường"
+            },
+            {
+              "id": "c",
+              "text": "Thầy giáo"
+            },
+            {
+              "id": "d",
+              "text": "Thầy thuốc."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong câu chuyện, cậu bé Vinh đã thể hiện trí thông minh như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhảy xuống hố lấy lên."
+            },
+            {
+              "id": "b",
+              "text": "Nghĩ ra một trò chơi hay."
+            },
+            {
+              "id": "c",
+              "text": "Đổ nước vào hố để bưởi nổi lên."
+            },
+            {
+              "id": "d",
+              "text": "Nhặt bưởi trên đường trả bà bán bưởi."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Cách làm của Lương Thế Vinh đã đem lại kết quả gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bưởi nổi lên."
+            },
+            {
+              "id": "b",
+              "text": "Bưởi chìm xuống nước."
+            },
+            {
+              "id": "c",
+              "text": "Không lấy được bưởi."
+            },
+            {
+              "id": "d",
+              "text": "Bưởi không nổi lên."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Từ ngữ chỉ hoạt động trong câu văn sau là: “Có mấy trái lăn xuống một cái hố sâu bên đường.”",
+          "choices": [
+            {
+              "id": "a",
+              "text": "trái"
+            },
+            {
+              "id": "b",
+              "text": "đường"
+            },
+            {
+              "id": "c",
+              "text": "cái hố"
+            },
+            {
+              "id": "d",
+              "text": "lăn"
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-06-7",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Buổi sớm mùa hè trong thung lũng",
+      "text": "Rừng núi còn chìm đắm trong màn đêm. Trong bầu không khí đầy hơi ẩm và lành lạnh, mọi người đang ngon giấc trong những chiếc chăn đơn. Bỗng một con gà trống vỗ cánh phành phạch và cất tiếng gáy lanh lảnh ở đầu bản. Tiếp đó, rải rác khắp thung lũng, tiếng gà gáy râm ran. Mấy con gà rừng trên núi cũng thức dậy gáy te te.\n\nTrên mấy cây cao cạnh nhà, ve đua nhau kêu ra rả. Ngoài suối, tiếng chim cuốc vọng vào đều đều. Bản làng đã thức giấc. Đó đây, ánh lửa hồng bập bùng trên các bếp. Ngoài bờ ruộng đã có bước chân người đi, tiếng nói chuyện rì rầm, tiếng gọi nhau í ới.\n\n(Hoàng Hữu Bội)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào dưới đây nêu đúng tên các con vật được tả trong bài?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Gà trống, gà rừng, ve, chim cuốc"
+            },
+            {
+              "id": "b",
+              "text": "Gà trống, gà mái, ve, chim cuốc"
+            },
+            {
+              "id": "c",
+              "text": "Gà trống, gà mái, gà rừng, chim cuốc"
+            },
+            {
+              "id": "d",
+              "text": "Gà trống, chim sẻ, gà rừng, ve."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Tiếng gà gáy sớm mùa hè vùng cao được tả qua những từ nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Phành phạch, râm ran, te te."
+            },
+            {
+              "id": "b",
+              "text": "Lanh lảnh, phành phạch, te te"
+            },
+            {
+              "id": "c",
+              "text": "Lanh lảnh, râm ran, te te"
+            },
+            {
+              "id": "d",
+              "text": "Rầm rầm, lanh lảnh."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Cảnh sáng sớm ở vùng cao được tác giả tập trung miêu tả điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Những hình ảnh nổi bật."
+            },
+            {
+              "id": "b",
+              "text": "Những âm thanh nổi bật."
+            },
+            {
+              "id": "c",
+              "text": "Những sự việc diễn ra."
+            },
+            {
+              "id": "d",
+              "text": "Hoạt động của con người."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bài đọc trên tả khoảng thời gian nào trong ngày?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Buổi chiều"
+            },
+            {
+              "id": "b",
+              "text": "Buổi trưa"
+            },
+            {
+              "id": "c",
+              "text": "Buổi đêm"
+            },
+            {
+              "id": "d",
+              "text": "Buổi sáng sớm."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu “Chị Chín khóc nức nở vì xúc động” thuộc kiểu câu nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu giới thiệu."
+            },
+            {
+              "id": "b",
+              "text": "Câu nêu đặc điểm"
+            },
+            {
+              "id": "c",
+              "text": "Câu nêu hoạt động."
+            },
+            {
+              "id": "d",
+              "text": "Không thuộc kiểu câu nào."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 2"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-07-8",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Người lính cứu hỏa",
+      "text": "Ngọn lửa bao trùm tòa nhà, tiếng cháy bên trong lộp độp, hòa lẫn tiếng kêu cứu thất thanh của người dân đang mắc kẹt bên trong. Mẹ và tôi cùng các cô, chú hàng xóm đều lo và sợ hãi, chỉ mong không có thiệt hại về người. Rất nhanh, xe cứu hoa đã xuất hiện. Các anh lính nhanh chóng chuẩn bị đồ, gấp gáp vào dập lửa. Tác phong các anh nhanh nhẹn, ai nấy đều sẵn sàng lao vào ngọn lửa lớn cứu người, chẳng màng đến cả tính mạng của bản thân. Trong lúc đang đứng đó, tôi thấy một anh lính cứu hỏa người ướt đẫm, thở gấp, chân đi khập khiễng, khuôn mặt anh ám màu đen của khói lửa, tay bế một cô gái. Có lẽ anh bị thương khi đang làm nhiệm vụ nhưng vẫn ưu tiên việc giải cứu người dân, không hề tỏ ra mệt mới hay kêu than gì.\n\nTheo Uyển Ly",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bài đọc trên miêu tả khung cảnh gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bão ập đến, mọi người đang sơ tán để tránh bão."
+            },
+            {
+              "id": "b",
+              "text": "Tòa nhà bị cháy, người dân mắc kẹt bên trong."
+            },
+            {
+              "id": "c",
+              "text": "Động đất khiến nhiều tòa nhà bị đổ."
+            },
+            {
+              "id": "d",
+              "text": "Lũ lụt khiến nhà cửa bị ngập lụt."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tác phong của những người lính cứu hỏa như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhanh nhẹn, gấp gáp chuẩn bị đồ, sẵn sàng lao vào ngọn lửa cứu người."
+            },
+            {
+              "id": "b",
+              "text": "Cẩn thận, chu đáo, quan tâm mọi người."
+            },
+            {
+              "id": "c",
+              "text": "Tích cục, nhiệt huyết, tỉ mỉ."
+            },
+            {
+              "id": "d",
+              "text": "Chậm chạp, lề mề."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Anh lính cứu hỏa được miêu tả như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhút nhát, lười biếng."
+            },
+            {
+              "id": "b",
+              "text": "Đẹp trai, cao ráo, sáng sủa."
+            },
+            {
+              "id": "c",
+              "text": "Dũng cảm, không sợ bắt cứ thứ gì."
+            },
+            {
+              "id": "d",
+              "text": "Người ướt đẫm, thở gấp, chân đi khập khiễng, mặt ám màu đen của khói lửa."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Tình cảm của nhân vật tôi đối với những người lính cứu hỏa là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Sợ hãi"
+            },
+            {
+              "id": "b",
+              "text": "Quý mến"
+            },
+            {
+              "id": "c",
+              "text": "Ngưỡng mộ"
+            },
+            {
+              "id": "d",
+              "text": "Thấu hiểu"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-08-9",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Cậu bé và cây si già",
+      "text": "Bờ ao đầu làng có một cây si già. Thân cây to, cành lá xum xuê, ngả xuống mặt nước. Một cậu bé đi ngang qua. Sẵn con dao nhọn trong tay, cậu hí hoáy khắc tên mình lên thân cây. Cây đau điếng nhưng cố lấy giọng vui vẻ, hỏi cậu:\n\n- Chào cậu bé. Tên cậu bé là gì nhỉ?\n\n- Cháu tên là Ngoan.\n\n- Cậu có cái tên mới đẹp làm sao!\n\nMắt cậu bé rạng ngời. Cậu nói:\n\n- Cảm ơn cây.\n\n- Này, vì sao cậu không khắc tên lên người cậu? Như thế có phải tiện hơn không? – Cây nói.\n\nCậu bé rùng mình, lắc đầu:\n\n- Đau lắm, cháu chịu thôi.\n\n- Vậy, vì sao cậu lại bắt tôi nhận điều cậu không muốn?\n\n- Cháu xin lỗi ạ! Cháu biết làm vậy là sai rồi. Cháu sẽ không bao giờ làm tổn thương đến cây nữa.\n\n(Theo Trần Hồng Thắng)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Cậu bé đã làm gì với cây si già?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Leo lên cây"
+            },
+            {
+              "id": "b",
+              "text": "Khắc tên mình lên cây"
+            },
+            {
+              "id": "c",
+              "text": "Ngắt lá cây"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Để câu bé hiểu được sự đau đớn của mình, cây si già đã làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cây kêu la vì đau đớn."
+            },
+            {
+              "id": "b",
+              "text": "Cây khóc lóc, rền rĩ."
+            },
+            {
+              "id": "c",
+              "text": "Cây nén đau và trò chuyện cho cậu bé hiểu."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Từ nào trái nghĩa với từ “vui vẻ”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vui vẻ"
+            },
+            {
+              "id": "b",
+              "text": "Buồn bã"
+            },
+            {
+              "id": "c",
+              "text": "Nhanh nhẹn"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong câu “Mặt cậu bé rạng ngời”, từ rạng ngời thuộc từ chỉ gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Từ chỉ đặc điểm"
+            },
+            {
+              "id": "b",
+              "text": "Từ chỉ sự vật"
+            },
+            {
+              "id": "c",
+              "text": "Từ chỉ hoạt động, trạng thái"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-09-10",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Có một bầy hươu",
+      "text": "Một bầy hươu đang gặm cỏ bên dòng suối thì một chú hươu bé nhỏ đi tới. Chú hươu con bị đau chân, bước đi tập tễnh. Bộ lông xác xơ đầy những vết bùn đất. Chắc là chú ta vừa bị ngã rất đau. Chú hươu nói:\n\n- Các bạn ơi! Cho tôi ăn cùng với nhé!\n\nBầy hươu đồng thanh mời:\n\n- Bạn lại đây cùng ăn với chúng tôi!\n\nRồi một chú hươu lấy gạc cắt rụng mấy cái chồi non và nói:\n\n- Bạn ăn đi!\n\nChú hươu ăn rất ngon lành và cảm động nhìn các bạn.\n\nĐúng lúc ấy, một bác hươu già từ trong rừng đi tới. Thấy bầy hươu con giúp bạn, bác hươu già khen:\n\n- Các cháu ngoan lắm!\n\nBầy hươu con rất vui vì đã làm được việc tốt giúp bạn.\n\n(Theo Vũ Hùng)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong câu chuyện, tình cảnh của chú hươu con như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bị bùn bắn lên bẩn mất bộ lông đẹp đẽ"
+            },
+            {
+              "id": "b",
+              "text": "Bị đau mắt không nhìn thấy đường"
+            },
+            {
+              "id": "c",
+              "text": "Bị đau chân, bước đi tập tễnh"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 Tiếng Việt 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bầy hươu đã làm gì để giúp hươu con?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Dắt hươu con sang đường"
+            },
+            {
+              "id": "b",
+              "text": "Cắt lá non cho hươu con ăn"
+            },
+            {
+              "id": "c",
+              "text": "Tìm cách đưa hươu con qua suối"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 Tiếng Việt 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bác hươu già đã nói gì với bầy hươu con?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bác khen cả bầy hươu con ngoan."
+            },
+            {
+              "id": "b",
+              "text": "Bác bảo cả bầy hươu hãy kiếm thức ăn cho hươu con."
+            },
+            {
+              "id": "c",
+              "text": "Bác khuyên bầy hươu cần tiết kiệm thức ăn."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi cuối học kì 1 Tiếng Việt 2 - Đề số 5"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-10-11",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Hổ săn mồi như thế nào?",
+      "text": "Không tấn công trực diện giống như sư tử, hổ săn mồi theo chiến thuật rình và vồ. Sau khi xác định được mục tiêu, hổ sẽ tiếp cận con mồi một cách nhẹ nhàng.\n\nChúng nép sát người xuống, từ từ di chuyển một cách cẩn trọng về phía con mồi. Khi chúng mất cảnh giác, chúa sơn lâm sẽ vồ tới nhanh như chớp và kết thúc cuộc đi săn chỉ bằng một nhát cắn.\n\nTuy nhiên, bạn có biết tỷ lệ săn mồi thành công của hổ khá thấp, khoảng 10 lần đi săn của hổ thì chỉ có 1 lần thành công. Mặc dù vậy, hổ vẫn rất kiên trì và không bao giờ bỏ cuộc.\n\nSưu tầm",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hổ săn mồi theo chiến thuật nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Rình và bắt."
+            },
+            {
+              "id": "b",
+              "text": "Đuổi rồi bắt."
+            },
+            {
+              "id": "c",
+              "text": "Rình và vồ."
+            },
+            {
+              "id": "d",
+              "text": "Đuổi và vồ."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Đâu là đáp án đúng về trình tự các hành động khi săn mồi của hổ?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Xác định mục tiêu, nép sát người, từ từ di chuyển, tiếp cận, vồ, cắn."
+            },
+            {
+              "id": "b",
+              "text": "Xác định mục tiêu, tiếp cận, từ từ di chuyển, nép sát người, vồ, cắn."
+            },
+            {
+              "id": "c",
+              "text": "Xác định mục tiêu, từ từ di chuyển, nép sát người, tiếp cận, vồ, cắn."
+            },
+            {
+              "id": "d",
+              "text": "Xác định mục tiêu, tiếp cận, nép sát người, từ từ di chuyển, vồ, cắn."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Qua cách săn mồi của hổ, em học được bài học đáng quý nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Phải có cái nhìn bao quát mọi thứ xung quanh."
+            },
+            {
+              "id": "b",
+              "text": "Kiên trì và không bao giờ bỏ cuộc khi làm bất cứ việc gì."
+            },
+            {
+              "id": "c",
+              "text": "Phải có sức khoẻ tốt thì mới hoàn thành được các việc khó."
+            },
+            {
+              "id": "d",
+              "text": "Nên đặt ra kế hoạch chi tiết trước khi thực hiện công việc."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-11-12",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Hoa giấy",
+      "text": "Trước nhà, mấy cây bông giấy nở hoa tưng bừng.\n\nTrời càng nắng gắt, hoa giấy càng bồng lên rực rỡ. Màu đỏ thắm, màu tím nhạt, màu da cam, màu trắng muốt tinh khiết. Cả vòm cây lá chen hoa bao trùm lấy ngôi nhà lẫn mảnh sân nhỏ phía trước. Tất cả như nhẹ bỗng, tưởng chừng chỉ cần một trận gió ào qua, cây bông giấy trĩu trịt hoa sẽ bốc bay lên, mang theo cả ngôi nhà lang thang giữa bầu trời.\n\nHoa giấy đẹp một cách giản dị. Mỗi cánh hoa giống hệt một chiếc lá, chỉ có điều mỏng manh hơn và có màu sắc rực rỡ. Lớp lớp hoa giấy rải kín mặt sân, nhưng chỉ cần một làn gió thoảng, chúng tản mát bay đi mất.\n\nTôi rất yêu những bông hoa giấy. Chúng có một đặc điểm không giống nhiều loài hoa khác: Hoa giấy rời cành khi còn đẹp nguyên vẹn; những cánh hoa mỏng tang rung rinh, phập phồng run rẩy như đang thở, không có một mảy may biểu hiện của sự tàn úa.\n\n(Theo Trần Hoài Dương)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hoa giấy nở rực rỡ khi nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Khi trời nắng nhẹ"
+            },
+            {
+              "id": "b",
+              "text": "Khi trời nắng gắt"
+            },
+            {
+              "id": "c",
+              "text": "Khi trời nắng tàn"
+            },
+            {
+              "id": "d",
+              "text": "Khi trời tạnh mưa."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hoa giấy có những màu sắc gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đỏ thắm, tím nhạt, da cam, trắng đục"
+            },
+            {
+              "id": "b",
+              "text": "Đỏ thắm, tím nhạt, vàng tươi, trắng muốt"
+            },
+            {
+              "id": "c",
+              "text": "Đỏ thắm, tím nhạt, da cam, trắng muốt"
+            },
+            {
+              "id": "d",
+              "text": "Đỏ thắm, tím nhạt, vàng tươi, trắng đục."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hình ảnh nào cho thấy hoa giấy nhiều vô kể?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vòm cây lá chen hoa"
+            },
+            {
+              "id": "b",
+              "text": "Hoa giấy rải kín mặt sân"
+            },
+            {
+              "id": "c",
+              "text": "Cây bông giấy trĩu trịt hoa"
+            },
+            {
+              "id": "d",
+              "text": "Hoa giấy càng bồng lên rực rỡ"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Câu \"Hoa giấy đẹp một cách giản dị.” thuộc kiểu câu nào em đã học?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu nêu đặc điểm"
+            },
+            {
+              "id": "b",
+              "text": "Câu nêu hoạt động"
+            },
+            {
+              "id": "c",
+              "text": "Câu giới thiệu"
+            },
+            {
+              "id": "d",
+              "text": "Câu cảm"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 2"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-12-13",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Chăm vườn hoa",
+      "text": "Sân trường khoe nắng\nBướm trắng lượn quanh\nSương đọng long lanh\nTrên cành hoa thắm.\nHoa tươi khoe sắc\nNgào ngạt hương thơm\nChúng em chăm nom\nCho hoa tươi tốt.\nEm vun em bón\nTừng khóm từng bông\nHoa cúc hoa hồng\nThêm vàng thêm đỏ.\nSân trường rực rỡ\nHoa nở đỏ tươi\nRập rờn cánh bướm\nLượn quanh bóng người.\n(Đức Toàn)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Các bạn nhỏ trong bài thơ chăm vườn hoa ở đâu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ở công viên"
+            },
+            {
+              "id": "b",
+              "text": "Ở sân trường"
+            },
+            {
+              "id": "c",
+              "text": "Ở nhà"
+            },
+            {
+              "id": "d",
+              "text": "Ở quê"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Những loài hoa nào được nhắc đến trong bài?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hoa hồng, hoa cúc"
+            },
+            {
+              "id": "b",
+              "text": "Hoa đào, hoa cúc"
+            },
+            {
+              "id": "c",
+              "text": "Hoa hồng, hoa thắm"
+            },
+            {
+              "id": "d",
+              "text": "Hoa hồng, hoa đào."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chi tiết cho thấy các bạn cho chăm sóc vườn hoa là:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Sương đọng long lanh/ Trên cành hoa thắm"
+            },
+            {
+              "id": "b",
+              "text": "Hoa tươi khoe sắc/ Ngào ngạt hương thơm"
+            },
+            {
+              "id": "c",
+              "text": "Sân trường rực rỡ/ Hoa nở đỏ tươi"
+            },
+            {
+              "id": "d",
+              "text": "Em vun em bón/ Từng khóm từng bông"
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong các câu sau, câu nào là câu nêu đặc điểm?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hôm nay là ngày đầu tiên tôi đi học."
+            },
+            {
+              "id": "b",
+              "text": "Mọi người vẫn còn ngủ ngon trong những chiếc chăn ấm áp."
+            },
+            {
+              "id": "c",
+              "text": "Nắng vàng óng trên những vòm cây."
+            },
+            {
+              "id": "d",
+              "text": "Lũ gà rừng cũng thức dậy, gáy te te."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-13-14",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Xóm nhỏ",
+      "text": "Cái xóm lao động nghèo của tôi nằm sâu hun hút trong một con ngõ nhỏ, chạy vòng vèo ra sát mép bờ sông. Mùa mưa bão, con đường vào xóm ngập ngụa trong bùn đất khiến cho sự đi lại của mọi người càng trở nên vất vả. Theo thời gian, trải bao nắng mưa, lũ lụt và cũng bởi chủ nhân của những căn nhà này không có tiền tu sửa nên càng ngày chúng càng trở nên xập xệ, xuống cấp nghiêm trọng. Những mảng tường loang lổ vết nứt, sứt sẹo, nhiều chỗ vôi vữa mủn ra để lộ cả những viên gạch non bị mưa gió bào mòn đến non nửa. Nhìn chúng tựa như những vết chốc lở cóc cáy, gớm ghiếc trên da người ghẻ lâu ngày không được chữa trị vậy. Trong xóm nhỏ đó, mỗi người làm một nghề, người thợ hàn, người thợ cơ khí, người chạy xe ôm, người làm thợ thịt...\n\n(Bùi Nhật Lai)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Xóm lao động nghèo trong bài đọc trên nằm ở đâu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nằm sâu hun hút trong một con ngõ nhỏ, chạy vòng vèo ra sát mép bờ sông."
+            },
+            {
+              "id": "b",
+              "text": "Nằm trên một miếng đất cằn cỗi, cách xa thành phố."
+            },
+            {
+              "id": "c",
+              "text": "Nằm trên một khu đất to, rộng rãi, ngay sát đường lớn."
+            },
+            {
+              "id": "d",
+              "text": "Nằm bên bờ sông với những cánh đồng thẳng cò bay."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao những căn nhà trở nên xập xệ, xuống cấp nghiêm trọng?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì những căn nhà đã được xây dựng cách đây rất lâu rồi."
+            },
+            {
+              "id": "b",
+              "text": "Vì những căn nhà phải trải qua bao nắng mưa, lũ lụt."
+            },
+            {
+              "id": "c",
+              "text": "Vì chủ nhân của những căn nhà không có tiền để tu sửa."
+            },
+            {
+              "id": "d",
+              "text": "Cả ba đáp án trên."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Qua bài đọc trên, em thấy xóm nhỏ được hiện lên như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Xóm nhỏ nghèo nàn, hỗn loạn, xập xệ và xuống cấp nghiêm trọng."
+            },
+            {
+              "id": "b",
+              "text": "Con người trong xóm nhỏ tràn đầy tình thương và học thức."
+            },
+            {
+              "id": "c",
+              "text": "Xóm nhỏ tuy nghèo nhưng người dân đều đi xa để làm việc phát triển."
+            },
+            {
+              "id": "d",
+              "text": "Con người trong xóm nhỏ đang cố gắng làm việc để xây dựng lại xóm."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu: “Trong xóm nhỏ ... người làm thợ thịt ...” là câu:",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu giới thiệu."
+            },
+            {
+              "id": "b",
+              "text": "Câu nêu hoạt động."
+            },
+            {
+              "id": "c",
+              "text": "Câu nêu đặc điểm."
+            },
+            {
+              "id": "d",
+              "text": "Câu yêu cầu, đề nghị."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-14-15",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Kí ức tuổi thơ",
+      "text": "Nhớ hồi nhỏ, đi học tôi toàn lội bộ, trường học cách nhà hơn hai cây số chứ ít ỏi gì. Không bao giờ tôi chọn đi đường chính, toàn đi đường ruộng, đường vòng, đường tắt. Trên đường về chúng tôi thường ghé Bà Búa hái trâm ăn, buồn buồn, nhảy xuống kênh thuỷ lợi tắm, lúc thì trèo cây lấy tổ chim, lúc chơi trò cá sấu lên bờ. Có hôm mải mê chơi, mẹ tìm về đánh cho nát mông mà vẫn không sợ, vài hôm sau thì đâu lại vào đấy. Ngồi nhắc chuyện xưa chắc nhắc hoài nhắc mãi vẫn không bao giờ hết. Và thật hạnh phúc biết bao khi tôi có được một tuổi thơ quá đỗi tuyệt vời để mỗi khi buồn, lại leo lên chuyến tàu không có người soát vé trở ngược thời gian tìm lại kí ức ngọt ngào.\n\nNguyễn Hồng Phước",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hồi nhỏ, tác giả đi học bằng cách nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đạp xe đạp đi học."
+            },
+            {
+              "id": "b",
+              "text": "Được mẹ đèo đi học."
+            },
+            {
+              "id": "c",
+              "text": "Lội bộ đi học."
+            },
+            {
+              "id": "d",
+              "text": "Đi nhờ xe của bạn."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trên đường đi học về, tác giả và các bạn làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hái trâm ăn, tắm ở kênh thủy lợi."
+            },
+            {
+              "id": "b",
+              "text": "Trèo cây lấy tổ chim."
+            },
+            {
+              "id": "c",
+              "text": "Chơi trò cá sấu lên bờ."
+            },
+            {
+              "id": "d",
+              "text": "Tất cả các đáp án trên."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo em, vì sao tuổi thơ của tác giả thật tuyệt vời?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì tuổi thơ của tác giả có những kỉ niệm đẹp, khó quên."
+            },
+            {
+              "id": "b",
+              "text": "Vì tuổi thơ của tác giả bị mẹ đánh đòn vì ham chơi."
+            },
+            {
+              "id": "c",
+              "text": "Vì tuổi thơ của tác giả thoải mái, vô lo vô nghĩ."
+            },
+            {
+              "id": "d",
+              "text": "Vì tuổi thơ của tác giả được thầy cô và bạn bè yêu quý."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 5"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-15-16",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Không khí Tết",
+      "text": "Tuy mùa đông đã qua đi nhưng Tết năm nào cũng vẫn hơi lành lạnh. Dù trời lạnh nhưng hình như bầu trời lúc nào cũng quang và sáng. Trên khuôn mặt của từng người sáng bừng một niềm vui, háo hức đón xuân. Ai đó cũng tất bật, khẩn trương chuẩn bị cho cái Tết riêng của mình. Con đường làng cũng nhộn nhịp hẳn lên bởi mọi người nghỉ hết việc đồng áng, đổ ra đường đi sắm Tết. Ngoài chợ, những dãy hàng hoa tươi, cây đào, cây quất hứa hẹn một cái Tết tưng bừng. Những tiếng chào mời mua hàng, tiếng rao hàng, tiếng xe cộ làm cho âm thanh của buổi chợ Tết thêm nổi bật. Tâm điểm của chợ Tết là những hàng đào đang ra hoa hồng thắm. Bọn trẻ vui sướng hơn ai hết, mấy ngày rủ nhau đi chơi khắp làng, ngắm nghía những chiếc đèn lồng đỏ, mắt đứa nào cũng xuýt xoa, lấp lánh niềm vui.\n\nBình An",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Thời tiết vào dịp Tết được miêu tả như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trời nắng chang chang, không khí nóng bức, ngột ngạt."
+            },
+            {
+              "id": "b",
+              "text": "Thời tiết hơi lành lạnh, bầu trời quang và sáng."
+            },
+            {
+              "id": "c",
+              "text": "Trời âm u, mưa dầm ẩm ướt."
+            },
+            {
+              "id": "d",
+              "text": "Gió mùa đông bắc vẫn thổi, lạnh buốt."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 6"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mọi người có cảm xúc như thế nào mỗi dịp Tết về?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mặc dù tất bật chuẩn bị cho Tết nhưng ai cũng vui vẻ, háo hức."
+            },
+            {
+              "id": "b",
+              "text": "Mọi người mệt mỏi vì bận rộn sắm sửa đồ đạc cho ngày Tết."
+            },
+            {
+              "id": "c",
+              "text": "Ai cũng buồn bã vì những ngày Tết không được đi làm."
+            },
+            {
+              "id": "d",
+              "text": "Mọi người thảnh thơi vì Tết đến không cần làm việc."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 6"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Những đặc trưng nào của ngày Tết được nhắc đến trong bài đọc?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Tiết trời lạnh, hoa đào, cây quất, tiếng rao hàng, tiếng xe cộ, chợ Tết, đèn lồng."
+            },
+            {
+              "id": "b",
+              "text": "Thời tiết mát mẻ, hoa đào, hoa mai vàng, sách vở, xe cộ."
+            },
+            {
+              "id": "c",
+              "text": "Tiết trời nóng rực, hoa đào, cây quất, tiếng rao hàng, chợ Tết, đèn lồng."
+            },
+            {
+              "id": "d",
+              "text": "Tiết trời lạnh, hoa đào, cây quất, tiếng xe cộ, chợ Tết, quần áo mới."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 6"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-16-17",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Giọt nước",
+      "text": "Tôi nhìn thật kỹ những giọt nước mưa còn đọng lại trên lá của những cây thông trước mặt. Rồi tôi hít một hơi thật sâu, thật chậm để cảm nhận hương thơm của đất đai, hương thơm trong sạch của những chiếc lá sau đêm mưa lộ rõ cả đường gân guốc xanh xao. Nhưng, tất cả, chúng đều ướt sũng bởi sương và nước mưa rả rích suốt đêm qua...\n\nTôi lại trở lại quê hương. Tình yêu đó cứ lớn dần, qua mỗi người tôi gặp, khi họ hỏi nơi tôi sinh ra: “Vĩnh Tường”! Nhưng đây là lần thứ ba tôi đặt chân tới Thiền Viện, lần thứ tư trong đời, tôi đặt chân tới Tây Thiên.\n\nHoa Lê",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Quê hương của tác giả ở đâu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Thiền Viện"
+            },
+            {
+              "id": "b",
+              "text": "Tây Thiên"
+            },
+            {
+              "id": "c",
+              "text": "Vĩnh Tường"
+            },
+            {
+              "id": "d",
+              "text": "Hà Nội"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 7"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo em, nội dung chính của bài đọc trên là gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Cảm nhận vẻ đẹp của buổi sáng sớm tại quê nhà của tác giả."
+            },
+            {
+              "id": "b",
+              "text": "Cảm nhận về mùi hương thân thuộc của thiên nhiên quê nhà."
+            },
+            {
+              "id": "c",
+              "text": "Cảm nhận vẻ đẹp và tình yêu của tác giả với quê hương khi trở lại."
+            },
+            {
+              "id": "d",
+              "text": "Cảm nhận tươi mát về những cây cối sau cơn mưa của tác giả."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 7"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Từ nào là từ chỉ đặc điểm?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "ngào ngạt"
+            },
+            {
+              "id": "b",
+              "text": "đất đai"
+            },
+            {
+              "id": "c",
+              "text": "nước mưa"
+            },
+            {
+              "id": "d",
+              "text": "hít hà"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 7"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-17-18",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Tổ chim",
+      "text": "Sau nhà Mai có một vườn hoa huệ rực rỡ. Hoa huệ trắng mang một sắc trắng đặc biệt, không giống màu trắng ngà của hoa cúc hay màu trắng của hoa chanh và hoa ngâu. Nó có màu trắng tinh khôi, tỏa ra vẻ đẹp kiêu sa và dịu dàng. Trong vườn còn có một tổ chim. Chim bố và chim mẹ đã đến đây làm tổ từ rất lâu rồi. Mai cũng không biết trong tổ có bao nhiêu trứng và chim con được đẻ ra từ lúc nào.\n\nMùa mưa bão, Mai lo cho tổ chim, ngày nào cũng ra ngóng. Thế rồi, một hôm, Mai bất ngờ nhìn thấy hai chim con nhú đầu ra, nhấp nhô và há mỏ dưới cánh chim mẹ. Khi chim mẹ bay đi, chim bố lại đến canh chừng chúng. “Thật tuyệt vời! Thì ra loài vật cũng biết yêu thương con cái đến vậy.”.\n\nTheo Mai Thuỳ",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Hoa huệ có màu trắng như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Trắng như hoa ngâu."
+            },
+            {
+              "id": "b",
+              "text": "Trắng tinh khôi, kiêu sa, dịu dàng."
+            },
+            {
+              "id": "c",
+              "text": "Trắng như hoa chanh."
+            },
+            {
+              "id": "d",
+              "text": "Trắng ngà giống như hoa cúc."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 8"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao ngày nào Mai cũng ra ngóng tổ chim?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì Mai thích những chú chim non."
+            },
+            {
+              "id": "b",
+              "text": "Vì đang mùa mưa bão, Mai lo cho tổ chim."
+            },
+            {
+              "id": "c",
+              "text": "Vì Mai muốn biết trong tổ có bao nhiêu trứng."
+            },
+            {
+              "id": "d",
+              "text": "Vì Mai muốn nhìn thấy những chú chim non ra đời."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 8"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Vì sao Mai nói rằng loài vật cũng biết yêu thương con cái?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì Mai thấy chim con há mỏ, được che chở dưới cánh của chim mẹ."
+            },
+            {
+              "id": "b",
+              "text": "Vì Mai thấy chim mẹ bay đi, chim bố lại đến canh chừng chim con."
+            },
+            {
+              "id": "c",
+              "text": "Vì Mai thấy chim bố và chim mẹ không bao giờ rời xa chim con."
+            },
+            {
+              "id": "d",
+              "text": "Cả A và B đều đúng."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 8"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Cụm từ nào trả lời cho câu hỏi “Ở đâu”?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "trên cánh đồng"
+            },
+            {
+              "id": "b",
+              "text": "chiều chiều"
+            },
+            {
+              "id": "c",
+              "text": "tháng trước"
+            },
+            {
+              "id": "d",
+              "text": "ngày hôm qua"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi giữa học kì 2 - Đề số 8"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-18-19",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Họa mi hót",
+      "text": "Mùa xuân! Mỗi khi hoạ mi tung ra những tiếng hót vang lừng, mọi vật như có sự thay đổi kì diệu!\n\nTrời bỗng sáng thêm ra. Những luồng ánh sáng chiếu qua các chùm lộc mới hoá rực rỡ hơn. Những gợn sóng trên hồ hoà nhịp với tiếng hoạ mi hót, lấp lánh thêm. Da trời bỗng xanh cao. Những làn mây trắng trắng hơn, xốp hơn, trôi nhẹ nhàng hơn. Các loài hoa nghe tiếng hót trong suốt của hoạ mi chợt bừng giấc, xoè những cánh hoa đẹp, bày đủ các màu sắc xanh tươi. Tiếng hót dìu dặt của hoạ mi giục các loài chim dạo lên những khúc nhạc tưng bừng, ca ngợi núi sông đang đổi mới.\n\nChim, mây, nước và hoa đều cho rằng tiếng hót kì diệu của hoạ mi đã làm cho tất cả bừng giấc… Hoạ mi thấy lòng vui sướng, cố hót hay hơn nữa.\n\n(Võ Quảng)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Bài văn nói về tiếng hót của hoạ mi vào thời gian nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Mùa xuân"
+            },
+            {
+              "id": "b",
+              "text": "Mùa hè"
+            },
+            {
+              "id": "c",
+              "text": "Mùa thu"
+            },
+            {
+              "id": "d",
+              "text": "Mùa đông"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Chim, hoa, mây, nước nghĩ như thế nào về tiếng hót kì diệu của hoạ mi?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Họa mi hót báo hiệu mùa xuân đến."
+            },
+            {
+              "id": "b",
+              "text": "Tiếng hót của họa mi giục các loài chim dạo lên những khúc nhạc tưng bừng."
+            },
+            {
+              "id": "c",
+              "text": "Tiếng hót của họa mi làm cho tất cả bừng giấc."
+            },
+            {
+              "id": "d",
+              "text": "Tiếng hót của họa mi làm cho tất cả các loài chim khác cùng hót theo."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Họa mi thấy trong lòng như thế nào và họa mi đã làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Hoạ mi thấy rất tự hào, cất lên tiếng hót mê li."
+            },
+            {
+              "id": "b",
+              "text": "Họa mi thấy lòng vui sướng, cố hót hay hơn nữa."
+            },
+            {
+              "id": "c",
+              "text": "Họa mi kiêu hãnh, không hót nữa."
+            },
+            {
+              "id": "d",
+              "text": "Hoạ mi thấy buồn và không hót nữa."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu: “Da trời bỗng xanh cao.” được cấu tạo theo mẫu câu nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu giới thiệu."
+            },
+            {
+              "id": "b",
+              "text": "Câu nêu hoạt động."
+            },
+            {
+              "id": "c",
+              "text": "Câu nêu đặc điểm."
+            },
+            {
+              "id": "d",
+              "text": "Câu giới thiệu và nêu hoạt động."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trong câu: “Da trời bỗng xanh cao.” có mấy từ chỉ đặc điểm?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Có 1 từ. Đó là: …………………………………………………………"
+            },
+            {
+              "id": "b",
+              "text": "Có 2 từ. Đó là: …………………………………………………………"
+            },
+            {
+              "id": "c",
+              "text": "Có 3 từ. Đó là: …………………………………………………………"
+            },
+            {
+              "id": "d",
+              "text": "Không có từ nào chỉ đặc điểm."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Dòng nào chỉ gồm các từ chỉ đặc điểm?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "xanh tươi, núi sông, rực rỡ, bừng giấc."
+            },
+            {
+              "id": "b",
+              "text": "rực rỡ, xanh tươi, trôi, hót."
+            },
+            {
+              "id": "c",
+              "text": "xanh tươi, kì diệu, mây, bừng giấc."
+            },
+            {
+              "id": "d",
+              "text": "rực rỡ, xanh tươi, kì diệu, hay."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 1"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-19-20",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Bài học về chữ tín",
+      "text": "Hồi ở Pác Bó, Bác Hồ sống rất chan hòa với mọi người. Một hôm được tin Bác đi công tác xa, một trong những em bé thường ngày quấn quýt bên Bác chạy đến cầm tay Bác thưa:\n\n- Bác ơi, Bác đi công tác về nhớ mua cho cháu một chiếc vòng bạc nhé!\n\nBác cúi xuống nhìn em bé âu yếm, xoa đầu em khẽ nói:\n\n- Cháu ở nhà nhớ ngoan ngoãn, khi nào Bác về Bác sẽ mua tặng cháu.\n\nNói xong Bác vẫy chào mọi người ra đi. Hơn hai năm sau Bác quay trở về, mọi người mừng rỡ ra đón Bác. Ai cũng vui mừng xúm xít hỏi thăm sức khỏe Bác, không một ai còn nhớ đến chuyện năm xưa. Bỗng Bác mở túi lấy ra một chiếc vòng bạc mới tinh trao tận tay em bé – bây giờ đã là một cô bé. Cô bé và mọi người cảm động đến rơi nước mắt. Bác nói:\n\n- Cháu nó nhờ mua tức là nó thích lắm, mình là người lớn đã hứa thì phải làm được, đó là \"chữ tín\". Chúng ta cần phải giữ trọn niềm tin với mọi người.\n\n(Những mẩu chuyện về Bác Hồ với thiếu nhi)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Em bé nhờ Bác Hồ mua món quà gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Nhờ Bác Hồ mua kẹo."
+            },
+            {
+              "id": "b",
+              "text": "Nhờ Bác Hồ mua bánh."
+            },
+            {
+              "id": "c",
+              "text": "Nhờ Bác Hồ mua vòng bạc."
+            },
+            {
+              "id": "d",
+              "text": "Nhờ Bác Hồ mua đồng hồ."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo em vì sao Bác Hồ mua vòng bạc cho em bé?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì Bác Hồ rất yêu quý trẻ em và luôn giữ chữ tín."
+            },
+            {
+              "id": "b",
+              "text": "Vì em bé xinh đẹp nên Bác Hồ mua cho."
+            },
+            {
+              "id": "c",
+              "text": "Vì Bác Hồ thấy vòng đẹp nên mua cho em bé."
+            },
+            {
+              "id": "d",
+              "text": "Vì Bác Hồ đi xa nên mới mua cho các bé."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Qua câu chuyện trên, giúp chúng ta hiểu được điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Chúng ta chỉ cần giữ trọn niềm tin với người lớn tuổi."
+            },
+            {
+              "id": "b",
+              "text": "Chúng ta cần phải giữ trọn niềm tin với mọi người."
+            },
+            {
+              "id": "c",
+              "text": "Chúng ta chỉ cần giữ trọn niềm tin với Bác Hồ."
+            },
+            {
+              "id": "d",
+              "text": "Chúng ta cần phải giữ trọn niềm tin với bạn."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 2"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-20-21",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Mùa vàng",
+      "text": "Thu về, những quả hồng đỏ mọng, những hạt dẻ nâu bóng, những quả na mở to mắt, thơm dìu dịu. Biển lúa vàng ươm. Gió nổi lên và sóng lúa vùng dập dồn trải tới chân trời.\n\nMinh ríu rít bên mẹ:\n\n- Mẹ ơi, con thấy quả trên cây đều chín hết cả rồi. Các bạn ấy đang mong có người đến hái đấy. Nhìn quả chín ngon thế này, chắc các bác nông dân vui lắm mẹ nhỉ?\n\n- Đúng thế con ạ.\n\n- Nếu mùa nào cũng được thu hoạch thì thích lắm phải không mẹ?\n\nMẹ âu yếm nhìn Minh và bảo:\n\n- Con nói đúng đấy! Mùa nào thức ấy.\n\nNhưng để có cái thu hoạch, trước đó người nông dân phải làm rất nhiều việc. Họ phải cày bừa, gieo hạt và chăm sóc. Rồi mưa nắng, hạn hán, họ phải chăm sóc vườn cây, ruộng đồng. Nhờ thế mà cây lớn dần, ra hoa kết trái và chín rộ đấy.\n\n- Mẹ ơi, con hiểu rồi. Công việc của các bác nông dân vất vả quá mẹ nhỉ?\n\nTheo Những câu chuyện hay, những bài học quý",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mùa thu về có những quả, hạt gì chín, thơm?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Quả hồng, cam"
+            },
+            {
+              "id": "b",
+              "text": "Quả hồng, na, hạt dẻ"
+            },
+            {
+              "id": "c",
+              "text": "Hồng, na."
+            },
+            {
+              "id": "d",
+              "text": "hạt dẻ, cam"
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trước mùa thu hoạch, các bác nông dân phải làm những gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "cày bừa"
+            },
+            {
+              "id": "b",
+              "text": "cày bừa và gieo hạt"
+            },
+            {
+              "id": "c",
+              "text": "cày bừa, gieo hạt, chăm sóc"
+            },
+            {
+              "id": "d",
+              "text": "gieo hạt và chăm sóc"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Để thu hoạch tốt, ngoài công sức cảu người nông dân còn phụ thuộc điều gì nữa?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Thời tiết"
+            },
+            {
+              "id": "b",
+              "text": "Nước"
+            },
+            {
+              "id": "c",
+              "text": "Công an"
+            },
+            {
+              "id": "d",
+              "text": "Côn trùng"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu nào là câu giới thiệu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đất nước mình thật tươi đẹp."
+            },
+            {
+              "id": "b",
+              "text": "Đồng Tháp Mười là tên vùng đất ở miền Nam."
+            },
+            {
+              "id": "c",
+              "text": "Mái tóc của mẹ mượt mà."
+            },
+            {
+              "id": "d",
+              "text": "Chúng ta cùng đi thăm ba miền đất nước."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 3"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-21-22",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Hãy tin vào chính mình",
+      "text": "Mùa đông đến, cả gia đình én bay đi tránh rét. Én Con mới tập bay. Đây là lần đầu tiên chú phải bay xa đến vậy. Trên đường đi, gia đình én phải bay qua một con sông lớn, nước chảy xiết, Én Con sợ hãi nhìn dòng sông. Én Con sẽ bị chóng mặt và rơi xuống mất. Bố mẹ động viên Én Con rất nhiều, nhưng chú vẫn không dám bay qua. Bố liền ngắt cho Én Con một chiếc lá rồi nói:\n\n- Con hãy cầm chiếc lá thần kì này. Nó sẽ bảo vệ con được an toàn.\n\nLúc qua sông rồi. Én Con vui vẻ bảo bố:\n\n- Bố ơi, chiếc lá thần kì tuyệt vời quá! Nó giúp con qua sông an toàn rồi đây này.\n\nBố Én Con ôn tồn bảo:\n\n- Không phải chiếc lá thần kì đâu con ạ. Đó chỉ là một chiếc lá bình thường như bao chiếc lá khác. Cái chính là con đã vững tin và rất cố gắng.\n\n(Theo Nguyễn Thị Thu Hà)",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mùa đông đến gia đình én thường làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ngủ đông"
+            },
+            {
+              "id": "b",
+              "text": "Tổ chức liên hoan"
+            },
+            {
+              "id": "c",
+              "text": "Bay đi tránh rét"
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Trên đường đi, điều gì khiến Én Con sợ hãi?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Én Con phải bay qua một khu rừng."
+            },
+            {
+              "id": "b",
+              "text": "Én Con phải bay qua một dòng sông."
+            },
+            {
+              "id": "c",
+              "text": "Én Con phải bay qua một cánh đồng."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Én Bố đã làm gì để giúp Én Con bay qua sông?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Đưa cho con một chiếc lá rồi nói đây là bùa hộ mệnh của con."
+            },
+            {
+              "id": "b",
+              "text": "Đưa cho con chiếc lá để làm thuyền nếu bị rơi xuống sông."
+            },
+            {
+              "id": "c",
+              "text": "Đưa cho con một chiếc lá rồi nói đây là chiếc lá thần kì, nó sẽ bảo vệ con được an toàn."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Theo em, vì sao Én Con có thể bay qua sông?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Vì Én Con được bố mẹ giúp đỡ."
+            },
+            {
+              "id": "b",
+              "text": "Vì Én Con rất vững tin và cố gắng."
+            },
+            {
+              "id": "c",
+              "text": "Vì Én Con có chiếc lá thần kì."
+            }
+          ],
+          "correctAnswerIds": [
+            "b"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Câu “Mùa đông đến, cả gia đình én bay đi tránh rét.” thuộc mẫu câu nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Câu nêu hoạt động."
+            },
+            {
+              "id": "b",
+              "text": "Câu nêu đặc điểm."
+            },
+            {
+              "id": "c",
+              "text": "Câu giới thiệu"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 3,
+          "prompt": "Những câu nào dưới đây sử dụng sai dấu câu?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Én Con cố gắng bay qua dòng sông!"
+            },
+            {
+              "id": "b",
+              "text": "Én Con bay qua sông có mệt không?"
+            },
+            {
+              "id": "c",
+              "text": "Gia đình én gồm có: Én Bố, Én Mẹ và Én Con ."
+            },
+            {
+              "id": "d",
+              "text": "Bạn Én Con giỏi quá?"
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 4"
+          ]
+        }
+      ]
+    },
+    {
+      "externalKey": "tv2-22-23",
+      "subject": "language",
+      "grade": 2,
+      "category": {
+        "name": "Đề kiểm tra Tiếng Việt 2",
+        "subject": "language"
+      },
+      "title": "Tuổi nhỏ làm việc nhỏ",
+      "text": "Thường ngày, cứ mỗi buổi chiều đi học về, Duy lại chạy ngay ra sân bóng để chơi với các bạn cùng khu phố. Nhiều lần, Duy mải chơi đến tận chiều muộn cũng không về. Mẹ phải ra gọi mãi thì Duy mới chịu về tắm rửa và ăn cơm.\n\nHôm nay, ở trên lớp, cô giáo dạy lớp Duy bài học “Làm việc thật là vui”. Khi học xong bài học, Duy thấy rằng bạn nhỏ trong bài đã làm được rất nhiều việc nhỏ trong nhà để giúp đỡ gia đình. Ngoài ra, cô giáo cũng giảng cho cả lớp nghe lời dạy thiếu nhi của Bác Hồ mà Duy nhớ mãi. Đó là câu: “Tuổi nhỏ làm việc nhỏ, tuỳ theo sức của mình.\".\n\nThế là từ hôm đó, Duy chỉ chơi đá bóng một chút rồi về. Sau đó, Duy ra ngoài vườn nhổ cỏ, bắt sâu cùng bà, cùng ông tưới nước cho vườn hoa, nhặt rau và quét nhà giúp mẹ. Cả nhà đều vui mừng vì Duy đã chăm ngoan hơn và lớn khôn từng ngày.\n\nTheo Quyền Quý",
+      "questions": [
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Mỗi buổi chiều đi học về, Duy thường làm gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Ra ngoài vườn nhổ cỏ giúp ông bà."
+            },
+            {
+              "id": "b",
+              "text": "Chạy lên phòng để học bài."
+            },
+            {
+              "id": "c",
+              "text": "Ra sân bóng để chơi với các bạn."
+            },
+            {
+              "id": "d",
+              "text": "Về nhà giúp mẹ nấu cơm."
+            }
+          ],
+          "correctAnswerIds": [
+            "c"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Khi cô giáo dạy bài “Làm việc thật là vui”, Duy nhận thấy điều gì?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Bạn nhỏ trong bài đã làm được rất nhiều việc nhỏ để giúp đỡ gia đình."
+            },
+            {
+              "id": "b",
+              "text": "Bạn nhỏ trong bài đã làm được rất nhiều việc lớn để giúp đỡ gia đình."
+            },
+            {
+              "id": "c",
+              "text": "Bạn nhỏ trong bài có thể làm được nhiều việc giống người lớn."
+            },
+            {
+              "id": "d",
+              "text": "Bạn nhỏ trong bài chưa thể làm được việc gì."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 2,
+          "prompt": "Sau buổi học đó, Duy đã thay đổi như thế nào?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "Duy cùng bà nhổ cỏ, bắt sâu và cùng ông tưới nước cho vườn hoa."
+            },
+            {
+              "id": "b",
+              "text": "Duy chỉ chơi đá bóng một lúc rồi về."
+            },
+            {
+              "id": "c",
+              "text": "Duy giúp mẹ nhặt rau và quét nhà."
+            },
+            {
+              "id": "d",
+              "text": "Cả ba đáp án trên đều đúng."
+            }
+          ],
+          "correctAnswerIds": [
+            "d"
+          ],
+          "shuffleChoices": true,
+          "tags": [
+            "Tiếng Việt 2",
+            "Đề thi học kì 2 - Đề số 5"
+          ]
+        }
+      ]
+    }
+  ]
+}

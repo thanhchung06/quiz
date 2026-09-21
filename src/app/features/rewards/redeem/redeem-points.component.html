@@ -1,0 +1,73 @@
+<main class="redeem-screen">
+  <header class="screen-header">
+    <app-icon name="star" />
+    <h1>Đổi điểm thưởng</h1>
+  </header>
+
+  <label>
+    Chọn bé
+    <select [ngModel]="selectedChildId()" (ngModelChange)="selectChild($event)">
+      @for (c of children(); track c.id) {
+        <option [value]="c.id">{{ c.displayName }}</option>
+      }
+    </select>
+  </label>
+
+  @if (children().length === 0) {
+    <p class="empty">Chưa có hồ sơ trẻ em nào.</p>
+  } @else {
+    <section class="balance-card">
+      <p class="balance-number">{{ balance() }}</p>
+      <p class="balance-label">điểm khả dụng của {{ selectedChildName() }}</p>
+      <p class="balance-detail">Đã kiếm được {{ earnedPoints() }} · Đã đổi {{ redeemedPoints() }}</p>
+    </section>
+
+    <form class="redeem-form" (ngSubmit)="submitRedemption()">
+      <label>
+        Số điểm cần trừ
+        <!-- type="text" deliberately, not "number": NumberValueAccessor would coerce the ngModelChange value to an actual number, breaking the string-typed signal below. -->
+        <input
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          [ngModel]="pointsToRedeem()"
+          (ngModelChange)="pointsToRedeem.set($event)"
+          name="pointsToRedeem"
+          placeholder="Ví dụ: 50"
+        />
+      </label>
+      <label>
+        Đổi lấy gì (tùy chọn)
+        <input [ngModel]="note()" (ngModelChange)="note.set($event)" name="note" placeholder="Ví dụ: Đồ chơi ô tô" />
+      </label>
+
+      @if (errorMessage()) {
+        <p class="error" role="alert">{{ errorMessage() }}</p>
+      }
+      @if (successMessage()) {
+        <p class="success" role="status">{{ successMessage() }}</p>
+      }
+
+      <button type="submit">
+        <app-icon name="check_circle" />
+        Trừ điểm
+      </button>
+    </form>
+
+    <section class="history">
+      <h2><app-icon name="history" />Lịch sử đổi điểm của {{ selectedChildName() }}</h2>
+      @if (history().length === 0) {
+        <p class="empty">Chưa có lần đổi điểm nào.</p>
+      }
+      <ul>
+        @for (r of history(); track r.id) {
+          <li>
+            <span class="history-points">-{{ r.points }}</span>
+            <span class="history-note">{{ r.note || 'Đổi điểm' }}</span>
+            <span class="history-date">{{ r.redeemedAt.slice(0, 10) }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</main>

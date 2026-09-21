@@ -1,0 +1,50 @@
+.learning-needs-screen {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.05rem;
+    color: #4a5a7a;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  li {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 1rem 0;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: #2f6fed;
+    color: white;
+
+    &:disabled {
+      background: #b7c6e8;
+    }
+  }
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #1e7a34;
+}

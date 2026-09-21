@@ -1,0 +1,41 @@
+{
+  "formatVersion": "1.0",
+  "packageTitle": "Grade 3 Addition Practice",
+  "language": "vi",
+  "quizzes": [
+    {
+      "externalId": "math-g3-addition-001",
+      "subject": "math",
+      "grade": 3,
+      "category": {
+        "externalKey": "arithmetic",
+        "name": "Số học"
+      },
+      "tags": ["addition", "two-digit"],
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "24 + 18 = ?",
+      "choices": [
+        { "id": "a", "text": "32" },
+        { "id": "b", "text": "42" },
+        { "id": "c", "text": "52" }
+      ],
+      "correctAnswerIds": ["b"],
+      "shuffleChoices": true,
+      "explanation": "24 + 18 = 42.",
+      "points": 10
+    },
+    {
+      "externalId": "math-g3-number-001",
+      "subject": "math",
+      "grade": 3,
+      "category": { "externalKey": "arithmetic", "name": "Số học" },
+      "tags": ["subtraction"],
+      "difficulty": 1,
+      "type": "number",
+      "prompt": "50 - 17 = ?",
+      "acceptedAnswer": "33",
+      "points": 10
+    }
+  ]
+}

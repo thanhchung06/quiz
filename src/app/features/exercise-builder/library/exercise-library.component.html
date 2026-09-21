@@ -1,0 +1,53 @@
+<main class="library-screen">
+  <header>
+    <h1>Thư viện bài tập</h1>
+    <button type="button" (click)="create()"><app-icon name="add" /> Tạo bài tập mới</button>
+  </header>
+
+  @if (message()) {
+    <p class="message">{{ message() }}</p>
+  }
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Tiêu đề</th>
+          <th>Môn</th>
+          <th>Lớp</th>
+          <th>Số câu</th>
+          <th>Thời gian</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ex of exercises(); track ex.id) {
+          <tr>
+            <td>
+              {{ ex.title }}
+              @if (ex.isDaily) {
+                <span class="daily-badge"><app-icon name="refresh" />Hàng ngày</span>
+              }
+            </td>
+            <td>{{ ex.subject }}</td>
+            <td>{{ ex.grade }}</td>
+            <td>{{ ex.items.length }}</td>
+            <td>{{ ex.timeLimitMinutes }} phút</td>
+            <td>{{ ex.status }}</td>
+            <td class="actions">
+              <button type="button" title="Sửa" (click)="edit(ex)"><app-icon name="edit" label="Sửa" /></button>
+              <button type="button" title="Nhân bản" (click)="duplicate(ex)">
+                <app-icon name="content_copy" label="Nhân bản" />
+              </button>
+              <button type="button" title="Lưu trữ" (click)="archive(ex)">
+                <app-icon name="archive" label="Lưu trữ" />
+              </button>
+              <button type="button" title="Xóa" (click)="remove(ex)"><app-icon name="delete" label="Xóa" /></button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</main>

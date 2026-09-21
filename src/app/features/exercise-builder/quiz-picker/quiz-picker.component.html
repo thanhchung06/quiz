@@ -1,0 +1,277 @@
+<div class="picker-overlay" (click)="closed.emit()">
+  <div class="picker-modal" (click)="$event.stopPropagation()">
+    <header>
+      <h2><app-icon name="quiz" />Chọn câu hỏi</h2>
+      <button type="button" class="close-btn" (click)="closed.emit()">
+        <app-icon name="close" label="Đóng" />
+      </button>
+    </header>
+
+    <div class="picker-body">
+      <nav class="tree-panel">
+        <div class="search-box">
+          <app-icon name="search" />
+          <input
+            type="text"
+            placeholder="Tìm câu hỏi…"
+            [ngModel]="searchText()"
+            (ngModelChange)="searchText.set($event)"
+          />
+        </div>
+
+        <button type="button" class="tree-node tree-all" [class.active]="selectedCategoryId() === 'all'" (click)="selectCategory('all')">
+          <app-icon name="folder_open" />
+          Tất cả câu hỏi
+          <span class="count">{{ allCount() }}</span>
+        </button>
+
+        @for (group of tree(); track group.subject) {
+          <p class="subject-label">
+            <app-icon name="category" />
+            {{ group.label }}
+          </p>
+          <ul>
+            @for (node of group.categories; track node.category.id) {
+              <li>
+                <button
+                  type="button"
+                  class="tree-node"
+                  [class.active]="selectedCategoryId() === node.category.id"
+                  (click)="selectCategory(node.category.id)"
+                >
+                  <app-icon name="folder_open" />
+                  {{ node.category.name }}
+                  <span class="count">{{ node.count }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </nav>
+
+      <section class="list-panel">
+        <ul class="quiz-list">
+          @for (q of filteredItems(); track q.id) {
+            <li>
+              <button
+                type="button"
+                class="quiz-row"
+                [class.added]="isAdded(q.id)"
+                [class.selected]="selectedItem()?.id === q.id"
+                [disabled]="dailyMode"
+                [title]="dailyMode ? 'Bài tập hàng ngày chỉ thêm theo danh mục, không thêm từng câu cụ thể' : ''"
+                (click)="selectItem(q)"
+              >
+                <app-icon name="quiz" />
+                <span class="prompt">{{ q.prompt }}</span>
+                @if (isAdded(q.id)) {
+                  <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
+                }
+              </button>
+            </li>
+          }
+        </ul>
+        @if (filteredItems().length === 0) {
+          <p class="empty">Không có câu hỏi nào phù hợp.</p>
+        }
+      </section>
+
+      <section class="detail-panel">
+        @if (!selectedItem()) {
+          <div class="bulk-add-form">
+            @if (dailyMode) {
+              <h3><app-icon name="refresh" />Thêm mục ngẫu nhiên hàng ngày</h3>
+              <p class="hint">
+                Bài tập hàng ngày không thêm một câu hỏi cụ thể — chọn một danh mục ở bên trái (hoặc để "Tất cả câu
+                hỏi"), cấu hình độ khó/số lượng/thời gian/điểm rồi thêm một "mục ngẫu nhiên". Câu hỏi thật sự sẽ được
+                chọn ngẫu nhiên, không trùng nhau, mỗi khi trẻ bắt đầu làm bài — có thể thêm nhiều mục cho một bài tập.
+              </p>
+            } @else {
+              <h3><app-icon name="shuffle" />Thêm ngẫu nhiên theo danh mục</h3>
+              <p class="hint">
+                Chọn một danh mục ở bên trái (hoặc để "Tất cả câu hỏi"), rồi thêm nhiều câu hỏi cùng lúc — hệ thống
+                chọn ngẫu nhiên trong số các câu phù hợp, không trùng câu đã có trong bài tập. Hoặc bấm một câu hỏi cụ
+                thể ở danh sách để thêm từng câu.
+              </p>
+            }
+            <label>
+              Độ khó
+              <select [ngModel]="bulkDifficulty()" (ngModelChange)="setBulkDifficulty($event)">
+                @for (level of bulkDifficultyOptions; track level.value) {
+                  <option [value]="level.value">{{ level.label }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              Số lượng câu hỏi
+              <input
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                [ngModel]="bulkCount()"
+                (ngModelChange)="bulkCount.set($event)"
+              />
+            </label>
+            @if (questionTimingMode === 'custom') {
+              <label>
+                Thời gian mỗi câu (giây)
+                <input
+                  type="text"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  [ngModel]="bulkSeconds()"
+                  (ngModelChange)="bulkSeconds.set($event)"
+                  placeholder="để trống = không giới hạn riêng"
+                />
+              </label>
+            }
+            <label>
+              Điểm mỗi câu
+              <input
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                [ngModel]="bulkPoints()"
+                (ngModelChange)="bulkPoints.set($event)"
+                placeholder="để trống = mặc định của từng câu"
+              />
+            </label>
+            <p class="bulk-pool-count">
+              {{ bulkPool().length }} câu phù hợp {{ dailyMode ? 'hiện có trong ngân hàng' : 'có thể thêm' }}
+            </p>
+            @if (dailyMode) {
+              <button type="button" class="confirm-add" [disabled]="bulkPool().length === 0" (click)="confirmAddRandomGroup()">
+                <app-icon name="refresh" />
+                Thêm mục ngẫu nhiên
+              </button>
+            } @else {
+              <button type="button" class="confirm-add" [disabled]="bulkPool().length === 0" (click)="confirmBulkAdd()">
+                <app-icon name="shuffle" />
+                Thêm ngẫu nhiên
+              </button>
+            }
+            @if (bulkMessage()) {
+              <p class="bulk-message">{{ bulkMessage() }}</p>
+            }
+          </div>
+        } @else {
+          <button type="button" class="close-selection-btn" (click)="clearSelection()">
+            <app-icon name="close" label="Bỏ chọn" />
+          </button>
+
+          <p class="detail-prompt">{{ selectedItem()!.prompt }}</p>
+          <p class="detail-meta">
+            {{ typeLabel(selectedItem()!.type) }} · Lớp {{ selectedItem()!.grade }} · Độ khó {{ difficultyLabel(selectedItem()!.difficulty) }} ·
+            {{ selectedItem()!.points }} điểm (mặc định)
+          </p>
+
+          @if (selectedItem()!.choices; as choices) {
+            <ul class="detail-choices">
+              @for (c of choices; track c.id) {
+                <li [class.correct]="isCorrectChoice(selectedItem()!, c.id)">
+                  @if (isCorrectChoice(selectedItem()!, c.id)) {
+                    <app-icon name="check_circle" />
+                  }
+                  {{ c.text }}
+                </li>
+              }
+            </ul>
+          }
+
+          @if (selectedItem()!.explanation; as exp) {
+            <p class="detail-explanation">{{ exp }}</p>
+          }
+
+          @if (isAdded(selectedItem()!.id)) {
+            <p class="already-added">
+              <app-icon name="check_circle" />
+              Câu hỏi này đã có trong bài tập.
+            </p>
+          } @else {
+            <div class="add-form">
+              @if (questionTimingMode === 'custom') {
+                <label>
+                  Thời gian riêng cho câu này (giây)
+                  <!-- type="text" deliberately, not "number": NumberValueAccessor would coerce the value to an actual number, breaking the string-typed signal below. -->
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    [ngModel]="draftSeconds()"
+                    (ngModelChange)="draftSeconds.set($event)"
+                    placeholder="để trống = không giới hạn riêng"
+                  />
+                </label>
+              }
+              <label>
+                Điểm cho câu này trong bài tập này
+                <input
+                  type="text"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  [ngModel]="draftPoints()"
+                  (ngModelChange)="draftPoints.set($event)"
+                  [placeholder]="'để trống = mặc định ' + selectedItem()!.points"
+                />
+              </label>
+              <button type="button" class="confirm-add" (click)="confirmAdd()">
+                <app-icon name="add" />
+                Thêm vào bài tập
+              </button>
+            </div>
+          }
+        }
+      </section>
+
+      <aside class="added-panel">
+        <h3>Đã thêm ({{ existingItems.length }})</h3>
+        <ul>
+          @for (i of existingItems; track i.id) {
+            <li>
+              @if (i.kind === 'fixed') {
+                <p class="added-summary">{{ quizItemLabel(i.quizItemId) }}</p>
+                <p class="added-meta">
+                  <span class="tag"><app-icon name="folder_open" />{{ categoryNameFor(i.quizItemId) }}</span>
+                  <span class="tag"><app-icon name="star" />{{ effectivePoints(i) }} điểm</span>
+                  <span class="tag">
+                    <app-icon name="hourglass_bottom" />
+                    {{ effectiveSeconds(i) ? formatSeconds(effectiveSeconds(i)!) : 'không giới hạn riêng' }}
+                  </span>
+                </p>
+              } @else {
+                <p class="added-summary">
+                  Ngẫu nhiên: {{ i.randomGroup.count }} câu · {{ randomGroupCategoryLabel(i.randomGroup) }}
+                </p>
+                <p class="added-meta">
+                  <span class="tag"><app-icon name="quiz" />{{ randomGroupDifficultyLabel(i.randomGroup) }}</span>
+                  <span class="tag">
+                    <app-icon name="star" />
+                    {{ i.randomGroup.pointsOverride !== undefined ? i.randomGroup.pointsOverride + ' điểm/câu' : 'điểm mặc định mỗi câu' }}
+                  </span>
+                  <span class="tag">
+                    <app-icon name="hourglass_bottom" />
+                    {{ i.randomGroup.timeLimitSeconds ? formatSeconds(i.randomGroup.timeLimitSeconds) : 'không giới hạn riêng' }}
+                  </span>
+                </p>
+              }
+            </li>
+          }
+          @if (existingItems.length === 0) {
+            <li class="empty">Chưa có câu hỏi nào.</li>
+          }
+        </ul>
+
+        @if (existingItems.length > 0) {
+          <div class="added-totals">
+            <p><span>Tổng số câu</span><strong>{{ existingItems.length }}</strong></p>
+            <p><span>Tổng điểm</span><strong>{{ totalPoints() }}</strong></p>
+            <p>
+              <span>Tổng thời gian riêng đã đặt</span>
+              <strong>{{ totalSeconds() > 0 ? formatSeconds(totalSeconds()) : '—' }}</strong>
+            </p>
+          </div>
+        }
+      </aside>
+    </div>
+  </div>
+</div>

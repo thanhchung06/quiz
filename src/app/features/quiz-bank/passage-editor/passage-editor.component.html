@@ -1,0 +1,130 @@
+<main class="passage-editor">
+  <header class="screen-header">
+    <app-icon name="auto_stories" />
+    <h1>Đoạn văn / bài toán nhiều câu hỏi</h1>
+  </header>
+
+  @if (errors().length) {
+    <ul class="errors">
+      @for (e of errors(); track e) {
+        <li>{{ e }}</li>
+      }
+    </ul>
+  }
+
+  <section class="passage-fields">
+    <label>
+      Môn
+      <select [ngModel]="subject()" (ngModelChange)="subject.set($event)">
+        <option value="language">Tiếng Việt</option>
+        <option value="math">Toán</option>
+      </select>
+    </label>
+
+    <label>
+      Lớp
+      <select [ngModel]="grade()" (ngModelChange)="grade.set(+$event)">
+        @for (g of [1, 2, 3, 4, 5]; track g) {
+          <option [value]="g">{{ g }}</option>
+        }
+      </select>
+    </label>
+
+    <app-category-picker
+      [subject]="subject()"
+      [selectedCategoryId]="categoryId()"
+      (categoryIdChange)="categoryId.set($event)"
+    />
+
+    <label>
+      Tiêu đề
+      <input [ngModel]="title()" (ngModelChange)="title.set($event)" placeholder="Ví dụ: Con mèo của Lan" />
+    </label>
+
+    <label>
+      Nội dung đoạn văn / bài toán
+      <textarea
+        class="passage-text"
+        rows="6"
+        [ngModel]="text()"
+        (ngModelChange)="text.set($event)"
+        placeholder="Dán đoạn văn cần đọc, hoặc mô tả đề bài toán ở đây…"
+      ></textarea>
+    </label>
+  </section>
+
+  <h2><app-icon name="quiz" />Các câu hỏi ({{ rows().length }})</h2>
+
+  <ol class="sub-questions">
+    @for (row of rows(); track row.rowId; let i = $index) {
+      <li class="sub-question-row">
+        <div class="row-header">
+          <span class="row-number">Câu {{ i + 1 }}</span>
+          <button type="button" class="remove-row" title="Xóa câu này" (click)="removeRow(row.rowId)">
+            <app-icon name="delete" label="Xóa câu này" />
+          </button>
+        </div>
+
+        <label>
+          Loại câu hỏi
+          <select [ngModel]="row.type" (ngModelChange)="setRowType(row, $event)">
+            <option value="single-choice">Chọn một</option>
+            <option value="multiple-choice">Chọn nhiều</option>
+            <option value="true-false">Đúng/Sai</option>
+            <option value="short-text">Điền từ</option>
+            <option value="number">Số</option>
+          </select>
+        </label>
+
+        <label>
+          Câu hỏi
+          <textarea [ngModel]="row.prompt" (ngModelChange)="row.prompt = $event"></textarea>
+        </label>
+
+        @if (usesChoices(row)) {
+          <div class="choices">
+            @for (choice of row.choices; track choice.id) {
+              <div class="choice-row">
+                <input [(ngModel)]="choice.text" placeholder="Nội dung lựa chọn" />
+                <label>
+                  <input
+                    type="checkbox"
+                    [checked]="row.correctChoiceIds.includes(choice.id)"
+                    (change)="toggleCorrect(row, choice.id)"
+                  />
+                  Đúng
+                </label>
+              </div>
+            }
+            @if (row.type === 'multiple-choice') {
+              <button type="button" class="add-choice" (click)="addChoice(row)">+ Thêm lựa chọn</button>
+            }
+          </div>
+        }
+
+        @if (row.type === 'short-text') {
+          <label>
+            Đáp án đúng
+            <input [ngModel]="row.acceptedAnswer" (ngModelChange)="row.acceptedAnswer = $event" />
+          </label>
+        }
+
+        @if (row.type === 'number') {
+          <label>
+            Đáp án đúng
+            <input type="number" [ngModel]="row.acceptedValue" (ngModelChange)="row.acceptedValue = $event" />
+          </label>
+        }
+
+        <label>
+          Giải thích (tùy chọn)
+          <input [ngModel]="row.explanation" (ngModelChange)="row.explanation = $event" />
+        </label>
+      </li>
+    }
+  </ol>
+
+  <button type="button" class="add-row" (click)="addRow()"><app-icon name="add" />Thêm câu hỏi</button>
+
+  <button type="button" class="save" (click)="save()"><app-icon name="check_circle" />Lưu</button>
+</main>

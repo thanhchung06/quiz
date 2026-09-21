@@ -1,0 +1,273 @@
+.quiz-bank-list {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .secondary {
+    background: white;
+    border: 1px solid #d8d8d8;
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.bank-layout {
+  display: grid;
+  grid-template-columns: minmax(18rem, 24rem) 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 60rem) {
+  .bank-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tree {
+  border: 1px solid #e0e0e0;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: white;
+}
+
+.tree-node {
+  margin-left: 0.25rem;
+}
+
+.tree-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0.35rem 0.25rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
+
+  &:hover {
+    background: #f5f7fb;
+  }
+
+  .chevron {
+    transition: transform 0.15s ease;
+  }
+
+  .chevron.rotated {
+    transform: rotate(90deg);
+  }
+
+  .count {
+    color: #888;
+    font-size: 0.85rem;
+  }
+}
+
+.subject-node > .tree-toggle strong {
+  font-size: 1rem;
+}
+
+.grade-node {
+  margin-left: 1rem;
+}
+
+.category-node {
+  margin-left: 1rem;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  .tree-toggle {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.category-bulk-actions {
+  display: flex;
+  gap: 0.15rem;
+  flex-shrink: 0;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border-radius: 0.4rem;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #888;
+
+    &:hover {
+      background: #f0f4ff;
+      color: #2f6fed;
+      border-color: #d8e2fb;
+    }
+  }
+}
+
+.bulk-inline-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0.5rem 2rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: #f5f7fb;
+  font-size: 0.85rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  button {
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.4rem;
+    border: 1px solid #d8d8d8;
+    background: #2f6fed;
+    color: white;
+
+    &.secondary {
+      background: white;
+      color: #333;
+    }
+
+    &.danger {
+      background: #d33;
+      border-color: #d33;
+    }
+  }
+
+  &.warn {
+    background: #fdf0ee;
+  }
+}
+
+.quiz-leaf-list {
+  list-style: none;
+  margin: 0 0 0.25rem 2rem;
+  padding: 0;
+
+  li button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    &:hover {
+      background: #f0f4ff;
+    }
+  }
+
+  li.selected button {
+    background: #eef2fb;
+    color: #2f6fed;
+    font-weight: 600;
+  }
+
+  li.passage button {
+    font-style: italic;
+  }
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: #f0f0f0;
+  color: #555;
+  font-size: 0.7rem;
+}
+
+.passage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #eef2fb;
+  color: #2f6fed;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.empty,
+.empty-detail {
+  color: #888;
+  padding: 1rem 0.5rem;
+}
+
+.detail {
+  border: 1px solid #e0e0e0;
+  border-radius: 0.75rem;
+  background: white;
+  padding: 0.5rem 1rem 1rem;
+  min-height: 20rem;
+}
+
+.detail-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  padding: 0.5rem 0;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+    background: white;
+
+    &:hover {
+      background: #f0f4ff;
+    }
+  }
+}

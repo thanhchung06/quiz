@@ -1,0 +1,103 @@
+<main class="sync-screen">
+  <header class="screen-header">
+    <app-icon name="sync" />
+    <h1>Đồng bộ Google Sheets</h1>
+  </header>
+
+  <section class="setup">
+    <h2><app-icon name="settings" />Thiết lập</h2>
+    <label>
+      URL Web App (Apps Script)
+      <input [ngModel]="endpointUrl()" (ngModelChange)="endpointUrl.set($event)" placeholder="https://script.google.com/macros/s/.../exec" />
+    </label>
+    <label>
+      Spreadsheet ID <span class="hint">(chỉ để bạn tự tham khảo/mở sheet — script luôn gắn cố định với một sheet duy nhất, không đọc giá trị này)</span>
+      <input [ngModel]="spreadsheetIdInput()" (ngModelChange)="spreadsheetIdInput.set($event)" placeholder="ID trong URL của Google Sheet" />
+    </label>
+    <label>
+      Mã bí mật (Shared Secret)
+      <input
+        type="password"
+        [ngModel]="sharedSecretInput()"
+        (ngModelChange)="sharedSecretInput.set($event)"
+        [placeholder]="sharedSecretSet() ? 'Đã lưu — nhập để đổi' : 'Giá trị SHARED_SECRET trong Apps Script'"
+      />
+    </label>
+    <button type="button" (click)="saveSyncTarget()"><app-icon name="save" />Lưu cài đặt</button>
+
+    @if (spreadsheetId(); as id) {
+      <p class="hint"><app-icon name="info" />Spreadsheet hiện tại: {{ id }}</p>
+    }
+  </section>
+
+  <section class="google-account">
+    <h2><app-icon name="person" />Tài khoản Google (tùy chọn)</h2>
+    <p class="hint">Chỉ cần thiết cho các tính năng chọn spreadsheet sau này — không bắt buộc để đồng bộ.</p>
+    @if (!connected()) {
+      <label>Google Client ID <input [ngModel]="clientId()" (ngModelChange)="clientId.set($event)" /></label>
+      <button type="button" (click)="connect()"><app-icon name="person" />Kết nối tài khoản Google</button>
+    } @else {
+      <p class="connected-badge"><app-icon name="cloud_done" />Đã kết nối Google.</p>
+      <button type="button" (click)="disconnect()"><app-icon name="logout" />Ngắt kết nối</button>
+    }
+  </section>
+
+  @if (isReadyToSync()) {
+    @if (schemaIncompatible()) {
+      <p class="error">
+        <app-icon name="warning" />
+        Phiên bản dữ liệu trên Google mới hơn ứng dụng này hỗ trợ. Vui lòng cập nhật ứng dụng trước khi đồng bộ tự động.
+      </p>
+    }
+
+    <label>
+      Chế độ lưu trữ
+      <select [ngModel]="storageMode()" (ngModelChange)="setMode($event)">
+        <option value="localOnly">Chỉ cục bộ</option>
+        <option value="manualSync">Đồng bộ thủ công</option>
+        <option value="automaticSync">Đồng bộ tự động</option>
+      </select>
+    </label>
+
+    <div class="actions">
+      <button type="button" class="primary" (click)="syncNow()"><app-icon name="sync" />Đồng bộ ngay</button>
+      <button type="button" (click)="retry()"><app-icon name="refresh" />Thử lại</button>
+      <button type="button" (click)="requestReplace('toGoogle')"><app-icon name="upload" />Thay Google bằng dữ liệu cục bộ</button>
+      <button type="button" (click)="requestReplace('toLocal')"><app-icon name="download" />Thay dữ liệu cục bộ bằng Google</button>
+    </div>
+
+    @if (lastResult(); as r) {
+      <p class="result"><app-icon name="check_circle" />Kết quả: {{ r }}</p>
+    }
+
+    @if (confirmingReplace(); as direction) {
+      <div class="confirm-box">
+        <p><app-icon name="warning" />Thao tác này sẽ ghi đè dữ liệu. Nên sao lưu trước. Bạn có chắc chắn?</p>
+        <button type="button" class="secondary" (click)="cancelReplace()"><app-icon name="close" />Hủy</button>
+        <button type="button" (click)="confirmReplace()"><app-icon name="check_circle" />Xác nhận</button>
+      </div>
+    }
+
+    @if (conflicts().length) {
+      <h2><app-icon name="priority_high" />Xung đột cần giải quyết</h2>
+      <ul>
+        @for (c of conflicts(); track c.entityId) {
+          <li>
+            <p>{{ c.entityType }} #{{ c.entityId }} — cục bộ v{{ c.localVersion }} / Google v{{ c.googleVersion }}</p>
+            <div class="conflict-actions">
+              <button type="button" (click)="resolve(c, 'useLocal')"><app-icon name="upload" />Dùng bản cục bộ</button>
+              <button type="button" (click)="resolve(c, 'useGoogle')"><app-icon name="download" />Dùng bản Google</button>
+              <button type="button" (click)="resolve(c, 'keepBoth')"><app-icon name="content_copy" />Giữ cả hai</button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  } @else {
+    <p class="hint"><app-icon name="info" />Điền và lưu URL Web App, Spreadsheet ID, và Mã bí mật ở trên để bắt đầu đồng bộ.</p>
+  }
+
+  @if (message()) {
+    <p class="message"><app-icon name="check_circle" />{{ message() }}</p>
+  }
+</main>

@@ -1,0 +1,7 @@
+<router-outlet />
+<small class="build-timestamp">
+  Built {{ buildTimestamp }} UTC
+</small>
+@if (offlineReady()) {
+  <span class="offline-ready-badge" title="Đã lưu đủ dữ liệu để dùng ngoại tuyến">✓ Sẵn sàng ngoại tuyến</span>
+}

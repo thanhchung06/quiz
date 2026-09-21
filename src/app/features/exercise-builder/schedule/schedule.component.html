@@ -1,0 +1,45 @@
+<main class="schedule-screen">
+  <header class="screen-header">
+    <app-icon name="calendar_month" />
+    <h1>Lịch giao bài</h1>
+  </header>
+
+  <label>
+    Học sinh
+    <select [ngModel]="selectedChildId()" (ngModelChange)="selectedChildId.set($event)" [disabled]="bothChildren()">
+      @for (c of children(); track c.id) {
+        <option [value]="c.id">{{ c.displayName }}</option>
+      }
+    </select>
+  </label>
+  <label class="checkbox-row"><input type="checkbox" [ngModel]="bothChildren()" (ngModelChange)="bothChildren.set($event)" /> Cả hai bé</label>
+
+  <label>
+    Bài tập
+    <select [ngModel]="selectedExerciseId()" (ngModelChange)="selectedExerciseId.set($event)">
+      @for (ex of exercises(); track ex.id) {
+        <option [value]="ex.id">{{ ex.title }}</option>
+      }
+    </select>
+  </label>
+
+  <label>Ngày <input type="date" [ngModel]="assignedDate()" (ngModelChange)="assignedDate.set($event)" /></label>
+
+  <button type="button" (click)="assign()">
+    <app-icon name="add" />
+    Giao bài
+  </button>
+
+  <h2><app-icon name="history" />Lịch sắp tới</h2>
+  @if (upcoming().length === 0) {
+    <p class="empty">Chưa có bài nào được giao.</p>
+  }
+  <ul>
+    @for (a of upcoming(); track a.id) {
+      <li>
+        <app-icon name="calendar_month" />
+        {{ a.assignedDate }} — {{ childName(a.profileId) }} — {{ exerciseTitle(a.exerciseId) }}
+      </li>
+    }
+  </ul>
+</main>

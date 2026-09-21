@@ -1,0 +1,57 @@
+<main class="overview-screen">
+  <h1>Bảng điều khiển phụ huynh</h1>
+
+  <div class="child-tabs">
+    @for (c of children(); track c.id) {
+      <button type="button" [class.active]="selectedChildId() === c.id" (click)="selectChild(c.id)">
+        <app-icon name="person" />
+        {{ c.displayName }}
+      </button>
+    }
+  </div>
+
+  <div class="period-tabs">
+    <button type="button" [class.active]="period() === 7" (click)="setPeriod(7)">7 ngày</button>
+    <button type="button" [class.active]="period() === 30" (click)="setPeriod(30)">30 ngày</button>
+    <button type="button" [class.active]="period() === 'all'" (click)="setPeriod('all')">Tất cả</button>
+  </div>
+
+  @if (overview(); as o) {
+    <div class="metrics">
+      <div class="metric"><span>{{ o.assigned }}</span><label>Đã giao</label></div>
+      <div class="metric"><span>{{ o.completed }}</span><label>Hoàn thành</label></div>
+      <div class="metric"><span>{{ o.passed }}</span><label>Đạt</label></div>
+      <div class="metric"><span>{{ o.unfinished }}</span><label>Chưa xong</label></div>
+      <div class="metric"><span>{{ o.totalPracticeMinutes }}</span><label>Phút luyện tập</label></div>
+      <div class="metric"><span>{{ o.livesLost }}</span><label>Số lượt sai</label></div>
+    </div>
+
+    <div class="actions-row">
+      <button type="button" (click)="goToLearningNeeds()">
+        <app-icon name="fact_check" /> Xem điểm cần luyện thêm
+      </button>
+
+      @if (hasActiveAttempt()) {
+        <button type="button" class="reset-attempt" (click)="resetUnfinishedAttempt()">
+          <app-icon name="warning" /> Đặt lại lượt làm bài dang dở
+        </button>
+      }
+    </div>
+
+    <h2>Hoạt động gần đây</h2>
+    <ul class="activity-list">
+      @for (a of o.recentActivity; track a.id) {
+        <li>
+          <a [routerLink]="['/dashboard/attempt', a.id]">
+            <span class="date">{{ a.startedAt | slice: 0 : 10 }}</span>
+            <span class="status">{{ a.status }}</span>
+            <span class="score">{{ a.score }} điểm</span>
+            <app-icon name="chevron_right" />
+          </a>
+        </li>
+      } @empty {
+        <li class="empty">Chưa có hoạt động nào.</li>
+      }
+    </ul>
+  }
+</main>

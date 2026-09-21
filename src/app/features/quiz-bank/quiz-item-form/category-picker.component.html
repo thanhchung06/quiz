@@ -1,0 +1,27 @@
+<div class="category-picker">
+  <label>
+    Danh mục
+    <select [ngModel]="selectedCategoryId" (ngModelChange)="selectExisting($event)">
+      <option [value]="undefined" disabled>-- Chọn danh mục --</option>
+      @for (c of categories(); track c.id) {
+        <option [value]="c.id">{{ c.name }}</option>
+      }
+    </select>
+  </label>
+
+  <div class="new-category">
+    <input
+      placeholder="Hoặc tạo danh mục mới"
+      [ngModel]="newName()"
+      (ngModelChange)="onNewNameChange($event)"
+    />
+    <button type="button" (click)="confirmCreate()" [disabled]="!!similarWarning()">Tạo</button>
+  </div>
+
+  @if (similarWarning(); as similar) {
+    <p class="warning">
+      Đã có danh mục tương tự "{{ similar.name }}".
+      <button type="button" (click)="useSimilarInstead()">Dùng danh mục này</button>
+    </p>
+  }
+</div>

@@ -1,0 +1,12 @@
+<div class="themes">
+  @for (theme of themes; track theme.key) {
+    <button
+      type="button"
+      [disabled]="!isUnlocked(theme)"
+      [class.selected]="selectedTheme === theme.key"
+      (click)="themeSelected.emit(theme.key)"
+    >
+      {{ theme.label }} {{ isUnlocked(theme) ? '' : '🔒 ' + theme.starsRequired + '⭐' }}
+    </button>
+  }
+</div>

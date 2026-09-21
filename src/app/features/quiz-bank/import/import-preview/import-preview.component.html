@@ -1,0 +1,144 @@
+<main class="import-screen">
+  <header class="screen-header">
+    <app-icon name="cloud_upload" />
+    <h1>Nhập gói câu hỏi</h1>
+  </header>
+
+  <button type="button" class="secondary" (click)="downloadTemplate()">
+    <app-icon name="download" />
+    Tải tệp mẫu (.json)
+  </button>
+
+  <label class="file-picker">
+    <app-icon name="folder_open" />
+    <span>Chọn tệp gói câu hỏi (.json)</span>
+    <input #fileInput type="file" accept="application/json" [disabled]="isReadingFile() || isImporting()" (change)="onFileSelected($event)" />
+  </label>
+
+  @if (isReadingFile()) {
+    <p class="loading-row">
+      <app-icon name="sync" class="spin" />
+      Đang đọc tệp…
+    </p>
+  }
+
+  @if (preview(); as p) {
+    <div class="summary">
+      <span><app-icon name="list_alt" />Tổng: {{ p.totalItems }}</span>
+      <span class="ok"><app-icon name="check_circle" />Hợp lệ: {{ p.validIndexes.length }}</span>
+      <span class="bad"><app-icon name="cancel" />Không hợp lệ: {{ p.invalidItems.length }}</span>
+      <span class="warn"><app-icon name="content_copy" />Trùng lặp: {{ p.likelyDuplicates.length }}</span>
+      <span><app-icon name="category" />Danh mục mới: {{ p.proposedCategories.length }}</span>
+    </div>
+
+    @if (p.gradeTypeBreakdown.length) {
+      <h2><app-icon name="list_alt" />Số câu hỏi theo lớp / loại</h2>
+      <ul class="breakdown-list">
+        @for (b of p.gradeTypeBreakdown; track b.grade + '|' + b.type) {
+          <li><span>Lớp {{ b.grade }} · {{ b.type }}</span><strong>{{ b.count }}</strong></li>
+        }
+      </ul>
+    }
+
+    @if (p.invalidItems.length) {
+      <button type="button" (click)="downloadErrors()"><app-icon name="download" />Tải báo cáo lỗi</button>
+    }
+
+    @if (p.proposedCategories.length) {
+      <h2><app-icon name="category" />Danh mục mới đề xuất</h2>
+      <ul>
+        @for (c of p.proposedCategories; track c.index) {
+          <li>
+            {{ c.name }} ({{ c.subject }}) — {{ c.count }} câu hỏi
+            @if (c.subjectMismatch) {
+              <span class="warn"><app-icon name="warning" />khác môn</span>
+            }
+          </li>
+        }
+      </ul>
+    }
+
+    @if (p.likelyDuplicates.length) {
+      <h2><app-icon name="content_copy" />Có thể trùng lặp (sẽ bỏ qua)</h2>
+      <ul>
+        @for (d of p.likelyDuplicates; track d.index) {
+          <li>Mục #{{ d.index }} — {{ d.reason }}</li>
+        }
+      </ul>
+    }
+
+    @if (p.passages.length) {
+      <button type="button" class="passage-toggle" (click)="togglePassagesExpanded()">
+        <app-icon name="auto_stories" />
+        <span>Đoạn văn/bài toán nhiều câu hỏi ({{ p.passages.length }}) — tất cả đã chọn</span>
+        <app-icon name="chevron_right" class="chevron" [class.rotated]="passagesExpanded()" />
+      </button>
+
+      @if (passagesExpanded()) {
+        <p class="hint">Mỗi đoạn được nhập trọn vẹn hoặc bỏ qua toàn bộ — không nhập một phần đoạn văn.</p>
+        <ul class="passage-list">
+          @for (passage of p.passages; track passage.index) {
+            <li [class.invalid]="!passage.valid">
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="!skipPassageIndexes().has(passage.index)"
+                  [disabled]="!passage.valid"
+                  (change)="togglePassageSkip(passage.index)"
+                />
+                <strong>{{ passage.title }}</strong> — {{ passage.questionCount }} câu hỏi
+              </label>
+              @if (passage.proposedCategory; as c) {
+                <span class="warn"><app-icon name="category" />Danh mục mới: {{ c.name }}</span>
+              }
+              @if (!passage.valid) {
+                <ul class="passage-errors">
+                  @for (e of passage.errors; track e) {
+                    <li>{{ e }}</li>
+                  }
+                </ul>
+              }
+            </li>
+          }
+        </ul>
+      }
+    }
+
+    <div class="actions">
+      <button type="button" class="secondary" (click)="cancel()"><app-icon name="close" />Hủy</button>
+      <button type="button" [disabled]="isImporting()" (click)="importQuizzes()">
+        @if (isImporting()) {
+          <app-icon name="sync" class="spin" />
+          Đang nhập…
+        } @else {
+          <app-icon name="check_circle" />
+          Nhập câu hỏi
+        }
+      </button>
+    </div>
+  }
+
+  @if (showResultPopup()) {
+    <div class="popup-overlay" (click)="closeResultPopupAndReset()">
+      <div class="popup-card" (click)="$event.stopPropagation()">
+        <app-icon name="check_circle" class="popup-icon" />
+        <h2>{{ resultMessage() }}</h2>
+
+        @if (lastImportBatchId()) {
+          <button type="button" class="secondary" (click)="undoLastImport()">
+            <app-icon name="restore_page" />
+            Hoàn tác lần nhập này
+          </button>
+        }
+        @if (undoMessage()) {
+          <p class="hint">{{ undoMessage() }}</p>
+        }
+
+        <button type="button" class="popup-close" (click)="closeResultPopupAndReset()">
+          <app-icon name="close" />
+          Đóng
+        </button>
+      </div>
+    </div>
+  }
+</main>

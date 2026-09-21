@@ -1,0 +1,4010 @@
+{
+  "formatVersion": "1.0",
+  "packageTitle": "Bài tập phát triển năng lực Toán lớp 4 (loigiaihay.com)",
+  "language": "vi",
+  "quizzes": [
+    {
+      "type": "number",
+      "prompt": "Tính: 58 300 – 12 300",
+      "acceptedAnswer": "46000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 26 780 – 6 780",
+      "acceptedAnswer": "20000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 29 000 x 2",
+      "acceptedAnswer": "58000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 46 000 + 14 000",
+      "acceptedAnswer": "60000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 41 450 + 8 550",
+      "acceptedAnswer": "50000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 36 000 : 4",
+      "acceptedAnswer": "9000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 74 181 + 4 728",
+      "acceptedAnswer": "78909",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 48 086 – 22 248",
+      "acceptedAnswer": "25838",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 13 073 x 3",
+      "acceptedAnswer": "39219",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 15 832 : 4",
+      "acceptedAnswer": "3958",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 2, 3"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 26 825 – (4 278 – 3 154)",
+      "acceptedAnswer": "25701",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 3, 4"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 15 324 x 3 : 4",
+      "acceptedAnswer": "11493",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 3, 4"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 9 438 – 45 650 : 5",
+      "acceptedAnswer": "308",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 3, 4"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 6 = 4 203 + 28",
+      "acceptedAnswer": "25386",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 3, 4"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Trong một ngày, phân xưởng thứ nhất làm được 1 098 sản phẩm, phân xưởng thứ hai làm được nhiều hơn phân xưởng thứ nhất 1 071 sản phẩm. Biết rằng mỗi công nhân trong một ngày làm được 9 sản phẩm. Hỏi trong ngày đó, cả hai phân xưởng có bao nhiêu công nhân làm việc?",
+      "acceptedAnswer": "363",
+      "explanation": "Số sản phẩm phân xưởng thứ hai làm được là:\n1 098 + 1 071 = 2 169 (sản phẩm)\nTổng số sản phẩm cả hai phân xưởng làm được là:\n1 098 + 2 169 = 3 267 (sản phẩm)\nSố công nhân làm việc của cả hai phân xưởng là:\n3 267 : 9 = 363 (công nhân)\nĐáp số: 363 công nhân.",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 3, 4"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 984 231 ... 987 218",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 7, 8"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 41 305 x 5 ... 202 491",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 7, 8"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 3 958 + 35 129 ... 2 657 + 26 120",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 7, 8"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 999 879 ... 999 897",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 7, 8"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 178 792 ... 56 210 + 79 127",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 7, 8"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 12 390 x 2 ... 8 260 x 3",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "eq"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 7, 8"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: (x + 356) : 6 = 154",
+      "acceptedAnswer": "568",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 7, 8"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 219 500 492 ... 219 501 429",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 13"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 76 218 900 ... 67 218 900",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 13"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 83 651 489 ... 80 000 000 + 3 000 000 + 600 000 + 50 000 + 1 000 + 400 + 80 + 9",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "eq"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 13"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 38 912 267 ... 38 910 762",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 13"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 316 345 562 ... 316 435 562",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 13"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Trong tháng Chín, một nông trường cao su sản xuất được 9 986 kg mủ (nhựa). Nông trường đã bán cho công ty cao su Thành Nam 5 tấn 86 kg mủ và phần còn lại được bán cho xí nghiệp cao su Quang Hà. Hỏi nông trường đã bán cho xí nghiệp cao su Quang Hà bao nhiêu tạ mủ cao su?",
+      "acceptedAnswer": "49",
+      "explanation": "Tóm tắt\nSản xuất: 9 986 kg\nCông ty Thành Nam: 5 tấn 86 kg\nXí nghiệp Quang Hà: ? kg\nBài giải\nĐổi 5 tấn 86 kg = 5 086kg\nNông trường đã bán cho xí nghiệp cao su Quang Hà số tạ mủ cao su là:\n9 986 – 5 086 = 4 900 (kg)\nĐổi 4 900 kg = 49 tạ.\nĐáp số: 49 tạ.",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 13"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Siêu thị “Gạo Ngon” trong ba ngày bán được một số gạo. Ngày thứ nhất bán được 3 tạ 6 kg, ngày thứ hai bán được nhiều hơn ngày thứ nhất 6 yến 3 kg và ít hơn ngày thứ ba 9 yến 6 kg. Hỏi trung bình mỗi ngày cửa hàng đó bán được bao nhiêu ki-lô-gam gạo?",
+      "acceptedAnswer": "380",
+      "explanation": "Tóm tắt\nNgày 1: 3 tạ 6 kg\nNgày 2: nhiều hơn ngày thứ nhất 6 yến 3 kg\nNgày 3: nhiều hơn ngày thứ hai 9 yến 6 kg\nTrung bình: ? kg\nBài giải\nĐổi 3 tạ 6 kg = 306 kg; 6 yến 3kg = 63 kg; 9 yến 6kg = 96 kg.\nSố ki-lô-gam gạo siêu thị bán được trong ngày thứ hai là:\n306 + 63 = 369 (kg)\nSố gạo siêu thị bán được trong ngày thứ ba là:\n369 + 96 = 465 (kg)\nTrung bình mỗi ngày cừa hàng đó bán được số ki-lô-gam gạo là:\n(306 + 369 + 465) : 3 = 380 (kg)\nĐáp số: 380 kg gạo",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 18"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Một đội sản xuất ngày thứ nhất làm được 936 sản phẩm, ngày thứ hai làm được nhiều hơn ngày thứ nhất 48 sản phẩm. Ngày thứ ba làm được số sản phẩm bằng trung bình cộng của ngày thứ nhất và ngày thứ hai. Hỏi trong ba ngày, trung bình mỗi ngày đội sản xuất làm được bao nhiêu sản phẩm?",
+      "acceptedAnswer": "960",
+      "explanation": "Số sản phẩm sản xuất được trong ngày thứ hai là:\n936 + 48 = 984 (sản phẩm)\nSố sản phẩm sản xuất được trong ngày thứ ba là:\n(936 + 984) : 2 = 960 (sản phẩm)\nTrung bình mỗi ngày đội sản xuất được số sản phẩm là:\n(936 + 984 + 960) : 3 = 960 (sản phẩm)\nĐáp số: 960 sản phẩm.",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 18"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 9 345 219 ... 9 435 219",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 123 267 215 ... 123 267 251",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 224 334 ... 112167 x 2",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "eq"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 80 570 ... 67456 + 13124",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 25 678 230 ... 25 778 230",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 612 432 112 ... 612 342 112",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 46828 : 4 ... 11707 x 2",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 68890 ... 81134 – 21034",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 20"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 365215 + 472792",
+      "acceptedAnswer": "838007",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 22"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 264805 + 26164",
+      "acceptedAnswer": "290969",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 22"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 675218 – 315043",
+      "acceptedAnswer": "360175",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 22"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 365424 – 70812",
+      "acceptedAnswer": "294612",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 22"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Có ba đội tham gia trồng rừng. Đội Một trồng được 3890 cây, đội Hai trồng được nhiều hơn đội Một 642 cây, đội Ba trồng được bằng 1/4 số cây của đội Hai. Hỏi trung bình mỗi đội trồng được bao nhiêu cây?",
+      "acceptedAnswer": "3185",
+      "explanation": "Tóm tắt\nĐội Một: 3890 cây\nĐội Hai: nhiều hơn đội Một 642 cây\nĐội Ba: 1/4 số cây của đội Hai\nTrung bình: ? cây?\nBài giải\nSố cây đội Hai trồng được là:\n3890 + 642 = 4532 (cây)\nSố cây đội Ba trồng được là:\n4532 : 4 = 1133 (cây)\nTrung bình số cây mỗi đội trồng được là:\n(3890 + 4532 + 1133) : 3 = 3185 (cây)\nĐáp số: 3185 cây.",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 22"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x + 23155 = 36236",
+      "acceptedAnswer": "13081",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 24"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x – 71286 = 625437",
+      "acceptedAnswer": "696723",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 24"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: 612794 – x = 150846",
+      "acceptedAnswer": "461948",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 24"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 361482 + 280725",
+      "acceptedAnswer": "642207",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 24"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 292386 – 86429",
+      "acceptedAnswer": "205957",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 24"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x – 5678 = 24356 – 11439",
+      "acceptedAnswer": "18595",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: 98549 – x = 26134 + 13572",
+      "acceptedAnswer": "58843",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 6184 + 309 + 1 516",
+      "acceptedAnswer": "8009",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 3547 + 1430 + 3923",
+      "acceptedAnswer": "8900",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 4365 + 372 + 1135",
+      "acceptedAnswer": "5872",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 42956 – 11620 ... 37415 – 22681",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 3021 + 2154 + 4356 ... 5718 + 3921 + 1642",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 3042 + 5678 + 1229 ... 3678 + 5042 + 1229",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "eq"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 25"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2680 – 278 – 402 + 215",
+      "acceptedAnswer": "2215",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 168 : 6 + 25 x 9",
+      "acceptedAnswer": "253",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 132 x 2 : 4 x 9",
+      "acceptedAnswer": "594",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: (113200 + 311524) + 5276",
+      "acceptedAnswer": "430000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 121500 + (206500 + 2568)",
+      "acceptedAnswer": "330568",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 314464 + 8354 + 106236",
+      "acceptedAnswer": "429054",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 11356 + 22374 + 4152",
+      "acceptedAnswer": "37882",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 486397 – 215213 – 60124",
+      "acceptedAnswer": "211060",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 28"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Khoanh vào chữ đặt trước kết quả đúng: Trong hình H có:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "2 cặp đường thẳng song song."
+        },
+        {
+          "id": "b",
+          "text": "4 cặp đường thẳng song song."
+        },
+        {
+          "id": "c",
+          "text": "3 cặp đường thẳng song song."
+        },
+        {
+          "id": "d",
+          "text": "6 cặp đường thẳng song song."
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "explanation": "Trong hình H có 4 cặp đường thẳng song song.\nChọn B",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": true,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Trắc nghiệm",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 32"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 24532 x 2",
+      "acceptedAnswer": "49064",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 36"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 53246 x 3",
+      "acceptedAnswer": "159738",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 36"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 17182 x 4",
+      "acceptedAnswer": "68728",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 36"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 103209 x 7",
+      "acceptedAnswer": "722463",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 36"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 48186 + 352095",
+      "acceptedAnswer": "400281",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 62784 – 39415",
+      "acceptedAnswer": "23369",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 861273 + 109345",
+      "acceptedAnswer": "970618",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 536424 – 78152",
+      "acceptedAnswer": "458272",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 20853 x 3 – 62559",
+      "acceptedAnswer": "0",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 3185 x 5 + 11305 x 4",
+      "acceptedAnswer": "61145",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 8905 x 6 – 6015 x 8",
+      "acceptedAnswer": "5310",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 121 x 9 ... 174 x 5",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 1342 x 3 ... 902 x 8",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 12121 x 9 ... 9 x 12121",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "eq"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 21068 x 4 ... 4 x 21086",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 5 = 3104 + 210",
+      "acceptedAnswer": "16570",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 3 = 127 × 4",
+      "acceptedAnswer": "1524",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x – 1271 = 2106 × 3",
+      "acceptedAnswer": "7589",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 37"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 1 262 x 10",
+      "acceptedAnswer": "12620",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 662 x 100",
+      "acceptedAnswer": "66200",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 129 x 1000",
+      "acceptedAnswer": "129000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 545 x 10000",
+      "acceptedAnswer": "5450000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2130 : 10",
+      "acceptedAnswer": "213",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2700 : 100",
+      "acceptedAnswer": "27",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 201000 : 1 000",
+      "acceptedAnswer": "201",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 700000 : 10000",
+      "acceptedAnswer": "70",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 25 x 3 x 4",
+      "acceptedAnswer": "300",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 24 x 3 x 5",
+      "acceptedAnswer": "360",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 16 x 8 x 5",
+      "acceptedAnswer": "640",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 15 x 3 x 4 x 2",
+      "acceptedAnswer": "360",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 40"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2 x 2167 x 5",
+      "acceptedAnswer": "21670",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 200 x 56 x 5",
+      "acceptedAnswer": "56000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 125 x 304 x 8",
+      "acceptedAnswer": "304000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 25 x 2018 x 4",
+      "acceptedAnswer": "201800",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 6125 x 20",
+      "acceptedAnswer": "122500",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2186 x 30",
+      "acceptedAnswer": "65580",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2435 x 500",
+      "acceptedAnswer": "1217500",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2168 x 4000",
+      "acceptedAnswer": "8672000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 48 x 35",
+      "acceptedAnswer": "1680",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 25 x 32",
+      "acceptedAnswer": "800",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 15 x 16",
+      "acceptedAnswer": "240",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 41"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 219 x 25 + 219 x 75",
+      "acceptedAnswer": "21900",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2018 x 450 + 2018 x 550",
+      "acceptedAnswer": "2018000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2114 x 95 – 2114 x 85",
+      "acceptedAnswer": "21140",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 3872 x 1195 – 195 x 3872",
+      "acceptedAnswer": "3872000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 61 x 25",
+      "acceptedAnswer": "1525",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 135 x 42",
+      "acceptedAnswer": "5670",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2306 x 26",
+      "acceptedAnswer": "59956",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 123209 x 14",
+      "acceptedAnswer": "1724926",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 32 = 46 × 12",
+      "acceptedAnswer": "17664",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 46"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 23 × 11",
+      "acceptedAnswer": "253",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 48"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 83 × 11",
+      "acceptedAnswer": "913",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 48"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 35 × 11",
+      "acceptedAnswer": "385",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 48"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 48 × 11",
+      "acceptedAnswer": "528",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 48"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 43 × 11",
+      "acceptedAnswer": "473",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 48"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 59 × 11",
+      "acceptedAnswer": "649",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 48"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Một siêu thị có 214 bao gạo tẻ loại 25 kg, 214 bao gạo tẻ loại 50kg. Hỏi siêu thị đó có tất cả bao nhiêu ki-lô-gam gạo?",
+      "acceptedAnswer": "16050",
+      "explanation": "Tóm tắt\nLoại 25 kg: 214 bao\nLoại 50 kg: 214 bao\nTất cả: ? kg\nBài giải\nSố kg gạo tẻ loại 25 kg là:\n214 x 25 = 5350 (kg)\nSố kg gạo tẻ loại 50 kg là:\n214 x 50 = 10700 (kg)\nTrong siêu thị có tất cả số kg gạo tẻ là:\n5350 + 10700 = 16050 (kg)\nĐáp số: 16050 kg gạo tẻ",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 48"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 11 = 44",
+      "acceptedAnswer": "484",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 11 = 59",
+      "acceptedAnswer": "649",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 315 x 124",
+      "acceptedAnswer": "39060",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 226 x 203",
+      "acceptedAnswer": "45878",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2314 x 213",
+      "acceptedAnswer": "492882",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 3057 x 309",
+      "acceptedAnswer": "944613",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 424 x 365 + 424 x 635",
+      "acceptedAnswer": "424000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 625 x 1989 – 625 x 989",
+      "acceptedAnswer": "625000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2 x 125 x 927 x 4",
+      "acceptedAnswer": "927000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 284 + 415 x 106",
+      "acceptedAnswer": "44274",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: (215 + 109) x 317",
+      "acceptedAnswer": "102708",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 231 x (656 – 218)",
+      "acceptedAnswer": "101178",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 1179 x 403 – 1254 x 32",
+      "acceptedAnswer": "435009",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 49"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2018 x 2017 + 18 + 2000 – 2018 x 2008",
+      "acceptedAnswer": "20180",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 4,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "C. Vận dụng, phát triển trang 51"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 989 x 69 – 687 x 69 – 292 x 69",
+      "acceptedAnswer": "690",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 4,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "C. Vận dụng, phát triển trang 51"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 3568 : 2 + 5432 : 2",
+      "acceptedAnswer": "4500",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 9095 : 5 – 3895 : 5",
+      "acceptedAnswer": "1040",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 265305 : 3 + 33546 : 3",
+      "acceptedAnswer": "99617",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 3738 : 3",
+      "acceptedAnswer": "1246",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 49256 : 4",
+      "acceptedAnswer": "12314",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 197080 : 8",
+      "acceptedAnswer": "24635",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 5 = (3465 + 264) : 3",
+      "acceptedAnswer": "6215",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: 4 × x = 11232 : (3 × 6)",
+      "acceptedAnswer": "156",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: 19236 – x = 245 × 3 : 5",
+      "acceptedAnswer": "19089",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Một cửa hàng gạo có 18 bao gạo nếp, mỗi bao đựng 25kg, đã bán được 1/6 số gạo đó. Hỏi cửa hàng đã bán được bao nhiêu ki–lô–gam gạo?",
+      "acceptedAnswer": "75",
+      "explanation": "Tóm tắt\nCó: 18 bao gạo\nMỗi bao: 25 kg\nĐã bán: 1/6 số gạo\nĐã bán: ? kg\nBài giải\nSố kg gạo nếp có trong cửa hàng là\n25 x 18 = 450 (kg)\nSố kg gạo cửa hàng đã bán được là:\n450 : 6 = 75 (kg)\nĐáp số: 75 kg gạo",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 54"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x × 40 = 4400",
+      "acceptedAnswer": "110",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 56"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x × 900 = 23400",
+      "acceptedAnswer": "26",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 56"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 648 : 18",
+      "acceptedAnswer": "36",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 12408 : 22",
+      "acceptedAnswer": "564",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: (1084 × 31) : 62",
+      "acceptedAnswer": "542",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 21315 + 14352 : 46",
+      "acceptedAnswer": "21627",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: (315 + 685) : 40",
+      "acceptedAnswer": "25",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 409821 – 324093 : 33",
+      "acceptedAnswer": "400000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x × 45 = 69345 : 23",
+      "acceptedAnswer": "67",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: 19 × x = 96 × 57",
+      "acceptedAnswer": "288",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 6486 : 69 ... 2162 : 23",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "eq"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 3968 : 32 ... 16 × 124",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 305 × 18 ... 5508 : 18",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "gt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: 25 × 66 + 12306 ... 22 × 75 + 12603",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "single-choice",
+      "prompt": "Điền dấu >, < hoặc = vào chỗ chấm: (3120 + 8640) : 24 ... 3120 + 8640 : 24",
+      "choices": [
+        {
+          "id": "gt",
+          "text": ">"
+        },
+        {
+          "id": "lt",
+          "text": "<"
+        },
+        {
+          "id": "eq",
+          "text": "="
+        }
+      ],
+      "correctAnswerIds": [
+        "lt"
+      ],
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - So sánh",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 57"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Người ta xếp những chai nước mắm vào 144 hộp, mỗi hộp 12 chai. Hỏi nếu mỗi hộp xếp 16 chai thì cần bao nhiêu hộp để xếp hết số chai nước mắm đó?",
+      "acceptedAnswer": "108",
+      "explanation": "Tóm tắt\nMỗi hộp 12 chai: 144 hộp\nMỗi hộp 16 chai: ? hộp\nBài giải\nSố chai nước mắm có tất cả là:\n144 x 12 = 1728 (chai)\nNếu mỗi hộp xếp 16 chai thì cần số hộp để xếp hết số chai nước mắm là:\n1728 : 16 = 108 (hộp)\nĐáp số: 108 hộp",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 60"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 312 x 128 – 31540 : 415",
+      "acceptedAnswer": "39860",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 60"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 42 x 234 + 17464 : 236",
+      "acceptedAnswer": "9902",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 60"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 60500 : 25 : 4",
+      "acceptedAnswer": "605",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 60"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 6732 : 187",
+      "acceptedAnswer": "36",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 60"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 28714 : 293",
+      "acceptedAnswer": "98",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 60"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Người ta xếp 2508 cái bánh Choco-Pie vào các hộp, mỗi hộp có 12 cái bánh. Hỏi xếp được bao nhiêu hộp bánh?",
+      "acceptedAnswer": "209",
+      "explanation": "Tóm tắt\n12 cái bánh: 1 hộp\n2508 cái bánh: ? hộp\nBài giải\nXếp 2508 cái bánh được số hộp bánh là:\n2508 : 12 = 209 (hộp)\nĐáp số: 209 hộp bánh",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 59"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 45624 + 36748",
+      "acceptedAnswer": "82372",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 95473 – 38291",
+      "acceptedAnswer": "57182",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 6732 x 25",
+      "acceptedAnswer": "168300",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 29548 : 356",
+      "acceptedAnswer": "83",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 2167 x 3 + 4269",
+      "acceptedAnswer": "10770",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 45217 – 14973 : 69",
+      "acceptedAnswer": "45000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 98000 : 125 : 8",
+      "acceptedAnswer": "98",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Một mảnh đất hình chữ nhật có diện tích bằng diện tích của mảnh đất hình vuông có cạnh 126 m, chiều dài của mảnh đất hình chữ nhật là 147 m . Tính chu vi mảnh đất hình chữ nhật.",
+      "acceptedAnswer": "510",
+      "explanation": "Diện tích mảnh đất hình vuông là:\n126 x 126 = 15876 (m2)\nTa có mảnh đất hình chữ nhật có diện tích bằng diện tích của mảnh đất hình vuông và bằng 15876 m2.\nChiều rộng mảnh đất hình chữ nhật là:\n15876 : 147 = 108 (m)\nChu vi mảnh đất hình chữ nhật là\n(147 + 108) x 2 = 510 (m)\nĐáp số: 510 m",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Khối lượng của 24 quả táo và một số quả cam là 15 062 g. Biết tổng khối lượng của số cam là 8 942 g. Tính khối lượng trung bình của mỗi quả táo.",
+      "acceptedAnswer": "255",
+      "explanation": "Khối lượng của 24 quả táo là:\n15 062 – 8 942 = 6 120 ( g )\nKhối lượng trung bình của mỗi quả táo là:\n6 120 : 24 = 255 (g)\nĐáp số: 255 g.",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối trang 65"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 156834 + 271419",
+      "acceptedAnswer": "428253",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 68"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 591384 – 37146",
+      "acceptedAnswer": "554238",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 68"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 12056 x 32",
+      "acceptedAnswer": "385792",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 68"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 17604 : 36",
+      "acceptedAnswer": "489",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố trang 68"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "May một chiếc túi “ba gang” hết 4/5 m vải. Hỏi may 20 chiếc túi như thế hết mấy mét vải?",
+      "acceptedAnswer": "16",
+      "explanation": "May 20 chiếc túi hết số mét vải là:\n4/5 × 20 = 16(m)\nĐáp số: 16m",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Một thửa ruộng hình chữ nhật có chiều dài 72m và chiều rộng bằng 2/3 chiều dài. Cứ 1m2 ruộng đó thì thu hoạch được 3/4 kg thóc. Hỏi trên thửa ruộng đó người ta thu hoạch được bao nhiêu ki-lô-gam thóc?",
+      "acceptedAnswer": "2592",
+      "explanation": "Chiều rộng của thửa ruộng là:\n72 × 2/3 = 48 (m)\nDiện tích của thửa ruộng là:\n72 × 48 = 3456 (m2)\nSố kg thóc thu hoạch được trên thửa ruộng đó là:\n3456 × 3/4 = 2592 (kg)\nĐáp số 2592 kg",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 4,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "C. Vận dụng, phát triển"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Một chiếc máy tự động kiểm tra linh kiện điện tử cứ 16/25 giây thì kiểm tra được 1 sản phẩm. Hỏi trong 1 giờ máy tự động kiểm tra được bao nhiêu linh kiện điện tử?",
+      "acceptedAnswer": "5625",
+      "explanation": "Đổi 1 giờ = 3600 giây\nTrong 1 giờ, máy tự động kiểm tra được số linh kiện điện tử là:\n3600:16/25 = 5625 (linh kiện điện tử)\nĐáp số: 5625 linh kiện",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Trên bản đồ tỉ lệ 1 : 900 000, quãng đường Đà Nẵng – Đồng Hới là 26cm. Tính độ dài thật từ Đà Nẵng đến Đồng Hới.",
+      "acceptedAnswer": "234",
+      "explanation": "Độ dài thật từ Đà Nẵng đến Đồng Hới là:\n26 x 900 000 = 23 400 000 (cm)\nĐổi 23 400 000cm = 234 km\nĐáp số: 234 km.",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: 1248 + x = 3156",
+      "acceptedAnswer": "1908",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x – 626 = 376",
+      "acceptedAnswer": "1002",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 5009 + 3901 + 2991 + 2099",
+      "acceptedAnswer": "14000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 11 980 + 39 699 + 10 301 + 28 020",
+      "acceptedAnswer": "90000",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tháp đồng hồ Big Ben là một trong những biểu tượng của thành phố Luân Đôn. Khi mặt trời lặn, bốn mặt đồng hồ màu nâu đỏ được chiếu sáng để ai cũng có thể nhìn thấy nó từ xa. Cứ 15 phút đồng hồ lại đổ chuông 1 lần. Hỏi trong 1 ngày, tháp đồng hồ đổ chuông bao nhiêu lần?",
+      "acceptedAnswer": "96",
+      "explanation": "1 ngày có số phút là\n60 x 24 = 1440 (phút)\n1 ngày tháp đổ chuông:\n1440 : 15 = 96 (lần)\nĐáp số: 96 lần",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 4,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "C. Vận dụng, phát triển"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x + 251 = 562",
+      "acceptedAnswer": "311",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x – 270 = 637",
+      "acceptedAnswer": "907",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: 60 × x = 1800",
+      "acceptedAnswer": "30",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tìm x, biết: x : 14 = 316",
+      "acceptedAnswer": "4424",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tìm x",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 5962 + 832 + 38",
+      "acceptedAnswer": "6832",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 266 x 53 + 266 x 47",
+      "acceptedAnswer": "26600",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 13 330 : (26 + 36)",
+      "acceptedAnswer": "215",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 72 100 – 205 x 127",
+      "acceptedAnswer": "46065",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 55 x 22 + 7800 : 100",
+      "acceptedAnswer": "1288",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: (216 x 7 - 87 x 9) : 9",
+      "acceptedAnswer": "81",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Tính: 8/125:7/125 + 75/100 × 96/84",
+      "acceptedAnswer": "2",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 3,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Tính",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "B. Kết nối"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Một chiếc cần trục trong 1 giờ bốc xếp được 20 xe hàng, mỗi xe hàng xếp được 9 tấn 500kg. Hỏi trong 1 giờ, chiếc cần trục bốc xếp được bao nhiêu tạ hàng?",
+      "acceptedAnswer": "1900",
+      "explanation": "Đổi 9 tấn 500 kg = 95 tạ\nSố hàng mà chiếc cần trục bốc xếp được là:\n95 x 20 = 1 900 (tạ hàng)\nĐáp số: 1900 tạ hàng",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 2,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "A. Tái hiện, củng cố"
+      ]
+    },
+    {
+      "type": "number",
+      "prompt": "Triều đại Tây Sơn là một trong số ít triều đại có chiến công hiển hách nhất trong cuộc chiến chống giặc ngoại xâm phương Bắc, giữ gìn toàn vẹn lãnh thổ nước ta. Nhà Tây Sơn kéo dài 24 năm, 3 vị vua: Thái Đức đế Nguyễn Nhạc (1778 – 1788), Thái Tổ Vũ hoàng đế Nguyễn Huệ - Quang Trung (1788 – 1792), Cảnh Thịnh đế Nguyễn Quang Toản (1792 – 1802).\nTính trung bình số năm trị vì của mỗi vị Hoàng đế nhà Tây Sơn.",
+      "acceptedAnswer": "8",
+      "explanation": "Số năm trị vì của vua Nguyễn Nhạc là:\n1788 – 1778 = 10 (năm)\nSố năm trị vì của vua Nguyễn Huệ là:\n1792 – 1788 = 4 (năm)\nSố năm trị vì của vua Nguyễn Quang Toản là:\n1802 – 1792 = 10 (năm)\nTrung bình số năm trị vì của mỗi vị Hoàng đế nhà Tây Sơn là:\n(10 + 4 + 10) : 3 = 8 (năm)\nĐáp số: 8 năm",
+      "subject": "math",
+      "grade": 4,
+      "difficulty": 4,
+      "shuffleChoices": false,
+      "category": {
+        "name": "Bài tập phát triển năng lực Toán 4 - Toán có lời văn",
+        "subject": "math"
+      },
+      "tags": [
+        "Bài tập phát triển năng lực Toán 4",
+        "C. Vận dụng, phát triển"
+      ]
+    }
+  ]
+}

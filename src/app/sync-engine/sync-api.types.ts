@@ -1,0 +1,67 @@
+/** Mirrors apps-script's request/response shapes exactly (contracts/sync-api.md). */
+
+export type EntityTypeName =
+  | 'Profile'
+  | 'Category'
+  | 'QuizItem'
+  | 'Exercise'
+  | 'Assignment'
+  | 'Rotation'
+  | 'Attempt'
+  | 'AnswerResult'
+  | 'Reward'
+  | 'PointRedemption'
+  | 'DeletedRecord';
+
+export interface SyncChange {
+  changeGroupId: string;
+  entityType: EntityTypeName;
+  entityId: string;
+  localVersion: number;
+  lastGoogleVersion: number;
+  operation: 'upsert' | 'delete';
+  payload: Record<string, unknown>;
+}
+
+export interface ConflictResolutionInput {
+  entityType: EntityTypeName;
+  entityId: string;
+  resolution: 'useLocal' | 'useGoogle' | 'keepBoth';
+  payload?: Record<string, unknown>;
+}
+
+export interface SyncRequestBody {
+  syncId: string;
+  deviceId: string;
+  sharedSecret: string;
+  startedAt: string;
+  lastKnownDataRevision: number;
+  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT';
+  changes: SyncChange[];
+  conflictResolutions?: ConflictResolutionInput[];
+}
+
+export interface SyncConflict {
+  entityType: EntityTypeName;
+  entityId: string;
+  localVersion: number;
+  googleVersion: number;
+  lastGoogleVersion: number;
+}
+
+export interface SyncDownload {
+  entityType: EntityTypeName;
+  entityId: string;
+  version: number;
+  payload: Record<string, unknown>;
+}
+
+export interface SyncResponseBody {
+  syncId: string;
+  result: 'SYNC_SUCCESS' | 'SYNC_BUSY' | 'SYNC_REJECTED';
+  commitSequence?: number;
+  committedChangeGroupIds?: string[];
+  conflicts?: SyncConflict[];
+  downloads?: SyncDownload[];
+  schemaCompatible?: boolean;
+}

@@ -1,0 +1,17 @@
+.category-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .new-category {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .warning {
+    color: #8a5a00;
+    background: #fff6e5;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+}

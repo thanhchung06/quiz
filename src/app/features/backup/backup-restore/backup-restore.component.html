@@ -1,0 +1,55 @@
+<main class="backup-screen">
+  <header class="screen-header">
+    <app-icon name="backup" />
+    <h1>Sao lưu &amp; khôi phục</h1>
+  </header>
+  @if (message()) {
+    <p class="message"><app-icon name="check_circle" />{{ message() }}</p>
+  }
+
+  <section>
+    <h2><app-icon name="upload" />Xuất bản sao lưu</h2>
+    <button type="button" (click)="exportBackup()"><app-icon name="download" />Xuất dữ liệu</button>
+  </section>
+
+  <section>
+    <h2><app-icon name="restore_page" />Khôi phục từ bản sao lưu</h2>
+    <label class="file-picker">
+      <app-icon name="folder_open" />
+      <span>Chọn tệp bản sao lưu (.json)</span>
+      <input type="file" accept="application/json" (change)="onFileSelected($event)" />
+    </label>
+
+    @if (importSummary(); as s) {
+      @if (!s.compatible) {
+        <p class="error"><app-icon name="cancel" />Phiên bản bản sao lưu không tương thích với ứng dụng này.</p>
+      } @else {
+        <ul>
+          @for (entry of s.counts | keyvalue; track entry.key) {
+            <li>{{ entry.key }}: {{ entry.value }}</li>
+          }
+        </ul>
+        <button type="button" (click)="confirmImport()">
+          <app-icon name="check_circle" />
+          Xác nhận khôi phục (sẽ thay thế dữ liệu hiện tại)
+        </button>
+      }
+    }
+  </section>
+
+  <section class="danger">
+    <h2><app-icon name="warning" />Đặt lại toàn bộ dữ liệu</h2>
+    @if (resetStep() === 0) {
+      <button type="button" (click)="startReset()"><app-icon name="delete" />Đặt lại dữ liệu…</button>
+    } @else {
+      <p class="warning"><app-icon name="warning" />Thao tác này sẽ xóa toàn bộ dữ liệu cục bộ. Nên sao lưu trước khi tiếp tục.</p>
+      <div class="danger-actions">
+        <button type="button" (click)="cancelReset()"><app-icon name="close" />Hủy</button>
+        <button type="button" class="confirm-danger" (click)="confirmReset()">
+          <app-icon name="delete" />
+          Tôi chắc chắn, xóa toàn bộ
+        </button>
+      </div>
+    }
+  </section>
+</main>

@@ -1,0 +1,14 @@
+.treasure-path {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+
+  .step {
+    font-size: 1.3rem;
+    opacity: 0.4;
+
+    &.reached {
+      opacity: 1;
+    }
+  }
+}

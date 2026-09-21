@@ -1,0 +1,141 @@
+<main class="quiz-bank-list">
+  <header>
+    <h1>Ngân hàng câu hỏi</h1>
+    <div class="header-actions">
+      <button type="button" (click)="addNew()"><app-icon name="add" /> Thêm câu hỏi</button>
+      <button type="button" class="secondary" (click)="addPassage()">
+        <app-icon name="auto_stories" /> Thêm đoạn văn/bài toán nhiều câu hỏi
+      </button>
+      <button type="button" class="secondary" (click)="exportAll()">
+        <app-icon name="download" /> Xuất danh sách hiện tại
+      </button>
+    </div>
+  </header>
+
+  <div class="filters">
+    <select (change)="setSubjectFilter($any($event.target).value)">
+      <option value="">Tất cả môn</option>
+      <option value="math">Toán</option>
+      <option value="language">Tiếng Việt</option>
+    </select>
+    <input placeholder="Tìm kiếm…" (input)="setSearchText($any($event.target).value)" />
+  </div>
+
+  <div class="bank-layout">
+    <nav class="tree">
+      @for (subj of tree(); track subj.key) {
+        <div class="tree-node subject-node">
+          <button type="button" class="tree-toggle" (click)="toggle(subj.key)">
+            <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(subj.key)" />
+            <strong>{{ subj.label }}</strong>
+          </button>
+          @if (!isCollapsed(subj.key)) {
+            @for (g of subj.grades; track g.key) {
+              <div class="tree-node grade-node">
+                <button type="button" class="tree-toggle" (click)="toggle(g.key)">
+                  <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(g.key)" />
+                  <span>Lớp {{ g.grade }}</span>
+                </button>
+                @if (!isCollapsed(g.key)) {
+                  @for (c of g.categories; track c.key) {
+                    <div class="tree-node category-node">
+                      <div class="category-header">
+                        <button type="button" class="tree-toggle" (click)="toggle(c.key)">
+                          <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(c.key)" />
+                          <span>{{ c.categoryName }}</span>
+                          <span class="count">({{ c.items.length }})</span>
+                        </button>
+                        <div class="category-bulk-actions">
+                          <button type="button" title="Đổi lớp cả danh mục" (click)="startBulkGradeChange(c)">
+                            <app-icon name="edit" label="Đổi lớp cả danh mục" />
+                          </button>
+                          <button type="button" title="Xóa cả danh mục" (click)="startBulkDelete(c)">
+                            <app-icon name="delete" label="Xóa cả danh mục" />
+                          </button>
+                        </div>
+                      </div>
+
+                      @if (bulkGradeEditKey() === c.key) {
+                        <div class="bulk-inline-form">
+                          <label>
+                            Đổi lớp cho {{ c.items.length }} câu hỏi thành
+                            <select [ngModel]="bulkGradeValue()" (ngModelChange)="bulkGradeValue.set(+$event)">
+                              @for (g2 of grades; track g2) {
+                                <option [value]="g2">Lớp {{ g2 }}</option>
+                              }
+                            </select>
+                          </label>
+                          <button type="button" (click)="confirmBulkGradeChange(c)">Xác nhận</button>
+                          <button type="button" class="secondary" (click)="cancelBulkGradeChange()">Hủy</button>
+                        </div>
+                      }
+                      @if (bulkDeleteConfirmKey() === c.key) {
+                        <div class="bulk-inline-form warn">
+                          <span>Xóa toàn bộ {{ c.items.length }} câu hỏi trong danh mục này?</span>
+                          <button type="button" class="danger" (click)="confirmBulkDelete(c)">Xóa tất cả</button>
+                          <button type="button" class="secondary" (click)="cancelBulkDelete()">Hủy</button>
+                        </div>
+                      }
+
+                      @if (!isCollapsed(c.key)) {
+                        <ul class="quiz-leaf-list">
+                          @for (item of c.items; track item.id) {
+                            <li
+                              [class.selected]="selectedItemId() === item.id"
+                              [class.passage]="!!item.passage"
+                            >
+                              <button type="button" (click)="selectItem(item)">
+                                {{ item.prompt }}
+                                @if (item.passage; as p) {
+                                  <span class="passage-badge" [title]="p.title">
+                                    <app-icon name="auto_stories" label="Thuộc đoạn văn" />
+                                    {{ p.title }} — Câu {{ p.order }}/{{ p.total }}
+                                  </span>
+                                }
+                                <span class="badge">{{ difficultyLabel(item.difficulty) }}</span>
+                              </button>
+                            </li>
+                          }
+                        </ul>
+                      }
+                    </div>
+                  }
+                }
+              </div>
+            }
+          }
+        </div>
+      }
+      @if (!tree().length) {
+        <p class="empty">Chưa có câu hỏi nào.</p>
+      }
+    </nav>
+
+    <section class="detail">
+      @if (creatingNew() || selectedItemId()) {
+        <div class="detail-toolbar">
+          @if (selectedItem(); as item) {
+            <button type="button" title="Xem trước" (click)="preview(item)">
+              <app-icon name="visibility" label="Xem trước" />
+            </button>
+            <button type="button" title="Nhân bản" (click)="duplicate(item)">
+              <app-icon name="content_copy" label="Nhân bản" />
+            </button>
+            <button type="button" title="Lưu trữ" (click)="archive(item)">
+              <app-icon name="archive" label="Lưu trữ" />
+            </button>
+            <button type="button" title="Xóa" (click)="remove(item)">
+              <app-icon name="delete" label="Xóa" />
+            </button>
+          }
+          <button type="button" class="secondary" title="Đóng" (click)="closeDetail()">
+            <app-icon name="close" label="Đóng" />
+          </button>
+        </div>
+        <app-quiz-item-form [itemId]="selectedItemId()" [embedded]="true" (saved)="onSaved($event)" />
+      } @else {
+        <p class="empty-detail">Chọn một câu hỏi trong danh sách bên trái để xem/sửa, hoặc bấm "Thêm câu hỏi".</p>
+      }
+    </section>
+  </div>
+</main>

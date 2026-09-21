@@ -1,0 +1,34 @@
+<main class="rotation-screen">
+  <header class="screen-header">
+    <app-icon name="shuffle" />
+    <h1>Vòng luyện tập tự động</h1>
+  </header>
+  <p class="hint">Dùng khi không có bài giao theo ngày cụ thể (FR-069).</p>
+
+  <div class="child-tabs">
+    @for (c of children(); track c.id) {
+      <button type="button" [class.active]="selectedChildId() === c.id" (click)="selectChild(c.id)">
+        <app-icon name="person" />
+        {{ c.displayName }}
+      </button>
+    }
+  </div>
+
+  <ul class="exercise-toggle-list">
+    @for (ex of exercises(); track ex.id) {
+      <li>
+        <label>
+          <input type="checkbox" [checked]="orderedExerciseIds().includes(ex.id)" (change)="toggle(ex.id)" />
+          {{ ex.title }}
+        </label>
+      </li>
+    }
+  </ul>
+
+  <h2><app-icon name="swap_horiz" />Thứ tự hiện tại</h2>
+  <ol>
+    @for (id of orderedExerciseIds(); track id) {
+      <li>{{ exerciseTitle(id) }}</li>
+    }
+  </ol>
+</main>

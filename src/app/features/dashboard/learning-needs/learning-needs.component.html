@@ -1,0 +1,33 @@
+<main class="learning-needs-screen">
+  <header class="screen-header">
+    <app-icon name="priority_high" />
+    <h1>Cần luyện thêm</h1>
+  </header>
+
+  <h2><app-icon name="rule" />Câu hỏi sai từ 2 lần trở lên</h2>
+  @if (weakItems().length === 0) {
+    <p class="empty"><app-icon name="check_circle" />Không có câu nào cần chú ý — tuyệt vời!</p>
+  }
+  <ul>
+    @for (item of weakItems(); track item.quizItemId) {
+      <li>
+        <label>
+          <input type="checkbox" (change)="toggleSelect(item.quizItemId)" />
+          {{ item.prompt }} — sai {{ item.missCount }} lần
+        </label>
+      </li>
+    }
+  </ul>
+
+  <button type="button" [disabled]="selectedItemIds().size === 0" (click)="buildPracticeExercise()">
+    <app-icon name="add" />
+    Tạo bài luyện tập từ các câu đã chọn
+  </button>
+
+  <h2><app-icon name="category" />Kỹ năng cần chú ý</h2>
+  <ul>
+    @for (tag of weakTags(); track tag.tag) {
+      <li class="tag-row">{{ tag.tag }}: sai {{ tag.incorrectCount }}/{{ tag.totalResponses }} lần</li>
+    }
+  </ul>
+</main>

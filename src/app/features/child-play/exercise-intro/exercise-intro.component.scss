@@ -1,0 +1,25 @@
+.intro-screen {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+
+  .rules {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .start-button {
+    margin-top: 2rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.3rem;
+    border-radius: 2rem;
+    border: none;
+    background: #2f6fed;
+    color: white;
+  }
+}

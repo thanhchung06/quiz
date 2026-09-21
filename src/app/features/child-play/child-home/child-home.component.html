@@ -1,0 +1,76 @@
+<main class="child-home">
+  <header>
+    <h1><app-icon name="school" />{{ strings.common.appName }}</h1>
+    <button type="button" (click)="logout()">
+      <app-icon name="logout" />
+      {{ strings.common.logout }}
+    </button>
+  </header>
+
+  <p class="greeting">Chào {{ childName() }}! 👋</p>
+
+  @if (todayExercise(); as exercise) {
+    <section class="today-exercise">
+      <app-icon name="rocket_launch" class="hero-icon" />
+      <h2>{{ strings.childHome.todayExercise }}</h2>
+      <p class="title">
+        {{ exercise.title }}
+        @if (exercise.isDaily) {
+          <span class="daily-badge"><app-icon name="refresh" />Hàng ngày</span>
+        }
+      </p>
+      <p class="meta">
+        {{ exercise.items.length }} câu · {{ exercise.timeLimitMinutes }} phút · Lớp {{ exercise.grade }}
+      </p>
+      @if (activeOnAnotherDevice()) {
+        <p class="device-notice">
+          <app-icon name="info" />
+          Đang làm dở trên thiết bị khác — hãy dùng thiết bị đó để tiếp tục.
+        </p>
+      } @else if (completedAttempt()) {
+        <p class="done-notice">
+          <app-icon name="check_circle" />
+          Đã hoàn thành — {{ completedAttempt()!.score }} điểm, độ chính xác {{ (completedAttempt()!.accuracy * 100) | number: '1.0-0' }}%
+          @if (exercise.isDaily) {
+            — quay lại vào ngày mai để làm bài mới
+          }
+        </p>
+        <button type="button" class="start-button" (click)="viewPastResult()">
+          <app-icon name="visibility" />
+          Xem kết quả
+        </button>
+      } @else {
+        <button type="button" class="start-button" (click)="startOrResume()">
+          <app-icon [name]="hasActiveAttempt() ? 'refresh' : 'rocket_launch'" />
+          {{ hasActiveAttempt() ? 'Tiếp tục' : strings.common.start }}
+        </button>
+      }
+    </section>
+  } @else {
+    <p class="no-exercise">
+      <app-icon name="info" />
+      {{ strings.childHome.noExerciseYet }}
+    </p>
+  }
+
+  <section class="stats">
+    <span class="stat streak"><app-icon name="whatshot" />{{ strings.childHome.streak }}: {{ streak() }}</span>
+    <span class="stat stars"><app-icon name="star" />{{ strings.childHome.stars }}: {{ totalStars() }}</span>
+    <span class="stat points"><app-icon name="quiz" />Tổng điểm: {{ totalPoints() }}</span>
+    <span class="stat badges"><app-icon name="trophy" />{{ strings.childHome.badges }}: {{ badgeCount() }}</span>
+  </section>
+
+  @if (last7Days().length) {
+    <section class="recent">
+      <h3><app-icon name="history" />{{ strings.childHome.last7Days }}</h3>
+      <ul>
+        @for (a of last7Days(); track a.id) {
+          <li>
+            <app-icon [name]="endConditionIcon[a.status] ?? 'history'" />
+            <span>{{ a.startedAt.slice(0, 10) }} — {{ a.status }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</main>

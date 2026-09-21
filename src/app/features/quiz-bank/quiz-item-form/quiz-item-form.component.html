@@ -1,0 +1,114 @@
+<main class="quiz-item-form">
+  <h1>Câu hỏi</h1>
+
+  @if (errors().length) {
+    <ul class="errors">
+      @for (e of errors(); track e) {
+        <li>{{ e }}</li>
+      }
+    </ul>
+  }
+
+  <label>
+    Môn
+    <select [ngModel]="subject()" (ngModelChange)="subject.set($event)">
+      <option value="math">Toán</option>
+      <option value="language">Tiếng Việt</option>
+    </select>
+  </label>
+
+  <label>
+    Lớp
+    <select [ngModel]="grade()" (ngModelChange)="grade.set(+$event)">
+      @for (g of [1, 2, 3, 4, 5]; track g) {
+        <option [value]="g">{{ g }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Loại câu hỏi
+    <select [ngModel]="type()" (ngModelChange)="type.set($event)">
+      <option value="single-choice">Chọn một</option>
+      <option value="multiple-choice">Chọn nhiều</option>
+      <option value="short-text">Điền từ</option>
+      <option value="number">Số</option>
+      <option value="true-false">Đúng/Sai</option>
+      <option value="match-pairs">Nối cặp</option>
+    </select>
+  </label>
+
+  <app-category-picker
+    [subject]="subject()"
+    [selectedCategoryId]="categoryId()"
+    (categoryIdChange)="categoryId.set($event)"
+  />
+
+  <label>
+    Câu hỏi
+    <textarea [ngModel]="prompt()" (ngModelChange)="prompt.set($event)"></textarea>
+  </label>
+
+  @if (type() === 'single-choice' || type() === 'multiple-choice' || type() === 'true-false') {
+    <div class="choices">
+      @for (choice of choices(); track choice.id) {
+        <div class="choice-row">
+          <input
+            [value]="choice.text"
+            (change)="choice.text = $any($event.target).value"
+            placeholder="Nội dung lựa chọn"
+          />
+          <label>
+            <input
+              type="checkbox"
+              [checked]="correctChoiceIds().includes(choice.id)"
+              (change)="toggleCorrect(choice.id)"
+            />
+            Đúng
+          </label>
+        </div>
+      }
+      <button type="button" (click)="addChoice()">+ Thêm lựa chọn</button>
+    </div>
+  }
+
+  @if (type() === 'short-text') {
+    <label>
+      Đáp án đúng
+      <input [ngModel]="acceptedAnswer()" (ngModelChange)="acceptedAnswer.set($event)" />
+    </label>
+  }
+
+  @if (type() === 'number') {
+    <label>
+      Đáp án đúng
+      <input type="number" [ngModel]="acceptedValue()" (ngModelChange)="acceptedValue.set($event)" />
+    </label>
+  }
+
+  <label>
+    Giải thích (tùy chọn)
+    <input [ngModel]="explanation()" (ngModelChange)="explanation.set($event)" />
+  </label>
+
+  <label>
+    Nhãn (phân cách bằng dấu phẩy)
+    <input [ngModel]="tags()" (ngModelChange)="tags.set($event)" />
+  </label>
+
+  <label>
+    Độ khó
+    <select [ngModel]="difficulty()" (ngModelChange)="setDifficulty($event)">
+      @for (level of difficultyLevels; track level.value) {
+        <option [value]="level.value">{{ level.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Điểm
+    <input type="number" [ngModel]="points()" (ngModelChange)="points.set($event)" />
+  </label>
+
+  <button type="button" class="save" (click)="save()">Lưu</button>
+</main>

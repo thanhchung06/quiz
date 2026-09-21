@@ -1,0 +1,72 @@
+@if (attempt(); as a) {
+  <main class="result-screen">
+    <h1>{{ outcomeLabel[a.status] ?? a.status }}</h1>
+    <p class="score">{{ a.score }} điểm</p>
+    <ul class="stats">
+      <li>Độ chính xác: {{ (a.accuracy * 100) | number: '1.0-0' }}%</li>
+      <li>❤️ Còn lại: {{ a.livesRemaining === 'unlimited' ? '∞' : a.livesRemaining }}</li>
+      <li>⭐ Sao: {{ a.starsAwarded }}</li>
+    </ul>
+
+    @if (rewardsOutcome(); as r) {
+      <div class="rewards-banner">
+        @if (r.streak > 0) {
+          <p>🔥 Chuỗi ngày: {{ r.streak }}</p>
+        }
+        @if (r.personalBest) {
+          <p>🏅 Kỷ lục cá nhân mới!</p>
+        }
+        @if (r.dailyBonus) {
+          <p>🎁 Thưởng bất ngờ hôm nay!</p>
+        }
+        @for (badge of r.newBadges; track badge) {
+          <p>🏆 Huy hiệu mới: {{ badge }}</p>
+        }
+      </div>
+    }
+
+    @if (breakdown().length) {
+      <section class="review">
+        <h2><app-icon name="fact_check" />Chi tiết từng câu</h2>
+        <ol>
+          @for (q of breakdown(); track q.quizItemId) {
+            <li class="review-item" [class.correct]="q.isCorrect" [class.incorrect]="!q.isCorrect">
+              <p class="review-prompt">
+                <app-icon [name]="!q.answered ? 'info' : q.isCorrect ? 'check_circle' : 'cancel'" />
+                Câu {{ q.index + 1 }}. {{ q.prompt }}
+              </p>
+
+              @if (q.choices; as choices) {
+                <ul class="review-choices">
+                  @for (c of choices; track c.id) {
+                    <li [class.correct]="q.correctChoiceIds.has(c.id)" [class.selected-wrong]="q.selectedChoiceIds.has(c.id) && !q.correctChoiceIds.has(c.id)">
+                      @if (q.correctChoiceIds.has(c.id)) {
+                        <app-icon name="check_circle" />
+                      } @else if (q.selectedChoiceIds.has(c.id)) {
+                        <app-icon name="cancel" />
+                      }
+                      {{ c.text }}
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <p class="review-answer">
+                  Bạn trả lời: <strong>{{ q.selectedText }}</strong>
+                  @if (!q.isCorrect) {
+                    · Đáp án đúng: <strong>{{ q.correctText }}</strong>
+                  }
+                </p>
+              }
+
+              @if (!q.answered) {
+                <p class="review-note">Chưa trả lời — đáp án đúng: {{ q.correctText }}</p>
+              }
+            </li>
+          }
+        </ol>
+      </section>
+    }
+
+    <button type="button" (click)="goHome()">{{ strings.common.home }}</button>
+  </main>
+}

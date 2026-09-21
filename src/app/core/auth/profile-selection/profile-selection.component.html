@@ -1,0 +1,31 @@
+<main class="profile-screen">
+  <h1>{{ strings.auth.chooseProfile }}</h1>
+
+  @if (!selected()) {
+    <div class="profile-cards">
+      @for (profile of profiles(); track profile.id) {
+        <button class="profile-card" type="button" (click)="select(profile)">
+          <span class="avatar" [attr.data-avatar]="profile.avatar"></span>
+          <span class="name">{{ profile.displayName }}</span>
+        </button>
+      }
+    </div>
+  } @else {
+    <form class="credential-form" (ngSubmit)="submitCredential()">
+      <h2>{{ selected()!.displayName }}</h2>
+      <label>
+        {{ strings.auth.enterPassword }}
+        <input type="password" [ngModel]="credential()" (ngModelChange)="credential.set($event)" name="credential" autofocus />
+      </label>
+
+      @if (errorMessage()) {
+        <p class="error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="actions">
+        <button type="button" (click)="cancelSelection()">{{ strings.common.back }}</button>
+        <button type="submit">{{ strings.auth.login }}</button>
+      </div>
+    </form>
+  }
+</main>

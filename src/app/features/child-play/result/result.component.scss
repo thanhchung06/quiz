@@ -1,0 +1,121 @@
+.result-screen {
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+
+  .score {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .stats {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  button {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 2rem;
+    border: none;
+    background: #2f6fed;
+    color: white;
+  }
+}
+
+.review {
+  text-align: left;
+  margin-top: 1.5rem;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1rem;
+    color: #4a5a7a;
+  }
+
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+}
+
+.review-item {
+  border: 1px solid #dfe3ec;
+  border-radius: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  background: white;
+
+  &.correct {
+    border-color: #9fd8ae;
+    background: #f2fbf4;
+  }
+
+  &.incorrect {
+    border-color: #f0b8b8;
+    background: #fdf3f3;
+  }
+
+  .review-prompt {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+}
+
+.review-choices {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    color: #555;
+
+    &.correct {
+      background: #e7f7ea;
+      color: #1e7a34;
+      font-weight: 600;
+    }
+
+    &.selected-wrong {
+      background: #fbe9e9;
+      color: #b3261e;
+      font-weight: 600;
+    }
+  }
+}
+
+.review-answer {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #555;
+}
+
+.review-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  color: #8a5a00;
+}
