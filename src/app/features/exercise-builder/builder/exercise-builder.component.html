@@ -41,8 +41,21 @@
       <option value="unlimited">Không giới hạn</option>
     </select>
   </label>
+  <label>
+    Số lần được làm bài
+    <select [ngModel]="repeatLimit()" (ngModelChange)="setRepeatLimit($event)">
+      <option [value]="1">1 lần</option>
+      <option [value]="2">2 lần</option>
+      <option [value]="3">3 lần</option>
+      <option value="unlimited">Không giới hạn</option>
+    </select>
+  </label>
   @if (isDaily()) {
     <p class="hint">Bài tập hàng ngày có thể làm một lần mỗi ngày — hết lượt sai hoặc làm xong đều kết thúc lượt hôm nay, đổi mới vào ngày hôm sau.</p>
+  } @else if (repeatLimit() === 'unlimited') {
+    <p class="hint">Trẻ có thể làm lại bài tập này không giới hạn số lần.</p>
+  } @else if (repeatLimit() !== 1) {
+    <p class="hint">Trẻ có thể làm bài tập này tối đa {{ repeatLimit() }} lần.</p>
   } @else {
     <p class="hint">Bài tập chỉ được làm một lần — hết lượt sai hoặc làm xong đều kết thúc bài, không thể làm lại.</p>
   }

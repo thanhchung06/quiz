@@ -188,7 +188,19 @@ export interface Exercise extends SyncEnvelope {
    * (a normal, one-time exercise) wherever absent.
    */
   isDaily?: boolean;
+  /**
+   * How many times, ever (lifetime, not per-day), a child may complete this
+   * exercise before it's considered exhausted — defaults to 1 wherever
+   * absent (older records predate this field), which is exactly today's
+   * hardcoded "one attempt forever" rule. Independent of `isDaily`, whose
+   * own once-per-calendar-day exemption (see AttemptLifecycleService) is
+   * untouched by this field.
+   */
+  repeatLimit?: RepeatLimit;
 }
+
+/** 1-3 lifetime attempts, or 'unlimited' for no cap at all. See `Exercise.repeatLimit`. */
+export type RepeatLimit = 1 | 2 | 3 | 'unlimited';
 
 // ---------------------------------------------------------------------------
 // Assignment + Rotation (data-model.md §5/§5a)
@@ -197,7 +209,9 @@ export interface Exercise extends SyncEnvelope {
 export interface Assignment extends SyncEnvelope {
   profileId: string;
   exerciseId: string;
-  assignedDate: string; // YYYY-MM-DD, local calendar date
+  /** YYYY-MM-DD, local calendar date. Absent for a one-time (day-less) assignment — see AssignmentRepository.assignOnetime. */
+  assignedDate?: string;
+  /** Only meaningful when `assignedDate` is set (single per-date slot winner); always false for a one-time assignment. */
   isPrimary: boolean;
   replayAllowed?: boolean;
 }

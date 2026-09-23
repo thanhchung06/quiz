@@ -23,6 +23,12 @@ export const routes: Routes = [
       import('./features/child-play/exercise-intro/exercise-intro.component').then((m) => m.ExerciseIntroComponent),
   },
   {
+    path: 'exercise-intro/:assignmentId',
+    canActivate: [authGuard, childGuard],
+    loadComponent: () =>
+      import('./features/child-play/exercise-intro/exercise-intro.component').then((m) => m.ExerciseIntroComponent),
+  },
+  {
     path: 'exercise/question',
     canActivate: [authGuard, childGuard],
     loadComponent: () => import('./features/child-play/question/question.component').then((m) => m.QuestionComponent),

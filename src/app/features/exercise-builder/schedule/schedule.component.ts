@@ -23,6 +23,8 @@ export class ScheduleComponent {
   readonly bothChildren = signal(false);
   readonly selectedExerciseId = signal<string>('');
   readonly assignedDate = signal(new Date().toISOString().slice(0, 10));
+  /** 'dated' assigns for the chosen date (existing flow); 'onetime' assigns with no day attached at all. */
+  readonly assignMode = signal<'dated' | 'onetime'>('dated');
 
   constructor(
     private readonly profiles: ProfileRepository,
@@ -48,11 +50,16 @@ export class ScheduleComponent {
   }
 
   async assign(): Promise<void> {
-    if (!this.selectedExerciseId() || !this.assignedDate()) return;
+    if (!this.selectedExerciseId()) return;
+    if (this.assignMode() === 'dated' && !this.assignedDate()) return;
     const targets = this.bothChildren() ? this.children().map((c) => c.id) : [this.selectedChildId()];
     for (const profileId of targets) {
       if (!profileId) continue;
-      await this.assignments.setPrimaryAssignment(profileId, this.selectedExerciseId(), this.assignedDate());
+      if (this.assignMode() === 'onetime') {
+        await this.assignments.assignOnetime(profileId, this.selectedExerciseId());
+      } else {
+        await this.assignments.setPrimaryAssignment(profileId, this.selectedExerciseId(), this.assignedDate());
+      }
     }
     await this.load();
   }

@@ -24,14 +24,15 @@ export interface FeedbackEvent {
  * with the exercise's own configured lives (a number, or 'unlimited') and a
  * fixed deadline, persists progress after every answer, blocks changing a
  * submitted answer, and ends on completion/time-up/lives-lost. A normal
- * exercise is one-attempt-per-child forever — `start()` refuses once any
- * finished attempt already exists for that pair. A *daily* exercise
- * (`Exercise.isDaily`, FR-091) is the one exception: it's one-attempt-per-
+ * exercise allows a configurable lifetime number of attempts per child
+ * (`Exercise.repeatLimit`, 1-3 or 'unlimited', defaulting to 1) —
+ * `attemptsRemaining()` computes how many are left, and `start()` refuses
+ * once it hits 0. A *daily* exercise (`Exercise.isDaily`, FR-091) is the one
+ * exception, kept entirely separate from `repeatLimit`: it's one-attempt-per-
  * child-per-local-calendar-day instead, and `resolveNew()` already draws a
  * fresh random set on every `start()` call, so a new day's attempt is
  * naturally re-randomized with no extra logic needed for that part.
  *
-
  * Play and resume always render from `Attempt.itemSnapshots` — a frozen copy
  * captured at start — never from the live QuizItemRepository, so an edit or
  * archive to the bank while an attempt is active never changes what the
@@ -70,21 +71,19 @@ export class AttemptLifecycleService {
   ) {}
 
   /**
-   * Starts a brand-new attempt. Every exercise is one-attempt-per-child now
-   * (no replay), so this refuses outright if a prior non-in-progress attempt
-   * already exists for this (exercise, profile) — callers should check
-   * `findMostRecentCompletedAttempt` first and route to the past result
-   * instead of ever reaching here, but this stays as a hard backstop.
+   * Starts a brand-new attempt. Refuses outright once `attemptsRemaining`
+   * hits 0 for this (exercise, profile) — callers should check that (and
+   * route to the past result via `findMostRecentCompletedAttempt` /
+   * `findCompletedAttemptToday`) before ever reaching here, but this stays
+   * as a hard backstop.
    */
   async start(exercise: Exercise, profileId: string, assignmentId?: string): Promise<Attempt> {
-    const priorCompleted = exercise.isDaily
-      ? await this.findCompletedAttemptToday(exercise.id, profileId)
-      : await this.findMostRecentCompletedAttempt(exercise.id, profileId);
-    if (priorCompleted) {
+    const remaining = await this.attemptsRemaining(exercise, profileId);
+    if (remaining === 0) {
       throw new Error(
         exercise.isDaily
           ? "This daily exercise was already completed by this profile today — it renews tomorrow."
-          : 'This exercise was already completed by this profile and cannot be started again.',
+          : 'This exercise has no attempts left for this profile.',
       );
     }
 
@@ -145,6 +144,30 @@ export class AttemptLifecycleService {
     const mostRecent = await this.findMostRecentCompletedAttempt(exerciseId, profileId);
     if (!mostRecent) return undefined;
     return localDateOf(mostRecent.startedAt) === localDateOf(new Date().toISOString()) ? mostRecent : undefined;
+  }
+
+  /** Total finished (non-inProgress) attempts this profile has for this exercise, ever. */
+  async countCompletedAttempts(exerciseId: string, profileId: string): Promise<number> {
+    const all = await this.attempts.listForProfile(profileId);
+    return all.filter((a) => a.exerciseId === exerciseId && a.status !== 'inProgress').length;
+  }
+
+  /**
+   * How many more times this profile may attempt this exercise: `'unlimited'`
+   * for no cap, `0` once exhausted. An `isDaily` exercise keeps its own
+   * separate once-per-calendar-day exemption, untouched by `repeatLimit`
+   * (see class doc). Every other exercise is capped by `Exercise.repeatLimit`
+   * as a lifetime total across all days (defaults to 1 wherever unset).
+   */
+  async attemptsRemaining(exercise: Exercise, profileId: string): Promise<number | 'unlimited'> {
+    if (exercise.isDaily) {
+      const doneToday = await this.findCompletedAttemptToday(exercise.id, profileId);
+      return doneToday ? 0 : 1;
+    }
+    const repeatLimit = exercise.repeatLimit ?? 1;
+    if (repeatLimit === 'unlimited') return 'unlimited';
+    const completed = await this.countCompletedAttempts(exercise.id, profileId);
+    return Math.max(0, repeatLimit - completed);
   }
 
   /** Hydrates the service's signals from an already-finished attempt so the result screen can display it (viewing a past result, not scoring a new one). */

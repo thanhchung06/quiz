@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { SessionService } from '../../../core/auth/session.service';
 import { RotationRepository } from '../../../data/repositories/rotation.repository';
 import { ExerciseRepository } from '../../../data/repositories/exercise.repository';
+import { AssignmentRepository } from '../../../data/repositories/assignment.repository';
 import { AttemptRepository } from '../../../data/repositories/attempt.repository';
 import { RewardRepository } from '../../../data/repositories/reward.repository';
 import { PointRedemptionRepository } from '../../../data/repositories/point-redemption.repository';
@@ -21,6 +22,23 @@ const END_CONDITION_ICON: Partial<Record<string, string>> = {
   inProgress: 'hourglass_bottom',
 };
 
+/**
+ * One exercise "card" shown on the child's home screen — either the
+ * today's/daily-assigned slot, or one entry in the one-time exercises list.
+ * Only one Attempt may ever be in progress per profile at a time (FR-063),
+ * so a card whose exercise isn't the active one is `blocked` rather than
+ * offering a Start button that would just fail on `startAttempt`.
+ */
+type CardStatus = 'activeHere' | 'activeElsewhere' | 'blocked' | 'completed' | 'startable';
+
+interface ExerciseCard {
+  assignmentId?: string;
+  exercise: Exercise;
+  status: CardStatus;
+  completedAttempt?: Attempt;
+  attemptsRemaining: number | 'unlimited';
+}
+
 @Component({
   selector: 'app-child-home',
   standalone: true,
@@ -31,11 +49,8 @@ const END_CONDITION_ICON: Partial<Record<string, string>> = {
 export class ChildHomeComponent implements OnInit {
   readonly strings = vi;
   readonly endConditionIcon = END_CONDITION_ICON;
-  readonly todayExercise = signal<Exercise | undefined>(undefined);
-  readonly hasActiveAttempt = signal(false);
-  readonly activeOnAnotherDevice = signal(false);
-  /** Set once this profile already has a finished attempt for today's exercise (for a daily exercise, only if that attempt was today — see FR-091) — every exercise is one-attempt-per-child (daily: per local day), so this replaces the Start button with a "view past result" one. */
-  readonly completedAttempt = signal<Attempt | undefined>(undefined);
+  readonly todayCard = signal<ExerciseCard | undefined>(undefined);
+  readonly onetimeCards = signal<ExerciseCard[]>([]);
   readonly childName = signal('');
   readonly streak = signal(0);
   readonly totalStars = signal(0);
@@ -47,6 +62,7 @@ export class ChildHomeComponent implements OnInit {
     private readonly session: SessionService,
     private readonly rotations: RotationRepository,
     private readonly exercises: ExerciseRepository,
+    private readonly assignments: AssignmentRepository,
     private readonly attempts: AttemptRepository,
     private readonly rewards: RewardRepository,
     private readonly redemptions: PointRedemptionRepository,
@@ -59,22 +75,26 @@ export class ChildHomeComponent implements OnInit {
     const profile = this.session.requireCurrentProfile();
     this.childName.set(profile.displayName);
 
-    const exerciseId = await this.rotations.resolveTodayExerciseId(profile.id);
-    const exercise = exerciseId ? await this.exercises.getById(exerciseId) : undefined;
-    this.todayExercise.set(exercise);
-
     const active = await this.attempts.findInProgress(profile.id);
-    const ownedByThisDevice = await this.attempts.findInProgressOwnedByThisDevice(profile.id);
-    this.hasActiveAttempt.set(!!ownedByThisDevice);
-    this.activeOnAnotherDevice.set(!!active && !ownedByThisDevice);
+    const activeOwnedByThisDevice = !!(await this.attempts.findInProgressOwnedByThisDevice(profile.id));
 
-    if (exercise && !active) {
-      this.completedAttempt.set(
-        exercise.isDaily
-          ? await this.lifecycle.findCompletedAttemptToday(exercise.id, profile.id)
-          : await this.lifecycle.findMostRecentCompletedAttempt(exercise.id, profile.id),
-      );
+    const todayExerciseId = await this.rotations.resolveTodayExerciseId(profile.id);
+    const todayExercise = todayExerciseId ? await this.exercises.getById(todayExerciseId) : undefined;
+    this.todayCard.set(
+      todayExercise ? await this.buildCard(todayExercise, profile.id, active, activeOwnedByThisDevice) : undefined,
+    );
+
+    const onetimeAssignments = await this.assignments.listOnetimeFor(profile.id);
+    const cards: ExerciseCard[] = [];
+    for (const assignment of onetimeAssignments) {
+      const exercise = await this.exercises.getById(assignment.exerciseId);
+      if (!exercise || exercise.status !== 'active') continue;
+      const card = await this.buildCard(exercise, profile.id, active, activeOwnedByThisDevice, assignment.id);
+      // A fully exhausted one-time exercise drops off the list entirely.
+      if (card.status === 'completed') continue;
+      cards.push(card);
     }
+    this.onetimeCards.set(cards);
 
     this.streak.set(await this.streaks.currentStreak(profile.id));
     const allAttempts = await this.attempts.listForProfile(profile.id);
@@ -92,12 +112,53 @@ export class ChildHomeComponent implements OnInit {
     );
   }
 
-  async startOrResume(): Promise<void> {
-    await this.router.navigateByUrl('/exercise-intro');
+  /**
+   * Resolves one exercise's card state. `active` is the single (at most one,
+   * FR-063) in-progress attempt for this profile, if any, regardless of
+   * which exercise it belongs to — a card for any OTHER exercise is
+   * `blocked` while it's ongoing, rather than letting the child try to start
+   * a second attempt that `startAttempt` would just reject.
+   */
+  private async buildCard(
+    exercise: Exercise,
+    profileId: string,
+    active: Attempt | undefined,
+    activeOwnedByThisDevice: boolean,
+    assignmentId?: string,
+  ): Promise<ExerciseCard> {
+    if (active?.exerciseId === exercise.id) {
+      return {
+        assignmentId,
+        exercise,
+        status: activeOwnedByThisDevice ? 'activeHere' : 'activeElsewhere',
+        attemptsRemaining: 0,
+      };
+    }
+    if (active) {
+      return { assignmentId, exercise, status: 'blocked', attemptsRemaining: 0 };
+    }
+
+    const attemptsRemaining = await this.lifecycle.attemptsRemaining(exercise, profileId);
+    if (attemptsRemaining === 0) {
+      const completedAttempt = exercise.isDaily
+        ? await this.lifecycle.findCompletedAttemptToday(exercise.id, profileId)
+        : await this.lifecycle.findMostRecentCompletedAttempt(exercise.id, profileId);
+      return { assignmentId, exercise, status: 'completed', completedAttempt, attemptsRemaining };
+    }
+    return { assignmentId, exercise, status: 'startable', attemptsRemaining };
   }
 
-  async viewPastResult(): Promise<void> {
-    const done = this.completedAttempt();
+  /** Only worth showing a "lượt còn lại" hint for a repeatable, non-daily exercise (daily has its own once-a-day copy). */
+  showsRemainingHint(card: ExerciseCard): boolean {
+    return !card.exercise.isDaily && (card.exercise.repeatLimit ?? 1) !== 1 && card.status === 'startable';
+  }
+
+  async startCard(card: ExerciseCard): Promise<void> {
+    await this.router.navigateByUrl(card.assignmentId ? `/exercise-intro/${card.assignmentId}` : '/exercise-intro');
+  }
+
+  async viewPastResult(card: ExerciseCard): Promise<void> {
+    const done = card.completedAttempt;
     if (!done) return;
     this.lifecycle.loadAttempt(done);
     await this.router.navigateByUrl('/exercise/result');

@@ -43,4 +43,29 @@ export class AssignmentRepository extends BaseRepository<Assignment> {
     await this.create(assignment);
     return assignment;
   }
+
+  /** Every active (non-deleted) one-time — i.e. no `assignedDate` — assignment for this child. */
+  async listOnetimeFor(profileId: string): Promise<Assignment[]> {
+    const all = await this.list();
+    return all.filter((a) => a.profileId === profileId && !a.assignedDate && !a.deletedAt);
+  }
+
+  /**
+   * Assigns an exercise to a child with no specific day attached. Idempotent:
+   * reuses an existing one-time assignment of the same exercise for the same
+   * child rather than creating a duplicate.
+   */
+  async assignOnetime(profileId: string, exerciseId: string): Promise<Assignment> {
+    const existing = (await this.listOnetimeFor(profileId)).find((a) => a.exerciseId === exerciseId);
+    if (existing) return existing;
+
+    const assignment: Assignment = {
+      ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
+      profileId,
+      exerciseId,
+      isPrimary: false,
+    };
+    await this.create(assignment);
+    return assignment;
+  }
 }

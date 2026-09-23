@@ -6,6 +6,9 @@
       <li>{{ ex.items.length }} câu hỏi</li>
       <li>❤️ {{ strings.exercise.lives }}: {{ ex.lives === 'unlimited' ? 'Không giới hạn' : ex.lives }}</li>
       <li>⏱ {{ strings.exercise.timeLimit }}: {{ ex.timeLimitMinutes }} phút</li>
+      @if (!ex.isDaily && ex.repeatLimit && ex.repeatLimit !== 1) {
+        <li>🔁 Số lần được làm: {{ ex.repeatLimit === 'unlimited' ? 'Không giới hạn' : ex.repeatLimit }}</li>
+      }
     </ul>
     <button type="button" class="start-button" (click)="start()">{{ strings.common.start }}</button>
   </main>

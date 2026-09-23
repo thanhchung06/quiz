@@ -7,8 +7,7 @@
 
     "start": "node scripts/angular-with-build-info.mjs serve",
 
-    "prebuild": "npm run generate:build-info",
-    "build": "ng build",
+    "build": "node scripts/build.mjs",
 
     "watch": "node scripts/angular-with-build-info.mjs build --watch --configuration development",
 

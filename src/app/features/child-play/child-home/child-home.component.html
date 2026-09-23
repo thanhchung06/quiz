@@ -9,41 +9,60 @@
 
   <p class="greeting">Chào {{ childName() }}! 👋</p>
 
-  @if (todayExercise(); as exercise) {
+  @if (todayCard(); as card) {
     <section class="today-exercise">
       <app-icon name="rocket_launch" class="hero-icon" />
       <h2>{{ strings.childHome.todayExercise }}</h2>
       <p class="title">
-        {{ exercise.title }}
-        @if (exercise.isDaily) {
+        {{ card.exercise.title }}
+        @if (card.exercise.isDaily) {
           <span class="daily-badge"><app-icon name="refresh" />Hàng ngày</span>
         }
       </p>
       <p class="meta">
-        {{ exercise.items.length }} câu · {{ exercise.timeLimitMinutes }} phút · Lớp {{ exercise.grade }}
+        {{ card.exercise.items.length }} câu · {{ card.exercise.timeLimitMinutes }} phút · Lớp {{ card.exercise.grade }}
       </p>
-      @if (activeOnAnotherDevice()) {
-        <p class="device-notice">
-          <app-icon name="info" />
-          Đang làm dở trên thiết bị khác — hãy dùng thiết bị đó để tiếp tục.
-        </p>
-      } @else if (completedAttempt()) {
-        <p class="done-notice">
-          <app-icon name="check_circle" />
-          Đã hoàn thành — {{ completedAttempt()!.score }} điểm, độ chính xác {{ (completedAttempt()!.accuracy * 100) | number: '1.0-0' }}%
-          @if (exercise.isDaily) {
-            — quay lại vào ngày mai để làm bài mới
+
+      @switch (card.status) {
+        @case ('activeElsewhere') {
+          <p class="device-notice">
+            <app-icon name="info" />
+            Đang làm dở trên thiết bị khác — hãy dùng thiết bị đó để tiếp tục.
+          </p>
+        }
+        @case ('blocked') {
+          <p class="device-notice">
+            <app-icon name="info" />
+            {{ strings.childHome.blockedByOtherExercise }}
+          </p>
+        }
+        @case ('completed') {
+          <p class="done-notice">
+            <app-icon name="check_circle" />
+            Đã hoàn thành — {{ card.completedAttempt!.score }} điểm, độ chính xác
+            {{ (card.completedAttempt!.accuracy * 100) | number: '1.0-0' }}%
+            @if (card.exercise.isDaily) {
+              — quay lại vào ngày mai để làm bài mới
+            }
+          </p>
+          <button type="button" class="start-button" (click)="viewPastResult(card)">
+            <app-icon name="visibility" />
+            Xem kết quả
+          </button>
+        }
+        @default {
+          @if (showsRemainingHint(card)) {
+            <p class="meta">
+              {{ strings.childHome.attemptsRemainingPrefix }}
+              {{ card.attemptsRemaining === 'unlimited' ? 'không giới hạn' : card.attemptsRemaining }}
+              {{ strings.childHome.attemptsRemainingSuffix }}
+            </p>
           }
-        </p>
-        <button type="button" class="start-button" (click)="viewPastResult()">
-          <app-icon name="visibility" />
-          Xem kết quả
-        </button>
-      } @else {
-        <button type="button" class="start-button" (click)="startOrResume()">
-          <app-icon [name]="hasActiveAttempt() ? 'refresh' : 'rocket_launch'" />
-          {{ hasActiveAttempt() ? 'Tiếp tục' : strings.common.start }}
-        </button>
+          <button type="button" class="start-button" (click)="startCard(card)">
+            <app-icon [name]="card.status === 'activeHere' ? 'refresh' : 'rocket_launch'" />
+            {{ card.status === 'activeHere' ? 'Tiếp tục' : strings.common.start }}
+          </button>
+        }
       }
     </section>
   } @else {
@@ -51,6 +70,58 @@
       <app-icon name="info" />
       {{ strings.childHome.noExerciseYet }}
     </p>
+  }
+
+  @if (onetimeCards().length) {
+    <section class="onetime-section">
+      <h3><app-icon name="quiz" />{{ strings.childHome.oneTimeExercises }}</h3>
+      @for (card of onetimeCards(); track card.assignmentId) {
+        <div class="today-exercise onetime-card">
+          <p class="title">{{ card.exercise.title }}</p>
+          <p class="meta">
+            {{ card.exercise.items.length }} câu · {{ card.exercise.timeLimitMinutes }} phút · Lớp {{ card.exercise.grade }}
+          </p>
+
+          @switch (card.status) {
+            @case ('activeElsewhere') {
+              <p class="device-notice">
+                <app-icon name="info" />
+                Đang làm dở trên thiết bị khác — hãy dùng thiết bị đó để tiếp tục.
+              </p>
+            }
+            @case ('blocked') {
+              <p class="device-notice">
+                <app-icon name="info" />
+                {{ strings.childHome.blockedByOtherExercise }}
+              </p>
+            }
+            @case ('completed') {
+              <p class="done-notice">
+                <app-icon name="check_circle" />
+                Đã hoàn thành — {{ card.completedAttempt!.score }} điểm
+              </p>
+              <button type="button" class="start-button" (click)="viewPastResult(card)">
+                <app-icon name="visibility" />
+                Xem kết quả
+              </button>
+            }
+            @default {
+              @if (showsRemainingHint(card)) {
+                <p class="meta">
+                  {{ strings.childHome.attemptsRemainingPrefix }}
+                  {{ card.attemptsRemaining === 'unlimited' ? 'không giới hạn' : card.attemptsRemaining }}
+                  {{ strings.childHome.attemptsRemainingSuffix }}
+                </p>
+              }
+              <button type="button" class="start-button" (click)="startCard(card)">
+                <app-icon [name]="card.status === 'activeHere' ? 'refresh' : 'rocket_launch'" />
+                {{ card.status === 'activeHere' ? 'Tiếp tục' : strings.common.start }}
+              </button>
+            }
+          }
+        </div>
+      }
+    </section>
   }
 
   <section class="stats">

@@ -23,7 +23,20 @@
     </select>
   </label>
 
-  <label>Ngày <input type="date" [ngModel]="assignedDate()" (ngModelChange)="assignedDate.set($event)" /></label>
+  <fieldset class="assign-mode">
+    <label class="checkbox-row">
+      <input type="radio" name="assignMode" [checked]="assignMode() === 'dated'" (change)="assignMode.set('dated')" />
+      Giao theo ngày cụ thể
+    </label>
+    <label class="checkbox-row">
+      <input type="radio" name="assignMode" [checked]="assignMode() === 'onetime'" (change)="assignMode.set('onetime')" />
+      Giao không chọn ngày (bài tập một lần)
+    </label>
+  </fieldset>
+
+  @if (assignMode() === 'dated') {
+    <label>Ngày <input type="date" [ngModel]="assignedDate()" (ngModelChange)="assignedDate.set($event)" /></label>
+  }
 
   <button type="button" (click)="assign()">
     <app-icon name="add" />
@@ -37,8 +50,13 @@
   <ul>
     @for (a of upcoming(); track a.id) {
       <li>
-        <app-icon name="calendar_month" />
-        {{ a.assignedDate }} — {{ childName(a.profileId) }} — {{ exerciseTitle(a.exerciseId) }}
+        <app-icon [name]="a.assignedDate ? 'calendar_month' : 'refresh'" />
+        @if (a.assignedDate) {
+          {{ a.assignedDate }}
+        } @else {
+          Một lần
+        }
+        — {{ childName(a.profileId) }} — {{ exerciseTitle(a.exerciseId) }}
       </li>
     }
   </ul>

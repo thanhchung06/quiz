@@ -38,6 +38,10 @@ export const vi = {
   },
   childHome: {
     todayExercise: 'Bài tập hôm nay',
+    oneTimeExercises: 'Bài tập một lần',
+    attemptsRemainingPrefix: 'Còn lại',
+    attemptsRemainingSuffix: 'lượt làm',
+    blockedByOtherExercise: 'Đang làm bài tập khác — hoàn thành bài đó trước đã nhé!',
     streak: 'Chuỗi ngày liên tiếp',
     stars: 'Số sao',
     badges: 'Huy hiệu',

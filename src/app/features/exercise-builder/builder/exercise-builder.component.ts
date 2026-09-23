@@ -42,6 +42,8 @@ export class ExerciseBuilderComponent implements OnInit {
   readonly repeatSameQuestions = signal(false);
   /** 3-10, or 'unlimited'. */
   readonly lives = signal<Exercise['lives']>(5);
+  /** 1-3 lifetime attempts, or 'unlimited'. */
+  readonly repeatLimit = signal<Exercise['repeatLimit']>(1);
   readonly questionTimingMode = signal<Exercise['questionTimingMode']>('none');
   readonly isDaily = signal(false);
   readonly items = signal<ExerciseItem[]>([]);
@@ -79,6 +81,7 @@ export class ExerciseBuilderComponent implements OnInit {
     this.correctionReviewEnabled.set(existing.correctionReviewEnabled);
     this.repeatSameQuestions.set(existing.repeatSameQuestions);
     this.lives.set(existing.lives ?? 5);
+    this.repeatLimit.set(existing.repeatLimit ?? 1);
     this.questionTimingMode.set(existing.questionTimingMode ?? 'none');
     this.isDaily.set(existing.isDaily ?? false);
     this.items.set(existing.items);
@@ -198,6 +201,12 @@ export class ExerciseBuilderComponent implements OnInit {
 
   setLives(value: string): void {
     this.lives.set(value === 'unlimited' ? 'unlimited' : Math.min(10, Math.max(3, Math.round(Number(value)))));
+  }
+
+  setRepeatLimit(value: string): void {
+    this.repeatLimit.set(
+      value === 'unlimited' ? 'unlimited' : (Math.min(3, Math.max(1, Math.round(Number(value)))) as 1 | 2 | 3),
+    );
   }
 
   setFixedItemPoints(itemId: string, value: string): void {
@@ -320,6 +329,7 @@ export class ExerciseBuilderComponent implements OnInit {
       items: this.items(),
       timeLimitMinutes: this.timeLimitMinutes(),
       lives: this.lives(),
+      repeatLimit: this.repeatLimit(),
       passingPercent: this.passingPercent(),
       orderMode: this.orderMode(),
       replayAllowed: this.replayAllowed(),
