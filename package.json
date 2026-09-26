@@ -13,7 +13,8 @@
 
     "test": "jest",
     "e2e": "playwright test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "extractI": "node scripts/extract-images.mjs"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "@angular/service-worker": "^19.2.0",
     "ajv": "^8.17.1",
     "dexie": "^4.0.10",
+    "exceljs": "^4.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

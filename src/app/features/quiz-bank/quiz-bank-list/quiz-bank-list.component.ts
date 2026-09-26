@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuizItemRepository, QuizItemFilter } from '../../../data/repositories/quiz-item.repository';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
-import { QuizExportService } from '../export/export.service';
+import { QuizExportFormat, QuizExportService } from '../export/export.service';
+import { downloadFile, todayStamp } from '../../../shared/download/download-file';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { QuizItemFormComponent } from '../quiz-item-form/quiz-item-form.component';
 import { Category, QuizItem, Subject } from '../../../shared/models/domain.model';
@@ -31,6 +32,17 @@ interface SubjectGroup {
 
 const SUBJECT_LABELS: Record<Subject, string> = { math: 'Toán', language: 'Tiếng Việt' };
 
+/** "Phép cộng" → "phep-cong", for export file names. */
+function fileSlug(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[đĐ]/g, 'd')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 /**
  * Quiz Bank management screen (FR-019, amended 2026-09-18 — redesigned from a
  * flat table into a Subject → Grade → Category → Quiz tree on the left, with
@@ -54,6 +66,42 @@ export class QuizBankListComponent {
   readonly creatingNew = signal(false);
   readonly difficultyLabel = difficultyLabel;
   readonly grades = [1, 2, 3, 4, 5];
+  /** File format used by every export button on this screen — Excel by default, since it's the one a parent can edit by hand. */
+  readonly exportFormat = signal<QuizExportFormat>('xlsx');
+  readonly isExporting = signal(false);
+
+  /**
+   * "Xuất câu hỏi" panel (amended 2026-09-26): export by any mix of subject,
+   * grade and category across the whole bank — independent of the tree's
+   * search/subject filter, so e.g. one category over every grade is possible.
+   */
+  readonly exportPanelOpen = signal(false);
+  readonly exportSource = signal<QuizItem[]>([]);
+  readonly exportSubject = signal<Subject | ''>('');
+  readonly exportGrade = signal<number | ''>('');
+  readonly exportCategoryId = signal('');
+
+  /** Items matching the panel's subject + grade, before the category choice. */
+  private readonly exportScoped = computed(() => {
+    const subject = this.exportSubject();
+    const grade = this.exportGrade();
+    return this.exportSource().filter((i) => (!subject || i.subject === subject) && (!grade || i.grade === grade));
+  });
+
+  /** Categories that have at least one question for the chosen subject/grade, with their counts. */
+  readonly exportCategoryOptions = computed(() => {
+    const counts = new Map<string, number>();
+    for (const i of this.exportScoped()) counts.set(i.categoryId, (counts.get(i.categoryId) ?? 0) + 1);
+    return this.categories()
+      .filter((c) => counts.has(c.id))
+      .map((c) => ({ id: c.id, name: c.name, count: counts.get(c.id)! }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+  });
+
+  readonly exportMatches = computed(() => {
+    const categoryId = this.exportCategoryId();
+    return this.exportScoped().filter((i) => !categoryId || i.categoryId === categoryId);
+  });
 
   /** Category tree node currently showing its bulk-grade-change inline form (by CategoryGroup.key), if any. */
   readonly bulkGradeEditKey = signal<string | undefined>(undefined);
@@ -104,15 +152,74 @@ export class QuizBankListComponent {
     void this.reload();
   }
 
-  async exportAll(): Promise<void> {
-    const pkg = await this.exportService.exportItems(this.items().map((i) => i.id));
-    const blob = new Blob([JSON.stringify(pkg, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'quiz-export.json';
-    a.click();
-    URL.revokeObjectURL(url);
+  async openExportPanel(): Promise<void> {
+    this.exportSubject.set(this.filter().subject ?? '');
+    this.exportGrade.set('');
+    this.exportCategoryId.set('');
+    this.exportSource.set(await this.quizItems.search({}));
+    this.exportPanelOpen.set(true);
+  }
+
+  setExportSubject(value: string): void {
+    this.exportSubject.set(value as Subject | '');
+    this.dropUnavailableExportCategory();
+  }
+
+  setExportGrade(value: string): void {
+    this.exportGrade.set(value ? +value : '');
+    this.dropUnavailableExportCategory();
+  }
+
+  private dropUnavailableExportCategory(): void {
+    const id = this.exportCategoryId();
+    if (id && !this.exportCategoryOptions().some((c) => c.id === id)) this.exportCategoryId.set('');
+  }
+
+  /** Exports whatever the panel's subject/grade/category currently match, named after the choices. */
+  async exportSelection(): Promise<void> {
+    const subject = this.exportSubject();
+    const grade = this.exportGrade();
+    const category = this.categories().find((c) => c.id === this.exportCategoryId());
+    const parts = ['cau-hoi'];
+    if (subject) parts.push(fileSlug(SUBJECT_LABELS[subject]));
+    if (grade) parts.push(`lop${grade}`);
+    if (category) parts.push(fileSlug(category.name));
+    await this.exportQuizzes(this.exportMatches(), parts.join('-'));
+  }
+
+  /** Exports one subject node of the tree (every grade and category under it). */
+  async exportSubjectNode(group: SubjectGroup): Promise<void> {
+    await this.exportQuizzes(
+      group.grades.flatMap((g) => g.categories.flatMap((c) => c.items)),
+      `cau-hoi-${fileSlug(group.label)}`,
+    );
+  }
+
+  /** Exports one grade node of the tree (every category under it). */
+  async exportGradeNode(subject: SubjectGroup, group: GradeGroup): Promise<void> {
+    await this.exportQuizzes(
+      group.categories.flatMap((c) => c.items),
+      `cau-hoi-${fileSlug(subject.label)}-lop${group.grade}`,
+    );
+  }
+
+  /** Exports one category node of the tree. */
+  async exportCategory(group: CategoryGroup): Promise<void> {
+    await this.exportQuizzes(group.items, `cau-hoi-${fileSlug(group.categoryName)}-lop${group.items[0]?.grade ?? ''}`);
+  }
+
+  private async exportQuizzes(items: QuizItem[], baseName: string): Promise<void> {
+    if (!items.length || this.isExporting()) return;
+    this.isExporting.set(true);
+    try {
+      const file = await this.exportService.exportFile(
+        items.map((i) => i.id),
+        this.exportFormat(),
+      );
+      downloadFile(file.data, `${baseName}-${todayStamp()}.${file.extension}`, file.mimeType);
+    } finally {
+      this.isExporting.set(false);
+    }
   }
 
   async reload(): Promise<void> {
@@ -169,7 +276,8 @@ export class QuizBankListComponent {
 
   async onSaved(item: QuizItem): Promise<void> {
     this.creatingNew.set(false);
-    this.selectedItemId.set(item.id);
+    // A new passage group is edited as a whole in the passage editor, never item by item here.
+    this.selectedItemId.set(item.passage ? undefined : item.id);
     await this.reload();
   }
 

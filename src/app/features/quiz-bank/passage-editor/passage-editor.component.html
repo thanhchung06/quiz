@@ -32,6 +32,7 @@
 
     <app-category-picker
       [subject]="subject()"
+      [grade]="grade()"
       [selectedCategoryId]="categoryId()"
       (categoryIdChange)="categoryId.set($event)"
     />
@@ -51,6 +52,16 @@
         placeholder="Dán đoạn văn cần đọc, hoặc mô tả đề bài toán ở đây…"
       ></textarea>
     </label>
+
+    <label>
+      Hình minh họa cho đoạn văn / bài toán (tùy chọn)
+      <input
+        [ngModel]="imageUrl()"
+        (ngModelChange)="imageUrl.set($event)"
+        placeholder="https://… hoặc tên tệp trong assets/images, ví dụ: cam.png"
+      />
+    </label>
+    <app-quiz-image [src]="imageUrl()" />
   </section>
 
   <h2><app-icon name="quiz" />Các câu hỏi ({{ rows().length }})</h2>
@@ -81,19 +92,28 @@
           <textarea [ngModel]="row.prompt" (ngModelChange)="row.prompt = $event"></textarea>
         </label>
 
+        <label>
+          Hình minh họa (tùy chọn)
+          <input [(ngModel)]="row.imageUrl" placeholder="https://… hoặc tên tệp trong assets/images" />
+        </label>
+        <app-quiz-image [src]="row.imageUrl" />
+
         @if (usesChoices(row)) {
           <div class="choices">
             @for (choice of row.choices; track choice.id) {
-              <div class="choice-row">
-                <input [(ngModel)]="choice.text" placeholder="Nội dung lựa chọn" />
-                <label>
-                  <input
-                    type="checkbox"
-                    [checked]="row.correctChoiceIds.includes(choice.id)"
-                    (change)="toggleCorrect(row, choice.id)"
-                  />
-                  Đúng
-                </label>
+              <div class="choice">
+                <div class="choice-row">
+                  <input [(ngModel)]="choice.text" placeholder="Nội dung lựa chọn" />
+                  <label>
+                    <input
+                      type="checkbox"
+                      [checked]="row.correctChoiceIds.includes(choice.id)"
+                      (change)="toggleCorrect(row, choice.id)"
+                    />
+                    Đúng
+                  </label>
+                </div>
+                <app-choice-image-field [value]="choice.imageRef" (valueChange)="setChoiceImage(choice, $event)" />
               </div>
             }
             @if (row.type === 'multiple-choice') {

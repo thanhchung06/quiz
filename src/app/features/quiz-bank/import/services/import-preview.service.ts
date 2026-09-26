@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PackageValidatorService } from './package-validator.service';
-import { DuplicateDetectorService } from './duplicate-detector.service';
+import { DuplicateDetectorService, PassageDuplicateMatch } from './duplicate-detector.service';
 import { normalizeName } from '../../../../data/repositories/category.repository';
 import { QuizPackage } from '../quiz-package.model';
 
@@ -27,6 +27,8 @@ export interface ImportPreview {
   /** Deduped by (normalized name, subject) — many items commonly propose the same new category (not least the default-category fallback), so this is one row per distinct category, with a count of how many items proposed it. */
   proposedCategories: Array<{ index: number; name: string; subject: string; possibleDuplicateOf?: string; subjectMismatch: boolean; count: number }>;
   skipped: number[];
+  /** Passages that match one already in the bank (by their questions' externalIds) — skipped, or replaced as a whole. */
+  passageDuplicates: PassageDuplicateMatch[];
   /** Passages import as an atomic unit each (FR-073–075) — not folded into the flat item lists above. */
   passages: PassagePreviewEntry[];
   /** Every question in the file (standalone + passage questions), grouped by grade then type — shown instead of listing every individual item. */
@@ -49,6 +51,10 @@ export class ImportPreviewService {
     const normalized = validation.normalizedPackage;
     const duplicateMatches = validation.formatVersionSupported
       ? await this.duplicates.findDuplicates(normalized.quizzes)
+      : [];
+
+    const passageDuplicates = validation.formatVersionSupported
+      ? await this.duplicates.findPassageDuplicates(normalized.passages ?? [])
       : [];
 
     const invalidIndexes = new Set(validation.itemErrors.map((e) => e.index));
@@ -127,14 +133,28 @@ export class ImportPreviewService {
       likelyDuplicates: duplicateMatches,
       proposedCategories,
       skipped: [],
+      passageDuplicates,
       passages,
       gradeTypeBreakdown,
     };
   }
 
-  downloadErrorReport(preview: ImportPreview): string {
+  /**
+   * `itemLabel` adds a human-readable location to each invalid item (e.g. an
+   * Excel row); `fileProblems` are issues found while reading the file itself.
+   */
+  downloadErrorReport(
+    preview: ImportPreview,
+    extras: { itemLabel?: (index: number) => string; fileProblems?: string[] } = {},
+  ): string {
     return JSON.stringify(
-      { invalidItems: preview.invalidItems, invalidPassages: preview.passages.filter((p) => !p.valid) },
+      {
+        fileProblems: extras.fileProblems?.length ? extras.fileProblems : undefined,
+        invalidItems: preview.invalidItems.map((item) =>
+          extras.itemLabel ? { location: extras.itemLabel(item.index), ...item } : item,
+        ),
+        invalidPassages: preview.passages.filter((p) => !p.valid),
+      },
       null,
       2,
     );

@@ -29,6 +29,12 @@
   }
 }
 
+.export-group {
+  display: flex;
+  gap: 0.25rem;
+  align-items: stretch;
+}
+
 .filters {
   display: flex;
   gap: 0.5rem;
@@ -269,5 +275,49 @@
     &:hover {
       background: #f0f4ff;
     }
+  }
+}
+
+.export-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #d8e2fb;
+  border-radius: 0.75rem;
+  background: #f7f9ff;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    font-size: 1.05rem;
+  }
+}
+
+.export-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.75rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+
+  .export-count {
+    margin-right: auto;
+    color: #555;
   }
 }

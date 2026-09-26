@@ -6,11 +6,69 @@
       <button type="button" class="secondary" (click)="addPassage()">
         <app-icon name="auto_stories" /> Thêm đoạn văn/bài toán nhiều câu hỏi
       </button>
-      <button type="button" class="secondary" (click)="exportAll()">
-        <app-icon name="download" /> Xuất danh sách hiện tại
-      </button>
+      <div class="export-group">
+        <select
+          title="Định dạng tệp xuất"
+          [ngModel]="exportFormat()"
+          (ngModelChange)="exportFormat.set($event)"
+        >
+          <option value="xlsx">Excel (.xlsx)</option>
+          <option value="json">JSON</option>
+        </select>
+        <button type="button" class="secondary" [attr.aria-expanded]="exportPanelOpen()" (click)="exportPanelOpen() ? exportPanelOpen.set(false) : openExportPanel()">
+          <app-icon name="download" /> Xuất câu hỏi…
+        </button>
+      </div>
     </div>
   </header>
+
+  @if (exportPanelOpen()) {
+    <section class="export-panel" aria-label="Xuất câu hỏi">
+      <h2><app-icon name="download" /> Xuất câu hỏi theo môn, lớp, danh mục</h2>
+      <div class="export-fields">
+        <label>
+          Môn
+          <select [ngModel]="exportSubject()" (ngModelChange)="setExportSubject($event)">
+            <option value="">Tất cả môn</option>
+            <option value="math">Toán</option>
+            <option value="language">Tiếng Việt</option>
+          </select>
+        </label>
+        <label>
+          Lớp
+          <select [ngModel]="exportGrade()" (ngModelChange)="setExportGrade($event)">
+            <option value="">Tất cả lớp</option>
+            @for (g of grades; track g) {
+              <option [value]="g">Lớp {{ g }}</option>
+            }
+          </select>
+        </label>
+        <label>
+          Danh mục
+          <select [ngModel]="exportCategoryId()" (ngModelChange)="exportCategoryId.set($event)">
+            <option value="">Tất cả danh mục</option>
+            @for (c of exportCategoryOptions(); track c.id) {
+              <option [value]="c.id">{{ c.name }} ({{ c.count }})</option>
+            }
+          </select>
+        </label>
+        <label>
+          Định dạng
+          <select [ngModel]="exportFormat()" (ngModelChange)="exportFormat.set($event)">
+            <option value="xlsx">Excel (.xlsx)</option>
+            <option value="json">JSON</option>
+          </select>
+        </label>
+      </div>
+      <div class="export-actions">
+        <span class="export-count">{{ exportMatches().length }} câu hỏi phù hợp</span>
+        <button type="button" [disabled]="isExporting() || !exportMatches().length" (click)="exportSelection()">
+          <app-icon name="download" /> {{ isExporting() ? 'Đang xuất…' : 'Xuất ' + exportMatches().length + ' câu' }}
+        </button>
+        <button type="button" class="secondary" (click)="exportPanelOpen.set(false)">Đóng</button>
+      </div>
+    </section>
+  }
 
   <div class="filters">
     <select (change)="setSubjectFilter($any($event.target).value)">
@@ -25,17 +83,31 @@
     <nav class="tree">
       @for (subj of tree(); track subj.key) {
         <div class="tree-node subject-node">
-          <button type="button" class="tree-toggle" (click)="toggle(subj.key)">
-            <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(subj.key)" />
-            <strong>{{ subj.label }}</strong>
-          </button>
+          <div class="category-header">
+            <button type="button" class="tree-toggle" (click)="toggle(subj.key)">
+              <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(subj.key)" />
+              <strong>{{ subj.label }}</strong>
+            </button>
+            <div class="category-bulk-actions">
+              <button type="button" [title]="'Xuất tất cả câu hỏi môn ' + subj.label" [disabled]="isExporting()" (click)="exportSubjectNode(subj)">
+                <app-icon name="download" [label]="'Xuất tất cả câu hỏi môn ' + subj.label" />
+              </button>
+            </div>
+          </div>
           @if (!isCollapsed(subj.key)) {
             @for (g of subj.grades; track g.key) {
               <div class="tree-node grade-node">
-                <button type="button" class="tree-toggle" (click)="toggle(g.key)">
-                  <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(g.key)" />
-                  <span>Lớp {{ g.grade }}</span>
-                </button>
+                <div class="category-header">
+                  <button type="button" class="tree-toggle" (click)="toggle(g.key)">
+                    <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(g.key)" />
+                    <span>Lớp {{ g.grade }}</span>
+                  </button>
+                  <div class="category-bulk-actions">
+                    <button type="button" [title]="'Xuất câu hỏi ' + subj.label + ' lớp ' + g.grade" [disabled]="isExporting()" (click)="exportGradeNode(subj, g)">
+                      <app-icon name="download" [label]="'Xuất câu hỏi ' + subj.label + ' lớp ' + g.grade" />
+                    </button>
+                  </div>
+                </div>
                 @if (!isCollapsed(g.key)) {
                   @for (c of g.categories; track c.key) {
                     <div class="tree-node category-node">
@@ -46,6 +118,9 @@
                           <span class="count">({{ c.items.length }})</span>
                         </button>
                         <div class="category-bulk-actions">
+                          <button type="button" title="Xuất câu hỏi của danh mục này" [disabled]="isExporting()" (click)="exportCategory(c)">
+                            <app-icon name="download" label="Xuất câu hỏi của danh mục này" />
+                          </button>
                           <button type="button" title="Đổi lớp cả danh mục" (click)="startBulkGradeChange(c)">
                             <app-icon name="edit" label="Đổi lớp cả danh mục" />
                           </button>

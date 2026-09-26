@@ -18,35 +18,38 @@ export class QuizValidationService {
 
     if (type === 'single-choice' || type === 'multiple-choice' || type === 'true-false' || type === 'match-pairs') {
       if (!choices || choices.length < 2) {
-        errors.push('Choice-based questions require at least 2 choices.');
+        errors.push('Cần ít nhất 2 lựa chọn.');
+      }
+      if (choices?.some((c) => !c.text.trim() && !c.imageRef?.trim())) {
+        errors.push('Mỗi lựa chọn cần có nội dung hoặc hình.');
       }
     }
 
     if (rule.kind === 'choice') {
       if (rule.correctChoiceIds.length < 1) {
-        errors.push('At least one correct answer id is required.');
+        errors.push('Chưa đánh dấu đáp án đúng.');
       }
       const choiceIds = new Set((choices ?? []).map((c) => c.id));
       for (const id of rule.correctChoiceIds) {
         if (!choiceIds.has(id)) {
-          errors.push(`correctChoiceIds references unknown choice id "${id}".`);
+          errors.push('Đáp án đúng trỏ tới một lựa chọn không còn tồn tại.');
         }
       }
-      if (type === 'single-choice' && rule.correctChoiceIds.length !== 1) {
-        errors.push('single-choice requires exactly 1 correct answer id.');
+      if (type === 'single-choice' && rule.correctChoiceIds.length > 1) {
+        errors.push('Câu chọn một chỉ được có 1 đáp án đúng.');
       }
     }
 
     if (rule.kind === 'text' && rule.acceptedAnswer.trim().length === 0) {
-      errors.push('acceptedAnswer must not be empty for short-text questions.');
+      errors.push('Chưa nhập đáp án đúng.');
     }
 
     if (rule.kind === 'number' && rule.acceptedValue === undefined && (rule.min === undefined || rule.max === undefined)) {
-      errors.push('number questions require either acceptedValue or a min/max range.');
+      errors.push('Chưa nhập đáp án số.');
     }
 
     if (rule.kind === 'pairs' && rule.pairs.length < 1) {
-      errors.push('match-pairs questions require at least one pair.');
+      errors.push('Câu nối cặp cần ít nhất một cặp.');
     }
 
     return { valid: errors.length === 0, errors };

@@ -40,10 +40,12 @@
           <span class="passage-progress">Câu {{ p.order }}/{{ p.total }} của đoạn này</span>
         </p>
         <p class="passage-text">{{ p.text }}</p>
+        <app-quiz-image [src]="p.imageUrl" />
       </div>
     }
 
     <p class="prompt">{{ q.prompt }}</p>
+    <app-quiz-image [src]="q.media?.imageRef" />
 
     <div class="answer-area">
       @if (q.type === 'single-choice' || q.type === 'true-false') {
@@ -56,7 +58,14 @@
               (click)="toggleChoice(choice.id, false)"
             >
               <span class="choice-letter">{{ choiceLetters[i] }}</span>
-              <span class="choice-text">{{ choice.text }}</span>
+              <span class="choice-body">
+                @if (choice.text) {
+                  <span class="choice-text">{{ choice.text }}</span>
+                }
+                @if (choice.imageRef) {
+                  <app-quiz-image class="choice-image" [src]="choice.imageRef" [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]" />
+                }
+              </span>
             </button>
           }
         </div>
@@ -71,7 +80,14 @@
               (click)="toggleChoice(choice.id, true)"
             >
               <span class="choice-letter">{{ choiceLetters[i] }}</span>
-              <span class="choice-text">{{ choice.text }}</span>
+              <span class="choice-body">
+                @if (choice.text) {
+                  <span class="choice-text">{{ choice.text }}</span>
+                }
+                @if (choice.imageRef) {
+                  <app-quiz-image class="choice-image" [src]="choice.imageRef" [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]" />
+                }
+              </span>
             </button>
           }
         </div>
@@ -92,13 +108,14 @@
           NumberValueAccessor coerces type="number" ngModel values to an
           actual `number`, which would silently break the string-typed
           numberAnswer signal below. inputmode="numeric" still gives a
-          numeric keypad on mobile.
+          numeric keypad on mobile. "decimal" (not "numeric") so the keypad has a
+          decimal separator — Vietnamese decimals use a comma, e.g. 3,5.
         -->
         <input
           class="text-answer number"
           type="text"
-          inputmode="numeric"
-          pattern="-?[0-9]*"
+          inputmode="decimal"
+          pattern="-?[0-9., ]*"
           [ngModel]="numberAnswer()"
           (ngModelChange)="numberAnswer.set($event)"
           name="numberAnswer"

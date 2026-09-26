@@ -8,6 +8,7 @@ import { RandomGroupCheckService } from '../services/random-group-check.service'
 import { Category, Exercise, ExerciseItem, QuizItem, RandomGroupConfig } from '../../../shared/models/domain.model';
 import { difficultyLabel } from '../../../shared/difficulty';
 import { QuizPickerComponent } from '../quiz-picker/quiz-picker.component';
+import { allowedTypesLabel } from '../../../shared/question-type-groups';
 
 /**
  * Exercise Builder (FR-031, FR-032, FR-035, FR-037): title/subject/grade/
@@ -292,7 +293,7 @@ export class ExerciseBuilderComponent implements OnInit {
         : `${difficultyLabel(config.difficultyMin)}–${difficultyLabel(config.difficultyMax)}`;
     const pointsPart = config.pointsOverride !== undefined ? `${config.pointsOverride} điểm/câu` : 'điểm mặc định';
     const timePart = config.timeLimitSeconds ? `${config.timeLimitSeconds}s/câu` : 'không giới hạn riêng';
-    return `${categoryPart} · ${difficultyPart} · ${pointsPart} · ${timePart}`;
+    return `${categoryPart} · ${allowedTypesLabel(config.allowedTypes)} · ${difficultyPart} · ${pointsPart} · ${timePart}`;
   }
 
   async save(): Promise<void> {

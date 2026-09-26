@@ -4,7 +4,13 @@ import { ImportPreviewService, ImportPreview } from '../services/import-preview.
 import { ImportCommitService } from '../services/import-commit.service';
 import { QuizPackage } from '../quiz-package.model';
 import { QUIZ_PACKAGE_TEMPLATE } from '../quiz-package-template';
+import { CATEGORY_SUGGESTIONS } from '../category-suggestions';
 import { IconComponent } from '../../../../shared/icon/icon.component';
+import { downloadFile } from '../../../../shared/download/download-file';
+import { ExcelSourceRef, XLSX_MIME, quizPackageToXlsx, xlsxToQuizPackage } from '../../excel/quiz-excel';
+
+/** What to do with file items that look like quizzes already in the bank. */
+export type DuplicateMode = 'skip' | 'replace';
 
 /**
  * Import Preview screen (FR-027): a grade/type breakdown of what's in the
@@ -15,6 +21,12 @@ import { IconComponent } from '../../../../shared/icon/icon.component';
  * popup whose Close action resets the whole screen back to its empty
  * starting state, including the file input, ready for another import
  * (amended 2026-09-18).
+ *
+ * The file may be the JSON package or the human-editable Excel workbook
+ * (excel/quiz-excel.ts), which is converted to the same package first; its
+ * row-level problems and per-item row numbers are shown so the parent can
+ * fix the sheet. "Replace" for duplicates overwrites the matching existing
+ * item — the round trip for editing an exported sheet and importing it back.
  */
 @Component({
   selector: 'app-import-preview',
@@ -31,6 +43,14 @@ export class ImportPreviewComponent {
   readonly skipIndexes = signal<Set<number>>(new Set());
   readonly skipPassageIndexes = signal<Set<number>>(new Set());
   readonly resultMessage = signal('');
+  /** Set when the chosen file couldn't be read at all (not JSON / not a valid .xlsx). */
+  readonly fileError = signal('');
+  /** Row-numbered issues found while reading an Excel file (rows left out, values ignored…). */
+  readonly excelProblems = signal<string[]>([]);
+  /** Excel only: sheet/row each `pkg.quizzes[i]` came from. */
+  readonly quizSources = signal<ExcelSourceRef[] | undefined>(undefined);
+  readonly duplicateMode = signal<DuplicateMode>('skip');
+  readonly invalidExpanded = signal(false);
   readonly lastImportBatchId = signal<string | undefined>(undefined);
   readonly undoMessage = signal('');
 
@@ -53,27 +73,65 @@ export class ImportPreviewComponent {
     if (!file) return;
 
     this.isReadingFile.set(true);
+    this.fileError.set('');
+    this.excelProblems.set([]);
+    this.quizSources.set(undefined);
+    this.rawPackage.set(undefined);
+    this.preview.set(undefined);
     try {
-      const text = await file.text();
-      const pkg = JSON.parse(text) as QuizPackage;
+      let pkg: QuizPackage;
+      if (/\.xlsx$/i.test(file.name) || file.type === XLSX_MIME) {
+        const parsed = await xlsxToQuizPackage(await file.arrayBuffer(), file.name.replace(/\.xlsx$/i, ''));
+        pkg = parsed.pkg;
+        this.excelProblems.set(parsed.problems);
+        this.quizSources.set(parsed.quizSources);
+      } else {
+        pkg = JSON.parse(await file.text()) as QuizPackage;
+      }
       this.rawPackage.set(pkg);
       this.preview.set(await this.previewService.buildPreview(pkg));
       this.skipIndexes.set(new Set());
       this.skipPassageIndexes.set(new Set());
       this.passagesExpanded.set(false);
+      this.invalidExpanded.set(false);
+    } catch {
+      this.fileError.set('Không đọc được tệp. Hãy chọn tệp gói câu hỏi .json hoặc tệp Excel .xlsx (ví dụ tệp mẫu hoặc tệp đã xuất).');
     } finally {
       this.isReadingFile.set(false);
     }
   }
 
   downloadTemplate(): void {
-    const blob = new Blob([JSON.stringify(QUIZ_PACKAGE_TEMPLATE, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'mau-goi-cau-hoi.json';
-    a.click();
-    URL.revokeObjectURL(url);
+    const template = { ...QUIZ_PACKAGE_TEMPLATE, suggestedCategories: CATEGORY_SUGGESTIONS };
+    downloadFile(JSON.stringify(template, null, 2), 'mau-goi-cau-hoi.json', 'application/json');
+  }
+
+  async downloadExcelTemplate(): Promise<void> {
+    const data = await quizPackageToXlsx(QUIZ_PACKAGE_TEMPLATE, { categorySuggestions: CATEGORY_SUGGESTIONS });
+    downloadFile(data, 'mau-goi-cau-hoi.xlsx', XLSX_MIME);
+  }
+
+  /** "Dòng 12" for an Excel row, "Mục #3" for a JSON array entry. */
+  itemLabel(index: number): string {
+    const source = this.quizSources()?.[index];
+    return source ? `Trang "${source.sheet}" dòng ${source.row}` : `Mục #${index}`;
+  }
+
+  /** Standalone questions plus every question of a valid passage — matches "Tổng", which counts both. */
+  validCount(preview: ImportPreview): number {
+    return preview.validIndexes.length + preview.passages.filter((p) => p.valid).reduce((sum, p) => sum + p.questionCount, 0);
+  }
+
+  invalidCount(preview: ImportPreview): number {
+    return preview.invalidItems.length + preview.passages.filter((p) => !p.valid).reduce((sum, p) => sum + p.questionCount, 0);
+  }
+
+  passageTitle(preview: ImportPreview, index: number): string {
+    return preview.passages.find((p) => p.index === index)?.title ?? `#${index}`;
+  }
+
+  toggleInvalidExpanded(): void {
+    this.invalidExpanded.update((v) => !v);
   }
 
   toggleSkip(index: number): void {
@@ -101,13 +159,11 @@ export class ImportPreviewComponent {
   downloadErrors(): void {
     const preview = this.preview();
     if (!preview) return;
-    const blob = new Blob([this.previewService.downloadErrorReport(preview)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'import-errors.json';
-    a.click();
-    URL.revokeObjectURL(url);
+    const report = this.previewService.downloadErrorReport(preview, {
+      itemLabel: (index) => this.itemLabel(index),
+      fileProblems: this.excelProblems(),
+    });
+    downloadFile(report, 'import-errors.json', 'application/json');
   }
 
   async importQuizzes(): Promise<void> {
@@ -117,17 +173,32 @@ export class ImportPreviewComponent {
 
     this.isImporting.set(true);
     try {
+      const replacing = this.duplicateMode() === 'replace';
       const duplicateIndexes = new Set(preview.likelyDuplicates.map((d) => d.index));
-      const finalSkip = new Set([...this.skipIndexes(), ...duplicateIndexes]);
+      const finalSkip = new Set([...this.skipIndexes(), ...(replacing ? [] : duplicateIndexes)]);
+      const replaceIndexes = replacing
+        ? new Map(preview.likelyDuplicates.map((d) => [d.index, d.matchesExistingId]))
+        : undefined;
+      const duplicatePassageIndexes = preview.passageDuplicates.map((d) => d.index);
+      const skipPassages = new Set([...this.skipPassageIndexes(), ...(replacing ? [] : duplicatePassageIndexes)]);
+      const replacePassages = replacing
+        ? new Map(preview.passageDuplicates.map((d) => [d.index, d.passageId]))
+        : undefined;
 
       const result = await this.commitService.commit(pkg, preview.validIndexes, {
         skipIndexes: finalSkip,
+        replaceIndexes,
         categoryMapping: new Map(),
-        skipPassageIndexes: this.skipPassageIndexes(),
+        skipPassageIndexes: skipPassages,
+        replacePassages,
         passageCategoryMapping: new Map(),
       });
       this.importedCount.set(result.savedIds.length);
-      this.resultMessage.set(`Đã nhập ${result.savedIds.length} câu hỏi.`);
+      this.resultMessage.set(
+        result.updatedIds.length
+          ? `Đã nhập ${result.savedIds.length} câu hỏi mới, cập nhật ${result.updatedIds.length} câu hỏi đã có.`
+          : `Đã nhập ${result.savedIds.length} câu hỏi.`,
+      );
       this.lastImportBatchId.set(result.savedIds.length > 0 ? result.importBatchId : undefined);
       this.undoMessage.set('');
       this.showResultPopup.set(true);
@@ -161,6 +232,11 @@ export class ImportPreviewComponent {
     this.undoMessage.set('');
     this.importedCount.set(0);
     this.passagesExpanded.set(false);
+    this.invalidExpanded.set(false);
+    this.fileError.set('');
+    this.excelProblems.set([]);
+    this.quizSources.set(undefined);
+    this.duplicateMode.set('skip');
     if (this.fileInputRef) this.fileInputRef.nativeElement.value = '';
   }
 

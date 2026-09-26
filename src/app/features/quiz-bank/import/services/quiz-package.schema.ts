@@ -20,12 +20,13 @@ const QUIZ_PACKAGE_ITEM_PROPERTIES = {
     enum: ['single-choice', 'short-text', 'number', 'multiple-choice', 'true-false', 'match-pairs'],
   },
   prompt: { type: 'string', minLength: 1 },
+  imageUrl: { type: 'string' },
   choices: {
     type: 'array',
     items: {
       type: 'object',
       required: ['id', 'text'],
-      properties: { id: { type: 'string' }, text: { type: 'string' } },
+      properties: { id: { type: 'string' }, text: { type: 'string' }, imageUrl: { type: 'string' } },
     },
   },
   correctAnswerIds: { type: 'array', items: { type: 'string' } },
@@ -81,6 +82,7 @@ export const QUIZ_PACKAGE_SCHEMA = {
           },
           title: { type: 'string', minLength: 1 },
           text: { type: 'string', minLength: 1 },
+          imageUrl: { type: 'string' },
           questions: {
             type: 'array',
             minItems: 2,

@@ -4,10 +4,53 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { QuizValidationService } from '../services/quiz-validation.service';
 import { CategoryPickerComponent } from './category-picker.component';
-import { AnswerRule, Choice, QuizDifficulty, QuizItem, QuizItemType, Subject } from '../../../shared/models/domain.model';
+import { ChoiceImageFieldComponent } from './choice-image-field.component';
+import { QuizImageComponent, withImageRef } from '../../../shared/quiz-image/quiz-image.component';
+import { AnswerRule, Choice, PassageContext, QuizDifficulty, QuizItem, QuizItemType, Subject } from '../../../shared/models/domain.model';
 import { newSyncEnvelope } from '../../../shared/models/sync.model';
 import { currentDeviceId } from '../../../data/repositories/base-repository';
 import { coerceDifficulty, DIFFICULTY_LEVELS } from '../../../shared/difficulty';
+
+/** One question being written in the form; everything not shared by the whole batch. */
+export interface QuestionDraft {
+  key: string;
+  type: QuizItemType;
+  prompt: string;
+  imageUrl: string;
+  explanation: string;
+  choices: Choice[];
+  correctChoiceIds: string[];
+  acceptedAnswer: string;
+  acceptedValue?: number;
+}
+
+const CHOICE_TYPES: QuizItemType[] = ['single-choice', 'multiple-choice', 'true-false', 'match-pairs'];
+
+function blankChoices(type: QuizItemType): Choice[] {
+  return type === 'true-false'
+    ? [
+        { id: crypto.randomUUID(), text: 'Đúng' },
+        { id: crypto.randomUUID(), text: 'Sai' },
+      ]
+    : [
+        { id: crypto.randomUUID(), text: '' },
+        { id: crypto.randomUUID(), text: '' },
+      ];
+}
+
+function blankDraft(type: QuizItemType = 'single-choice'): QuestionDraft {
+  return {
+    key: crypto.randomUUID(),
+    type,
+    prompt: '',
+    imageUrl: '',
+    explanation: '',
+    choices: blankChoices(type),
+    correctChoiceIds: [],
+    acceptedAnswer: '',
+    acceptedValue: undefined,
+  };
+}
 
 /**
  * Quiz Item form (FR-017, FR-018): required fields (title/identifier,
@@ -19,11 +62,19 @@ import { coerceDifficulty, DIFFICULTY_LEVELS } from '../../../shared/difficulty'
  * unchanged), or embedded as the Quiz Bank tree's detail/edit panel via
  * `[itemId]`/`[embedded]="true"`, in which case `save()` emits `saved`
  * instead of navigating away, so the host page can refresh its tree in place.
+ *
+ * When creating (amended 2026-09-26), the form holds several question drafts
+ * that share subject, grade, category, tags, difficulty and points, and saves
+ * them all in one go; editing an existing item always shows exactly one draft.
+ * In "passage" mode the drafts become the sub-questions of one reading text /
+ * problem statement (PassageContext, FR-073–075) — the same structure the
+ * import file's `passages[]` produces; editing such a group later happens in
+ * the passage editor, which the quiz bank opens for passage items.
  */
 @Component({
   selector: 'app-quiz-item-form',
   standalone: true,
-  imports: [FormsModule, CategoryPickerComponent],
+  imports: [FormsModule, CategoryPickerComponent, QuizImageComponent, ChoiceImageFieldComponent],
   templateUrl: './quiz-item-form.component.html',
   styleUrl: './quiz-item-form.component.scss',
 })
@@ -32,11 +83,9 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
   @Input() embedded = false;
   @Output() readonly saved = new EventEmitter<QuizItem>();
 
+  // Shared by every question in the batch.
   readonly subject = signal<Subject>('math');
   readonly grade = signal(1);
-  readonly type = signal<QuizItemType>('single-choice');
-  readonly prompt = signal('');
-  readonly explanation = signal('');
   readonly tags = signal('');
   readonly difficulty = signal<QuizDifficulty>(2);
   readonly points = signal(10);
@@ -44,20 +93,14 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
   readonly shuffleChoices = signal(true);
   readonly difficultyLevels = DIFFICULTY_LEVELS;
 
-  setDifficulty(value: string): void {
-    this.difficulty.set(coerceDifficulty(value));
-  }
-
-  readonly choices = signal<Choice[]>([
-    { id: crypto.randomUUID(), text: '' },
-    { id: crypto.randomUUID(), text: '' },
-  ]);
-  readonly correctChoiceIds = signal<string[]>([]);
-  readonly acceptedAnswer = signal('');
-  readonly acceptedValue = signal<number | undefined>(undefined);
-
+  readonly drafts = signal<QuestionDraft[]>([blankDraft()]);
+  /** 'single': independent questions; 'passage': sub-questions sharing one text. */
+  readonly mode = signal<'single' | 'passage'>('single');
+  readonly passageTitle = signal('');
+  readonly passageText = signal('');
+  readonly passageImageUrl = signal('');
   readonly errors = signal<string[]>([]);
-  private editingId?: string;
+  readonly editingId = signal<string | undefined>(undefined);
 
   constructor(
     private readonly quizItems: QuizItemRepository,
@@ -77,85 +120,167 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
     await this.loadItem(this.itemId);
   }
 
+  setDifficulty(value: string): void {
+    this.difficulty.set(coerceDifficulty(value));
+  }
+
   private resetToBlank(): void {
-    this.editingId = undefined;
+    this.editingId.set(undefined);
     this.subject.set('math');
     this.grade.set(1);
-    this.type.set('single-choice');
-    this.prompt.set('');
-    this.explanation.set('');
     this.tags.set('');
     this.difficulty.set(2);
     this.points.set(10);
     this.categoryId.set(undefined);
     this.shuffleChoices.set(true);
-    this.choices.set([
-      { id: crypto.randomUUID(), text: '' },
-      { id: crypto.randomUUID(), text: '' },
-    ]);
-    this.correctChoiceIds.set([]);
-    this.acceptedAnswer.set('');
-    this.acceptedValue.set(undefined);
+    this.drafts.set([blankDraft()]);
+    this.mode.set('single');
+    this.passageTitle.set('');
+    this.passageText.set('');
+    this.passageImageUrl.set('');
     this.errors.set([]);
   }
 
+  /** A passage needs at least 2 sub-questions (and no match-pairs, which children can't play yet). */
+  setMode(mode: 'single' | 'passage'): void {
+    this.mode.set(mode);
+    if (mode !== 'passage') return;
+    this.drafts.update((list) => {
+      const fixed = list.map((d) => (d.type === 'match-pairs' ? { ...d, type: 'single-choice' as QuizItemType } : d));
+      return fixed.length >= 2 ? fixed : [...fixed, blankDraft(fixed[fixed.length - 1]?.type)];
+    });
+  }
+
   private async loadItem(id: string | undefined): Promise<void> {
-    if (!id) {
-      this.resetToBlank();
-      return;
-    }
-    const existing = await this.quizItems.getById(id);
+    const existing = id ? await this.quizItems.getById(id) : undefined;
     if (!existing) {
       this.resetToBlank();
       return;
     }
-    this.editingId = existing.id;
+    this.editingId.set(existing.id);
     this.subject.set(existing.subject);
     this.grade.set(existing.grade);
-    this.type.set(existing.type);
-    this.prompt.set(existing.prompt);
-    this.explanation.set(existing.explanation ?? '');
     this.tags.set(existing.tags.join(', '));
     this.difficulty.set(existing.difficulty ?? 2); // legacy items predating the difficulty field default to Trung bình
     this.points.set(existing.points);
     this.categoryId.set(existing.categoryId);
     this.shuffleChoices.set(existing.shuffleChoices);
-    this.choices.set(
-      existing.choices ?? [
-        { id: crypto.randomUUID(), text: '' },
-        { id: crypto.randomUUID(), text: '' },
-      ],
-    );
-    this.correctChoiceIds.set(existing.answerRule.kind === 'choice' ? existing.answerRule.correctChoiceIds : []);
-    this.acceptedAnswer.set(existing.answerRule.kind === 'text' ? existing.answerRule.acceptedAnswer : '');
-    this.acceptedValue.set(existing.answerRule.kind === 'number' ? existing.answerRule.acceptedValue : undefined);
+    const rule = existing.answerRule;
+    this.drafts.set([
+      {
+        key: existing.id,
+        type: existing.type,
+        prompt: existing.prompt,
+        imageUrl: existing.media?.imageRef ?? '',
+        explanation: existing.explanation ?? '',
+        choices: existing.choices ?? blankChoices(existing.type),
+        correctChoiceIds: rule.kind === 'choice' ? rule.correctChoiceIds : [],
+        acceptedAnswer: rule.kind === 'text' ? rule.acceptedAnswer : '',
+        acceptedValue: rule.kind === 'number' ? rule.acceptedValue : undefined,
+      },
+    ]);
     this.errors.set([]);
   }
 
-  addChoice(): void {
-    this.choices.update((c) => [...c, { id: crypto.randomUUID(), text: '' }]);
+  // --- Draft list editing ---------------------------------------------------
+
+  private patch(index: number, change: Partial<QuestionDraft>): void {
+    this.drafts.update((list) => list.map((d, i) => (i === index ? { ...d, ...change } : d)));
   }
 
-  toggleCorrect(choiceId: string): void {
-    this.correctChoiceIds.update((ids) =>
-      this.type() === 'single-choice'
-        ? [choiceId]
-        : ids.includes(choiceId)
-          ? ids.filter((i) => i !== choiceId)
-          : [...ids, choiceId],
-    );
+  setField<K extends 'prompt' | 'imageUrl' | 'explanation' | 'acceptedAnswer'>(index: number, field: K, value: string): void {
+    this.patch(index, { [field]: value } as Partial<QuestionDraft>);
   }
 
-  private buildAnswerRule(): AnswerRule {
-    switch (this.type()) {
+  setAcceptedValue(index: number, value: number | null | undefined): void {
+    this.patch(index, { acceptedValue: value ?? undefined });
+  }
+
+  setType(index: number, type: QuizItemType): void {
+    const draft = this.drafts()[index];
+    // True/false gets its two fixed choices; switching away from it (or into
+    // single-choice) clears answers that no longer make sense.
+    const resetChoices = type === 'true-false' || draft.type === 'true-false';
+    this.patch(index, {
+      type,
+      choices: resetChoices ? blankChoices(type) : draft.choices,
+      correctChoiceIds: resetChoices ? [] : type === 'single-choice' ? draft.correctChoiceIds.slice(0, 1) : draft.correctChoiceIds,
+    });
+  }
+
+  setChoiceText(index: number, choiceId: string, text: string): void {
+    const draft = this.drafts()[index];
+    this.patch(index, { choices: draft.choices.map((c) => (c.id === choiceId ? { ...c, text } : c)) });
+  }
+
+  setChoiceImage(index: number, choiceId: string, imageRef: string): void {
+    const draft = this.drafts()[index];
+    this.patch(index, {
+      choices: draft.choices.map((c) => {
+        if (c.id !== choiceId) return c;
+        const { imageRef: _old, ...rest } = c;
+        return imageRef ? { ...rest, imageRef } : rest;
+      }),
+    });
+  }
+
+  addChoice(index: number): void {
+    const draft = this.drafts()[index];
+    this.patch(index, { choices: [...draft.choices, { id: crypto.randomUUID(), text: '' }] });
+  }
+
+  removeChoice(index: number, choiceId: string): void {
+    const draft = this.drafts()[index];
+    this.patch(index, {
+      choices: draft.choices.filter((c) => c.id !== choiceId),
+      correctChoiceIds: draft.correctChoiceIds.filter((id) => id !== choiceId),
+    });
+  }
+
+  toggleCorrect(index: number, choiceId: string): void {
+    const draft = this.drafts()[index];
+    const ids = draft.correctChoiceIds;
+    this.patch(index, {
+      correctChoiceIds:
+        draft.type === 'multiple-choice'
+          ? ids.includes(choiceId)
+            ? ids.filter((i) => i !== choiceId)
+            : [...ids, choiceId]
+          : [choiceId],
+    });
+  }
+
+  /** A new draft keeps the previous question's type — batches are usually all one kind. */
+  addQuestion(): void {
+    const last = this.drafts()[this.drafts().length - 1];
+    this.drafts.update((list) => [...list, blankDraft(last?.type)]);
+  }
+
+  removeQuestion(index: number): void {
+    if (this.drafts().length <= this.minQuestions()) return;
+    this.drafts.update((list) => list.filter((_, i) => i !== index));
+  }
+
+  minQuestions(): number {
+    return this.mode() === 'passage' ? 2 : 1;
+  }
+
+  usesChoices(type: QuizItemType): boolean {
+    return CHOICE_TYPES.includes(type);
+  }
+
+  // --- Saving ---------------------------------------------------------------
+
+  private buildAnswerRule(draft: QuestionDraft): AnswerRule {
+    switch (draft.type) {
       case 'single-choice':
       case 'multiple-choice':
       case 'true-false':
-        return { kind: 'choice', correctChoiceIds: this.correctChoiceIds() };
+        return { kind: 'choice', correctChoiceIds: draft.correctChoiceIds };
       case 'short-text':
-        return { kind: 'text', acceptedAnswer: this.acceptedAnswer(), caseSensitive: false, punctuationSensitive: false };
+        return { kind: 'text', acceptedAnswer: draft.acceptedAnswer, caseSensitive: false, punctuationSensitive: false };
       case 'number':
-        return { kind: 'number', acceptedValue: this.acceptedValue() };
+        return { kind: 'number', acceptedValue: draft.acceptedValue };
       case 'match-pairs':
         return { kind: 'pairs', pairs: [] };
       default:
@@ -168,58 +293,96 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
       this.errors.set(['Vui lòng chọn danh mục.']);
       return;
     }
-    const usesChoices = ['single-choice', 'multiple-choice', 'true-false', 'match-pairs'].includes(this.type());
-    const rule = this.buildAnswerRule();
-    const result = this.validation.validate(this.type(), usesChoices ? this.choices() : undefined, rule);
-    if (!result.valid) {
-      this.errors.set(result.errors);
+    const drafts = this.drafts();
+    const many = drafts.length > 1;
+    const asPassage = this.mode() === 'passage' && !this.editingId();
+    const errors: string[] = [];
+    if (asPassage) {
+      if (!this.passageTitle().trim()) errors.push('Vui lòng nhập tiêu đề đoạn văn/bài toán.');
+      if (!this.passageText().trim()) errors.push('Vui lòng nhập nội dung đoạn văn/bài toán.');
+      if (drafts.length < 2) errors.push('Cần ít nhất 2 câu hỏi cho một đoạn văn/bài toán.');
+    }
+    for (const [i, draft] of drafts.entries()) {
+      const label = many ? `Câu ${i + 1}: ` : '';
+      if (!draft.prompt.trim()) errors.push(`${label}Chưa nhập nội dung câu hỏi.`);
+      const result = this.validation.validate(
+        draft.type,
+        this.usesChoices(draft.type) ? draft.choices : undefined,
+        this.buildAnswerRule(draft),
+      );
+      errors.push(...result.errors.map((e) => label + e));
+    }
+    if (errors.length) {
+      this.errors.set(errors);
       return;
     }
     this.errors.set([]);
 
-    const tagsArray = this.tags()
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean);
+    const shared = {
+      subject: this.subject(),
+      grade: this.grade(),
+      tags: this.tags()
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean),
+      difficulty: this.difficulty(),
+      points: this.points(),
+      categoryId: this.categoryId()!,
+      shuffleChoices: this.shuffleChoices(),
+    };
+    const perQuestion = (draft: QuestionDraft) => ({
+      type: draft.type,
+      prompt: draft.prompt,
+      explanation: draft.explanation || undefined,
+      choices: this.usesChoices(draft.type) ? draft.choices : undefined,
+      answerRule: this.buildAnswerRule(draft),
+    });
 
     let saved: QuizItem;
-    if (this.editingId) {
-      await this.quizItems.update(this.editingId, {
-        subject: this.subject(),
-        grade: this.grade(),
-        type: this.type(),
-        prompt: this.prompt(),
-        explanation: this.explanation() || undefined,
-        tags: tagsArray,
-        difficulty: this.difficulty(),
-        points: this.points(),
-        categoryId: this.categoryId(),
-        shuffleChoices: this.shuffleChoices(),
-        choices: usesChoices ? this.choices() : undefined,
-        answerRule: rule,
+    const editingId = this.editingId();
+    if (editingId) {
+      const current = await this.quizItems.getById(editingId);
+      await this.quizItems.update(editingId, {
+        ...shared,
+        ...perQuestion(drafts[0]),
+        media: withImageRef(current?.media, drafts[0].imageUrl),
       });
-      saved = (await this.quizItems.getById(this.editingId))!;
+      saved = (await this.quizItems.getById(editingId))!;
     } else {
-      const item: QuizItem = {
-        ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
-        subject: this.subject(),
-        grade: this.grade(),
-        type: this.type(),
-        prompt: this.prompt(),
-        explanation: this.explanation() || undefined,
-        tags: tagsArray,
-        difficulty: this.difficulty(),
-        points: this.points(),
-        categoryId: this.categoryId()!,
-        shuffleChoices: this.shuffleChoices(),
-        choices: usesChoices ? this.choices() : undefined,
-        answerRule: rule,
-        reviewStatus: 'approved',
-        status: 'active',
-      };
-      await this.quizItems.create(item);
-      saved = item;
-      this.editingId = item.id;
+      const created: QuizItem[] = [];
+      const passageId = crypto.randomUUID();
+      for (const [index, draft] of drafts.entries()) {
+        const passage: PassageContext | undefined = asPassage
+          ? {
+              passageId,
+              title: this.passageTitle().trim(),
+              text: this.passageText().trim(),
+              imageUrl: this.passageImageUrl().trim() || undefined,
+              order: index + 1,
+              total: drafts.length,
+            }
+          : undefined;
+        const item: QuizItem = {
+          ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
+          ...shared,
+          ...perQuestion(draft),
+          media: withImageRef(undefined, draft.imageUrl),
+          ...(passage ? { passage } : {}),
+          reviewStatus: 'approved',
+          status: 'active',
+        };
+        await this.quizItems.create(item);
+        created.push(item);
+      }
+      saved = created[created.length - 1];
+      if (asPassage) {
+        this.resetToBlank();
+      } else if (created.length === 1) {
+        this.editingId.set(saved.id);
+      } else {
+        // Keep the shared settings so the parent can go straight on to the next batch.
+        this.drafts.set([blankDraft(drafts[drafts.length - 1].type)]);
+      }
     }
 
     if (this.embedded) {

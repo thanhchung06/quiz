@@ -3,16 +3,27 @@ import { db } from '../../../../data/db';
 import { QuizItemRepository } from '../../../../data/repositories/quiz-item.repository';
 import { CategoryRepository, normalizeName } from '../../../../data/repositories/category.repository';
 import { PackageValidatorService, CategoryResolution } from './package-validator.service';
-import { QuizPackage, QuizPackageItem } from '../quiz-package.model';
-import { AnswerRule, Choice, PassageContext, QuizItem, Subject } from '../../../../shared/models/domain.model';
+import { QuizPackage, QuizPackageItem, choicesFromPackage } from '../quiz-package.model';
+import { AnswerRule, PassageContext, QuizItem, Subject } from '../../../../shared/models/domain.model';
 import { newSyncEnvelope } from '../../../../shared/models/sync.model';
 import { currentDeviceId } from '../../../../data/repositories/base-repository';
+import { withImageRef } from '../../../../shared/quiz-image/quiz-image.component';
 
 export interface CommitOptions {
   /** Quiz indexes to skip entirely (e.g., duplicates the parent chose to skip). */
   skipIndexes: Set<number>;
   /** index -> categoryId override chosen by the parent in the preview UI. */
   categoryMapping: Map<number, string>;
+  /**
+   * Quiz index -> existing QuizItem id to overwrite with the file's content
+   * instead of adding a new item (the parent chose "update" for likely
+   * duplicates, e.g. after editing an exported Excel sheet). The existing
+   * id is kept, so exercises that reference it keep working; past attempts
+   * are unaffected since they play from their own snapshots (FR-020).
+   */
+  replaceIndexes?: Map<number, string>;
+  /** Passage index -> existing passageId to overwrite (see `replaceIndexes`); matched by its questions' externalIds. */
+  replacePassages?: Map<number, string>;
   /** Passage indexes (into pkg.passages) to skip entirely. */
   skipPassageIndexes?: Set<number>;
   /** passage index -> categoryId override chosen by the parent in the preview UI. */
@@ -21,7 +32,10 @@ export interface CommitOptions {
 
 export interface CommitResult {
   importBatchId: string;
+  /** Newly created items only — the ones undoBatch can remove. */
   savedIds: string[];
+  /** Existing items overwritten via `replaceIndexes`. */
+  updatedIds: string[];
 }
 
 function toAnswerRule(item: QuizPackageItem): AnswerRule {
@@ -54,6 +68,7 @@ export class ImportCommitService {
     const importBatchId = crypto.randomUUID();
     const deviceId = currentDeviceId();
     const savedIds: string[] = [];
+    const updatedIds: string[] = [];
     const validation = await this.validator.validate(pkg);
     const normalized = validation.normalizedPackage;
     // Many items in one batch commonly propose the *same* new category (e.g.
@@ -64,43 +79,19 @@ export class ImportCommitService {
     // createCategory again and hit its (correct) duplicate-name rejection,
     // throwing and aborting the rest of the commit loop.
     const createdThisCommit = new Map<string, string>();
-    const reviewStatus = 'approved';
 
     for (const index of validIndexes) {
       if (options.skipIndexes.has(index)) continue;
       const item = normalized.quizzes[index];
-      // validIndexes already excludes any item that failed validateItem
-      // (including a missing subject/grade), so both are guaranteed present here.
-      const subject = item.subject as Subject;
-      const grade = item.grade as number;
-
       const categoryId =
         options.categoryMapping.get(index) ??
-        (await this.resolveCategoryId(validation.categoryResolutions.get(index), subject, createdThisCommit));
+        (await this.resolveCategoryId(validation.categoryResolutions.get(index), item.subject as Subject, createdThisCommit));
       if (!categoryId) continue;
 
-      const choices: Choice[] | undefined = item.choices;
-      const quizItem: QuizItem = {
-        ...newSyncEnvelope(crypto.randomUUID(), deviceId),
-        externalId: item.externalId,
-        subject,
-        grade,
-        type: item.type,
-        prompt: item.prompt,
-        choices,
-        answerRule: toAnswerRule(item),
-        explanation: item.explanation,
-        tags: item.tags ?? [],
-        difficulty: item.difficulty ?? 2,
-        points: item.points ?? 10,
-        categoryId,
-        shuffleChoices: item.shuffleChoices ?? true,
-        reviewStatus,
-        status: 'active',
-        importBatchId,
-      };
-      await this.quizItems.create(quizItem);
-      savedIds.push(quizItem.id);
+      const replaceId = options.replaceIndexes?.get(index);
+      const existing = replaceId ? await this.quizItems.getById(replaceId) : undefined;
+      const id = await this.upsertItem(item, categoryId, existing, { importBatchId, deviceId });
+      (existing ? updatedIds : savedIds).push(id);
     }
 
     for (const [index, passage] of (normalized.passages ?? []).entries()) {
@@ -113,45 +104,92 @@ export class ImportCommitService {
         (await this.resolveCategoryId(validation.passageCategoryResolutions.get(index), passage.subject, createdThisCommit));
       if (!categoryId) continue;
 
-      const passageId = crypto.randomUUID();
+      // Replacing an existing passage keeps its passageId: questions whose
+      // externalId matches one of its current sub-questions are updated in
+      // place, new ones are added, and sub-questions no longer in the file
+      // are removed — so the group stays one passage instead of duplicating.
+      const replacePassageId = options.replacePassages?.get(index);
+      const siblings = replacePassageId ? await this.quizItems.byPassage(replacePassageId) : [];
+      const unmatched = new Map(siblings.map((s) => [s.id, s]));
+      const passageId = replacePassageId ?? crypto.randomUUID();
       const total = passage.questions.length;
 
       for (const [qIndex, q] of passage.questions.entries()) {
-        // result.errors.length === 0 means every question passed validateItem
-        // (including its subject/grade), so both are guaranteed present here.
         const passageContext: PassageContext = {
           passageId,
           title: passage.title,
           text: passage.text,
+          imageUrl: passage.imageUrl?.trim() || undefined,
           order: qIndex + 1,
           total,
         };
-        const quizItem: QuizItem = {
-          ...newSyncEnvelope(crypto.randomUUID(), deviceId),
-          externalId: q.externalId,
-          subject: q.subject as Subject,
-          grade: q.grade as number,
-          type: q.type,
-          prompt: q.prompt,
-          choices: q.choices,
-          answerRule: toAnswerRule(q),
-          explanation: q.explanation,
-          tags: q.tags ?? [],
-          difficulty: q.difficulty ?? 2,
-          points: q.points ?? 10,
-          categoryId,
-          shuffleChoices: q.shuffleChoices ?? true,
-          reviewStatus,
-          status: 'active',
-          importBatchId,
-          passage: passageContext,
-        };
-        await this.quizItems.create(quizItem);
-        savedIds.push(quizItem.id);
+        const existing = q.externalId
+          ? [...unmatched.values()].find((s) => s.id === q.externalId || s.externalId === q.externalId)
+          : undefined;
+        if (existing) unmatched.delete(existing.id);
+        const id = await this.upsertItem(q, categoryId, existing, { importBatchId, deviceId, passage: passageContext });
+        (existing ? updatedIds : savedIds).push(id);
+      }
+      for (const leftover of unmatched.values()) {
+        await this.quizItems.softDelete(leftover.id);
       }
     }
 
-    return { importBatchId, savedIds };
+    return { importBatchId, savedIds, updatedIds };
+  }
+
+  /**
+   * Creates a new QuizItem from a (normalized, validated) package item, or
+   * overwrites `existing` in place — keeping its id, status and any other
+   * media — when the parent chose to update duplicates. Only created items
+   * get the importBatchId, since undo can only remove what this import added.
+   */
+  private async upsertItem(
+    item: QuizPackageItem,
+    categoryId: string,
+    existing: QuizItem | undefined,
+    context: { importBatchId: string; deviceId: string; passage?: PassageContext },
+  ): Promise<string> {
+    // Validation already rejected any item missing subject/grade (standalone or, after normalization, passage-nested).
+    const content = {
+      subject: item.subject as Subject,
+      grade: item.grade as number,
+      type: item.type,
+      prompt: item.prompt,
+      choices: choicesFromPackage(item.choices),
+      answerRule: toAnswerRule(item),
+      explanation: item.explanation,
+      tags: item.tags ?? [],
+      categoryId,
+      ...(context.passage ? { passage: context.passage } : {}),
+    };
+
+    if (existing) {
+      await this.quizItems.update(existing.id, {
+        ...content,
+        externalId: item.externalId ?? existing.externalId,
+        media: withImageRef(existing.media, item.imageUrl),
+        difficulty: item.difficulty ?? existing.difficulty ?? 2,
+        points: item.points ?? existing.points,
+        shuffleChoices: item.shuffleChoices ?? existing.shuffleChoices,
+      });
+      return existing.id;
+    }
+
+    const quizItem: QuizItem = {
+      ...newSyncEnvelope(crypto.randomUUID(), context.deviceId),
+      ...content,
+      externalId: item.externalId,
+      media: withImageRef(undefined, item.imageUrl),
+      difficulty: item.difficulty ?? 2,
+      points: item.points ?? 10,
+      shuffleChoices: item.shuffleChoices ?? true,
+      reviewStatus: 'approved',
+      status: 'active',
+      importBatchId: context.importBatchId,
+    };
+    await this.quizItems.create(quizItem);
+    return quizItem.id;
   }
 
   private async resolveCategoryId(

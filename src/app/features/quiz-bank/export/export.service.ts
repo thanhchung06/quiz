@@ -1,8 +1,17 @@
 import { Injectable } from '@angular/core';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
-import { QuizPackage, QuizPackageItem, QuizPackagePassage } from '../import/quiz-package.model';
+import { QuizPackage, QuizPackageItem, QuizPackagePassage, choicesToPackage } from '../import/quiz-package.model';
 import { QuizItem } from '../../../shared/models/domain.model';
+import { quizPackageToXlsx, XLSX_MIME } from '../excel/quiz-excel';
+
+export type QuizExportFormat = 'json' | 'xlsx';
+
+export interface QuizExportFile {
+  data: BlobPart;
+  mimeType: string;
+  extension: QuizExportFormat;
+}
 
 /**
  * Export selected quiz items to the same versioned JSON format for backup,
@@ -18,6 +27,19 @@ export class QuizExportService {
     private readonly quizItems: QuizItemRepository,
     private readonly categories: CategoryRepository,
   ) {}
+
+  /**
+   * Quiz items only (no profiles/attempts/settings — that's the full backup
+   * in features/backup) as a re-importable file: the JSON package, or the
+   * human-editable Excel workbook described in excel/quiz-excel.ts.
+   */
+  async exportFile(itemIds: string[], format: QuizExportFormat): Promise<QuizExportFile> {
+    const pkg = await this.exportItems(itemIds);
+    if (format === 'xlsx') {
+      return { data: await quizPackageToXlsx(pkg), mimeType: XLSX_MIME, extension: 'xlsx' };
+    }
+    return { data: JSON.stringify(pkg, null, 2), mimeType: 'application/json', extension: 'json' };
+  }
 
   async exportItems(itemIds: string[]): Promise<QuizPackage> {
     const standalone: QuizItem[] = [];
@@ -56,6 +78,7 @@ export class QuizExportService {
         category: category ? { externalKey: category.id, name: category.name, subject: category.subject as 'math' | 'language' } : undefined,
         title: first.passage!.title,
         text: first.passage!.text,
+        imageUrl: first.passage!.imageUrl,
         questions,
       });
     }
@@ -93,7 +116,8 @@ export class QuizExportService {
       difficulty: item.difficulty,
       type: item.type,
       prompt: item.prompt,
-      choices: item.choices,
+      imageUrl: item.media?.imageRef,
+      choices: choicesToPackage(item.choices),
       correctAnswerIds,
       acceptedAnswer,
       acceptedRange,

@@ -152,6 +152,19 @@ header {
     transform: scale(0.98);
   }
 
+  .choice-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .choice-image {
+    --quiz-image-max-height: 8rem;
+    text-align: left;
+  }
+
   .choice-letter {
     display: flex;
     align-items: center;

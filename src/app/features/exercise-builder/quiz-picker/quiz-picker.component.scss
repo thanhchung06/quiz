@@ -359,6 +359,15 @@ header {
     }
   }
 
+  .not-enough {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    margin: 0;
+    font-size: 0.82rem;
+    color: #8a5a00;
+  }
+
   .bulk-message {
     margin: 0;
     font-size: 0.85rem;
@@ -489,5 +498,100 @@ header {
     border-left: none;
     border-top: 1px solid #dfe3ec;
     max-height: 12rem;
+  }
+}
+
+.type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #dfe3ec;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+
+  legend {
+    padding: 0 0.25rem;
+    color: #6b7690;
+    font-size: 0.78rem;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+  }
+}
+
+.detail-choice-image {
+  --quiz-image-max-height: 5rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.add-all {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #dfe3ec;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+  }
+
+  .add-all-btn {
+    background: #1e8e5a;
+  }
+}
+
+.passage-row .passage-count {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.detail-panel {
+  .passage-text,
+  .passage-image,
+  .passage-questions {
+    flex-shrink: 0;
+  }
+
+  .passage-text {
+    margin: 0;
+    padding: 0.6rem 0.75rem;
+    max-height: 12rem;
+    overflow-y: auto;
+    white-space: pre-line;
+    background: #f7f9ff;
+    border-left: 3px solid #2f6fed;
+    border-radius: 0.4rem;
+  }
+
+  .passage-image {
+    --quiz-image-max-height: 10rem;
+  }
+
+  .passage-questions {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    .detail-meta {
+      display: block;
+    }
+
+    li.added {
+      color: #1e8e5a;
+    }
   }
 }

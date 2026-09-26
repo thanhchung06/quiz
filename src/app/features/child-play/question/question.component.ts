@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AttemptLifecycleService } from '../services/attempt-lifecycle.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { vi } from '../../../shared/i18n/vi';
+import { parseNumberAnswer } from '../services/answer-evaluator';
+import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
 
 const CHOICE_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
@@ -19,7 +21,7 @@ const CHOICE_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 @Component({
   selector: 'app-question',
   standalone: true,
-  imports: [FormsModule, IconComponent],
+  imports: [FormsModule, IconComponent, QuizImageComponent],
   templateUrl: './question.component.html',
   styleUrl: './question.component.scss',
 })
@@ -43,7 +45,7 @@ export class QuestionComponent {
     if (item.type === 'single-choice' || item.type === 'true-false') return this.choiceAnswer().length === 1;
     if (item.type === 'multiple-choice') return this.choiceAnswer().length > 0;
     if (item.type === 'short-text') return this.textAnswer().trim().length > 0;
-    if (item.type === 'number') return this.numberAnswer().trim().length > 0;
+    if (item.type === 'number') return !Number.isNaN(parseNumberAnswer(this.numberAnswer()));
     return false;
   });
 
@@ -180,7 +182,7 @@ export class QuestionComponent {
 
     let value: unknown;
     if (item.type === 'short-text') value = this.textAnswer();
-    else if (item.type === 'number') value = Number(this.numberAnswer());
+    else if (item.type === 'number') value = parseNumberAnswer(this.numberAnswer());
     else value = this.choiceAnswer();
 
     const result = await this.lifecycle.submitAnswer(value);

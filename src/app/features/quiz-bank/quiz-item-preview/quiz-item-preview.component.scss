@@ -42,3 +42,9 @@
 .incorrect {
   color: #b3261e;
 }
+
+.choice-image {
+  --quiz-image-max-height: 5rem;
+  display: inline-block;
+  vertical-align: middle;
+}

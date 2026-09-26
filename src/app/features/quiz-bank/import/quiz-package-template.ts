@@ -15,6 +15,12 @@ import { QuizPackage, QuizPackagePassage } from './quiz-package.model';
  * in correctAnswerIds), so the literal ids "true"/"false" below are just a
  * clear, stable convention for AI-authored packages — not a hard grading
  * requirement.
+ *
+ * The standalone quizzes give one short example per question type (number
+ * twice: an exact answer and an accepted range), plus `imageUrl` examples —
+ * a bare file name and a path under public/assets/images, and an internet
+ * https:// link. Every category name comes from CATEGORY_SUGGESTIONS, which
+ * the downloaded templates also list as suggestions.
  */
 const PASSAGE_EXAMPLE: QuizPackagePassage = {
   subject: 'language',
@@ -72,17 +78,26 @@ const PASSAGE_EXAMPLE: QuizPackagePassage = {
   ],
 };
 
+/**
+ * A public-domain photo (Wikimedia Commons) for the internet-image example.
+ * Internet images need a connection to show; files in public/assets/images
+ * are cached for offline use.
+ */
+const INTERNET_IMAGE_EXAMPLE = 'https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg';
+
 export const QUIZ_PACKAGE_TEMPLATE: QuizPackage = {
   formatVersion: '1.1',
   packageTitle: 'Mẫu gói câu hỏi',
   language: 'vi',
   passages: [PASSAGE_EXAMPLE],
   quizzes: [
+    // --- Chọn một (single-choice): exactly one correct choice id ---
     {
+      externalId: 'mau-chon-mot',
       subject: 'math',
-      grade: 2,
-      category: { name: 'Phép cộng', subject: 'math' },
-      tags: ['cong', 'trong-pham-vi-20'],
+      grade: 1,
+      category: { name: 'Phép cộng, trừ', subject: 'math' },
+      tags: ['cộng', 'trong phạm vi 10'],
       difficulty: 1,
       type: 'single-choice',
       prompt: '5 + 3 = ?',
@@ -96,30 +111,35 @@ export const QUIZ_PACKAGE_TEMPLATE: QuizPackage = {
       explanation: '5 + 3 = 8.',
       points: 10,
     },
+    // --- Chọn nhiều (multiple-choice): one or more correct choice ids ---
     {
-      subject: 'math',
-      grade: 2,
-      category: { name: 'Số chẵn lẻ', subject: 'math' },
+      externalId: 'mau-chon-nhieu',
+      subject: 'language',
+      grade: 4,
+      category: { name: 'Danh từ, động từ, tính từ', subject: 'language' },
       difficulty: 2,
       type: 'multiple-choice',
-      prompt: 'Chọn tất cả các số chẵn.',
+      prompt: 'Chọn tất cả các danh từ trong nhóm từ sau.',
       choices: [
-        { id: 'a', text: '2' },
-        { id: 'b', text: '3' },
-        { id: 'c', text: '4' },
-        { id: 'd', text: '5' },
+        { id: 'a', text: 'quyển sách' },
+        { id: 'b', text: 'chạy' },
+        { id: 'c', text: 'con mèo' },
+        { id: 'd', text: 'xinh đẹp' },
       ],
       correctAnswerIds: ['a', 'c'],
       shuffleChoices: true,
+      explanation: '"Quyển sách" và "con mèo" chỉ sự vật nên là danh từ; "chạy" là động từ, "xinh đẹp" là tính từ.',
       points: 10,
     },
+    // --- Đúng/Sai (true-false): choices are always "true"/"false" ---
     {
+      externalId: 'mau-dung-sai',
       subject: 'math',
-      grade: 1,
-      category: { name: 'So sánh số', subject: 'math' },
+      grade: 3,
+      category: { name: 'Nhận biết hình', subject: 'math' },
       difficulty: 1,
       type: 'true-false',
-      prompt: '10 lớn hơn 7. Đúng hay Sai?',
+      prompt: 'Hình vuông có 4 cạnh bằng nhau. Đúng hay Sai?',
       choices: [
         { id: 'true', text: 'Đúng' },
         { id: 'false', text: 'Sai' },
@@ -127,25 +147,122 @@ export const QUIZ_PACKAGE_TEMPLATE: QuizPackage = {
       correctAnswerIds: ['true'],
       points: 10,
     },
+    // --- Điền từ (short-text): the child types a word; case/punctuation are ignored ---
     {
+      externalId: 'mau-dien-tu',
       subject: 'language',
       grade: 3,
-      category: { name: 'Từ vựng', subject: 'language' },
+      category: { name: 'Từ đồng nghĩa, trái nghĩa', subject: 'language' },
       difficulty: 2,
       type: 'short-text',
-      prompt: 'Trái nghĩa của "cao" là gì?',
+      prompt: 'Từ trái nghĩa với "cao" là gì?',
       acceptedAnswer: 'thấp',
       explanation: '"Cao" và "thấp" là hai từ trái nghĩa.',
       points: 10,
     },
     {
+      externalId: 'mau-chinh-ta',
+      subject: 'language',
+      grade: 2,
+      category: { name: 'Chính tả', subject: 'language' },
+      difficulty: 2,
+      type: 'short-text',
+      prompt: 'Điền "ch" hay "tr" vào chỗ trống: ...ăng sáng',
+      acceptedAnswer: 'tr',
+      explanation: 'Viết đúng là "trăng sáng".',
+      points: 10,
+    },
+    // --- Số (number): one exact value in acceptedAnswer ---
+    {
+      externalId: 'mau-so',
       subject: 'math',
       grade: 2,
-      category: { name: 'Phép nhân', subject: 'math' },
+      category: { name: 'Bảng nhân, bảng chia', subject: 'math' },
+      difficulty: 1,
+      type: 'number',
+      prompt: '4 × 3 = ?',
+      acceptedAnswer: '12',
+      points: 10,
+    },
+    // --- Số (number) with acceptedRange: any value from min to max is correct ---
+    {
+      externalId: 'mau-so-khoang',
+      subject: 'math',
+      grade: 1,
+      category: { name: 'Đọc, viết, so sánh số', subject: 'math' },
       difficulty: 2,
       type: 'number',
-      prompt: '4 x 3 = ?',
-      acceptedAnswer: '12',
+      prompt: 'Viết một số lớn hơn 10 và nhỏ hơn 20.',
+      acceptedRange: { min: 11, max: 19 },
+      explanation: 'Các số từ 11 đến 19 đều đúng.',
+      points: 10,
+    },
+    // --- Hình minh họa (imageUrl): a file name in public/assets/images ---
+    {
+      externalId: 'mau-anh-trong-ung-dung',
+      subject: 'math',
+      grade: 2,
+      category: { name: 'Nhận biết hình', subject: 'math' },
+      difficulty: 3,
+      type: 'number',
+      prompt: 'Hình bên có tất cả bao nhiêu hình vuông?',
+      imageUrl: 'vi-du-hinh-vuong.svg',
+      acceptedAnswer: '5',
+      explanation: '4 hình vuông nhỏ và 1 hình vuông lớn bao quanh: 4 + 1 = 5.',
+      points: 10,
+    },
+    {
+      externalId: 'mau-anh-dong-ho',
+      subject: 'math',
+      grade: 1,
+      category: { name: 'Xem đồng hồ, thời gian', subject: 'math' },
+      difficulty: 1,
+      type: 'single-choice',
+      prompt: 'Đồng hồ chỉ mấy giờ?',
+      imageUrl: 'assets/images/vi-du-dong-ho.svg',
+      choices: [
+        { id: 'a', text: '3 giờ' },
+        { id: 'b', text: '12 giờ' },
+        { id: 'c', text: '9 giờ' },
+      ],
+      correctAnswerIds: ['a'],
+      explanation: 'Kim ngắn chỉ số 3, kim dài chỉ số 12: 3 giờ.',
+      points: 10,
+    },
+    // --- Hình cho từng lựa chọn (choices[].imageUrl): options that are pictures ---
+    {
+      externalId: 'mau-anh-lua-chon',
+      subject: 'math',
+      grade: 1,
+      category: { name: 'Nhận biết hình', subject: 'math' },
+      difficulty: 1,
+      type: 'single-choice',
+      prompt: 'Hình nào là hình tam giác?',
+      choices: [
+        { id: 'a', text: '', imageUrl: 'vi-du-hinh-tron.svg' },
+        { id: 'b', text: '', imageUrl: 'vi-du-hinh-tam-giac.svg' },
+        { id: 'c', text: 'Hình chữ nhật', imageUrl: 'vi-du-hinh-chu-nhat.svg' },
+      ],
+      correctAnswerIds: ['b'],
+      explanation: 'Hình tam giác có 3 cạnh và 3 góc.',
+      points: 10,
+    },
+    // --- Hình minh họa (imageUrl): a picture from the internet (https://…) ---
+    {
+      externalId: 'mau-anh-internet',
+      subject: 'language',
+      grade: 1,
+      category: { name: 'Mở rộng vốn từ', subject: 'language' },
+      difficulty: 1,
+      type: 'single-choice',
+      prompt: 'Quả trong hình là quả gì?',
+      imageUrl: INTERNET_IMAGE_EXAMPLE,
+      choices: [
+        { id: 'a', text: 'Quả táo' },
+        { id: 'b', text: 'Quả cam' },
+        { id: 'c', text: 'Quả chuối' },
+      ],
+      correctAnswerIds: ['a'],
       points: 10,
     },
   ],

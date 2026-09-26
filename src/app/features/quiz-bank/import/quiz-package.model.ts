@@ -1,5 +1,21 @@
 import { Choice, QuizDifficulty, QuizItemType, Subject } from '../../../shared/models/domain.model';
 
+/** An answer option in a package file; `imageUrl` (optional) takes the same forms as the question's `imageUrl`. */
+export interface QuizPackageChoice {
+  id: string;
+  text: string;
+  imageUrl?: string;
+}
+
+/** Package choices ↔ stored choices (the file says `imageUrl`, like the question; the app stores `imageRef`). */
+export function choicesFromPackage(choices: QuizPackageChoice[] | undefined): Choice[] | undefined {
+  return choices?.map((c) => (c.imageUrl?.trim() ? { id: c.id, text: c.text, imageRef: c.imageUrl.trim() } : { id: c.id, text: c.text }));
+}
+
+export function choicesToPackage(choices: Choice[] | undefined): QuizPackageChoice[] | undefined {
+  return choices?.map((c) => (c.imageRef ? { id: c.id, text: c.text, imageUrl: c.imageRef } : { id: c.id, text: c.text }));
+}
+
 export interface QuizPackageCategoryRef {
   externalKey?: string;
   name: string;
@@ -23,7 +39,9 @@ export interface QuizPackageItem {
   difficulty?: QuizDifficulty;
   type: QuizItemType;
   prompt: string;
-  choices?: Choice[];
+  /** Optional illustration shown with the prompt — an absolute http(s) URL, or a path/filename under the app's `assets/images/` folder (see shared/quiz-image). */
+  imageUrl?: string;
+  choices?: QuizPackageChoice[];
   correctAnswerIds?: string[];
   acceptedAnswer?: string;
   acceptedRange?: { min: number; max: number };
@@ -45,6 +63,8 @@ export interface QuizPackagePassage {
   category?: QuizPackageCategoryRef;
   title: string;
   text: string;
+  /** Optional illustration shown with the passage text — same URL rules as QuizPackageItem.imageUrl. */
+  imageUrl?: string;
   questions: QuizPackageItem[];
 }
 
@@ -54,6 +74,8 @@ export interface QuizPackage {
   language?: string;
   quizzes: QuizPackageItem[];
   passages?: QuizPackagePassage[];
+  /** Informational only (in the downloadable template): common category names to pick from. Ignored on import. */
+  suggestedCategories?: Array<{ subject: Subject; grades: number[]; name: string; examples: string }>;
 }
 
 export const SUPPORTED_FORMAT_VERSIONS = ['1.0', '1.1'];

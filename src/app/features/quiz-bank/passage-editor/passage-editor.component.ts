@@ -4,7 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { QuizValidationService } from '../services/quiz-validation.service';
 import { CategoryPickerComponent } from '../quiz-item-form/category-picker.component';
+import { ChoiceImageFieldComponent } from '../quiz-item-form/choice-image-field.component';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { QuizImageComponent, withImageRef } from '../../../shared/quiz-image/quiz-image.component';
 import { AnswerRule, Choice, PassageContext, QuizDifficulty, QuizItem, QuizItemType, Subject } from '../../../shared/models/domain.model';
 import { newSyncEnvelope } from '../../../shared/models/sync.model';
 import { currentDeviceId } from '../../../data/repositories/base-repository';
@@ -17,6 +19,9 @@ export interface SubQuestionRow {
   existingItemId?: string; // set once this row is backed by a saved QuizItem
   type: PassageQuestionType;
   prompt: string;
+  imageUrl: string;
+  /** The saved item's media, so an edit only replaces its image and keeps anything else (e.g. audioRef). */
+  media?: QuizItem['media'];
   explanation: string;
   difficulty: QuizDifficulty;
   points: number;
@@ -31,6 +36,7 @@ function blankRow(): SubQuestionRow {
     rowId: crypto.randomUUID(),
     type: 'single-choice',
     prompt: '',
+    imageUrl: '',
     explanation: '',
     difficulty: 2,
     points: 10,
@@ -56,7 +62,7 @@ function blankRow(): SubQuestionRow {
 @Component({
   selector: 'app-passage-editor',
   standalone: true,
-  imports: [FormsModule, CategoryPickerComponent, IconComponent],
+  imports: [FormsModule, CategoryPickerComponent, IconComponent, QuizImageComponent, ChoiceImageFieldComponent],
   templateUrl: './passage-editor.component.html',
   styleUrl: './passage-editor.component.scss',
 })
@@ -66,6 +72,7 @@ export class PassageEditorComponent implements OnInit {
   readonly categoryId = signal<string | undefined>(undefined);
   readonly title = signal('');
   readonly text = signal('');
+  readonly imageUrl = signal('');
   readonly rows = signal<SubQuestionRow[]>([blankRow(), blankRow()]);
   readonly errors = signal<string[]>([]);
 
@@ -92,6 +99,7 @@ export class PassageEditorComponent implements OnInit {
     this.categoryId.set(first.categoryId);
     this.title.set(first.passage!.title);
     this.text.set(first.passage!.text);
+    this.imageUrl.set(first.passage!.imageUrl ?? '');
     this.rows.set(siblings.map((item) => this.rowFromItem(item)));
   }
 
@@ -101,6 +109,8 @@ export class PassageEditorComponent implements OnInit {
       existingItemId: item.id,
       type: item.type as PassageQuestionType,
       prompt: item.prompt,
+      imageUrl: item.media?.imageRef ?? '',
+      media: item.media,
       explanation: item.explanation ?? '',
       difficulty: item.difficulty ?? 2, // legacy rows predating the difficulty field default to Trung bình
       points: item.points,
@@ -133,6 +143,11 @@ export class PassageEditorComponent implements OnInit {
     const row = this.rows().find((r) => r.rowId === rowId);
     if (row?.existingItemId) this.removedItemIds.push(row.existingItemId);
     this.rows.update((r) => r.filter((x) => x.rowId !== rowId));
+  }
+
+  setChoiceImage(choice: Choice, imageRef: string): void {
+    if (imageRef) choice.imageRef = imageRef;
+    else delete choice.imageRef;
   }
 
   addChoice(row: SubQuestionRow): void {
@@ -203,6 +218,7 @@ export class PassageEditorComponent implements OnInit {
         passageId,
         title: this.title().trim(),
         text: this.text().trim(),
+        imageUrl: this.imageUrl().trim() || undefined,
         order: index + 1,
         total,
       };
@@ -219,6 +235,7 @@ export class PassageEditorComponent implements OnInit {
         shuffleChoices: true,
         choices: this.usesChoices(row) ? row.choices : undefined,
         answerRule: rules[index],
+        media: withImageRef(row.media, row.imageUrl),
         passage,
       };
 

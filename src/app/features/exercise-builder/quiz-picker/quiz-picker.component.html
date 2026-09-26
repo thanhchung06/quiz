@@ -19,6 +19,16 @@
           />
         </div>
 
+        <fieldset class="type-filter">
+          <legend>Loại câu hỏi</legend>
+          @for (g of typeGroups; track g.key) {
+            <label>
+              <input type="checkbox" [checked]="isTypeGroupSelected(g.key)" (change)="toggleTypeGroup(g.key)" />
+              {{ g.label }}
+            </label>
+          }
+        </fieldset>
+
         <button type="button" class="tree-node tree-all" [class.active]="selectedCategoryId() === 'all'" (click)="selectCategory('all')">
           <app-icon name="folder_open" />
           Tất cả câu hỏi
@@ -47,27 +57,51 @@
             }
           </ul>
         }
+        @if (tree().length === 0) {
+          <p class="empty">Không có danh mục nào có câu hỏi lớp {{ grade }} với loại câu hỏi đã chọn.</p>
+        }
       </nav>
 
       <section class="list-panel">
         <ul class="quiz-list">
-          @for (q of filteredItems(); track q.id) {
+          @for (entry of listEntries(); track entry.key) {
             <li>
-              <button
-                type="button"
-                class="quiz-row"
-                [class.added]="isAdded(q.id)"
-                [class.selected]="selectedItem()?.id === q.id"
-                [disabled]="dailyMode"
-                [title]="dailyMode ? 'Bài tập hàng ngày chỉ thêm theo danh mục, không thêm từng câu cụ thể' : ''"
-                (click)="selectItem(q)"
-              >
-                <app-icon name="quiz" />
-                <span class="prompt">{{ q.prompt }}</span>
-                @if (isAdded(q.id)) {
-                  <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
-                }
-              </button>
+              @if (entry.kind === 'item') {
+                <button
+                  type="button"
+                  class="quiz-row"
+                  [class.added]="isEntryAdded(entry)"
+                  [class.selected]="selectedItem()?.id === entry.item.id"
+                  [disabled]="dailyMode"
+                  [title]="dailyMode ? 'Bài tập hàng ngày chỉ thêm theo danh mục, không thêm từng câu cụ thể' : ''"
+                  (click)="selectItem(entry.item)"
+                >
+                  <app-icon name="quiz" />
+                  <span class="prompt">{{ entry.item.prompt }}</span>
+                  @if (isEntryAdded(entry)) {
+                    <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
+                  }
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  class="quiz-row passage-row"
+                  [class.added]="isEntryAdded(entry)"
+                  [class.selected]="selectedItem()?.passage?.passageId === entry.key"
+                  [disabled]="dailyMode"
+                  [title]="dailyMode ? 'Bài tập hàng ngày chỉ thêm theo danh mục, không thêm từng câu cụ thể' : ''"
+                  (click)="selectItem(entry.first)"
+                >
+                  <app-icon name="auto_stories" />
+                  <span class="prompt">
+                    {{ entry.title }}
+                    <span class="passage-count">Đoạn văn · {{ entry.items.length }} câu hỏi</span>
+                  </span>
+                  @if (isEntryAdded(entry)) {
+                    <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
+                  }
+                </button>
+              }
             </li>
           }
         </ul>
@@ -87,7 +121,7 @@
                 chọn ngẫu nhiên, không trùng nhau, mỗi khi trẻ bắt đầu làm bài — có thể thêm nhiều mục cho một bài tập.
               </p>
             } @else {
-              <h3><app-icon name="shuffle" />Thêm ngẫu nhiên theo danh mục</h3>
+              <h3><app-icon name="shuffle" />Thêm ngẫu nhiên theo danh mục và loại câu hỏi</h3>
               <p class="hint">
                 Chọn một danh mục ở bên trái (hoặc để "Tất cả câu hỏi"), rồi thêm nhiều câu hỏi cùng lúc — hệ thống
                 chọn ngẫu nhiên trong số các câu phù hợp, không trùng câu đã có trong bài tập. Hoặc bấm một câu hỏi cụ
@@ -137,18 +171,56 @@
               />
             </label>
             <p class="bulk-pool-count">
-              {{ bulkPool().length }} câu phù hợp {{ dailyMode ? 'hiện có trong ngân hàng' : 'có thể thêm' }}
+              Loại: {{ allowedTypesLabel(selectedTypes()) }} ·
+              {{ randomMatchCount() }} câu phù hợp trong ngân hàng
+              @if (!dailyMode) {
+                ({{ bulkPool().length }} câu chưa có trong bài tập)
+              }
             </p>
+            @if (!hasEnoughRandomMatches()) {
+              <p class="not-enough">
+                <app-icon name="warning" />
+                Cần hơn 4 câu hỏi phù hợp với danh mục, loại câu hỏi và độ khó đã chọn mới thêm ngẫu nhiên được
+                (hiện có {{ randomMatchCount() }}).
+              </p>
+            }
             @if (dailyMode) {
-              <button type="button" class="confirm-add" [disabled]="bulkPool().length === 0" (click)="confirmAddRandomGroup()">
+              <button type="button" class="confirm-add" [disabled]="!hasEnoughRandomMatches()" (click)="confirmAddRandomGroup()">
                 <app-icon name="refresh" />
                 Thêm mục ngẫu nhiên
               </button>
             } @else {
-              <button type="button" class="confirm-add" [disabled]="bulkPool().length === 0" (click)="confirmBulkAdd()">
+              <button
+                type="button"
+                class="confirm-add"
+                [disabled]="!hasEnoughRandomMatches() || bulkPool().length === 0"
+                (click)="confirmBulkAdd()"
+              >
                 <app-icon name="shuffle" />
                 Thêm ngẫu nhiên
               </button>
+            }
+            @if (!dailyMode) {
+              <div class="add-all">
+                <h3><app-icon name="done_all" />Thêm tất cả câu hỏi trong danh mục</h3>
+                @if (selectedCategoryId() === 'all') {
+                  <p class="hint">Chọn một danh mục ở bên trái để thêm toàn bộ câu hỏi của danh mục đó.</p>
+                } @else {
+                  <p class="bulk-pool-count">
+                    {{ addAllPool().length }} câu chưa có trong bài tập, theo loại câu hỏi và độ khó đã chọn ở trên.
+                    Câu thuộc đoạn văn được thêm đủ cả đoạn.
+                  </p>
+                  <button
+                    type="button"
+                    class="confirm-add add-all-btn"
+                    [disabled]="addAllPool().length === 0"
+                    (click)="confirmAddAll()"
+                  >
+                    <app-icon name="done_all" />
+                    Thêm tất cả {{ addAllPool().length }} câu
+                  </button>
+                }
+              </div>
             }
             @if (bulkMessage()) {
               <p class="bulk-message">{{ bulkMessage() }}</p>
@@ -159,13 +231,28 @@
             <app-icon name="close" label="Bỏ chọn" />
           </button>
 
+          @if (selectedItem()!.passage; as p) {
+            <p class="detail-prompt"><app-icon name="auto_stories" /> {{ p.title }}</p>
+            <p class="detail-meta">Đoạn văn / bài toán nhiều câu hỏi · Lớp {{ selectedItem()!.grade }} · {{ selectedPassageItems().length }} câu hỏi</p>
+            <p class="passage-text">{{ p.text }}</p>
+            <app-quiz-image class="passage-image" [src]="p.imageUrl" />
+            <ol class="passage-questions">
+              @for (q of selectedPassageItems(); track q.id) {
+                <li [class.added]="isAdded(q.id)">
+                  {{ q.prompt }}
+                  <span class="detail-meta">{{ typeLabel(q.type) }} · {{ q.points }} điểm</span>
+                </li>
+              }
+            </ol>
+          } @else {
           <p class="detail-prompt">{{ selectedItem()!.prompt }}</p>
           <p class="detail-meta">
             {{ typeLabel(selectedItem()!.type) }} · Lớp {{ selectedItem()!.grade }} · Độ khó {{ difficultyLabel(selectedItem()!.difficulty) }} ·
             {{ selectedItem()!.points }} điểm (mặc định)
           </p>
+          }
 
-          @if (selectedItem()!.choices; as choices) {
+          @if (!selectedItem()!.passage && selectedItem()!.choices; as choices) {
             <ul class="detail-choices">
               @for (c of choices; track c.id) {
                 <li [class.correct]="isCorrectChoice(selectedItem()!, c.id)">
@@ -173,6 +260,9 @@
                     <app-icon name="check_circle" />
                   }
                   {{ c.text }}
+                  @if (c.imageRef) {
+                    <app-quiz-image class="detail-choice-image" [src]="c.imageRef" />
+                  }
                 </li>
               }
             </ul>
@@ -182,16 +272,16 @@
             <p class="detail-explanation">{{ exp }}</p>
           }
 
-          @if (isAdded(selectedItem()!.id)) {
+          @if (isSelectionAdded()) {
             <p class="already-added">
               <app-icon name="check_circle" />
-              Câu hỏi này đã có trong bài tập.
+              {{ selectedItem()!.passage ? 'Đoạn văn này (đủ các câu) đã có trong bài tập.' : 'Câu hỏi này đã có trong bài tập.' }}
             </p>
           } @else {
             <div class="add-form">
               @if (questionTimingMode === 'custom') {
                 <label>
-                  Thời gian riêng cho câu này (giây)
+                  {{ selectedItem()!.passage ? 'Thời gian riêng cho mỗi câu của đoạn (giây)' : 'Thời gian riêng cho câu này (giây)' }}
                   <!-- type="text" deliberately, not "number": NumberValueAccessor would coerce the value to an actual number, breaking the string-typed signal below. -->
                   <input
                     type="text"
@@ -204,7 +294,7 @@
                 </label>
               }
               <label>
-                Điểm cho câu này trong bài tập này
+                {{ selectedItem()!.passage ? 'Điểm cho mỗi câu của đoạn trong bài tập này' : 'Điểm cho câu này trong bài tập này' }}
                 <input
                   type="text"
                   inputmode="numeric"
@@ -216,7 +306,7 @@
               </label>
               <button type="button" class="confirm-add" (click)="confirmAdd()">
                 <app-icon name="add" />
-                Thêm vào bài tập
+                {{ selectedItem()!.passage ? 'Thêm cả đoạn (' + selectedPassageItems().length + ' câu)' : 'Thêm vào bài tập' }}
               </button>
             </div>
           }
@@ -244,6 +334,7 @@
                 </p>
                 <p class="added-meta">
                   <span class="tag"><app-icon name="quiz" />{{ randomGroupDifficultyLabel(i.randomGroup) }}</span>
+                  <span class="tag"><app-icon name="list_alt" />{{ allowedTypesLabel(i.randomGroup.allowedTypes) }}</span>
                   <span class="tag">
                     <app-icon name="star" />
                     {{ i.randomGroup.pointsOverride !== undefined ? i.randomGroup.pointsOverride + ' điểm/câu' : 'điểm mặc định mỗi câu' }}

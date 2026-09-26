@@ -55,7 +55,10 @@ export type QuizDifficulty = 1 | 2 | 3 | 4 | 5;
 
 export interface Choice {
   id: string;
+  /** May be empty when the choice is just a picture. */
   text: string;
+  /** Optional picture for this answer option — same URL forms as QuizItem.media.imageRef. */
+  imageRef?: string;
 }
 
 export type AnswerRule =
@@ -82,6 +85,8 @@ export interface PassageContext {
   passageId: string;
   title: string;
   text: string;
+  /** Optional illustration for the shared passage — see QuizItem.media.imageRef for the accepted URL forms. */
+  imageUrl?: string;
   order: number; // 1-based position of this sub-question within the passage
   total: number; // total sub-question count in the passage
 }
@@ -95,6 +100,7 @@ export interface QuizItem extends SyncEnvelope {
   choices?: Choice[];
   answerRule: AnswerRule;
   explanation?: string;
+  /** `imageRef` is an illustration shown with the prompt: an absolute http(s)/data URL, or a path/filename under the app's `assets/images/` folder (resolved by shared/quiz-image). */
   media?: { imageRef?: string; audioRef?: string };
   tags: string[];
   difficulty: QuizDifficulty;
@@ -336,6 +342,8 @@ export interface AppSettings {
   feedbackDelayMs: number;
   storageMode: StorageMode;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
+  /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
+  defaultCategoriesSeeded?: boolean;
 }
 
 // ---------------------------------------------------------------------------

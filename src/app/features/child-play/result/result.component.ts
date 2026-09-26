@@ -6,6 +6,12 @@ import { AnswerResultRepository } from '../../../data/repositories/answer-result
 import { Attempt, Choice, QuizItemType } from '../../../shared/models/domain.model';
 import { vi } from '../../../shared/i18n/vi';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
+
+/** How a chosen/correct option is named in the review summary — picture-only options have no text. */
+function choiceLabel(c: Choice): string {
+  return c.text || '(hình)';
+}
 
 export interface QuestionReview {
   quizItemId: string;
@@ -24,7 +30,7 @@ export interface QuestionReview {
 @Component({
   selector: 'app-result',
   standalone: true,
-  imports: [DecimalPipe, IconComponent],
+  imports: [DecimalPipe, IconComponent, QuizImageComponent],
   templateUrl: './result.component.html',
   styleUrl: './result.component.scss',
 })
@@ -84,7 +90,7 @@ export class ResultComponent {
           const choices = item.choices ?? [];
           correctText = choices
             .filter((c) => correctChoiceIds.has(c.id))
-            .map((c) => c.text)
+            .map(choiceLabel)
             .join(', ');
           if (result) {
             const submitted = Array.isArray(result.submittedAnswer)
@@ -93,7 +99,7 @@ export class ResultComponent {
             selectedChoiceIds = new Set(submitted);
             const text = choices
               .filter((c) => selectedChoiceIds.has(c.id))
-              .map((c) => c.text)
+              .map(choiceLabel)
               .join(', ');
             selectedText = text || 'Chưa trả lời';
           }

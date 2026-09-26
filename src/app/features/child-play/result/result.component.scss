@@ -119,3 +119,9 @@
   font-size: 0.85rem;
   color: #8a5a00;
 }
+
+.review-choice-image {
+  --quiz-image-max-height: 5rem;
+  display: inline-block;
+  vertical-align: middle;
+}

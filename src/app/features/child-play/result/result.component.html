@@ -46,6 +46,9 @@
                         <app-icon name="cancel" />
                       }
                       {{ c.text }}
+                      @if (c.imageRef) {
+                        <app-quiz-image class="review-choice-image" [src]="c.imageRef" />
+                      }
                     </li>
                   }
                 </ul>

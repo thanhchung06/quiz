@@ -29,7 +29,7 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": ["ajv"],
+            "allowedCommonJsDependencies": ["ajv", "exceljs"],
             "assets": [
               {
                 "glob": "**/*",

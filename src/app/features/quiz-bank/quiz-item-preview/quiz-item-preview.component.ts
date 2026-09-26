@@ -5,6 +5,7 @@ import { evaluateAnswer } from '../../child-play/services/answer-evaluator';
 import { QuizItem } from '../../../shared/models/domain.model';
 import { mulberry32, seededShuffle } from '../../../shared/random/seeded-random';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
 
 /**
  * Renders exactly as a child would see it, including feedback, without
@@ -14,7 +15,7 @@ import { IconComponent } from '../../../shared/icon/icon.component';
 @Component({
   selector: 'app-quiz-item-preview',
   standalone: true,
-  imports: [IconComponent],
+  imports: [IconComponent, QuizImageComponent],
   templateUrl: './quiz-item-preview.component.html',
   styleUrl: './quiz-item-preview.component.scss',
 })
@@ -66,6 +67,10 @@ export class QuizItemPreviewComponent implements OnInit {
     if (!item) return;
     this.isCorrect.set(evaluateAnswer(item, this.selected()));
     this.submitted.set(true);
+  }
+
+  choiceImage(id: string): string | undefined {
+    return this.item()?.choices?.find((c) => c.id === id)?.imageRef;
   }
 
   choiceText(id: string): string {

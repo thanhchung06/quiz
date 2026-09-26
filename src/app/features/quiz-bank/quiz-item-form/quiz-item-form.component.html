@@ -1,5 +1,5 @@
 <main class="quiz-item-form">
-  <h1>Câu hỏi</h1>
+  <h1>{{ editingId() ? 'Sửa câu hỏi' : 'Thêm câu hỏi' }}</h1>
 
   @if (errors().length) {
     <ul class="errors">
@@ -9,106 +9,203 @@
     </ul>
   }
 
-  <label>
-    Môn
-    <select [ngModel]="subject()" (ngModelChange)="subject.set($event)">
-      <option value="math">Toán</option>
-      <option value="language">Tiếng Việt</option>
-    </select>
-  </label>
-
-  <label>
-    Lớp
-    <select [ngModel]="grade()" (ngModelChange)="grade.set(+$event)">
-      @for (g of [1, 2, 3, 4, 5]; track g) {
-        <option [value]="g">{{ g }}</option>
-      }
-    </select>
-  </label>
-
-  <label>
-    Loại câu hỏi
-    <select [ngModel]="type()" (ngModelChange)="type.set($event)">
-      <option value="single-choice">Chọn một</option>
-      <option value="multiple-choice">Chọn nhiều</option>
-      <option value="short-text">Điền từ</option>
-      <option value="number">Số</option>
-      <option value="true-false">Đúng/Sai</option>
-      <option value="match-pairs">Nối cặp</option>
-    </select>
-  </label>
-
-  <app-category-picker
-    [subject]="subject()"
-    [selectedCategoryId]="categoryId()"
-    (categoryIdChange)="categoryId.set($event)"
-  />
-
-  <label>
-    Câu hỏi
-    <textarea [ngModel]="prompt()" (ngModelChange)="prompt.set($event)"></textarea>
-  </label>
-
-  @if (type() === 'single-choice' || type() === 'multiple-choice' || type() === 'true-false') {
-    <div class="choices">
-      @for (choice of choices(); track choice.id) {
-        <div class="choice-row">
-          <input
-            [value]="choice.text"
-            (change)="choice.text = $any($event.target).value"
-            placeholder="Nội dung lựa chọn"
-          />
-          <label>
-            <input
-              type="checkbox"
-              [checked]="correctChoiceIds().includes(choice.id)"
-              (change)="toggleCorrect(choice.id)"
-            />
-            Đúng
-          </label>
-        </div>
-      }
-      <button type="button" (click)="addChoice()">+ Thêm lựa chọn</button>
+  @if (!editingId()) {
+    <div class="mode-switch" role="radiogroup" aria-label="Kiểu câu hỏi">
+      <label [class.active]="mode() === 'single'">
+        <input type="radio" name="quiz-mode" [checked]="mode() === 'single'" (change)="setMode('single')" />
+        Câu hỏi riêng lẻ
+        <small>Mỗi câu hỏi độc lập (có thể thêm nhiều câu một lần)</small>
+      </label>
+      <label [class.active]="mode() === 'passage'">
+        <input type="radio" name="quiz-mode" [checked]="mode() === 'passage'" (change)="setMode('passage')" />
+        Đoạn văn / bài toán nhiều câu hỏi
+        <small>Một đoạn văn hoặc đề bài chung, kèm nhiều câu hỏi về nó</small>
+      </label>
     </div>
   }
 
-  @if (type() === 'short-text') {
+  <fieldset class="shared">
+    @if (!editingId()) {
+      <legend>Thông tin chung cho các câu hỏi</legend>
+    }
+
     <label>
-      Đáp án đúng
-      <input [ngModel]="acceptedAnswer()" (ngModelChange)="acceptedAnswer.set($event)" />
+      Môn
+      <select [ngModel]="subject()" (ngModelChange)="subject.set($event)">
+        <option value="math">Toán</option>
+        <option value="language">Tiếng Việt</option>
+      </select>
     </label>
+
+    <label>
+      Lớp
+      <select [ngModel]="grade()" (ngModelChange)="grade.set(+$event)">
+        @for (g of [1, 2, 3, 4, 5]; track g) {
+          <option [value]="g">{{ g }}</option>
+        }
+      </select>
+    </label>
+
+    <app-category-picker
+      [subject]="subject()"
+      [grade]="grade()"
+      [selectedCategoryId]="categoryId()"
+      (categoryIdChange)="categoryId.set($event)"
+    />
+
+    <label>
+      Độ khó
+      <select [ngModel]="difficulty()" (ngModelChange)="setDifficulty($event)">
+        @for (level of difficultyLevels; track level.value) {
+          <option [value]="level.value">{{ level.label }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Điểm
+      <input type="number" [ngModel]="points()" (ngModelChange)="points.set($event)" />
+    </label>
+
+    <label>
+      Nhãn (phân cách bằng dấu phẩy)
+      <input [ngModel]="tags()" (ngModelChange)="tags.set($event)" />
+    </label>
+  </fieldset>
+
+  @if (mode() === 'passage' && !editingId()) {
+    <fieldset class="shared passage">
+      <legend>Đoạn văn / đề bài chung</legend>
+      <label>
+        Tiêu đề
+        <input [ngModel]="passageTitle()" (ngModelChange)="passageTitle.set($event)" placeholder="Ví dụ: Con mèo của Lan" />
+      </label>
+      <label>
+        Nội dung đoạn văn / bài toán
+        <textarea
+          class="passage-text"
+          rows="6"
+          [ngModel]="passageText()"
+          (ngModelChange)="passageText.set($event)"
+          placeholder="Dán đoạn văn cần đọc, hoặc mô tả đề bài toán ở đây…"
+        ></textarea>
+      </label>
+      <label>
+        Hình minh họa cho đoạn văn (tùy chọn)
+        <input
+          [ngModel]="passageImageUrl()"
+          (ngModelChange)="passageImageUrl.set($event)"
+          placeholder="https://… hoặc tên tệp trong assets/images, ví dụ: cam.png"
+        />
+      </label>
+      <app-quiz-image [src]="passageImageUrl()" />
+    </fieldset>
   }
 
-  @if (type() === 'number') {
-    <label>
-      Đáp án đúng
-      <input type="number" [ngModel]="acceptedValue()" (ngModelChange)="acceptedValue.set($event)" />
-    </label>
-  }
-
-  <label>
-    Giải thích (tùy chọn)
-    <input [ngModel]="explanation()" (ngModelChange)="explanation.set($event)" />
-  </label>
-
-  <label>
-    Nhãn (phân cách bằng dấu phẩy)
-    <input [ngModel]="tags()" (ngModelChange)="tags.set($event)" />
-  </label>
-
-  <label>
-    Độ khó
-    <select [ngModel]="difficulty()" (ngModelChange)="setDifficulty($event)">
-      @for (level of difficultyLevels; track level.value) {
-        <option [value]="level.value">{{ level.label }}</option>
+  @for (draft of drafts(); track draft.key; let i = $index) {
+    <section class="question">
+      @if (drafts().length > 1 || mode() === 'passage') {
+        <header class="question-head">
+          <h2>Câu {{ i + 1 }}</h2>
+          @if (drafts().length > minQuestions()) {
+            <button type="button" class="remove" (click)="removeQuestion(i)" [attr.aria-label]="'Xóa câu ' + (i + 1)">
+              Xóa câu này
+            </button>
+          }
+        </header>
       }
-    </select>
-  </label>
 
-  <label>
-    Điểm
-    <input type="number" [ngModel]="points()" (ngModelChange)="points.set($event)" />
-  </label>
+      <label>
+        Loại câu hỏi
+        <select [ngModel]="draft.type" (ngModelChange)="setType(i, $event)">
+          <option value="single-choice">Chọn một</option>
+          <option value="multiple-choice">Chọn nhiều</option>
+          <option value="short-text">Điền từ</option>
+          <option value="number">Số</option>
+          <option value="true-false">Đúng/Sai</option>
+          @if (mode() !== 'passage') {
+            <option value="match-pairs">Nối cặp</option>
+          }
+        </select>
+      </label>
 
-  <button type="button" class="save" (click)="save()">Lưu</button>
+      <label>
+        Câu hỏi
+        <textarea [ngModel]="draft.prompt" (ngModelChange)="setField(i, 'prompt', $event)"></textarea>
+      </label>
+
+      <label>
+        Hình minh họa (tùy chọn)
+        <input
+          [ngModel]="draft.imageUrl"
+          (ngModelChange)="setField(i, 'imageUrl', $event)"
+          placeholder="https://… hoặc tên tệp trong assets/images, ví dụ: cam.png"
+        />
+      </label>
+      <app-quiz-image [src]="draft.imageUrl" />
+
+      @if (draft.type === 'single-choice' || draft.type === 'multiple-choice' || draft.type === 'true-false') {
+        <div class="choices">
+          @for (choice of draft.choices; track choice.id) {
+            <div class="choice">
+            <div class="choice-row">
+              <input
+                [value]="choice.text"
+                (change)="setChoiceText(i, choice.id, $any($event.target).value)"
+                placeholder="Nội dung lựa chọn"
+              />
+              <label class="correct">
+                <input
+                  [type]="draft.type === 'multiple-choice' ? 'checkbox' : 'radio'"
+                  [name]="'correct-' + draft.key"
+                  [checked]="draft.correctChoiceIds.includes(choice.id)"
+                  (change)="toggleCorrect(i, choice.id)"
+                />
+                Đúng
+              </label>
+              @if (draft.type !== 'true-false' && draft.choices.length > 2) {
+                <button type="button" class="remove-choice" (click)="removeChoice(i, choice.id)" aria-label="Xóa lựa chọn">
+                  ✕
+                </button>
+              }
+            </div>
+            <app-choice-image-field [value]="choice.imageRef" (valueChange)="setChoiceImage(i, choice.id, $event)" />
+            </div>
+          }
+          @if (draft.type !== 'true-false') {
+            <button type="button" (click)="addChoice(i)">+ Thêm lựa chọn</button>
+          }
+        </div>
+      }
+
+      @if (draft.type === 'short-text') {
+        <label>
+          Đáp án đúng
+          <input [ngModel]="draft.acceptedAnswer" (ngModelChange)="setField(i, 'acceptedAnswer', $event)" />
+        </label>
+      }
+
+      @if (draft.type === 'number') {
+        <label>
+          Đáp án đúng
+          <input type="number" [ngModel]="draft.acceptedValue" (ngModelChange)="setAcceptedValue(i, $event)" />
+        </label>
+      }
+
+      <label>
+        Giải thích (tùy chọn)
+        <input [ngModel]="draft.explanation" (ngModelChange)="setField(i, 'explanation', $event)" />
+      </label>
+    </section>
+  }
+
+  @if (!editingId()) {
+    <button type="button" class="add-question" (click)="addQuestion()">
+      {{ mode() === 'passage' ? '+ Thêm câu hỏi về đoạn này' : '+ Thêm câu hỏi nữa' }}
+    </button>
+  }
+
+  <button type="button" class="save" (click)="save()">
+    {{ mode() === 'passage' && !editingId() ? 'Lưu đoạn văn và ' + drafts().length + ' câu hỏi' : drafts().length > 1 ? 'Lưu ' + drafts().length + ' câu hỏi' : 'Lưu' }}
+  </button>
 </main>

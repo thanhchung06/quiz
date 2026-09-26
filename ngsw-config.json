@@ -17,6 +17,14 @@
       }
     },
     {
+      "name": "quiz-images",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/assets/images/**/*.(svg|jpg|jpeg|png|webp|gif|avif|bmp)"]
+      }
+    },
+    {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",

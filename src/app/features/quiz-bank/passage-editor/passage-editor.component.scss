@@ -105,6 +105,12 @@
   gap: 0.4rem;
 }
 
+.choice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
 .choice-row {
   display: flex;
   align-items: center;

@@ -3,8 +3,21 @@
     Danh mục
     <select [ngModel]="selectedCategoryId" (ngModelChange)="selectExisting($event)">
       <option [value]="undefined" disabled>-- Chọn danh mục --</option>
-      @for (c of categories(); track c.id) {
-        <option [value]="c.id">{{ c.name }}</option>
+      @if (groups().suggested.length) {
+        <optgroup label="Thường gặp ở lớp này">
+          @for (c of groups().suggested; track c.id) {
+            <option [value]="c.id">{{ c.name }}</option>
+          }
+        </optgroup>
+        <optgroup label="Danh mục khác">
+          @for (c of groups().others; track c.id) {
+            <option [value]="c.id">{{ c.name }}</option>
+          }
+        </optgroup>
+      } @else {
+        @for (c of groups().others; track c.id) {
+          <option [value]="c.id">{{ c.name }}</option>
+        }
       }
     </select>
   </label>

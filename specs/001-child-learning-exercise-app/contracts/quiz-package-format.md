@@ -39,7 +39,8 @@ When authoring a prompt for that external tool by hand, the same rules as the te
   "difficulty": 1,
   "type": "single-choice | short-text | number | multiple-choice | true-false | match-pairs",
   "prompt": "string",
-  "choices": [ { "id": "string", "text": "string" } ],
+  "imageUrl": "string, optional — picture shown with the prompt: an https:// URL, or a path/file name under the app's public/assets/images/ folder (e.g. \"cam.png\")",
+  "choices": [ { "id": "string", "text": "string (may be empty when the choice has a picture)", "imageUrl": "string, optional — picture for this answer option, same rules as imageUrl above" } ],
   "correctAnswerIds": ["string"],
   "acceptedAnswer": "string, optional — for short-text/number types",
   "acceptedRange": { "min": 0, "max": 0, "optional": true },
@@ -74,6 +75,7 @@ A shared reading passage or problem statement with two or more linked sub-questi
   "category": { "externalKey": "string, optional", "name": "string", "subject": "math | language, optional" },
   "title": "string",
   "text": "string — the reading passage, or the full problem statement",
+  "imageUrl": "string, optional — same rules as QuizPackageItem.imageUrl",
   "questions": [ /* QuizPackageItem[], ≥2 entries — subject/grade/category inherited from this passage if omitted */ ]
 }
 ```
@@ -115,3 +117,14 @@ The parent acts on this preview (map/approve categories, skip/replace duplicates
 ## Export (FR-029)
 
 Exporting selected `QuizItem` records re-serializes them into this same envelope/item shape (round-trippable), substituting each item's live `categoryId` back into a `category.externalKey`/`name` pair so the exported package can be re-imported into a different installation without carrying internal UUIDs as the only category reference. Selected items sharing a `passage.passageId` are grouped back into one `passages[]` entry (using that shared id as the entry's own `externalKey`) rather than exported as disconnected standalone `quizzes[]` items, so a passage group round-trips intact.
+
+## Excel form (.xlsx)
+
+The same package can be exported and imported as a human-editable Excel workbook (`src/app/features/quiz-bank/excel/quiz-excel.ts`), so a parent can edit questions directly in Excel / Google Sheets / LibreOffice:
+
+- **Câu hỏi** — one row per question. Vietnamese headers and values (`Toán`/`Tiếng Việt`, `Chọn một`/`Chọn nhiều`/`Đúng/Sai`/`Điền từ`/`Số`), one `Lựa chọn A…` column per choice, and `Đáp án đúng` as letters (`B`, `A, C`), `Đúng`/`Sai`, the text, or a number / range (`12`, `10..20`, `12; 10..20`). `Mã đoạn văn` links a row to a passage.
+- **Đoạn văn** — one row per passage (`Mã đoạn văn`, subject, grade, category, title, text, image). A passage's questions are the Câu hỏi rows with its key, in row order; subject/grade/category left blank on those rows are inherited.
+- **Hướng dẫn** — explains every column.
+
+Columns are matched by header text, ignoring accents, case, and `(…)` hints, so they may be reordered. Row problems are reported with sheet and row numbers, and rows that can't form a valid item are left out rather than failing the whole file. Export writes each item's `externalId` (or its internal id) to `Mã câu hỏi`. Re-importing an edited export therefore finds those rows as duplicates, and the parent can choose to **update** the existing items in place, including whole passages matched by their questions' ids, instead of skipping them.
+

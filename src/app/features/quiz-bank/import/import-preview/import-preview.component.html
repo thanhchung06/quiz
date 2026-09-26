@@ -4,16 +4,46 @@
     <h1>Nhập gói câu hỏi</h1>
   </header>
 
-  <button type="button" class="secondary" (click)="downloadTemplate()">
-    <app-icon name="download" />
-    Tải tệp mẫu (.json)
-  </button>
+  <div class="template-buttons">
+    <button type="button" class="secondary" (click)="downloadExcelTemplate()">
+      <app-icon name="download" />
+      Tải tệp mẫu Excel (.xlsx)
+    </button>
+    <button type="button" class="secondary" (click)="downloadTemplate()">
+      <app-icon name="download" />
+      Tải tệp mẫu (.json)
+    </button>
+  </div>
+  <p class="hint">
+    Tệp Excel có thể sửa trực tiếp: mỗi dòng ở trang "Câu hỏi" là một câu hỏi, trang "Hướng dẫn" giải thích từng cột.
+  </p>
 
   <label class="file-picker">
     <app-icon name="folder_open" />
-    <span>Chọn tệp gói câu hỏi (.json)</span>
-    <input #fileInput type="file" accept="application/json" [disabled]="isReadingFile() || isImporting()" (change)="onFileSelected($event)" />
+    <span>Chọn tệp gói câu hỏi (.xlsx hoặc .json)</span>
+    <input
+      #fileInput
+      type="file"
+      accept=".xlsx,.json,application/json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      [disabled]="isReadingFile() || isImporting()"
+      (change)="onFileSelected($event)"
+    />
   </label>
+
+  @if (fileError()) {
+    <p class="file-error"><app-icon name="cancel" />{{ fileError() }}</p>
+  }
+
+  @if (excelProblems().length) {
+    <div class="excel-problems">
+      <h2><app-icon name="warning" />Lưu ý khi đọc tệp Excel ({{ excelProblems().length }})</h2>
+      <ul>
+        @for (problem of excelProblems(); track $index) {
+          <li>{{ problem }}</li>
+        }
+      </ul>
+    </div>
+  }
 
   @if (isReadingFile()) {
     <p class="loading-row">
@@ -25,9 +55,9 @@
   @if (preview(); as p) {
     <div class="summary">
       <span><app-icon name="list_alt" />Tổng: {{ p.totalItems }}</span>
-      <span class="ok"><app-icon name="check_circle" />Hợp lệ: {{ p.validIndexes.length }}</span>
-      <span class="bad"><app-icon name="cancel" />Không hợp lệ: {{ p.invalidItems.length }}</span>
-      <span class="warn"><app-icon name="content_copy" />Trùng lặp: {{ p.likelyDuplicates.length }}</span>
+      <span class="ok"><app-icon name="check_circle" />Hợp lệ: {{ validCount(p) }}</span>
+      <span class="bad"><app-icon name="cancel" />Không hợp lệ: {{ invalidCount(p) }}</span>
+      <span class="warn"><app-icon name="content_copy" />Trùng lặp: {{ p.likelyDuplicates.length + p.passageDuplicates.length }}</span>
       <span><app-icon name="category" />Danh mục mới: {{ p.proposedCategories.length }}</span>
     </div>
 
@@ -41,6 +71,25 @@
     }
 
     @if (p.invalidItems.length) {
+      <button type="button" class="passage-toggle" (click)="toggleInvalidExpanded()">
+        <app-icon name="cancel" />
+        <span>Câu hỏi không hợp lệ ({{ p.invalidItems.length }}) — sẽ không được nhập</span>
+        <app-icon name="chevron_right" class="chevron" [class.rotated]="invalidExpanded()" />
+      </button>
+      @if (invalidExpanded()) {
+        <ul class="passage-list">
+          @for (item of p.invalidItems; track item.index) {
+            <li class="invalid">
+              <strong>{{ itemLabel(item.index) }}</strong>
+              <ul class="passage-errors">
+                @for (e of item.errors; track e) {
+                  <li>{{ e }}</li>
+                }
+              </ul>
+            </li>
+          }
+        </ul>
+      }
       <button type="button" (click)="downloadErrors()"><app-icon name="download" />Tải báo cáo lỗi</button>
     }
 
@@ -58,11 +107,26 @@
       </ul>
     }
 
-    @if (p.likelyDuplicates.length) {
-      <h2><app-icon name="content_copy" />Có thể trùng lặp (sẽ bỏ qua)</h2>
+    @if (p.likelyDuplicates.length || p.passageDuplicates.length) {
+      <h2>
+        <app-icon name="content_copy" />Có thể trùng với câu hỏi đã có ({{ p.likelyDuplicates.length + p.passageDuplicates.length }})
+      </h2>
+      <div class="duplicate-mode">
+        <label>
+          <input type="radio" name="duplicateMode" [checked]="duplicateMode() === 'skip'" (change)="duplicateMode.set('skip')" />
+          Bỏ qua các câu này
+        </label>
+        <label>
+          <input type="radio" name="duplicateMode" [checked]="duplicateMode() === 'replace'" (change)="duplicateMode.set('replace')" />
+          Cập nhật câu hỏi đã có bằng nội dung trong tệp
+        </label>
+      </div>
       <ul>
         @for (d of p.likelyDuplicates; track d.index) {
-          <li>Mục #{{ d.index }} — {{ d.reason }}</li>
+          <li>{{ itemLabel(d.index) }} — {{ d.reason === 'externalId' ? 'trùng mã câu hỏi' : 'trùng nội dung câu hỏi' }}</li>
+        }
+        @for (d of p.passageDuplicates; track d.index) {
+          <li>Đoạn văn "{{ passageTitle(p, d.index) }}" — trùng mã câu hỏi với đoạn văn đã có</li>
         }
       </ul>
     }

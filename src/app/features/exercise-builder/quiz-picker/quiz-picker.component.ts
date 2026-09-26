@@ -5,6 +5,16 @@ import { QuizItemRepository } from '../../../data/repositories/quiz-item.reposit
 import { Category, Exercise, ExerciseItem, QuestionTimingMode, QuizDifficulty, QuizItem, QuizItemType, RandomGroupConfig, Subject } from '../../../shared/models/domain.model';
 import { DIFFICULTY_LEVELS, coerceDifficulty, difficultyLabel } from '../../../shared/difficulty';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
+import { QUESTION_TYPE_GROUPS, QuestionTypeGroupKey, allowedTypesLabel, typesForGroups } from '../../../shared/question-type-groups';
+
+/** One row of the picker's question list: a standalone question, or a whole passage with its sub-questions. */
+type PickerListEntry =
+  | { kind: 'item'; key: string; item: QuizItem }
+  | { kind: 'passage'; key: string; title: string; first: QuizItem; items: QuizItem[] };
+
+/** A random add (bulk or daily slot) needs more than 4 matching questions, so the draw has some real variety. */
+export const MIN_RANDOM_MATCHES = 5;
 
 const TYPE_LABELS: Record<QuizItemType, string> = {
   'single-choice': 'Chọn một',
@@ -54,11 +64,25 @@ interface SubjectGroup {
  * a `RandomGroupConfig` via `addedRandomGroup` rather than resolving any
  * concrete quiz right now; the actual questions are drawn fresh every time
  * the exercise is started (FR-091).
+ *
+ * Both random adds also filter by question type (Trắc nghiệm / Đúng/Sai /
+ * Nhập đáp án, multi-select — see shared/question-type-groups.ts) and are
+ * only allowed when more than 4 bank questions match the chosen category +
+ * types + difficulty. The category tree only lists categories that have at
+ * least one question for this exercise's grade/subject and chosen types.
+ *
+ * A passage (one text + several questions) is listed as a single row; its
+ * detail shows the text and every sub-question, and adding it adds them all
+ * (the builder's addFixedItem pulls in every sibling in passage order).
+ *
+ * Outside `dailyMode` the parent can also add *every* question of the chosen
+ * category at once (amended 2026-09-26), narrowed by the same type /
+ * difficulty / search filters; passages are added whole, in passage order.
  */
 @Component({
   selector: 'app-quiz-picker',
   standalone: true,
-  imports: [FormsModule, IconComponent],
+  imports: [FormsModule, IconComponent, QuizImageComponent],
   templateUrl: './quiz-picker.component.html',
   styleUrl: './quiz-picker.component.scss',
 })
@@ -83,6 +107,29 @@ export class QuizPickerComponent {
   readonly selectedCategoryId = signal<string>('all');
   readonly searchText = signal('');
   readonly selectedItem = signal<QuizItem | undefined>(undefined);
+
+  /** The middle list: standalone questions as-is, each passage collapsed into one entry (at its first matching sub-question's position). */
+  readonly listEntries = computed<PickerListEntry[]>(() => {
+    const entries: PickerListEntry[] = [];
+    const seen = new Set<string>();
+    for (const q of this.filteredItems()) {
+      if (!q.passage) {
+        entries.push({ kind: 'item', key: q.id, item: q });
+        continue;
+      }
+      if (seen.has(q.passage.passageId)) continue;
+      seen.add(q.passage.passageId);
+      const items = this.passageSiblings(q);
+      entries.push({ kind: 'passage', key: q.passage.passageId, title: q.passage.title, first: items[0] ?? q, items });
+    }
+    return entries;
+  });
+
+  /** The selected passage's sub-questions in order (empty for a standalone question). */
+  readonly selectedPassageItems = computed(() => {
+    const item = this.selectedItem();
+    return item?.passage ? this.passageSiblings(item) : [];
+  });
   readonly draftSeconds = signal('');
   readonly draftPoints = signal('');
 
@@ -97,14 +144,25 @@ export class QuizPickerComponent {
   readonly bulkPoints = signal('');
   readonly bulkMessage = signal('');
 
+  readonly typeGroups = QUESTION_TYPE_GROUPS;
+  /** Question-type groups to include (multi-select); all of them by default. */
+  readonly selectedTypeGroups = signal<ReadonlySet<QuestionTypeGroupKey>>(new Set(QUESTION_TYPE_GROUPS.map((g) => g.key)));
+  readonly selectedTypes = computed(() => typesForGroups(this.selectedTypeGroups()));
+
   /** allItems narrowed to this exercise's grade AND subject ('mixed' keeps both subjects) — every other view (tree counts, list, "all" count) is built from this. */
   private readonly scopedItems = computed(() =>
     this.allItems().filter((q) => q.grade === this.grade && (this.exerciseSubject === 'mixed' || q.subject === this.exerciseSubject)),
   );
 
+  /** scopedItems narrowed to the chosen question types — what the tree counts and the list show. */
+  private readonly typedItems = computed(() => {
+    const types = this.selectedTypes();
+    return this.scopedItems().filter((q) => types.includes(q.type));
+  });
+
   readonly tree = computed<SubjectGroup[]>(() => {
     const counts = new Map<string, number>();
-    for (const q of this.scopedItems()) counts.set(q.categoryId, (counts.get(q.categoryId) ?? 0) + 1);
+    for (const q of this.typedItems()) counts.set(q.categoryId, (counts.get(q.categoryId) ?? 0) + 1);
 
     const wantMath = this.exerciseSubject === 'mixed' || this.exerciseSubject === 'math';
     const wantLanguage = this.exerciseSubject === 'mixed' || this.exerciseSubject === 'language';
@@ -113,7 +171,10 @@ export class QuizPickerComponent {
     if (wantLanguage) groups.push({ subject: 'language', label: SUBJECT_LABELS.language, categories: [] });
 
     for (const category of this.categories()) {
-      const node: CategoryNode = { category, count: counts.get(category.id) ?? 0 };
+      const count = counts.get(category.id) ?? 0;
+      // A category with nothing for this exercise's grade/subject/types is only noise here (e.g. a grade-1 category in a grade-5 exercise).
+      if (count === 0) continue;
+      const node: CategoryNode = { category, count };
       const mathGroup = groups.find((g) => g.subject === 'math');
       const langGroup = groups.find((g) => g.subject === 'language');
       if (mathGroup && (category.subject === 'math' || category.subject === 'both')) mathGroup.categories.push(node);
@@ -126,14 +187,32 @@ export class QuizPickerComponent {
   readonly filteredItems = computed(() => {
     const categoryId = this.selectedCategoryId();
     const search = this.searchText().trim().toLowerCase();
-    return this.scopedItems().filter((q) => {
+    return this.typedItems().filter((q) => {
       if (categoryId !== 'all' && q.categoryId !== categoryId) return false;
       if (search && !q.prompt.toLowerCase().includes(search)) return false;
       return true;
     });
   });
 
-  readonly allCount = computed(() => this.scopedItems().length);
+  readonly allCount = computed(() => this.typedItems().length);
+
+  /**
+   * Every bank question a random add for the current category + question
+   * types + difficulty could draw from (non-passage, ignoring the search box
+   * and what's already added) — the count checked against MIN_RANDOM_MATCHES.
+   */
+  readonly randomMatchCount = computed(() => {
+    const categoryId = this.selectedCategoryId();
+    const difficulty = this.bulkDifficulty();
+    return this.typedItems().filter(
+      (q) =>
+        !q.passage &&
+        (categoryId === 'all' || q.categoryId === categoryId) &&
+        (difficulty === 'all' || (q.difficulty ?? 2) === difficulty),
+    ).length;
+  });
+
+  readonly hasEnoughRandomMatches = computed(() => this.randomMatchCount() >= MIN_RANDOM_MATCHES);
 
   /**
    * The current bulk-add candidate pool: whatever's already filtered/listed
@@ -155,6 +234,45 @@ export class QuizPickerComponent {
       // Legacy items predating the difficulty field default to 2/Trung bình, same as everywhere else this field is read.
       return (q.difficulty ?? 2) === difficulty;
     });
+  }
+
+  /**
+   * Everything "Thêm tất cả" would add: the chosen category's listed questions
+   * (types, search) at the chosen difficulty, with each passage expanded to
+   * all its sub-questions in order, minus what the exercise already has.
+   * Empty while "Tất cả câu hỏi" is selected — this adds one category.
+   * A plain method for the same reason as `bulkPool()`.
+   */
+  addAllPool(): QuizItem[] {
+    if (this.selectedCategoryId() === 'all') return [];
+    const difficulty = this.bulkDifficulty();
+    const result: QuizItem[] = [];
+    const seenPassages = new Set<string>();
+    for (const q of this.filteredItems()) {
+      if (difficulty !== 'all' && (q.difficulty ?? 2) !== difficulty) continue;
+      if (!q.passage) {
+        result.push(q);
+        continue;
+      }
+      if (seenPassages.has(q.passage.passageId)) continue;
+      seenPassages.add(q.passage.passageId);
+      result.push(
+        ...this.allItems()
+          .filter((s) => s.passage?.passageId === q.passage!.passageId)
+          .sort((a, b) => (a.passage?.order ?? 0) - (b.passage?.order ?? 0)),
+      );
+    }
+    return result.filter((q) => !this.isAdded(q.id));
+  }
+
+  /** Adds every question of the chosen category (see `addAllPool()`), with the form's time/points override, in one `pickedMany`. */
+  confirmAddAll(): void {
+    const pool = this.addAllPool();
+    if (pool.length === 0) return;
+    const timeLimitSeconds = this.bulkSeconds().trim() ? Math.max(1, Math.round(Number(this.bulkSeconds()))) : undefined;
+    const points = this.bulkPoints().trim() ? Math.max(0, Math.round(Number(this.bulkPoints()))) : undefined;
+    this.pickedMany.emit(pool.map((q) => ({ quizItemId: q.id, timeLimitSeconds, points })));
+    this.bulkMessage.set(`Đã thêm tất cả ${pool.length} câu hỏi của danh mục.`);
   }
 
   constructor(
@@ -187,8 +305,48 @@ export class QuizPickerComponent {
     this.bulkMessage.set('');
   }
 
+  isTypeGroupSelected(key: QuestionTypeGroupKey): boolean {
+    return this.selectedTypeGroups().has(key);
+  }
+
+  toggleTypeGroup(key: QuestionTypeGroupKey): void {
+    this.selectedTypeGroups.update((current) => {
+      const next = new Set(current);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+    this.bulkMessage.set('');
+    const selected = this.selectedCategoryId();
+    if (selected !== 'all' && !this.tree().some((g) => g.categories.some((n) => n.category.id === selected))) {
+      this.selectCategory('all'); // the chosen category has no questions of the remaining types
+    }
+    const item = this.selectedItem();
+    if (item && !this.selectedTypes().includes(item.type)) this.selectedItem.set(undefined);
+  }
+
   setBulkDifficulty(value: string): void {
     this.bulkDifficulty.set(value === 'all' ? 'all' : coerceDifficulty(value));
+  }
+
+  /** Every active sub-question of `item`'s passage, in passage order. */
+  passageSiblings(item: QuizItem): QuizItem[] {
+    const passageId = item.passage?.passageId;
+    if (!passageId) return [item];
+    return this.allItems()
+      .filter((q) => q.passage?.passageId === passageId)
+      .sort((a, b) => (a.passage?.order ?? 0) - (b.passage?.order ?? 0));
+  }
+
+  /** A passage counts as added only once all of its sub-questions are in the exercise. */
+  isEntryAdded(entry: PickerListEntry): boolean {
+    return entry.kind === 'item' ? this.isAdded(entry.item.id) : entry.items.every((q) => this.isAdded(q.id));
+  }
+
+  isSelectionAdded(): boolean {
+    const item = this.selectedItem();
+    if (!item) return false;
+    return item.passage ? this.selectedPassageItems().every((q) => this.isAdded(q.id)) : this.isAdded(item.id);
   }
 
   isAdded(quizItemId: string): boolean {
@@ -221,6 +379,8 @@ export class QuizPickerComponent {
     if (config.categoryIds.length === 0) return 'Tất cả danh mục';
     return config.categoryIds.map((id) => this.categories().find((c) => c.id === id)?.name ?? '—').join(', ');
   }
+
+  readonly allowedTypesLabel = allowedTypesLabel;
 
   randomGroupDifficultyLabel(config: RandomGroupConfig): string {
     return config.difficultyMin === config.difficultyMax
@@ -264,8 +424,10 @@ export class QuizPickerComponent {
   }
 
   confirmAdd(): void {
-    const item = this.selectedItem();
-    if (!item || this.isAdded(item.id)) return;
+    const selected = this.selectedItem();
+    if (!selected || this.isSelectionAdded()) return;
+    // For a passage, the first not-yet-added sub-question is emitted; the builder adds every sibling with it.
+    const item = selected.passage ? (this.selectedPassageItems().find((q) => !this.isAdded(q.id)) ?? selected) : selected;
     const timeLimitSeconds = this.draftSeconds().trim() ? Math.max(1, Math.round(Number(this.draftSeconds()))) : undefined;
     const points = this.draftPoints().trim() ? Math.max(0, Math.round(Number(this.draftPoints()))) : undefined;
     this.picked.emit({ quizItemId: item.id, timeLimitSeconds, points });
@@ -275,6 +437,7 @@ export class QuizPickerComponent {
 
   /** Draws `bulkCount` distinct, not-already-added items at random from `bulkPool()` and emits them all in one `pickedMany`. */
   confirmBulkAdd(): void {
+    if (!this.hasEnoughRandomMatches()) return;
     const pool = this.bulkPool();
     if (pool.length === 0) {
       this.bulkMessage.set('Không có câu hỏi nào phù hợp với độ khó đã chọn còn có thể thêm.');
@@ -310,6 +473,7 @@ export class QuizPickerComponent {
    * attempt, by `AttemptResolverService` every time the exercise starts.
    */
   confirmAddRandomGroup(): void {
+    if (!this.hasEnoughRandomMatches()) return;
     const count = Math.max(1, Math.round(Number(this.bulkCount()) || 1));
     const timeLimitSeconds = this.bulkSeconds().trim() ? Math.max(1, Math.round(Number(this.bulkSeconds()))) : undefined;
     const pointsOverride = this.bulkPoints().trim() ? Math.max(0, Math.round(Number(this.bulkPoints()))) : undefined;
@@ -328,7 +492,7 @@ export class QuizPickerComponent {
       tags: [],
       difficultyMin,
       difficultyMax,
-      allowedTypes: [],
+      allowedTypes: this.selectedTypes(),
       avoidRecentUse: false,
       preferWeakAreas: false,
       mode: 'balanced',
@@ -336,7 +500,9 @@ export class QuizPickerComponent {
       pointsOverride,
     };
     this.addedRandomGroup.emit(config);
-    this.bulkMessage.set(`Đã thêm mục ngẫu nhiên: ${count} câu, độ khó ${this.bulkDifficultyLabel()}.`);
+    this.bulkMessage.set(
+      `Đã thêm mục ngẫu nhiên: ${count} câu, ${allowedTypesLabel(config.allowedTypes).toLowerCase()}, độ khó ${this.bulkDifficultyLabel()}.`,
+    );
   }
 
   bulkDifficultyLabel(): string {

@@ -10,10 +10,12 @@
           <span class="passage-progress">Câu {{ p.order }}/{{ p.total }}</span>
         </p>
         <p class="passage-text">{{ p.text }}</p>
+        <app-quiz-image [src]="p.imageUrl" />
       </div>
     }
 
     <p class="prompt">{{ q.prompt }}</p>
+    <app-quiz-image [src]="q.media?.imageRef" />
 
     @if (q.choices) {
       <div class="choices">
@@ -25,6 +27,9 @@
             (click)="toggle(id)"
           >
             {{ choiceText(id) }}
+            @if (choiceImage(id); as img) {
+              <app-quiz-image class="choice-image" [src]="img" />
+            }
           </button>
         }
       </div>
