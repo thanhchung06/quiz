@@ -51,3 +51,9 @@ Thumbs.db
 # Environment
 .env
 .env.*
+
+# Generated on every build/serve/install (scripts/build-info.mjs)
+src/app/build-info.generated.ts
+
+# Local HTTPS certificate for npm run serve:https (never commit private keys)
+/certs/
