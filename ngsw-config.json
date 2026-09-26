@@ -18,7 +18,7 @@
     },
     {
       "name": "quiz-images",
-      "installMode": "prefetch",
+      "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
         "files": ["/assets/images/**/*.(svg|jpg|jpeg|png|webp|gif|avif|bmp)"]

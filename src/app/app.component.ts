@@ -12,8 +12,12 @@ import { BUILD_TIMESTAMP } from './build-info.generated';
 export class AppComponent {
   title = 'quiz-app';
   readonly offlineReady: OfflineReadyService['ready'];
+  readonly imagesCached: OfflineReadyService['imagesCached'];
+  readonly imagesTotal: OfflineReadyService['imagesTotal'];
   readonly buildTimestamp = BUILD_TIMESTAMP;
   constructor(private readonly offlineReadyService: OfflineReadyService) {
     this.offlineReady = this.offlineReadyService.ready;
+    this.imagesCached = this.offlineReadyService.imagesCached;
+    this.imagesTotal = this.offlineReadyService.imagesTotal;
   }
 }

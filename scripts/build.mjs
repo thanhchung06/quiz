@@ -9,34 +9,16 @@
 // So: build to a throwaway temp directory (always on a well-behaved local
 // filesystem), then copy the result into the real output path ourselves
 // using plain read/write instead of the OS copy fast-path.
-import { spawn } from 'node:child_process';
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
+import { ROOT, spawnNg, writeBuildInfo } from './build-info.mjs';
 
-const outputPath = 'dist/quiz-app';
-
-async function generateBuildInfo() {
-  const timestamp = new Date().toISOString();
-  const file = 'src/app/build-info.generated.ts';
-
-  await mkdir(dirname(file), { recursive: true });
-  await writeFile(
-    file,
-    `// Generated during build; do not edit.\nexport const BUILD_TIMESTAMP = '${timestamp}';\n`,
-  );
-
-  console.log(`[build-info] ${timestamp}`);
-}
+const outputPath = join(ROOT, 'dist', 'quiz-app');
 
 function runNgBuild(args) {
-  const ngExecutable =
-    process.platform === 'win32'
-      ? join('node_modules', '.bin', 'ng.cmd')
-      : join('node_modules', '.bin', 'ng');
-
   return new Promise((resolve, reject) => {
-    const ng = spawn(ngExecutable, ['build', ...args], { stdio: 'inherit' });
+    const ng = spawnNg(['build', ...args]);
     ng.on('error', reject);
     ng.on('exit', (code) => {
       if (code === 0) resolve();
@@ -71,7 +53,7 @@ async function copyRecursive(src, dest) {
 }
 
 async function main() {
-  await generateBuildInfo();
+  await writeBuildInfo();
 
   const tempDir = await mkdtemp(join(tmpdir(), 'quiz-app-build-'));
 

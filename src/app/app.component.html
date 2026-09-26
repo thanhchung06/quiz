@@ -3,5 +3,14 @@
   Built {{ buildTimestamp }} UTC
 </small>
 @if (offlineReady()) {
-  <span class="offline-ready-badge" title="Đã lưu đủ dữ liệu để dùng ngoại tuyến">✓ Sẵn sàng ngoại tuyến</span>
+  <span class="offline-ready-badge" title="Ứng dụng đã được lưu trên máy, mở được khi không có mạng">
+    ✓ Sẵn sàng ngoại tuyến
+    @if (imagesCached() < imagesTotal()) {
+      · đang tải hình {{ imagesCached() }}/{{ imagesTotal() }}
+    }
+  </span>
+} @else {
+  <span class="offline-ready-badge pending" title="Đang lưu ứng dụng để dùng khi không có mạng — giữ kết nối mạng">
+    Đang chuẩn bị dùng ngoại tuyến…
+  </span>
 }
