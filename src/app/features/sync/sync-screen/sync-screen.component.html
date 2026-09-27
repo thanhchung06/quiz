@@ -66,7 +66,21 @@
           <small>Thường để trống: câu hỏi và danh mục ít thay đổi, đồng bộ bằng "Đồng bộ ngay" là đủ.</small>
         </span>
       </label>
+      @if (autoSyncQuestions()) {
+        <label class="check sub sub2">
+          <input type="checkbox" [checked]="autoSyncAddedOnly()" (change)="autoSyncAddedOnly.set($any($event.target).checked); autoSyncMessage.set('')" />
+          <span>
+            Chỉ lấy câu hỏi mới thêm
+            <small>Bỏ qua câu hỏi đã có trên máy này dù được sửa ở máy khác.</small>
+          </span>
+        </label>
+      }
     }
+    <p class="hint">
+      <app-icon name="info" />Khi mở ứng dụng: nhận dữ liệu mới nhất từ Google. Khi có thay đổi trên máy (làm bài, giao bài, đăng
+      nhập/đăng xuất, thoát ứng dụng): gửi lên Google. Bé chỉ gửi dữ liệu của chính bé; phụ huynh gửi câu hỏi, bài tập, giao bài
+      nhưng không gửi kết quả của bé.
+    </p>
     <div class="panel-actions">
       <button type="button" class="primary" [disabled]="!autoSyncDirty()" (click)="saveAutoSync()"><app-icon name="save" />Lưu</button>
       @if (autoSyncMessage() && !autoSyncDirty()) {
@@ -92,21 +106,6 @@
       <p class="hint"><app-icon name="info" />Điền và lưu URL Web App và Mã bí mật ở phần Kết nối để bắt đầu đồng bộ.</p>
     }
 
-    @if (conflicts().length) {
-      <h2><app-icon name="priority_high" />Xung đột cần giải quyết ({{ conflicts().length }})</h2>
-      <ul class="conflicts">
-        @for (c of conflicts(); track c.entityId) {
-          <li>
-            <p>{{ c.entityType }} #{{ c.entityId }} — trên máy v{{ c.localVersion }} / Google v{{ c.googleVersion }}</p>
-            <div class="conflict-actions">
-              <button type="button" (click)="resolve(c, 'useLocal')"><app-icon name="upload" />Dùng bản trên máy</button>
-              <button type="button" (click)="resolve(c, 'useGoogle')"><app-icon name="download" />Dùng bản Google</button>
-              <button type="button" (click)="resolve(c, 'keepBoth')"><app-icon name="content_copy" />Giữ cả hai</button>
-            </div>
-          </li>
-        }
-      </ul>
-    }
   </section>
 
   @if (dialogStep(); as step) {
@@ -126,21 +125,35 @@
             <app-icon name="warning" />
             @if (direction() === 'push') {
               <span
-                >Ghi đè Google bằng dữ liệu trên máy này: gửi lên <strong>tất cả</strong>, và những gì có trên Google mà máy
-                này không có sẽ bị xóa khỏi Google (hồ sơ bé và phụ huynh luôn được giữ).</span
+                >Ghi đè Google bằng dữ liệu trên máy này: gửi lên <strong>tất cả</strong> câu hỏi, bài tập, giao bài; những gì có
+                trên Google mà máy này không có sẽ bị xóa khỏi Google. Hồ sơ, bài làm, kết quả và phần thưởng của bé không bị
+                xóa và chỉ được gửi khi bé đăng nhập.</span
               >
             } @else {
               <span
-                >Ghi đè máy này bằng dữ liệu trên Google: nhận về <strong>tất cả</strong>, và những gì chỉ có trên máy này
-                (chưa gửi lên Google) sẽ bị xóa (hồ sơ bé và phụ huynh luôn được giữ).</span
+                >Ghi đè máy này bằng dữ liệu trên Google: nhận về <strong>tất cả</strong>; những gì chỉ có trên máy này sẽ bị xóa
+                (hồ sơ luôn được giữ, kết quả bé chưa gửi lên cũng được giữ).</span
               >
             }
           </p>
-          <p class="hint"><app-icon name="info" />Nên xuất một bản sao lưu trước. Không có xung đột cần giải quyết — bên nhận sẽ giống hệt bên gửi.</p>
+          <p class="hint"><app-icon name="info" />Nên xuất một bản sao lưu trước. Không có xung đột cần giải quyết — bên nhận được ghi đè.</p>
           <label class="check">
             <input type="checkbox" [checked]="optSkipQuestions()" (change)="optSkipQuestions.set($any($event.target).checked)" />
             <span>Không đồng bộ câu hỏi <small>Chỉ đồng bộ bài tập, giao bài, bài làm, kết quả, phần thưởng.</small></span>
           </label>
+          @if (!optSkipQuestions()) {
+            <label class="check sub">
+              <input type="checkbox" [checked]="optAddedQuestionsOnly()" (change)="optAddedQuestionsOnly.set($any($event.target).checked)" />
+              <span
+                >Chỉ đồng bộ câu hỏi mới thêm
+                <small>{{
+                  direction() === 'push'
+                    ? 'Chỉ gửi câu hỏi chưa từng gửi lên; không sửa, không xóa câu hỏi trên Google.'
+                    : 'Chỉ nhận câu hỏi máy này chưa có; không sửa, không xóa câu hỏi trên máy.'
+                }}</small></span
+              >
+            </label>
+          }
           <div class="dialog-actions">
             <button type="button" (click)="closeSyncDialog()">Hủy</button>
             <button type="button" class="primary" (click)="confirmSync()"><app-icon name="check_circle" />Xác nhận</button>
@@ -171,22 +184,17 @@
               <dt>Chiều</dt>
               <dd>{{ directionLabel(s.options) }}</dd>
               <dt>Phạm vi</dt>
-              <dd>{{ s.options.scopes.includes('questions') ? 'Câu hỏi và dữ liệu' : 'Chỉ dữ liệu (không có câu hỏi)' }}</dd>
+              <dd>{{ scopeLabel(s.options) }}</dd>
               @if (s.options.pull) {
                 <dt>Đã nhận về</dt>
                 <dd>{{ s.received }} mục</dd>
               }
               @if (s.options.push) {
                 <dt>Đã gửi lên</dt>
-                <dd>{{ s.sent }}/{{ s.toSend }} {{ s.options.overwrite ? 'mục' : 'thay đổi' }}</dd>
+                <dd>{{ s.sent }}/{{ s.toSend }} mục</dd>
               }
-              @if (s.options.overwrite) {
-                <dt>Đã xóa</dt>
-                <dd>{{ s.removed }} mục {{ s.options.push ? 'trên Google' : 'trên máy này' }}</dd>
-              } @else {
-                <dt>Xung đột</dt>
-                <dd>{{ s.conflicts }}{{ s.conflicts ? ' — xem bên dưới nút "Đồng bộ ngay"' : '' }}</dd>
-              }
+              <dt>Đã xóa</dt>
+              <dd>{{ s.removed }} mục {{ s.options.push ? 'trên Google' : 'trên máy này' }}</dd>
               <dt>Thời gian</dt>
               <dd>{{ s.seconds }} giây</dd>
             </dl>

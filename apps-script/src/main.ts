@@ -27,7 +27,7 @@ interface SyncRequest {
   syncId: string;
   deviceId: string;
   sharedSecret: string;
-  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'SNAPSHOT' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
+  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'INDEX' | 'FETCH' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
   changes: ChangeInput[];
   /** When present, the response also carries other devices' changes committed after this revision (paged). */
   pullSince?: number;
@@ -35,9 +35,10 @@ interface SyncRequest {
   pullTypes?: string[];
   /** REPLACE_PRUNE: every id the device has, per entity type; other rows of those types become deleted tombstones. */
   keepIds?: Record<string, string[]>;
-  /** SNAPSHOT: which tabs to read, and where to continue (position in snapshotTypes + row offset). */
-  snapshotTypes?: string[];
-  snapshotCursor?: { typeIndex: number; offset: number };
+  /** INDEX: which tabs to list. */
+  indexTypes?: string[];
+  /** FETCH: the records to send, by tab. */
+  fetchIds?: Record<string, string[]>;
   /** Only read for action = DEBUG_DUMP. */
   debugTabs?: EntityTab[];
 }
@@ -64,8 +65,10 @@ interface SyncResponse {
   versions?: Record<string, number>;
   /** REPLACE_PRUNE: how many Google records were marked deleted. */
   removed?: number;
-  /** SNAPSHOT: where to continue; absent once every requested tab has been sent. */
-  nextCursor?: { typeIndex: number; offset: number };
+  /** INDEX: [id, version] of every row, by tab. */
+  index?: Record<string, Array<[string, number]>>;
+  /** FETCH: the answer stopped early; ask again for the ids not received. */
+  truncated?: boolean;
 }
 
 /**
@@ -99,10 +102,9 @@ function handleSyncRequest(request: SyncRequest): SyncResponse | DebugDumpRespon
     return { syncId: request.syncId, result: 'SYNC_REJECTED' };
   }
 
-  if (request.action === 'SNAPSHOT') {
-    // Read-only, like DEBUG_DUMP: one page of full records for a "Google → this device" overwrite.
-    return snapshot(request);
-  }
+  // Read-only, like DEBUG_DUMP: no lock needed.
+  if (request.action === 'INDEX') return index(request);
+  if (request.action === 'FETCH') return fetchRecords(request);
 
   if (request.action === 'DEBUG_DUMP') {
     // Read-only inspection of tab contents, for setup verification. Never
@@ -386,48 +388,47 @@ function prune(request: SyncRequest): SyncResponse {
   return response;
 }
 
-/** Rows per SNAPSHOT page — whole records, so kept moderate for Apps Script's response size and run time. */
-const SNAPSHOT_PAGE_ROWS = 400;
+/** FETCH answers are capped near this many characters of records (Apps Script responses must stay reasonable); the client asks again for the rest. */
+const FETCH_MAX_CHARS = 4_000_000;
 
 /**
- * One page of every record (tombstones included) of the requested tabs, in
- * sheet order, for a "Google → this device" overwrite. Read-only. The cursor
- * walks the tabs one after another; `dataRevision` lets the device carry on
- * with incremental pulls from this point afterwards.
+ * Read-only: the id and version of every row of the requested tabs (columns
+ * A:B only — no bodies), so a device can tell which records differ from its
+ * own copy and FETCH just those.
  */
-function snapshot(request: SyncRequest): SyncResponse {
+function index(request: SyncRequest): SyncResponse {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const types = (request.snapshotTypes ?? []) as EntityTab[];
-  let { typeIndex, offset } = request.snapshotCursor ?? { typeIndex: 0, offset: 0 };
-  const dataRevision = readMetadata(spreadsheet).dataRevision;
-  const downloads: NonNullable<SyncResponse['downloads']> = [];
+  const result: Record<string, Array<[string, number]>> = {};
+  for (const tab of request.indexTypes ?? []) {
+    result[tab] = Array.from(readIndex(spreadsheet, tab).values()).map((row) => [row.id, row.version]);
+  }
+  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, index: result, dataRevision: readMetadata(spreadsheet).dataRevision };
+}
 
-  while (typeIndex < types.length && downloads.length === 0) {
-    const tab = types[typeIndex];
-    const rows = Array.from(readIndex(spreadsheet, tab).values())
-      .filter((row) => row.rowIndex !== undefined)
-      .sort((a, b) => a.rowIndex! - b.rowIndex!);
-    const page = rows.slice(offset, offset + SNAPSHOT_PAGE_ROWS);
-    if (page.length > 0) {
-      const bodies = readRowBodies(spreadsheet, tab, page.map((row) => row.rowIndex!));
-      for (const row of page) {
-        downloads.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(bodies.get(row.rowIndex!) ?? '') });
+/**
+ * Read-only: the full records with the requested ids (tombstones included).
+ * Ids Google doesn't have are left out. When the answer would get too big it
+ * stops early and says `truncated`; the device asks again for what is missing.
+ */
+function fetchRecords(request: SyncRequest): SyncResponse {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const downloads: NonNullable<SyncResponse['downloads']> = [];
+  let size = 0;
+  let truncated = false;
+  for (const [tab, ids] of Object.entries(request.fetchIds ?? {})) {
+    if (truncated) break;
+    const rowsById = readIndex(spreadsheet, tab);
+    const rows = ids.map((id) => rowsById.get(id)).filter((row): row is StoredRow => row?.rowIndex !== undefined);
+    const bodies = readRowBodies(spreadsheet, tab, rows.map((row) => row.rowIndex!));
+    for (const row of rows) {
+      const body = bodies.get(row.rowIndex!) ?? '';
+      if (downloads.length > 0 && size + body.length > FETCH_MAX_CHARS) {
+        truncated = true;
+        break;
       }
-    }
-    if (offset + SNAPSHOT_PAGE_ROWS < rows.length) {
-      offset += SNAPSHOT_PAGE_ROWS;
-    } else {
-      typeIndex++;
-      offset = 0;
+      size += body.length;
+      downloads.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(body) });
     }
   }
-
-  return {
-    syncId: request.syncId,
-    result: 'SYNC_SUCCESS',
-    downloads,
-    schemaCompatible: true,
-    dataRevision,
-    ...(typeIndex < types.length ? { nextCursor: { typeIndex, offset } } : {}),
-  };
+  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, downloads, truncated };
 }

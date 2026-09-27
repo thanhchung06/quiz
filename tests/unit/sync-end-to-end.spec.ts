@@ -56,13 +56,13 @@ import { db } from '../../src/app/data/db';
 import { SyncClientService } from '../../src/app/sync-engine/sync-client.service';
 import { BatchBuilderService } from '../../src/app/sync-engine/batch-builder.service';
 import { ProfileRepository } from '../../src/app/data/repositories/profile.repository';
-import { ConflictStateService } from '../../src/app/sync-engine/conflict-state.service';
-import { AppSettingsRepository } from '../../src/app/data/repositories/app-settings.repository';
 import { DownloadApplierService } from '../../src/app/sync-engine/download-applier.service';
 import { GoogleAuthService } from '../../src/app/features/sync/services/google-auth.service';
 import { QuizItemRepository } from '../../src/app/data/repositories/quiz-item.repository';
 import { newSyncEnvelope } from '../../src/app/shared/models/sync.model';
-import { Category, Profile, QuizItem } from '../../src/app/shared/models/domain.model';
+import { AnswerResult, Attempt, Category, Exercise, Profile, QuizItem } from '../../src/app/shared/models/domain.model';
+import { SyncRunOptions, SyncScope } from '../../src/app/sync-engine/sync-client.service';
+import { Uploader } from '../../src/app/sync-engine/upload-policy';
 
 global.fetch = jest.fn(async (_url, init) => {
   const text = doPost({ postData: { contents: String(init?.body) } } as never) as string;
@@ -81,22 +81,35 @@ global.fetch = jest.fn(async (url, init) => {
 }) as unknown as typeof fetch;
 
 function syncClient() {
-  const conflicts = new ConflictStateService();
   const client = new SyncClientService(
-      new BatchBuilderService(new ProfileRepository()),
-      { sharedSecret: () => 'secret' } as unknown as GoogleAuthService,
-      conflicts,
-      new AppSettingsRepository(),
-      new DownloadApplierService(),
+    new BatchBuilderService(new ProfileRepository()),
+    { sharedSecret: () => 'secret' } as unknown as GoogleAuthService,
+    new DownloadApplierService(),
   );
   client.retryDelaysMs = [0, 0, 0];
-  return { client, conflicts };
+  return client;
 }
 
 async function becomeDevice(id: string) {
   store.set('quiz-app.deviceId', id);
   await Promise.all(db.tables.map((t) => t.clear()));
 }
+
+const URL = 'https://script/exec';
+const ALL: SyncScope[] = ['questions', 'data'];
+const MOM: Uploader = { role: 'parent', profileId: 'mom' };
+const KID: Uploader = { role: 'child', profileId: 'kid' };
+/** What automatic sync does on app open (pull) and after changes (push). */
+const autoPull = (extra: Partial<SyncRunOptions> = {}): SyncRunOptions => ({ scopes: ALL, push: false, pull: true, mode: 'changes', ...extra });
+const autoPush = (uploader: Uploader): SyncRunOptions => ({ scopes: ALL, push: true, pull: false, mode: 'changes', uploader });
+const mirror = (direction: 'push' | 'pull', uploader: Uploader | undefined = MOM, extra: Partial<SyncRunOptions> = {}): SyncRunOptions => ({
+  scopes: ALL,
+  push: direction === 'push',
+  pull: direction === 'pull',
+  mode: 'mirror',
+  uploader,
+  ...extra,
+});
 
 const category = (id: string, name: string): Category =>
   ({ ...newSyncEnvelope(id, 'x'), name, normalizedName: name.toLowerCase(), subject: 'math', status: 'active' }) as Category;
@@ -107,112 +120,150 @@ const question = (i: number, categoryId: string): QuizItem =>
     choices: [{ id: 'a', text: '1' }, { id: 'b', text: '2' }], answerRule: { kind: 'choice', correctChoiceIds: ['a'] },
     tags: [], difficulty: 2, points: 10, categoryId, shuffleChoices: true, reviewStatus: 'approved', status: 'active',
   }) as unknown as QuizItem;
+const profile = (id: string, role: 'parent' | 'child', credentialHash = ''): Profile =>
+  ({ ...newSyncEnvelope(id, 'x'), role, displayName: id, avatar: 'cat', credentialHash, preferences: { audioEnabled: true, reducedMotion: false, feedbackDelayMs: 0 }, createdAt: '' }) as Profile;
+const attempt = (id: string, profileId: string): Attempt => ({ ...newSyncEnvelope(id, 'x'), profileId, exerciseId: 'ex', score: 5 }) as unknown as Attempt;
+const answer = (id: string, attemptId: string): AnswerResult => ({ ...newSyncEnvelope(id, 'x'), attemptId, quizItemId: 'q0', isCorrect: true }) as unknown as AnswerResult;
+
+/** What Google holds, read straight from the fake sheet through the script (DEBUG_DUMP). */
+function google(tab: string): Record<string, { version: number; body: Record<string, unknown> }> {
+  const text = doPost({ postData: { contents: JSON.stringify({ syncId: 'dump', sharedSecret: 'secret', action: 'DEBUG_DUMP', debugTabs: [tab] }) } } as never) as string;
+  const rows = (JSON.parse(text).tabs[tab] ?? []) as Array<{ id: string; version: number; body: Record<string, unknown> }>;
+  return Object.fromEntries(rows.map((r) => [r.id, { version: r.version, body: r.body }]));
+}
 
 describe('sync end to end (real Apps Script code, fake Sheet)', () => {
-  it('first sync of 300+ records, edits afterwards, then a second device pulls everything without duplicate categories', async () => {
-    // --- PC: 320 questions, one already edited twice before its first sync
-    await becomeDevice('pc');
-    await db.categories.add(category('pc-cat-phan-so', 'Phân số'));
-    await db.quizItems.bulkAdd(Array.from({ length: 320 }, (_, i) => question(i, 'pc-cat-phan-so')));
-    const repo = new QuizItemRepository();
-    await repo.update('q0', { prompt: 'sửa lần 1' });
-    await repo.update('q0', { prompt: 'sửa lần 2' }); // localVersion 3
+  beforeEach(() => sheets.clear());
 
+  it('parent and child each upload only their own data; opening the app takes what differs from Google', async () => {
+    // --- PC (parent): questions, an exercise assigned to a new child, both profiles
+    await becomeDevice('pc');
+    await db.profiles.bulkAdd([profile('mom', 'parent', 'mom-hash'), profile('kid', 'child'), profile('kid2', 'child')]);
+    await db.categories.add(category('cat', 'Phân số'));
+    await db.quizItems.bulkAdd(Array.from({ length: 450 }, (_, i) => question(i, 'cat')));
+    await db.exercises.add({ ...newSyncEnvelope('ex', 'pc'), title: 'Bài 1', items: [] } as unknown as Exercise);
+    await db.assignments.add({ ...newSyncEnvelope('as1', 'pc'), profileId: 'kid', exerciseId: 'ex', isPrimary: false } as never);
     const pc = syncClient();
-    // Request 1 is the pull; request 2, the first upload batch, commits on Google but its answer is lost.
-    // The retry re-sends the same syncId, so the script must replay its stored result — not report conflicts.
+    // The first upload's answer is lost in transit: the retry (same syncId) must replay, not write twice.
     requestCount = 0;
-    loseResponseOfRequest = 2;
-    expect(await pc.client.syncNormally('https://script/exec')).toBe('success');
+    loseResponseOfRequest = 1;
+    expect(await pc.run(URL, autoPush(MOM))).toBe('success');
     loseResponseOfRequest = -1;
-    expect(pc.conflicts.hasUnresolvedConflicts()).toBe(false);
-    expect(await db.quizItems.where('id').anyOf(['q0', 'q319']).toArray()).toEqual(
-      expect.arrayContaining([expect.objectContaining({ id: 'q0', syncStatus: 'synced', lastGoogleVersion: 3 })]),
-    );
+    expect(Object.keys(google('QuizItem'))).toHaveLength(450);
+    expect(Object.keys(google('Profile')).sort()).toEqual(['kid', 'kid2', 'mom']); // new child profiles go up with the parent
+    expect(google('Profile')['mom'].body['credentialHash']).toBeUndefined();
     expect((await db.quizItems.toArray()).every((q) => q.syncStatus === 'synced')).toBe(true);
 
-    // Editing again after the first sync must not be rejected (Google version must match the client's).
-    await repo.update('q0', { prompt: 'sửa lần 3' });
-    expect(await pc.client.syncNormally('https://script/exec')).toBe('success');
-    expect(pc.client.progress()).toEqual({ sent: 1, total: 1 }); // only the edited question goes up
-    expect((await db.quizItems.get('q0'))?.syncStatus).toBe('synced');
+    // --- Tablet: opening the app takes everything
+    await becomeDevice('tablet');
+    const tablet = syncClient();
+    expect(await tablet.run(URL, autoPull())).toBe('success');
+    expect(await db.quizItems.count()).toBe(450);
+    expect(tablet.received()).toBe(450 + 1 + 3 + 1 + 1);
 
-    // --- Phone: fresh install that seeded its own "Phân số"
-    await becomeDevice('phone');
-    await db.categories.add(category('default-math-phan-so', 'Phân số'));
-    const phone = syncClient();
-    expect(await phone.client.syncNormally('https://script/exec')).toBe('success');
+    // Opening again with nothing new: one INDEX per scope, nothing fetched.
+    requestCount = 0;
+    expect(await tablet.run(URL, autoPull())).toBe('success');
+    expect(requestCount).toBe(2);
+    expect(tablet.received()).toBe(0);
 
-    expect(await db.quizItems.count()).toBe(320);
-    expect((await db.quizItems.get('q0'))?.prompt).toBe('sửa lần 3');
-    const cats = (await db.categories.toArray()).filter((c) => !c.deletedAt);
-    expect(cats.map((c) => c.id)).toEqual(['pc-cat-phan-so']); // one shared category, not two
-    expect(phone.conflicts.hasUnresolvedConflicts()).toBe(false);
-    expect(phone.client.received()).toBeGreaterThanOrEqual(321);
+    // The child plays: their own results go up; another child's results and a question edit don't.
+    await db.attempts.bulkAdd([attempt('a-kid', 'kid'), attempt('a-kid2', 'kid2')]);
+    await db.answerResults.bulkAdd([answer('r-kid', 'a-kid'), answer('r-kid2', 'a-kid2')]);
+    await new QuizItemRepository().update('q5', { prompt: 'bé sửa' });
+    await db.profiles.update('kid', { avatar: 'dog', localVersion: 2, syncStatus: 'pendingUpload' });
+    expect(await tablet.run(URL, autoPush(KID))).toBe('success');
+    expect(Object.keys(google('Attempt'))).toEqual(['a-kid']);
+    expect(Object.keys(google('AnswerResult'))).toEqual(['r-kid']);
+    expect(google('Profile')['kid'].body['avatar']).toBe('dog');
+    expect(google('QuizItem')['q5'].body['prompt']).not.toBe('bé sửa');
+    expect((await db.attempts.get('a-kid2'))?.syncStatus).toBe('pendingUpload');
 
-    // A second sync on the phone has nothing to send and nothing new to receive.
-    expect(await phone.client.syncNormally('https://script/exec')).toBe('success');
-    expect(phone.client.received()).toBe(0);
-    expect(phone.client.progress()).toEqual({ sent: 0, total: 0 });
+    // --- PC: opening takes the child's results; the parent's own unsent edit is kept, then goes up.
+    await becomeDevice('pc');
+    await db.profiles.add(profile('mom', 'parent', 'mom-hash'));
+    expect(await pc.run(URL, autoPull())).toBe('success');
+    expect((await db.attempts.get('a-kid'))?.score).toBe(5);
+    expect((await db.profiles.get('mom'))?.credentialHash).toBe('mom-hash'); // the login hash stays
+    await new QuizItemRepository().update('q1', { prompt: 'mẹ sửa' });
+    await db.quizItems.add(question(450, 'cat'));
+    await db.attempts.update('a-kid', { score: 99, syncStatus: 'pendingUpload', localVersion: 5 }); // the parent never uploads results
+    expect(await pc.run(URL, autoPull())).toBe('success');
+    expect((await db.quizItems.get('q1'))?.prompt).toBe('mẹ sửa'); // pending: not overwritten
+    expect(await pc.run(URL, autoPush(MOM))).toBe('success');
+    expect(google('QuizItem')['q1'].body['prompt']).toBe('mẹ sửa');
+    expect(google('Attempt')['a-kid'].body['score']).toBe(5);
+
+    // --- Tablet with "only newly added questions": gets q450, ignores the edit of q1; keeps its own local data.
+    await becomeDevice('tablet');
+    await db.quizItems.bulkAdd(Array.from({ length: 450 }, (_, i) => question(i, 'cat')).map((q) => ({ ...q, syncStatus: 'synced', lastGoogleVersion: 1 }) as QuizItem));
+    await db.attempts.add({ ...attempt('local-only', 'kid2'), syncStatus: 'synced' } as Attempt);
+    expect(await tablet.run(URL, autoPull({ addedQuestionsOnly: true }))).toBe('success');
+    expect(await db.quizItems.get('q450')).toBeDefined();
+    expect((await db.quizItems.get('q1'))?.prompt).not.toBe('mẹ sửa');
+    expect(await db.attempts.get('local-only')).toBeDefined(); // automatic sync never deletes local records
+    expect(await tablet.run(URL, autoPull())).toBe('success');
+    expect((await db.quizItems.get('q1'))?.prompt).toBe('mẹ sửa');
   }, 180_000);
 
-  it('"Đồng bộ ngay" overwrites everything in the chosen direction, with no conflicts', async () => {
-    sheets.clear();
-    const overwrite = (direction: 'push' | 'pull') => ({ scopes: ['questions', 'data'] as ('questions' | 'data')[], push: direction === 'push', pull: direction === 'pull', overwrite: true });
-
-    // --- PC: 450 questions (more than one snapshot page) sent up
+  it('"Đồng bộ ngay" mirrors the chosen direction: no conflicts, children\'s results never removed by the parent', async () => {
+    // --- PC: everything up
     await becomeDevice('pc');
+    await db.profiles.add(profile('mom', 'parent', 'mom-hash'));
     await db.categories.add(category('cat', 'Phân số'));
-    await db.quizItems.bulkAdd(Array.from({ length: 450 }, (_, i) => question(i, 'cat')));
+    await db.quizItems.bulkAdd(Array.from({ length: 30 }, (_, i) => question(i, 'cat')));
     const pc = syncClient();
-    expect(await pc.client.run('https://script/exec', overwrite('push'))).toBe('success');
-    expect(pc.client.lastSummary()).toEqual(expect.objectContaining({ sent: 451, toSend: 451, removed: 0 }));
-    expect((await db.quizItems.toArray()).every((q) => q.syncStatus === 'synced')).toBe(true);
+    expect(await pc.run(URL, mirror('push'))).toBe('success');
+    expect(pc.lastSummary()).toEqual(expect.objectContaining({ sent: 32, toSend: 32, removed: 0 }));
 
-    // --- Phone: has its own login and a question Google doesn't have; takes everything from Google
+    // A child's result reaches Google from the tablet.
+    await becomeDevice('tablet');
+    await db.attempts.add(attempt('a-kid', 'kid'));
+    const tablet = syncClient();
+    expect(await tablet.run(URL, autoPush(KID))).toBe('success');
+
+    // --- Phone: takes everything; its own question disappears, its profile and a child's unsent result stay.
     await becomeDevice('phone');
-    await db.profiles.add({ ...newSyncEnvelope('kid', 'phone'), role: 'child', displayName: 'Bé', avatar: 'cat', credentialHash: 'pin-hash', preferences: { audioEnabled: true, reducedMotion: false, feedbackDelayMs: 0 }, createdAt: '' } as Profile);
-    await db.quizItems.add(question(9999, 'cat'));
+    await db.profiles.add(profile('kid3', 'child', 'pin'));
+    await db.quizItems.add(question(999, 'cat'));
+    await db.attempts.add(attempt('unsent', 'kid3'));
     const phone = syncClient();
-    expect(await phone.client.run('https://script/exec', overwrite('pull'))).toBe('success');
-    expect(await db.quizItems.count()).toBe(450);
-    expect(await db.quizItems.get('q9999')).toBeUndefined();
-    expect(phone.client.lastSummary()).toEqual(expect.objectContaining({ received: 451, removed: 1 }));
-    expect((await db.profiles.get('kid'))?.credentialHash).toBe('pin-hash'); // profiles are never removed
+    expect(await phone.run(URL, mirror('pull'))).toBe('success');
+    expect(await db.quizItems.get('q999')).toBeUndefined();
+    expect(await db.quizItems.count()).toBe(30);
+    expect(await db.attempts.get('a-kid')).toBeDefined();
+    expect(await db.attempts.get('unsent')).toBeDefined(); // only kid3 may upload it
+    expect((await db.profiles.get('kid3'))?.credentialHash).toBe('pin');
+    expect(phone.lastSummary()).toEqual(expect.objectContaining({ removed: 1 }));
 
-    // PC edits q1 and syncs normally, so Google's q1 is newer than the phone's copy…
+    // PC edits q1 and uploads; the phone's mirror push still wins, with no conflict, and prunes q2 —
+    // but not the child's attempt, which the phone (parent) doesn't hold as its own.
     await becomeDevice('pc');
-    await db.categories.add(category('cat', 'Phân số'));
-    await db.quizItems.bulkAdd(Array.from({ length: 450 }, (_, i) => question(i, 'cat')));
-    expect(await pc.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    expect(await pc.run(URL, mirror('pull'))).toBe('success');
     await new QuizItemRepository().update('q1', { prompt: 'bản của PC' });
-    expect(await pc.client.syncNormally('https://script/exec')).toBe('success');
+    expect(await pc.run(URL, autoPush(MOM))).toBe('success');
 
-    // …yet the phone's overwrite wins without a conflict, and q2 (removed on the phone) is deleted on Google.
     await becomeDevice('phone');
-    expect(await phone.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    expect(await phone.run(URL, mirror('pull'))).toBe('success');
     await new QuizItemRepository().update('q1', { prompt: 'bản của điện thoại' });
-    await db.quizItems.update('q1', { lastGoogleVersion: 1 }); // stale: an incremental sync would report a conflict
+    await db.quizItems.update('q1', { lastGoogleVersion: 1 }); // stale — would once have been a conflict
     await db.quizItems.delete('q2');
-    expect(await phone.client.run('https://script/exec', overwrite('push'))).toBe('success');
-    expect(phone.conflicts.hasUnresolvedConflicts()).toBe(false);
-    expect(phone.client.lastSummary()).toEqual(expect.objectContaining({ removed: 1, conflicts: 0 }));
-    expect((await db.quizItems.get('q1'))?.syncStatus).toBe('synced');
+    await db.attempts.clear();
+    expect(await phone.run(URL, mirror('push'))).toBe('success');
+    expect(phone.lastSummary()).toEqual(expect.objectContaining({ removed: 1 }));
+    expect(google('QuizItem')['q1'].body['prompt']).toBe('bản của điện thoại');
+    expect(google('QuizItem')['q2'].body['deletedAt']).toBeTruthy();
+    expect(google('Attempt')['a-kid'].body['deletedAt']).toBeUndefined();
 
-    // --- PC takes Google's copy: the phone's q1, q2 deleted; the next normal sync has nothing to do.
+    // Mirror with only newly added questions: nothing pruned, nothing updated.
     await becomeDevice('pc');
-    expect(await pc.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    expect(await pc.run(URL, mirror('pull'))).toBe('success');
     expect((await db.quizItems.get('q1'))?.prompt).toBe('bản của điện thoại');
     expect((await db.quizItems.get('q2'))?.deletedAt).toBeTruthy();
-    expect(await pc.client.syncNormally('https://script/exec')).toBe('success');
-    expect(pc.client.received()).toBe(0);
-    expect(pc.client.progress()).toEqual({ sent: 0, total: 0 });
-
-    // The phone edits q1 once more; an incremental sync now goes through normally.
-    await becomeDevice('phone');
-    expect(await phone.client.run('https://script/exec', overwrite('pull'))).toBe('success');
-    await new QuizItemRepository().update('q1', { prompt: 'sửa tiếp' });
-    expect(await phone.client.syncNormally('https://script/exec')).toBe('success');
-    expect(phone.conflicts.hasUnresolvedConflicts()).toBe(false);
+    await db.quizItems.delete('q3');
+    await db.quizItems.add(question(31, 'cat'));
+    expect(await pc.run(URL, mirror('push', MOM, { scopes: ['questions'], addedQuestionsOnly: true }))).toBe('success');
+    expect(pc.lastSummary()).toEqual(expect.objectContaining({ sent: 1, removed: 0 }));
+    expect(google('QuizItem')['q3'].body['deletedAt']).toBeUndefined();
   }, 180_000);
 });

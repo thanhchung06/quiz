@@ -352,6 +352,8 @@ export interface AppSettings {
   autoSyncEnabled?: boolean;
   /** Automatic sync also includes questions and categories (off by default — they normally sync from "Đồng bộ ngay"). */
   autoSyncQuestions?: boolean;
+  /** With autoSyncQuestions: only take questions/categories this device doesn't have yet — never updates to existing ones. */
+  autoSyncAddedQuestionsOnly?: boolean;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;

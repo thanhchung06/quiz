@@ -68,9 +68,9 @@ export class DownloadApplierService {
   }
 
   /**
-   * "Google → this device" overwrite: each record is written exactly as Google
-   * has it, whatever the local copy (edited or not, newer or not). Only the
-   * Profile login hash stays, since it never leaves the device.
+   * Stores each record exactly as Google has it, whatever the local copy
+   * (the caller decides which records to download). Only the Profile login
+   * hash stays, since it never leaves the device.
    */
   async overwrite(downloads: SyncDownload[]): Promise<number> {
     let applied = 0;
@@ -95,18 +95,11 @@ export class DownloadApplierService {
     return applied;
   }
 
-  /**
-   * Last step of a "Google → this device" overwrite: removes local records of
-   * these types that Google does not have. Profiles are never removed — the
-   * parent/child logins on this device must keep working.
-   */
-  async removeMissing(entityType: string, keepIds: ReadonlySet<string>): Promise<number> {
+  /** Deletes these local records outright (a "Google → this device" mirror: Google doesn't have them). */
+  async remove(entityType: string, ids: string[]): Promise<void> {
     const tableName = TABLE_BY_ENTITY[entityType];
-    if (!tableName || entityType === 'Profile') return 0;
-    const table = db[tableName] as unknown as { toCollection(): { primaryKeys(): Promise<string[]> }; bulkDelete(ids: string[]): Promise<void> };
-    const missing = (await table.toCollection().primaryKeys()).filter((id) => !keepIds.has(id));
-    if (missing.length > 0) await table.bulkDelete(missing);
-    return missing.length;
+    if (!tableName || ids.length === 0) return;
+    await (db[tableName] as unknown as { bulkDelete(ids: string[]): Promise<void> }).bulkDelete(ids);
   }
 
   private async replaceLocalDuplicates(incoming: Category): Promise<void> {

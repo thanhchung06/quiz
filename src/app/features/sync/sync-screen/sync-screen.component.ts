@@ -1,11 +1,10 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GoogleAuthService } from '../services/google-auth.service';
-import { ConflictResolutionService } from '../services/conflict-resolution.service';
-import { ConflictStateService } from '../../../sync-engine/conflict-state.service';
 import { SyncClientService, SyncOutcome, SyncRunOptions } from '../../../sync-engine/sync-client.service';
 import { StorageModeService } from '../../../sync-engine/storage-mode.service';
-import { SyncConflict } from '../../../sync-engine/sync-api.types';
+import { SessionService } from '../../../core/auth/session.service';
+import { uploaderOf } from '../../../sync-engine/auto-sync.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { SYNC_ENDPOINT_KEY, syncEndpointUrl } from '../../../sync-engine/sync-endpoint';
 
@@ -16,11 +15,12 @@ type SyncDialogStep = 'options' | 'running' | 'done';
  * independent parts, each saved on its own:
  * - Connection: the Apps Script Web App URL + shared secret (plus the optional
  *   Google account, see GoogleAuthService — never needed for syncing).
- * - Automatic sync: on/off, and whether it includes questions (off by default).
+ * - Automatic sync: on/off, whether it includes questions (off by default),
+ *   and whether that only takes newly added questions.
  * - "Đồng bộ ngay": a dialog to choose direction (this device → Google,
- *   Google → this device) and whether to skip questions, then progress, then a
- *   summary. It overwrites the receiving side entirely (SyncRunOptions.overwrite);
- *   conflicts from automatic sync, when any, are resolved below it.
+ *   Google → this device), whether to skip questions or only move newly added
+ *   ones, then progress, then a summary. It mirrors the chosen direction
+ *   (SyncRunOptions mode 'mirror'), uploading only what the logged-in person may.
  */
 @Component({
   selector: 'app-sync-screen',
@@ -53,10 +53,14 @@ export class SyncScreenComponent {
   // --- Automatic sync ---------------------------------------------------------
   readonly autoSyncEnabled = signal(false);
   readonly autoSyncQuestions = signal(false);
+  readonly autoSyncAddedOnly = signal(false);
   readonly autoSyncMessage = signal('');
-  private readonly savedAutoSync = signal({ enabled: false, includeQuestions: false });
+  private readonly savedAutoSync = signal({ enabled: false, includeQuestions: false, addedQuestionsOnly: false });
   readonly autoSyncDirty = computed(
-    () => this.autoSyncEnabled() !== this.savedAutoSync().enabled || this.autoSyncQuestions() !== this.savedAutoSync().includeQuestions,
+    () =>
+      this.autoSyncEnabled() !== this.savedAutoSync().enabled ||
+      this.autoSyncQuestions() !== this.savedAutoSync().includeQuestions ||
+      (this.autoSyncQuestions() && this.autoSyncAddedOnly() !== this.savedAutoSync().addedQuestionsOnly),
   );
 
   // --- Sync now dialog ----------------------------------------------------------
@@ -64,8 +68,8 @@ export class SyncScreenComponent {
   /** One direction per run: this device -> Google, or Google -> this device. */
   readonly direction = signal<'push' | 'pull'>('push');
   readonly optSkipQuestions = signal(false);
+  readonly optAddedQuestionsOnly = signal(false);
 
-  readonly conflicts: ConflictStateService['conflicts'];
   readonly progress: SyncClientService['progress'];
   readonly received: SyncClientService['received'];
   readonly phase: SyncClientService['phase'];
@@ -81,14 +85,12 @@ export class SyncScreenComponent {
 
   constructor(
     private readonly googleAuth: GoogleAuthService,
-    private readonly conflictResolution: ConflictResolutionService,
-    private readonly conflictState: ConflictStateService,
     private readonly syncClient: SyncClientService,
     private readonly autoSyncSettings: StorageModeService,
+    private readonly session: SessionService,
   ) {
     this.connected = this.googleAuth.connected;
     this.spreadsheetId = this.googleAuth.spreadsheetId;
-    this.conflicts = this.conflictState.conflicts;
     this.schemaIncompatible = this.syncClient.schemaIncompatible;
     this.progress = this.syncClient.progress;
     this.received = this.syncClient.received;
@@ -99,6 +101,7 @@ export class SyncScreenComponent {
       this.savedAutoSync.set(value);
       this.autoSyncEnabled.set(value.enabled);
       this.autoSyncQuestions.set(value.includeQuestions);
+      this.autoSyncAddedOnly.set(value.addedQuestionsOnly);
     });
   }
 
@@ -144,20 +147,26 @@ export class SyncScreenComponent {
   setAutoSyncEnabled(enabled: boolean): void {
     this.autoSyncEnabled.set(enabled);
     // Unticking the parent hides the sub-option; it goes back to what is saved (or off) if re-ticked.
-    if (!enabled) this.autoSyncQuestions.set(this.savedAutoSync().enabled ? this.savedAutoSync().includeQuestions : false);
+    if (!enabled) {
+      this.autoSyncQuestions.set(this.savedAutoSync().enabled ? this.savedAutoSync().includeQuestions : false);
+      this.autoSyncAddedOnly.set(this.savedAutoSync().enabled ? this.savedAutoSync().addedQuestionsOnly : false);
+    }
     this.autoSyncMessage.set('');
   }
 
   async saveAutoSync(): Promise<void> {
     if (!this.autoSyncDirty()) return;
-    const value = { enabled: this.autoSyncEnabled(), includeQuestions: this.autoSyncEnabled() && this.autoSyncQuestions() };
+    const includeQuestions = this.autoSyncEnabled() && this.autoSyncQuestions();
+    const value = { enabled: this.autoSyncEnabled(), includeQuestions, addedQuestionsOnly: includeQuestions && this.autoSyncAddedOnly() };
     await this.autoSyncSettings.setAutoSync(value);
     this.savedAutoSync.set(value);
     this.autoSyncMessage.set(
       !this.autoSyncEnabled()
         ? 'Đã tắt tự động đồng bộ — dữ liệu vẫn được lưu trên máy này.'
         : this.autoSyncQuestions()
-          ? 'Đã lưu: tự động đồng bộ dữ liệu và câu hỏi.'
+          ? this.autoSyncAddedOnly()
+            ? 'Đã lưu: tự động đồng bộ dữ liệu và câu hỏi mới thêm.'
+            : 'Đã lưu: tự động đồng bộ dữ liệu và câu hỏi.'
           : 'Đã lưu: tự động đồng bộ dữ liệu (câu hỏi đồng bộ bằng "Đồng bộ ngay").',
     );
   }
@@ -168,6 +177,7 @@ export class SyncScreenComponent {
     if (this.dialogStep() === 'running') return;
     this.direction.set('push');
     this.optSkipQuestions.set(false);
+    this.optAddedQuestionsOnly.set(false);
     this.dialogStep.set('options');
   }
 
@@ -181,7 +191,9 @@ export class SyncScreenComponent {
       scopes: this.optSkipQuestions() ? ['data'] : ['questions', 'data'],
       push: this.direction() === 'push',
       pull: this.direction() === 'pull',
-      overwrite: true,
+      mode: 'mirror',
+      addedQuestionsOnly: !this.optSkipQuestions() && this.optAddedQuestionsOnly(),
+      uploader: uploaderOf(this.session.currentProfile()),
     };
     this.dialogStep.set('running');
     try {
@@ -194,12 +206,11 @@ export class SyncScreenComponent {
   directionLabel(options: SyncRunOptions): string {
     if (options.push && options.pull) return 'Hai chiều';
     const label = options.push ? 'Máy này → Google' : 'Google → máy này';
-    return options.overwrite ? `${label} (ghi đè)` : label;
+    return options.mode === 'mirror' ? `${label} (ghi đè)` : label;
   }
 
-  async resolve(conflict: SyncConflict, action: 'useLocal' | 'useGoogle' | 'keepBoth'): Promise<void> {
-    if (action === 'useLocal') await this.conflictResolution.useLocal(conflict);
-    if (action === 'useGoogle') await this.conflictResolution.useGoogle(conflict);
-    if (action === 'keepBoth') await this.conflictResolution.keepBoth(conflict);
+  scopeLabel(options: SyncRunOptions): string {
+    if (!options.scopes.includes('questions')) return 'Chỉ dữ liệu (không có câu hỏi)';
+    return options.addedQuestionsOnly ? 'Dữ liệu và câu hỏi mới thêm' : 'Câu hỏi và dữ liệu';
   }
 }
