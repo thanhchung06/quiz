@@ -2,11 +2,16 @@ import { withExclusiveLock } from './lock';
 import { adoptIdenticalVersion, decideVersion } from './versioning';
 import { findPriorCommit, reserveNextRevision, saveCommittedTransaction } from './transactions';
 import { readMetadata, isSchemaCompatible } from './sheets/metadata';
-import { readAllRows, writeAllRows, StoredRow } from './sheets/generic-table';
-import { EntityTab } from './sheets/entity-tabs';
+import { readAllRows, writeChangedRows, StoredRow } from './sheets/generic-table';
+import { appendChangeLog, readChangeLog, selectPull, ChangeLogEntry } from './sheets/change-log';
 
 const CLIENT_SUPPORTED_SCHEMA_VERSION = 1;
 const LOCK_TIMEOUT_MS = 5000;
+/** About how many records one pull response carries; the client keeps asking while `hasMore`. */
+const PULL_LIMIT = 500;
+
+/** Each entity type is stored in the tab of the same name (Profile, Category, QuizItem, …). */
+type EntityTab = string;
 
 interface ChangeInput {
   changeGroupId: string;
@@ -24,6 +29,8 @@ interface SyncRequest {
   sharedSecret: string;
   action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
   changes: ChangeInput[];
+  /** When present, the response also carries other devices' changes committed after this revision (paged). */
+  pullSince?: number;
   /** Only read for action = DEBUG_DUMP. */
   debugTabs?: EntityTab[];
 }
@@ -42,6 +49,10 @@ interface SyncResponse {
   conflicts?: Array<{ entityType: string; entityId: string; localVersion: number; googleVersion: number; lastGoogleVersion: number }>;
   downloads?: Array<{ entityType: string; entityId: string; version: number; payload: unknown }>;
   schemaCompatible?: boolean;
+  /** With pullSince: the revision the client has now pulled up to. */
+  dataRevision?: number;
+  /** With pullSince: more changes remain after dataRevision; ask again. */
+  hasMore?: boolean;
 }
 
 /**
@@ -112,15 +123,16 @@ function safeParse(json: string): unknown {
 }
 
 const ENTITY_TABS_FOR_DEBUG: EntityTab[] = [
-  'Profiles',
-  'Categories',
-  'QuizItems',
-  'Exercises',
-  'Assignments',
-  'Rotations',
-  'Attempts',
-  'AnswerResults',
-  'Rewards',
+  'Profile',
+  'Category',
+  'QuizItem',
+  'Exercise',
+  'Assignment',
+  'Rotation',
+  'Attempt',
+  'AnswerResult',
+  'Reward',
+  'PointRedemption',
 ];
 
 function processLocked(request: SyncRequest): SyncResponse {
@@ -131,9 +143,16 @@ function processLocked(request: SyncRequest): SyncResponse {
     return { syncId: request.syncId, result: 'SYNC_REJECTED', schemaCompatible: false };
   }
 
+  const tabCache = new Map<EntityTab, Map<string, StoredRow>>();
+  const getTab = (tab: EntityTab) => {
+    if (!tabCache.has(tab)) tabCache.set(tab, readAllRows(spreadsheet, tab));
+    return tabCache.get(tab)!;
+  };
+
   const priorCommit = findPriorCommit(spreadsheet, request.syncId);
   if (priorCommit) {
-    return JSON.parse(priorCommit.resultJson) as SyncResponse;
+    const replay = JSON.parse(priorCommit.resultJson) as SyncResponse;
+    return addPull(spreadsheet, request, replay, readMetadata(spreadsheet).dataRevision, getTab);
   }
 
   // Group changes so a changeGroupId commits or rejects atomically (FR-060).
@@ -147,11 +166,11 @@ function processLocked(request: SyncRequest): SyncResponse {
   const committedGroupIds: string[] = [];
   const conflicts: SyncResponse['conflicts'] = [];
   const downloads: SyncResponse['downloads'] = [];
-  const tabCache = new Map<EntityTab, Map<string, StoredRow>>();
-
-  const getTab = (tab: EntityTab) => {
-    if (!tabCache.has(tab)) tabCache.set(tab, readAllRows(spreadsheet, tab));
-    return tabCache.get(tab)!;
+  /** Records written by this request, per tab — only these rows are written back and logged. */
+  const changedIds = new Map<EntityTab, Set<string>>();
+  const markChanged = (tab: EntityTab, id: string) => {
+    if (!changedIds.has(tab)) changedIds.set(tab, new Set());
+    changedIds.get(tab)!.add(id);
   };
 
   for (const [groupId, changes] of byGroup) {
@@ -181,7 +200,9 @@ function processLocked(request: SyncRequest): SyncResponse {
       const rows = getTab(d.change.entityType);
       const adopted = adoptIdenticalVersion(d.change.localVersion, d.googleVersion, rows.get(d.change.entityId)?.bodyJson, JSON.stringify(d.change.payload));
       if (adopted !== undefined) {
-        rows.set(d.change.entityId, { id: d.change.entityId, version: adopted, bodyJson: JSON.stringify(d.change.payload) });
+        const existing = rows.get(d.change.entityId);
+        rows.set(d.change.entityId, { id: d.change.entityId, version: adopted, bodyJson: JSON.stringify(d.change.payload), rowIndex: existing?.rowIndex });
+        markChanged(d.change.entityType, d.change.entityId);
         d.decision = 'noop';
       }
     }
@@ -203,12 +224,17 @@ function processLocked(request: SyncRequest): SyncResponse {
     for (const d of decisions) {
       const rows = getTab(d.change.entityType);
       if (d.decision === 'upload') {
-        const nextVersion = d.googleVersion + 1;
-        if (d.change.operation === 'delete') {
-          rows.set(d.change.entityId, { id: d.change.entityId, version: nextVersion, bodyJson: JSON.stringify({ deleted: true }) });
-        } else {
-          rows.set(d.change.entityId, { id: d.change.entityId, version: nextVersion, bodyJson: JSON.stringify(d.change.payload) });
-        }
+        // A delete keeps the full record (with its deletedAt tombstone) so other devices pulling it delete it too.
+        const existing = rows.get(d.change.entityId);
+        rows.set(d.change.entityId, {
+          id: d.change.entityId,
+          // The client's own version (always ≥ G + 1 here, since L > B = G): the client records exactly this
+          // as lastGoogleVersion, so both sides agree on the next sync.
+          version: Math.max(d.googleVersion + 1, d.change.localVersion),
+          bodyJson: JSON.stringify(d.change.payload),
+          rowIndex: existing?.rowIndex,
+        });
+        markChanged(d.change.entityType, d.change.entityId);
       } else if (d.decision === 'download') {
         const row = rows.get(d.change.entityId);
         if (row) {
@@ -220,11 +246,21 @@ function processLocked(request: SyncRequest): SyncResponse {
     committedGroupIds.push(groupId);
   }
 
-  for (const tab of tabCache.keys()) {
-    writeAllRows(spreadsheet, tab, tabCache.get(tab)!);
+  for (const [tab, ids] of changedIds) {
+    writeChangedRows(spreadsheet, tab, getTab(tab), ids);
   }
 
-  const commitSequence = reserveNextRevision(spreadsheet);
+  // A request that wrote nothing (e.g. a pure pull) creates no revision and no transaction record.
+  const wroteSomething = changedIds.size > 0;
+  const commitSequence = wroteSomething ? reserveNextRevision(spreadsheet) : metadata.dataRevision;
+  if (wroteSomething) {
+    const entries: ChangeLogEntry[] = [];
+    for (const [tab, ids] of changedIds) {
+      for (const id of ids) entries.push({ revision: commitSequence, entityType: tab, entityId: id, deviceId: request.deviceId });
+    }
+    appendChangeLog(spreadsheet, entries);
+  }
+
   const response: SyncResponse = {
     syncId: request.syncId,
     result: 'SYNC_SUCCESS',
@@ -234,7 +270,27 @@ function processLocked(request: SyncRequest): SyncResponse {
     downloads,
     schemaCompatible: true,
   };
-  // Persist the final response so a retried syncId can replay it verbatim (FR-059).
-  saveCommittedTransaction(spreadsheet, request.syncId, commitSequence, JSON.stringify(response));
-  return response;
+  if (wroteSomething) {
+    // Persist the final response so a retried syncId can replay it verbatim (FR-059).
+    saveCommittedTransaction(spreadsheet, request.syncId, commitSequence, JSON.stringify(response));
+  }
+  return addPull(spreadsheet, request, response, commitSequence, getTab);
+}
+
+/** Adds other devices' changes after `request.pullSince` (one page) to the response. Read-only. */
+function addPull(
+  spreadsheet: GoogleSpreadsheet,
+  request: SyncRequest,
+  response: SyncResponse,
+  currentRevision: number,
+  getTab: (tab: EntityTab) => Map<string, StoredRow>,
+): SyncResponse {
+  if (typeof request.pullSince !== 'number') return response;
+  const page = selectPull(readChangeLog(spreadsheet), request.pullSince, request.deviceId, PULL_LIMIT, currentRevision);
+  const pulled: NonNullable<SyncResponse['downloads']> = [];
+  for (const { entityType, entityId } of page.records) {
+    const row = getTab(entityType).get(entityId);
+    if (row) pulled.push({ entityType, entityId, version: row.version, payload: safeParse(row.bodyJson) });
+  }
+  return { ...response, downloads: [...(response.downloads ?? []), ...pulled], dataRevision: page.nextRevision, hasMore: page.hasMore };
 }

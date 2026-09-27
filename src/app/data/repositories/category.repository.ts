@@ -28,13 +28,14 @@ export class CategoryRepository extends BaseRepository<Category> {
     );
   }
 
-  async createCategory(name: string, subject: CategorySubject, description?: string): Promise<Category> {
+  /** `id` is normally random; callers pass a fixed one only for records every device must share (default categories). */
+  async createCategory(name: string, subject: CategorySubject, description?: string, id: string = crypto.randomUUID()): Promise<Category> {
     const existing = await this.findDuplicate(name, subject);
     if (existing) {
       throw new Error(`Category "${name}" already exists for subject ${subject}`);
     }
     const category: Category = {
-      ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
+      ...newSyncEnvelope(id, currentDeviceId()),
       name,
       normalizedName: normalizeName(name),
       subject,

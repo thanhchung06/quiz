@@ -43,6 +43,7 @@ export class SyncScreenComponent {
   readonly syncing = signal(false);
   readonly lastError: SyncClientService['lastError'];
   readonly progress: SyncClientService['progress'];
+  readonly received: SyncClientService['received'];
   readonly outcomeLabels: Record<SyncOutcome, string> = {
     success: 'Đồng bộ thành công',
     busy: 'Google Sheet đang bận',
@@ -67,6 +68,7 @@ export class SyncScreenComponent {
     this.schemaIncompatible = this.syncClient.schemaIncompatible;
     this.lastError = this.syncClient.lastError;
     this.progress = this.syncClient.progress;
+    this.received = this.syncClient.received;
     this.sharedSecretSet.set(!!this.googleAuth.sharedSecret());
     void this.storageModeService.getMode().then((m) => this.storageMode.set(m));
   }

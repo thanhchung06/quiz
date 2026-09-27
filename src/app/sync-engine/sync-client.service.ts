@@ -1,23 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 import { db } from '../data/db';
 import { currentDeviceId } from '../data/repositories/base-repository';
+import { AppSettingsRepository } from '../data/repositories/app-settings.repository';
 import { BatchBuilderService } from './batch-builder.service';
 import { GoogleAuthService } from '../features/sync/services/google-auth.service';
 import { ConflictStateService } from './conflict-state.service';
+import { DownloadApplierService, TABLE_BY_ENTITY } from './download-applier.service';
 import { SyncRequestBody, SyncResponseBody, SyncChange } from './sync-api.types';
-
-const TABLE_BY_ENTITY: Record<string, keyof typeof db> = {
-  Profile: 'profiles',
-  Category: 'categories',
-  QuizItem: 'quizItems',
-  Exercise: 'exercises',
-  Assignment: 'assignments',
-  Rotation: 'rotations',
-  Attempt: 'attempts',
-  AnswerResult: 'answerResults',
-  Reward: 'rewards',
-  PointRedemption: 'pointRedemptions',
-};
 
 export type SyncOutcome = 'success' | 'busy' | 'rejected' | 'network-error' | 'server-error';
 
@@ -63,10 +52,16 @@ export class SyncClientService {
   /** FR-065: true once the server has reported its schema is newer than this client supports. */
   readonly schemaIncompatible = this._schemaIncompatible.asReadonly();
 
+  private readonly _received = signal(0);
+  /** Records received from other devices in the running (or last) sync. */
+  readonly received = this._received.asReadonly();
+
   constructor(
     private readonly batchBuilder: BatchBuilderService,
     private readonly googleAuth: GoogleAuthService,
     private readonly conflictState: ConflictStateService,
+    private readonly settings: AppSettingsRepository,
+    private readonly downloads: DownloadApplierService,
   ) {}
 
   private running?: Promise<SyncOutcome>;
@@ -77,9 +72,15 @@ export class SyncClientService {
     return this.running;
   }
 
+  /**
+   * Pull, then push. Pulling first lets this device take over the records
+   * other devices already stored (e.g. the default categories, which every
+   * device seeds on its own) before uploading its own copies of them.
+   */
   private async runSync(endpointUrl: string): Promise<SyncOutcome> {
     if (this.conflictState.hasUnresolvedConflicts()) {
       // Automatic sync stays paused until every conflict is resolved (FR-061).
+      this._lastError.set('Còn xung đột chưa giải quyết — hãy chọn cách xử lý ở bên dưới trước.');
       return 'rejected';
     }
     if (this._schemaIncompatible()) {
@@ -95,32 +96,63 @@ export class SyncClientService {
     }
 
     this._lastError.set(undefined);
-    const changes = await this.batchBuilder.collectPendingChanges();
-    this._progress.set({ sent: 0, total: changes.length });
+    this._received.set(0);
+    this._progress.set(undefined);
 
-    // Always at least one request, so an up-to-date device still receives others' changes.
-    let outcome: SyncOutcome = 'success';
-    for (let start = 0; start === 0 || start < changes.length; start += SYNC_BATCH_SIZE) {
-      const batch = changes.slice(start, start + SYNC_BATCH_SIZE);
-      const body: SyncRequestBody = {
-        syncId: crypto.randomUUID(),
-        deviceId: currentDeviceId(),
-        sharedSecret,
-        startedAt: new Date().toISOString(),
-        lastKnownDataRevision: 0,
-        action: 'SYNC_NORMAL',
-        changes: batch,
-      };
-      outcome = await this.postWithRetry(endpointUrl, body);
-      if (outcome !== 'success') break;
-      this._progress.set({ sent: Math.min(start + batch.length, changes.length), total: changes.length });
-    }
-
+    const outcome = await this.pull(endpointUrl, sharedSecret).then((pulled) =>
+      pulled === 'success' ? this.push(endpointUrl, sharedSecret) : pulled,
+    );
     this._lastOutcome.set(outcome);
     return outcome;
   }
 
-  private async postWithRetry(endpointUrl: string, body: SyncRequestBody, attempt = 0): Promise<SyncOutcome> {
+  /** Receives other devices' changes page by page, remembering how far it got (per device). */
+  private async pull(endpointUrl: string, sharedSecret: string): Promise<SyncOutcome> {
+    let since = (await this.settings.get()).lastPulledRevision ?? 0;
+    for (let page = 0; page < 10_000; page++) {
+      const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, [], since));
+      if (outcome !== 'success' || !response) return outcome;
+      if (typeof response.dataRevision !== 'number') return 'success'; // script too old to support pulling
+      const applied = await this.downloads.apply(response.downloads ?? []);
+      this._received.update((n) => n + applied);
+      since = response.dataRevision;
+      await this.settings.update({ lastPulledRevision: since });
+      if (!response.hasMore) break;
+    }
+    return 'success';
+  }
+
+  /** Uploads this device's pending changes in batches; each committed batch is marked synced right away. */
+  private async push(endpointUrl: string, sharedSecret: string): Promise<SyncOutcome> {
+    const changes = await this.batchBuilder.collectPendingChanges();
+    this._progress.set({ sent: 0, total: changes.length });
+    for (let start = 0; start < changes.length; start += SYNC_BATCH_SIZE) {
+      const batch = changes.slice(start, start + SYNC_BATCH_SIZE);
+      const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, batch));
+      if (outcome !== 'success' || !response) return outcome;
+      await this.applySuccessResponse(response, batch);
+      if (response.conflicts && response.conflicts.length > 0) {
+        this.conflictState.setConflicts(response.conflicts);
+      }
+      this._progress.set({ sent: Math.min(start + batch.length, changes.length), total: changes.length });
+    }
+    return 'success';
+  }
+
+  private request(sharedSecret: string, changes: SyncChange[], pullSince?: number): SyncRequestBody {
+    return {
+      syncId: crypto.randomUUID(),
+      deviceId: currentDeviceId(),
+      sharedSecret,
+      startedAt: new Date().toISOString(),
+      lastKnownDataRevision: pullSince ?? 0,
+      action: 'SYNC_NORMAL',
+      changes,
+      ...(pullSince !== undefined ? { pullSince } : {}),
+    };
+  }
+
+  private async post(endpointUrl: string, body: SyncRequestBody, attempt = 0): Promise<{ outcome: SyncOutcome; response?: SyncResponseBody }> {
     let response: SyncResponseBody;
     let text: string;
     try {
@@ -138,24 +170,24 @@ export class SyncClientService {
     } catch {
       // Offline/unreachable: local changes stay pendingUpload; never blocks child login/play.
       this._lastError.set('Không kết nối được tới Google. Kiểm tra mạng rồi thử lại.');
-      return 'network-error';
+      return { outcome: 'network-error' };
     }
     try {
       response = JSON.parse(text) as SyncResponseBody;
     } catch {
       // The script threw (quota, cell size, bad deployment…) — Apps Script answers with an HTML error page.
       this._lastError.set(`Apps Script báo lỗi: ${describeServerError(text)}`);
-      return 'server-error';
+      return { outcome: 'server-error' };
     }
 
     if (response.result === 'SYNC_BUSY') {
       if (attempt >= 3) {
         this._lastError.set('Google Sheet đang bận với một lần đồng bộ khác. Thử lại sau ít phút.');
-        return 'busy';
+        return { outcome: 'busy' };
       }
       const backoffMs = 500 * Math.pow(2, attempt) + Math.random() * 250;
       await new Promise((resolve) => setTimeout(resolve, backoffMs));
-      return this.postWithRetry(endpointUrl, { ...body, syncId: body.syncId }, attempt + 1);
+      return this.post(endpointUrl, body, attempt + 1);
     }
 
     if (response.result === 'SYNC_REJECTED') {
@@ -163,16 +195,11 @@ export class SyncClientService {
         this._schemaIncompatible.set(true);
         this._lastError.set('Dữ liệu trên Google mới hơn phiên bản ứng dụng này.');
       } else {
-        this._lastError.set('Google từ chối: mã bí mật không khớp với SHARED_SECRET trong Apps Script.');
+        this._lastError.set('Google từ chối: mã bí mật không khớp với SHARED_SECRET trong Apps Script, hoặc có bản ghi phiên bản không hợp lệ.');
       }
-      return 'rejected';
+      return { outcome: 'rejected' };
     }
-
-    await this.applySuccessResponse(response, body.changes);
-    if (response.conflicts && response.conflicts.length > 0) {
-      this.conflictState.setConflicts(response.conflicts);
-    }
-    return 'success';
+    return { outcome: 'success', response };
   }
 
   private async applySuccessResponse(response: SyncResponseBody, sentChanges: SyncChange[]): Promise<void> {
@@ -181,18 +208,19 @@ export class SyncClientService {
       if (!committedIds.has(change.changeGroupId)) continue;
       const tableName = TABLE_BY_ENTITY[change.entityType];
       if (!tableName) continue;
-      const table = db[tableName] as unknown as { update: (id: string, changes: object) => Promise<number> };
-      await table.update(change.entityId, {
-        lastGoogleVersion: change.localVersion,
-        syncStatus: 'synced',
-      });
+      const table = db[tableName] as unknown as {
+        where(index: string): { equals(value: string): { modify(fn: (record: Record<string, unknown>) => void): Promise<number> } };
+      };
+      // Google now holds exactly this localVersion. If the record was edited again while the sync ran,
+      // it stays pendingUpload so that newer edit goes up next time.
+      await table
+        .where(':id')
+        .equals(change.entityId)
+        .modify((record) => {
+          record['lastGoogleVersion'] = change.localVersion;
+          if (record['localVersion'] === change.localVersion) record['syncStatus'] = 'synced';
+        });
     }
-
-    for (const download of response.downloads ?? []) {
-      const tableName = TABLE_BY_ENTITY[download.entityType];
-      if (!tableName) continue;
-      const table = db[tableName] as unknown as { put: (record: object) => Promise<string> };
-      await table.put({ ...download.payload, lastGoogleVersion: download.version, localVersion: download.version, syncStatus: 'synced' });
-    }
+    await this.downloads.apply(response.downloads ?? []);
   }
 }

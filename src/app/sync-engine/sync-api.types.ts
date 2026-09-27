@@ -39,6 +39,8 @@ export interface SyncRequestBody {
   action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT';
   changes: SyncChange[];
   conflictResolutions?: ConflictResolutionInput[];
+  /** Ask for other devices' changes committed after this revision (paged, see SyncResponseBody.hasMore). */
+  pullSince?: number;
 }
 
 export interface SyncConflict {
@@ -64,4 +66,8 @@ export interface SyncResponseBody {
   conflicts?: SyncConflict[];
   downloads?: SyncDownload[];
   schemaCompatible?: boolean;
+  /** With pullSince: the revision this device has now pulled up to. Absent from scripts without pull support. */
+  dataRevision?: number;
+  /** With pullSince: more changes remain; ask again from dataRevision. */
+  hasMore?: boolean;
 }

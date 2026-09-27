@@ -344,6 +344,8 @@ export interface AppSettings {
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;
+  /** Google Sheet revision this device has received other devices' changes up to (sync pull). */
+  lastPulledRevision?: number;
 }
 
 // ---------------------------------------------------------------------------

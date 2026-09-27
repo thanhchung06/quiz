@@ -72,6 +72,12 @@
       <button type="button" (click)="requestReplace('toLocal')"><app-icon name="download" />Thay dữ liệu cục bộ bằng Google</button>
     </div>
 
+    @if (syncing() && !progress()) {
+      <p class="result"><app-icon name="download" />Đang nhận thay đổi từ thiết bị khác…</p>
+    }
+    @if (received() > 0) {
+      <p class="result"><app-icon name="download" />Đã nhận {{ received() }} mục từ thiết bị khác</p>
+    }
     @if (progress(); as p) {
       @if (syncing() || p.total > 0) {
         <p class="result">
