@@ -40,6 +40,16 @@ export class SyncScreenComponent {
   readonly conflicts: ConflictStateService['conflicts'];
   readonly storageMode = signal<StorageMode>('localOnly');
   readonly lastResult = signal<SyncOutcome | undefined>(undefined);
+  readonly syncing = signal(false);
+  readonly lastError: SyncClientService['lastError'];
+  readonly progress: SyncClientService['progress'];
+  readonly outcomeLabels: Record<SyncOutcome, string> = {
+    success: 'Đồng bộ thành công',
+    busy: 'Google Sheet đang bận',
+    rejected: 'Bị từ chối',
+    'network-error': 'Lỗi kết nối',
+    'server-error': 'Lỗi từ Apps Script',
+  };
   readonly schemaIncompatible: SyncClientService['schemaIncompatible'];
   readonly confirmingReplace = signal<'toGoogle' | 'toLocal' | undefined>(undefined);
   readonly message = signal('');
@@ -55,6 +65,8 @@ export class SyncScreenComponent {
     this.spreadsheetId = this.googleAuth.spreadsheetId;
     this.conflicts = this.conflictState.conflicts;
     this.schemaIncompatible = this.syncClient.schemaIncompatible;
+    this.lastError = this.syncClient.lastError;
+    this.progress = this.syncClient.progress;
     this.sharedSecretSet.set(!!this.googleAuth.sharedSecret());
     void this.storageModeService.getMode().then((m) => this.storageMode.set(m));
   }
@@ -93,7 +105,14 @@ export class SyncScreenComponent {
   }
 
   async syncNow(): Promise<void> {
-    this.lastResult.set(await this.syncClient.syncNormally(this.endpointUrl()));
+    if (this.syncing()) return;
+    this.syncing.set(true);
+    this.lastResult.set(undefined);
+    try {
+      this.lastResult.set(await this.syncClient.syncNormally(this.endpointUrl()));
+    } finally {
+      this.syncing.set(false);
+    }
   }
 
   async retry(): Promise<void> {

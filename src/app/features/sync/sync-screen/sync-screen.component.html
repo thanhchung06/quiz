@@ -64,14 +64,32 @@
     </label>
 
     <div class="actions">
-      <button type="button" class="primary" (click)="syncNow()"><app-icon name="sync" />Đồng bộ ngay</button>
-      <button type="button" (click)="retry()"><app-icon name="refresh" />Thử lại</button>
+      <button type="button" class="primary" [disabled]="syncing()" (click)="syncNow()">
+        <app-icon name="sync" />{{ syncing() ? 'Đang đồng bộ…' : 'Đồng bộ ngay' }}
+      </button>
+      <button type="button" [disabled]="syncing()" (click)="retry()"><app-icon name="refresh" />Thử lại</button>
       <button type="button" (click)="requestReplace('toGoogle')"><app-icon name="upload" />Thay Google bằng dữ liệu cục bộ</button>
       <button type="button" (click)="requestReplace('toLocal')"><app-icon name="download" />Thay dữ liệu cục bộ bằng Google</button>
     </div>
 
+    @if (progress(); as p) {
+      @if (syncing() || p.total > 0) {
+        <p class="result">
+          <app-icon name="upload" />Đã gửi {{ p.sent }}/{{ p.total }} thay đổi
+          @if (syncing()) {
+            (đang gửi theo từng đợt, giữ trang này mở)
+          }
+        </p>
+      }
+    }
     @if (lastResult(); as r) {
-      <p class="result"><app-icon name="check_circle" />Kết quả: {{ r }}</p>
+      <p class="result" [class.error]="r !== 'success'">
+        <app-icon [name]="r === 'success' ? 'check_circle' : 'warning'" />{{ outcomeLabels[r] }}
+      </p>
+      @if (r !== 'success' && lastError(); as reason) {
+        <p class="error"><app-icon name="info" />{{ reason }}</p>
+        <p class="hint">Phần đã gửi xong được giữ lại — bấm "Thử lại" để gửi tiếp phần còn lại.</p>
+      }
     }
 
     @if (confirmingReplace(); as direction) {

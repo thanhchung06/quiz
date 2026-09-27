@@ -1,5 +1,5 @@
 import { withExclusiveLock } from './lock';
-import { decideVersion } from './versioning';
+import { adoptIdenticalVersion, decideVersion } from './versioning';
 import { findPriorCommit, reserveNextRevision, saveCommittedTransaction } from './transactions';
 import { readMetadata, isSchemaCompatible } from './sheets/metadata';
 import { readAllRows, writeAllRows, StoredRow } from './sheets/generic-table';
@@ -173,6 +173,17 @@ function processLocked(request: SyncRequest): SyncResponse {
     const hasInvalid = decisions.some((d) => d.decision === 'invalid');
     if (hasInvalid) {
       return { syncId: request.syncId, result: 'SYNC_REJECTED' };
+    }
+
+    // Leftovers of an earlier sync that failed after writing (identical content) are adopted, not reported.
+    for (const d of decisions) {
+      if (d.decision !== 'conflict' || d.change.operation !== 'upsert') continue;
+      const rows = getTab(d.change.entityType);
+      const adopted = adoptIdenticalVersion(d.change.localVersion, d.googleVersion, rows.get(d.change.entityId)?.bodyJson, JSON.stringify(d.change.payload));
+      if (adopted !== undefined) {
+        rows.set(d.change.entityId, { id: d.change.entityId, version: adopted, bodyJson: JSON.stringify(d.change.payload) });
+        d.decision = 'noop';
+      }
     }
 
     const hasConflict = decisions.some((d) => d.decision === 'conflict');

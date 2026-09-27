@@ -18,3 +18,16 @@ export function decideVersion({ localVersion: L, lastGoogleVersion: B, googleVer
   if (L === B && G > B) return 'download';
   return 'conflict'; // L != B && G != B
 }
+
+/**
+ * A "conflict" whose Google copy is byte-for-byte the record being uploaded is
+ * no conflict at all: it is what an earlier sync already wrote before failing
+ * later on (Sheets writes are not rolled back when the script throws), so the
+ * client never learned it was stored. Such a record is adopted as synced
+ * instead of making the parent resolve it by hand. The version kept is the
+ * higher of the two, so the next sync is a no-op (L ≥ G) or a harmless
+ * download of identical content (G > L).
+ */
+export function adoptIdenticalVersion(localVersion: number, googleVersion: number, googleBodyJson: string | undefined, payloadJson: string): number | undefined {
+  return googleBodyJson !== undefined && googleBodyJson === payloadJson ? Math.max(localVersion, googleVersion) : undefined;
+}

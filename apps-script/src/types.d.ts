@@ -24,6 +24,7 @@ interface GoogleSpreadsheet {
 interface GoogleSheet {
   getDataRange(): GoogleRange;
   getLastRow(): number;
+  getLastColumn(): number;
   getRange(row: number, col: number, numRows?: number, numCols?: number): GoogleRange;
   appendRow(values: unknown[]): void;
 }
