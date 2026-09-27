@@ -2,7 +2,7 @@ import { withExclusiveLock } from './lock';
 import { adoptIdenticalVersion, decideVersion } from './versioning';
 import { findPriorCommit, reserveNextRevision, saveCommittedTransaction } from './transactions';
 import { readMetadata, isSchemaCompatible } from './sheets/metadata';
-import { readAllRows, readIndex, readRowBodies, readRowBody, writeChangedRows, StoredRow } from './sheets/generic-table';
+import { readAllRows, readIndex, readIndexAfter, readRowBodies, readRowBody, writeChangedRows, StoredRow } from './sheets/generic-table';
 import { appendChangeLog, readChangeLogAfter, selectPull, ChangeLogEntry } from './sheets/change-log';
 
 const CLIENT_SUPPORTED_SCHEMA_VERSION = 1;
@@ -27,7 +27,7 @@ interface SyncRequest {
   syncId: string;
   deviceId: string;
   sharedSecret: string;
-  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'INDEX' | 'FETCH' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
+  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'INDEX' | 'FETCH' | 'ROWS_AFTER' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
   changes: ChangeInput[];
   /** When present, the response also carries other devices' changes committed after this revision (paged). */
   pullSince?: number;
@@ -39,6 +39,8 @@ interface SyncRequest {
   indexTypes?: string[];
   /** FETCH: the records to send, by tab. */
   fetchIds?: Record<string, string[]>;
+  /** ROWS_AFTER: per tab, the last row the device has already read (0: none). */
+  rowsAfter?: Record<string, number>;
   /** Only read for action = DEBUG_DUMP. */
   debugTabs?: EntityTab[];
 }
@@ -67,8 +69,10 @@ interface SyncResponse {
   removed?: number;
   /** INDEX: [id, version] of every row, by tab. */
   index?: Record<string, Array<[string, number]>>;
-  /** FETCH: the answer stopped early; ask again for the ids not received. */
+  /** FETCH / ROWS_AFTER: the answer stopped early; ask again for the rest. */
   truncated?: boolean;
+  /** INDEX / ROWS_AFTER: per tab, the last row covered by this answer — the device's next `rowsAfter`. */
+  lastRows?: Record<string, number>;
 }
 
 /**
@@ -105,6 +109,7 @@ function handleSyncRequest(request: SyncRequest): SyncResponse | DebugDumpRespon
   // Read-only, like DEBUG_DUMP: no lock needed.
   if (request.action === 'INDEX') return index(request);
   if (request.action === 'FETCH') return fetchRecords(request);
+  if (request.action === 'ROWS_AFTER') return rowsAfter(request);
 
   if (request.action === 'DEBUG_DUMP') {
     // Read-only inspection of tab contents, for setup verification. Never
@@ -399,10 +404,13 @@ const FETCH_MAX_CHARS = 4_000_000;
 function index(request: SyncRequest): SyncResponse {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const result: Record<string, Array<[string, number]>> = {};
+  const lastRows: Record<string, number> = {};
   for (const tab of request.indexTypes ?? []) {
-    result[tab] = Array.from(readIndex(spreadsheet, tab).values()).map((row) => [row.id, row.version]);
+    const { rows, lastRow } = readIndexAfter(spreadsheet, tab, 0);
+    result[tab] = rows.map((row) => [row.id, row.version]);
+    lastRows[tab] = lastRow;
   }
-  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, index: result, dataRevision: readMetadata(spreadsheet).dataRevision };
+  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, index: result, lastRows, dataRevision: readMetadata(spreadsheet).dataRevision };
 }
 
 /**
@@ -431,4 +439,47 @@ function fetchRecords(request: SyncRequest): SyncResponse {
     }
   }
   return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, downloads, truncated };
+}
+
+/** ROWS_AFTER reads bodies this many rows at a time, checking the answer size in between. */
+const ROWS_AFTER_CHUNK = 200;
+
+/**
+ * Read-only: the records in the rows after each tab's `rowsAfter` — the ones
+ * added since the device last looked (new records are always appended; edits
+ * stay in their row). Answers stop early near FETCH_MAX_CHARS with
+ * `truncated`; `lastRows` says where to continue. A device whose remembered
+ * row is past the end (e.g. a different or emptied sheet) starts over from 0.
+ */
+function rowsAfter(request: SyncRequest): SyncResponse {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const downloads: NonNullable<SyncResponse['downloads']> = [];
+  const lastRows: Record<string, number> = {};
+  let size = 0;
+  let truncated = false;
+  for (const [tab, requested] of Object.entries(request.rowsAfter ?? {})) {
+    let after = requested;
+    let { rows, lastRow } = readIndexAfter(spreadsheet, tab, after);
+    if (lastRow < after) {
+      after = 0;
+      ({ rows, lastRow } = readIndexAfter(spreadsheet, tab, 0));
+    }
+    lastRows[tab] = truncated ? after : lastRow;
+    if (truncated) continue;
+    for (let start = 0; start < rows.length; start += ROWS_AFTER_CHUNK) {
+      if (downloads.length > 0 && size >= FETCH_MAX_CHARS) {
+        truncated = true;
+        lastRows[tab] = rows[start].rowIndex! - 1;
+        break;
+      }
+      const chunk = rows.slice(start, start + ROWS_AFTER_CHUNK);
+      const bodies = readRowBodies(spreadsheet, tab, chunk.map((row) => row.rowIndex!));
+      for (const row of chunk) {
+        const body = bodies.get(row.rowIndex!) ?? '';
+        size += body.length;
+        downloads.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(body) });
+      }
+    }
+  }
+  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, downloads, lastRows, truncated };
 }

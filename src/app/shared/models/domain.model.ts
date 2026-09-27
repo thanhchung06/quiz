@@ -348,12 +348,14 @@ export interface AppSettings {
   feedbackDelayMs: number;
   /** @deprecated Replaced by autoSyncEnabled/autoSyncQuestions (data is always stored locally); only read to carry an older setting over. */
   storageMode: StorageMode;
-  /** Sync automatically (app open/close, finished exercise, assigning work). */
+  /** Sync automatically: download on app open, upload after every local save. */
   autoSyncEnabled?: boolean;
-  /** Automatic sync also includes questions and categories (off by default — they normally sync from "Đồng bộ ngay"). */
+  /** The download on app open also includes questions and categories (off by default). Question edits always upload. */
   autoSyncQuestions?: boolean;
   /** With autoSyncQuestions: only take questions/categories this device doesn't have yet — never updates to existing ones. */
   autoSyncAddedQuestionsOnly?: boolean;
+  /** Per question sheet (Category, QuizItem): the last row already downloaded — new questions are the rows after it. */
+  questionRowCursor?: Record<string, number>;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;

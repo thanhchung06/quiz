@@ -91,6 +91,25 @@ export function readIndex(spreadsheet: GoogleSpreadsheet, tabName: string): Map<
   return result;
 }
 
+/**
+ * Ids/versions of the rows after `afterRow` (columns A:B only), in sheet order,
+ * plus the sheet's last row. New records are always appended, so a device
+ * that remembers the last row it has read can ask for just the new ones.
+ */
+export function readIndexAfter(spreadsheet: GoogleSpreadsheet, tabName: string, afterRow: number): { rows: StoredRow[]; lastRow: number } {
+  const sheet = getOrCreateSheet(spreadsheet, tabName);
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= afterRow) return { rows: [], lastRow };
+  const rows: StoredRow[] = [];
+  sheet
+    .getRange(afterRow + 1, 1, lastRow - afterRow, 2)
+    .getValues()
+    .forEach(([id, version], index) => {
+      if (id) rows.push({ id: String(id), version: Number(version), bodyJson: '', rowIndex: afterRow + 1 + index });
+    });
+  return { rows, lastRow };
+}
+
 /** The full body stored in one row (columns C onward, joined). */
 export function readRowBody(spreadsheet: GoogleSpreadsheet, tabName: string, rowIndex: number): string {
   const sheet = getOrCreateSheet(spreadsheet, tabName);

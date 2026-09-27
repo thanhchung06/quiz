@@ -1,106 +1,98 @@
-import { AutoSyncService } from '../../src/app/sync-engine/auto-sync.service';
+/**
+ * @jest-environment node
+ */
+import 'fake-indexeddb/auto';
+import { AutoSyncService, PUSH_DELAY_MS } from '../../src/app/sync-engine/auto-sync.service';
 import { AppSettingsRepository } from '../../src/app/data/repositories/app-settings.repository';
 import { SyncClientService } from '../../src/app/sync-engine/sync-client.service';
 import { SessionService } from '../../src/app/core/auth/session.service';
-import { Profile } from '../../src/app/shared/models/domain.model';
+import { Profile, Reward } from '../../src/app/shared/models/domain.model';
+import { db } from '../../src/app/data/db';
+import { newSyncEnvelope } from '../../src/app/shared/models/sync.model';
+
+const store = new Map<string, string>([['quiz-app.syncEndpoint', 'https://script/exec']]);
+(globalThis as Record<string, unknown>)['localStorage'] = { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => store.set(k, v) };
 
 const child = { id: 'kid', role: 'child' } as Profile;
 const parent = { id: 'mom', role: 'parent' } as Profile;
 
-function setup(settings: object, loggedIn?: Profile) {
-  localStorage.setItem('quiz-app.syncEndpoint', 'https://script/exec');
-  const run = jest.fn(async () => 'success');
-  let listener: (previous: Profile | undefined, current: Profile | undefined) => void = () => undefined;
-  let current = loggedIn;
-  const session = {
-    currentProfile: () => current,
-    onProfileChange: (l: typeof listener) => (listener = l),
-  } as unknown as SessionService;
-  const auto = new AutoSyncService(
-    { get: async () => ({ storageMode: 'localOnly', ...settings }) } as unknown as AppSettingsRepository,
-    { run } as unknown as SyncClientService,
-    session,
-  );
-  const switchTo = (next: Profile | undefined) => {
-    const previous = current;
-    current = next;
-    listener(previous, next);
-  };
-  return { auto, run, switchTo };
-}
-const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+// Dexie hooks are registered once per table, so one service watches the whole file; each test swaps what it sees.
+let settings: object = {};
+let loggedIn: Profile | undefined;
+const run = jest.fn(async () => 'success');
+const auto = new AutoSyncService(
+  { get: async () => ({ storageMode: 'localOnly', ...settings }) } as unknown as AppSettingsRepository,
+  { run } as unknown as SyncClientService,
+  { currentProfile: () => loggedIn } as unknown as SessionService,
+);
+const settle = async () => {
+  for (let i = 0; i < 5; i++) await new Promise((resolve) => setImmediate(resolve));
+};
+const waitForPush = async () => {
+  await new Promise((resolve) => setTimeout(resolve, PUSH_DELAY_MS + 50));
+  await settle();
+};
+const reward = (id: string): Reward => ({ ...newSyncEnvelope(id, 'x'), profileId: 'kid', type: 'star', key: id, earnedAt: '' }) as Reward;
 
 describe('AutoSyncService', () => {
-  it('uploads changes of whoever is logged in after an exercise, and does nothing when turned off', async () => {
-    const on = setup({ autoSyncEnabled: true }, child);
-    on.auto.request('attempt-finished');
+  beforeEach(() => {
+    run.mockClear();
+    settings = { autoSyncEnabled: true };
+    loggedIn = undefined;
+  });
+
+  it('opening the app downloads (with questions, new-only, when ticked) and uploads nothing', async () => {
+    settings = { autoSyncEnabled: true, autoSyncQuestions: true, autoSyncAddedQuestionsOnly: true };
+    auto.startLifecycleHooks();
     await settle();
-    expect(on.run).toHaveBeenCalledWith('https://script/exec', {
-      scopes: ['data'],
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(run).toHaveBeenCalledWith('https://script/exec', { scopes: ['questions', 'data'], push: false, pull: true, mode: 'changes', addedQuestionsOnly: true });
+  });
+
+  it('every local save uploads shortly after, as the person logged in; saves close together go up once', async () => {
+    loggedIn = child;
+    await db.rewards.add(reward('r1'));
+    await db.rewards.add(reward('r2'));
+    await db.rewards.update('r1', { key: 'edited', syncStatus: 'pendingUpload' });
+    await waitForPush();
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(run).toHaveBeenCalledWith('https://script/exec', {
+      scopes: ['questions', 'data'],
       push: true,
       pull: false,
       mode: 'changes',
-      addedQuestionsOnly: false,
       uploader: { role: 'child', profileId: 'kid' },
     });
+  }, 10_000);
 
-    const off = setup({ autoSyncEnabled: false }, parent);
-    off.auto.request('assigned');
-    await settle();
-    expect(off.run).not.toHaveBeenCalled();
-  });
-
-  it('nothing goes up with nobody logged in', async () => {
-    const { auto, run } = setup({ autoSyncEnabled: true });
-    auto.request('close');
-    await settle();
+  it("sync's own writes (synced records) upload nothing; neither do saves with nobody logged in or auto sync off", async () => {
+    loggedIn = parent;
+    await db.rewards.put({ ...reward('r3'), syncStatus: 'synced' });
+    await db.rewards.update('r3', { lastGoogleVersion: 4, syncStatus: 'synced' });
+    await waitForPush();
     expect(run).not.toHaveBeenCalled();
-  });
 
-  it('opening the app pulls from Google (with questions and added-only when ticked)', async () => {
-    const { auto, run } = setup({ autoSyncEnabled: true, autoSyncQuestions: true, autoSyncAddedQuestionsOnly: true });
-    auto.startLifecycleHooks();
-    await settle();
-    expect(run).toHaveBeenCalledWith('https://script/exec', {
-      scopes: ['questions', 'data'],
-      push: false,
-      pull: true,
-      mode: 'changes',
-      addedQuestionsOnly: true,
-      uploader: undefined,
-    });
-  });
+    loggedIn = undefined;
+    await db.rewards.add(reward('r4'));
+    await waitForPush();
+    loggedIn = parent;
+    settings = { autoSyncEnabled: false };
+    await db.rewards.add(reward('r5'));
+    await waitForPush();
+    expect(run).not.toHaveBeenCalled();
+  }, 10_000);
 
-  it('treats an older device set to the retired "automaticSync" mode as enabled', async () => {
-    const { auto, run } = setup({ storageMode: 'automaticSync' }, parent);
-    auto.request('assigned');
-    await settle();
-    expect(run).toHaveBeenCalled();
-  });
-
-  it('uploads on login, on logout (as the person leaving), and when the app is hidden or closed', async () => {
-    const { auto, run, switchTo } = setup({ autoSyncEnabled: true });
-    auto.startLifecycleHooks();
-    await settle();
-    run.mockClear();
-
-    switchTo(child);
-    await settle();
-    switchTo(undefined);
-    await settle();
-    expect(run.mock.calls.map((c) => (c as unknown[])[1])).toEqual([
-      expect.objectContaining({ push: true, pull: false, uploader: { role: 'child', profileId: 'kid' } }),
-      expect.objectContaining({ push: true, pull: false, uploader: { role: 'child', profileId: 'kid' } }),
-    ]);
-
-    switchTo(parent);
-    await settle();
-    run.mockClear();
-    Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
-    document.dispatchEvent(new Event('visibilitychange'));
-    window.dispatchEvent(new Event('pagehide'));
-    await settle();
+  it('a save during an upload triggers one more upload after it', async () => {
+    loggedIn = parent;
+    let finish: () => void = () => undefined;
+    run.mockImplementationOnce(() => new Promise((resolve) => (finish = () => resolve('success'))));
+    await db.rewards.add(reward('r6'));
+    await waitForPush(); // first upload running
+    await db.rewards.add(reward('r7'));
+    await waitForPush(); // asked while running: waits
+    expect(run).toHaveBeenCalledTimes(1);
+    finish();
+    await waitForPush();
     expect(run).toHaveBeenCalledTimes(2);
-    expect(run).toHaveBeenLastCalledWith('https://script/exec', expect.objectContaining({ uploader: { role: 'parent', profileId: 'mom' } }));
-  });
+  }, 15_000);
 });

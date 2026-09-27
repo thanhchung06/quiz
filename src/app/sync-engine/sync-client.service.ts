@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { db } from '../data/db';
 import { currentDeviceId } from '../data/repositories/base-repository';
 import { BatchBuilderService } from './batch-builder.service';
+import { AppSettingsRepository } from '../data/repositories/app-settings.repository';
 import { GoogleAuthService } from '../features/sync/services/google-auth.service';
 import { DownloadApplierService, TABLE_BY_ENTITY } from './download-applier.service';
 import { SyncRequestBody, SyncResponseBody, SyncChange } from './sync-api.types';
@@ -136,6 +137,7 @@ export class SyncClientService {
     private readonly batchBuilder: BatchBuilderService,
     private readonly googleAuth: GoogleAuthService,
     private readonly downloads: DownloadApplierService,
+    private readonly settings: AppSettingsRepository,
   ) {}
 
   /** Syncs run one after another; asking again for the same run while it is queued joins it. */
@@ -243,7 +245,7 @@ export class SyncClientService {
   ): Promise<SyncOutcome> {
     const types = SCOPE_TYPES[scope];
     const addedOnly = !!options.addedQuestionsOnly && scope === 'questions';
-    const all = options.mode === 'mirror' ? await this.batchBuilder.collectAll(types) : await this.batchBuilder.collectPendingChanges();
+    const all = options.mode === 'mirror' ? await this.batchBuilder.collectAll(types) : await this.batchBuilder.collectPendingChanges(types);
     const changes = all.filter((c) => types.includes(c.entityType) && mayUpload(c) && (!addedOnly || c.lastGoogleVersion === 0));
 
     // Progress adds up over the scopes of one run (questions + data).
@@ -306,7 +308,8 @@ export class SyncClientService {
    * in 'mirror' mode only when the logged-in person couldn't upload it anyway
    * (e.g. a child's results on the parent's login). 'mirror' also deletes
    * local records Google doesn't have, never Profiles or such kept changes.
-   * With addedQuestionsOnly, questions/categories already here are left alone.
+   * With addedQuestionsOnly, questions/categories only come from the sheet
+   * rows after the last one this device has read (see pullNewRows).
    */
   private async pull(
     endpointUrl: string,
@@ -315,6 +318,8 @@ export class SyncClientService {
     options: SyncRunOptions,
     mayUpload: (record: UploadCandidate) => boolean,
   ): Promise<SyncOutcome> {
+    if (scope === 'questions' && options.addedQuestionsOnly) return this.pullNewRows(endpointUrl, sharedSecret, SCOPE_TYPES[scope]);
+
     const types = SCOPE_TYPES[scope];
     const indexed = await this.post(endpointUrl, this.request(sharedSecret, { action: 'INDEX', indexTypes: types }));
     if (indexed.outcome !== 'success' || !indexed.response) return indexed.outcome;
@@ -324,7 +329,6 @@ export class SyncClientService {
     for (const type of types) {
       const tableName = TABLE_BY_ENTITY[type];
       if (!tableName) continue;
-      const addedOnly = !!options.addedQuestionsOnly && QUESTION_ENTITY_TYPES.includes(type);
       const table = db[tableName] as unknown as { toArray(): Promise<Array<SyncEnvelope & Record<string, unknown>>> };
       const locals = new Map((await table.toArray()).map((r) => [r.id, r]));
       const keepLocal = (local: SyncEnvelope & Record<string, unknown>) =>
@@ -337,14 +341,14 @@ export class SyncClientService {
         googleIds.add(id);
         const local = locals.get(id);
         if (!local) wanted.push(id);
-        else if (addedOnly || keepLocal(local)) continue;
+        else if (keepLocal(local)) continue;
         else if (local.lastGoogleVersion !== version || local.syncStatus === 'pendingUpload') wanted.push(id);
       }
 
-      const outcome = await this.fetchAndStore(endpointUrl, sharedSecret, type, wanted, addedOnly);
+      const outcome = await this.fetchAndStore(endpointUrl, sharedSecret, type, wanted);
       if (outcome !== 'success') return outcome;
 
-      if (options.mode === 'mirror' && !addedOnly && type !== 'Profile') {
+      if (options.mode === 'mirror' && type !== 'Profile') {
         const missing = Array.from(locals.values())
           .filter((local) => !googleIds.has(local.id) && !keepLocal(local))
           .map((local) => local.id);
@@ -352,18 +356,52 @@ export class SyncClientService {
         await this.downloads.remove(type, missing);
       }
     }
+    // Everything up to these rows is now here: "new questions only" can carry on after them.
+    if (scope === 'questions' && indexed.response.lastRows) await this.saveRowCursor(indexed.response.lastRows);
     return 'success';
   }
 
-  private async fetchAndStore(endpointUrl: string, sharedSecret: string, type: string, ids: string[], addedOnly: boolean): Promise<SyncOutcome> {
+  /**
+   * "Only newly added questions": new records are always appended to their
+   * sheet (edits stay in their row), so this device remembers the last row it
+   * has read per sheet and asks only for the rows after it. Records it already
+   * has are left alone; so are new ones that are already deleted.
+   */
+  private async pullNewRows(endpointUrl: string, sharedSecret: string, types: string[]): Promise<SyncOutcome> {
+    for (let page = 0; page < 10_000; page++) {
+      const cursor = (await this.settings.get()).questionRowCursor ?? {};
+      const rowsAfter = Object.fromEntries(types.map((type) => [type, cursor[type] ?? 0]));
+      const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, { action: 'ROWS_AFTER', rowsAfter }));
+      if (outcome !== 'success' || !response) return outcome;
+      if (!response.lastRows) return this.scriptTooOld();
+
+      const fresh = [];
+      for (const download of response.downloads ?? []) {
+        const tableName = TABLE_BY_ENTITY[download.entityType];
+        if (!tableName || download.payload?.['deletedAt']) continue;
+        const table = db[tableName] as unknown as { get(id: string): Promise<unknown> };
+        if (!(await table.get(download.entityId))) fresh.push(download);
+      }
+      const applied = await this.downloads.overwrite(fresh);
+      this._received.update((n) => n + applied);
+      await this.saveRowCursor(response.lastRows);
+      if (!response.truncated) break;
+    }
+    return 'success';
+  }
+
+  private async saveRowCursor(lastRows: Record<string, number>): Promise<void> {
+    const cursor = (await this.settings.get()).questionRowCursor ?? {};
+    await this.settings.update({ questionRowCursor: { ...cursor, ...lastRows } });
+  }
+
+  private async fetchAndStore(endpointUrl: string, sharedSecret: string, type: string, ids: string[]): Promise<SyncOutcome> {
     let queue = ids;
     while (queue.length > 0) {
       const chunk = queue.slice(0, FETCH_IDS_PER_REQUEST);
       const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, { action: 'FETCH', fetchIds: { [type]: chunk } }));
       if (outcome !== 'success' || !response) return outcome;
-      // A brand-new question that is already deleted on Google has nothing to add.
-      const downloads = (response.downloads ?? []).filter((d) => !(addedOnly && d.payload?.['deletedAt']));
-      const applied = await this.downloads.overwrite(downloads);
+      const applied = await this.downloads.overwrite(response.downloads ?? []);
       this._received.update((n) => n + applied);
       const got = new Set((response.downloads ?? []).map((d) => d.entityId));
       // Not truncated: every id was answered (ids gone from Google are simply absent).

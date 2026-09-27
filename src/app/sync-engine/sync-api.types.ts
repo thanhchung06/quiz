@@ -36,7 +36,7 @@ export interface SyncRequestBody {
   sharedSecret: string;
   startedAt: string;
   lastKnownDataRevision: number;
-  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'INDEX' | 'FETCH' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT';
+  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'INDEX' | 'FETCH' | 'ROWS_AFTER' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT';
   changes: SyncChange[];
   conflictResolutions?: ConflictResolutionInput[];
   /** Ask for other devices' changes committed after this revision (paged, see SyncResponseBody.hasMore). */
@@ -49,6 +49,8 @@ export interface SyncRequestBody {
   indexTypes?: string[];
   /** FETCH: the records to send, by entity type. */
   fetchIds?: Record<string, string[]>;
+  /** ROWS_AFTER: per entity type, the last sheet row this device has already read. */
+  rowsAfter?: Record<string, number>;
 }
 
 export interface SyncConflict {
@@ -84,6 +86,8 @@ export interface SyncResponseBody {
   removed?: number;
   /** INDEX: [id, version] of every Google record, by entity type. */
   index?: Record<string, Array<[string, number]>>;
-  /** FETCH: the answer stopped early; ask again for the ids not received. */
+  /** FETCH / ROWS_AFTER: the answer stopped early; ask again for the rest. */
   truncated?: boolean;
+  /** INDEX / ROWS_AFTER: per entity type, the last sheet row covered — where the next ROWS_AFTER starts. */
+  lastRows?: Record<string, number>;
 }

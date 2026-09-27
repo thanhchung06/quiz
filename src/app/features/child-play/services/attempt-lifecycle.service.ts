@@ -6,7 +6,6 @@ import { AttemptResolverService } from './attempt-resolver.service';
 import { ScoringService, ScoringState } from './scoring.service';
 import { evaluateAnswer } from './answer-evaluator';
 import { RewardsEngineService, RewardsOutcome } from '../../rewards/services/rewards-engine.service';
-import { AutoSyncService } from '../../../sync-engine/auto-sync.service';
 
 function localDateOf(iso: string): string {
   const d = new Date(iso);
@@ -69,7 +68,6 @@ export class AttemptLifecycleService {
     private readonly resolver: AttemptResolverService,
     private readonly scoring: ScoringService,
     private readonly rewardsEngine: RewardsEngineService,
-    private readonly autoSync: AutoSyncService,
   ) {}
 
   /**
@@ -365,7 +363,5 @@ export class AttemptLifecycleService {
     }
 
     this._attempt.set(finished);
-    // Results go up to the Google Sheet in the background (automatic-sync devices only); never awaited.
-    this.autoSync.request('attempt-finished');
   }
 }

@@ -57,6 +57,7 @@ import { SyncClientService } from '../../src/app/sync-engine/sync-client.service
 import { BatchBuilderService } from '../../src/app/sync-engine/batch-builder.service';
 import { ProfileRepository } from '../../src/app/data/repositories/profile.repository';
 import { DownloadApplierService } from '../../src/app/sync-engine/download-applier.service';
+import { AppSettingsRepository } from '../../src/app/data/repositories/app-settings.repository';
 import { GoogleAuthService } from '../../src/app/features/sync/services/google-auth.service';
 import { QuizItemRepository } from '../../src/app/data/repositories/quiz-item.repository';
 import { newSyncEnvelope } from '../../src/app/shared/models/sync.model';
@@ -85,6 +86,7 @@ function syncClient() {
     new BatchBuilderService(new ProfileRepository()),
     { sharedSecret: () => 'secret' } as unknown as GoogleAuthService,
     new DownloadApplierService(),
+    new AppSettingsRepository(),
   );
   client.retryDelaysMs = [0, 0, 0];
   return client;
@@ -198,8 +200,14 @@ describe('sync end to end (real Apps Script code, fake Sheet)', () => {
     await becomeDevice('tablet');
     await db.quizItems.bulkAdd(Array.from({ length: 450 }, (_, i) => question(i, 'cat')).map((q) => ({ ...q, syncStatus: 'synced', lastGoogleVersion: 1 }) as QuizItem));
     await db.attempts.add({ ...attempt('local-only', 'kid2'), syncStatus: 'synced' } as Attempt);
+    await new AppSettingsRepository().update({ questionRowCursor: { Category: 1, QuizItem: 450 } }); // read up to q449 before
+    requestCount = 0;
     expect(await tablet.run(URL, autoPull({ addedQuestionsOnly: true }))).toBe('success');
     expect(await db.quizItems.get('q450')).toBeDefined();
+    expect(tablet.received()).toBe(1 + 7); // just the new row, plus the data scope (3 profiles, exercise, assignment, attempt, answer)
+    expect((await new AppSettingsRepository().get()).questionRowCursor).toEqual({ Category: 1, QuizItem: 451 });
+    expect(await tablet.run(URL, autoPull({ addedQuestionsOnly: true, scopes: ['questions'] }))).toBe('success');
+    expect(tablet.received()).toBe(0); // nothing after the remembered row
     expect((await db.quizItems.get('q1'))?.prompt).not.toBe('mẹ sửa');
     expect(await db.attempts.get('local-only')).toBeDefined(); // automatic sync never deletes local records
     expect(await tablet.run(URL, autoPull())).toBe('success');

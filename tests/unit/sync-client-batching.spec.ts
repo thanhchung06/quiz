@@ -2,6 +2,7 @@ import { SyncClientService, SyncRunOptions, batchBySize, describeServerError } f
 import { BatchBuilderService } from '../../src/app/sync-engine/batch-builder.service';
 import { GoogleAuthService } from '../../src/app/features/sync/services/google-auth.service';
 import { DownloadApplierService } from '../../src/app/sync-engine/download-applier.service';
+import { AppSettingsRepository } from '../../src/app/data/repositories/app-settings.repository';
 import { SyncChange, SyncRequestBody } from '../../src/app/sync-engine/sync-api.types';
 import { randomUUID } from 'node:crypto';
 
@@ -18,6 +19,7 @@ function client(changeCount: number, entityType = 'Exercise', payloadChars = 10)
     { collectPendingChanges: async () => changes, collectAll: async () => changes } as unknown as BatchBuilderService,
     { sharedSecret: () => 'secret' } as unknown as GoogleAuthService,
     {} as unknown as DownloadApplierService,
+    {} as unknown as AppSettingsRepository,
   );
   c.retryDelaysMs = [0, 0, 0];
   return { c };

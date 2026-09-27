@@ -55,31 +55,31 @@
       <input type="checkbox" [checked]="autoSyncEnabled()" (change)="setAutoSyncEnabled($any($event.target).checked)" />
       <span>
         Tự động đồng bộ
-        <small>Khi mở và thoát ứng dụng, khi bé làm xong bài và khi giao bài.</small>
+        <small>Mở ứng dụng: nhận dữ liệu từ Google. Mỗi lần lưu trên máy: gửi ngay lên Google.</small>
       </span>
     </label>
     @if (autoSyncEnabled()) {
       <label class="check sub">
         <input type="checkbox" [checked]="autoSyncQuestions()" (change)="autoSyncQuestions.set($any($event.target).checked); autoSyncMessage.set('')" />
         <span>
-          Đồng bộ cả câu hỏi
-          <small>Thường để trống: câu hỏi và danh mục ít thay đổi, đồng bộ bằng "Đồng bộ ngay" là đủ.</small>
+          Nhận cả câu hỏi khi mở ứng dụng
+          <small>Câu hỏi phụ huynh sửa trên máy này luôn được gửi lên; ô này chỉ quyết định việc nhận về.</small>
         </span>
       </label>
       @if (autoSyncQuestions()) {
         <label class="check sub sub2">
           <input type="checkbox" [checked]="autoSyncAddedOnly()" (change)="autoSyncAddedOnly.set($any($event.target).checked); autoSyncMessage.set('')" />
           <span>
-            Chỉ lấy câu hỏi mới thêm
-            <small>Bỏ qua câu hỏi đã có trên máy này dù được sửa ở máy khác.</small>
+            Chỉ nhận câu hỏi mới thêm
+            <small>Chỉ đọc các dòng mới trong sheet kể từ lần trước (nhanh); bỏ qua câu hỏi đã có dù được sửa ở máy khác.</small>
           </span>
         </label>
       }
     }
     <p class="hint">
-      <app-icon name="info" />Khi mở ứng dụng: nhận dữ liệu mới nhất từ Google. Khi có thay đổi trên máy (làm bài, giao bài, đăng
-      nhập/đăng xuất, thoát ứng dụng): gửi lên Google. Bé chỉ gửi dữ liệu của chính bé; phụ huynh gửi câu hỏi, bài tập, giao bài
-      nhưng không gửi kết quả của bé.
+      <app-icon name="info" />Bé chỉ gửi dữ liệu của chính bé (hồ sơ, bài làm, kết quả, phần thưởng); phụ huynh gửi câu hỏi, bài
+      tập, giao bài, đổi điểm nhưng không gửi kết quả của bé. Thay đổi chưa gửi được (mất mạng, chưa đăng nhập) sẽ đi cùng lần
+      lưu sau.
     </p>
     <div class="panel-actions">
       <button type="button" class="primary" [disabled]="!autoSyncDirty()" (click)="saveAutoSync()"><app-icon name="save" />Lưu</button>
@@ -149,7 +149,7 @@
                 <small>{{
                   direction() === 'push'
                     ? 'Chỉ gửi câu hỏi chưa từng gửi lên; không sửa, không xóa câu hỏi trên Google.'
-                    : 'Chỉ nhận câu hỏi máy này chưa có; không sửa, không xóa câu hỏi trên máy.'
+                    : 'Chỉ đọc các dòng mới trong sheet kể từ lần trước; không sửa, không xóa câu hỏi trên máy.'
                 }}</small></span
               >
             </label>

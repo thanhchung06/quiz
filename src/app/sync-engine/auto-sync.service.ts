@@ -1,35 +1,44 @@
 import { Injectable } from '@angular/core';
+import { Table } from 'dexie';
+import { db } from '../data/db';
 import { AppSettingsRepository } from '../data/repositories/app-settings.repository';
 import { SessionService } from '../core/auth/session.service';
 import { Profile } from '../shared/models/domain.model';
 import { SyncClientService, SyncScope } from './sync-client.service';
+import { TABLE_BY_ENTITY } from './download-applier.service';
 import { readAutoSyncSettings } from './storage-mode.service';
 import { syncEndpointUrl } from './sync-endpoint';
 import { Uploader } from './upload-policy';
-
-export type AutoSyncReason = 'open' | 'close' | 'attempt-finished' | 'assigned' | 'login' | 'logout';
 
 export function uploaderOf(profile: Profile | undefined): Uploader | undefined {
   return profile ? { role: profile.role === 'child' ? 'child' : 'parent', profileId: profile.id } : undefined;
 }
 
+/** Saves this close together go up in one upload (a child answering questions, an import of many questions). */
+export const PUSH_DELAY_MS = 2000;
+
 /**
- * Automatic Sync (FR-055), for devices with "Tự động đồng bộ" ticked — the
- * data scope, plus questions/categories only if "Đồng bộ cả câu hỏi" is ticked:
+ * Automatic Sync (FR-055), for devices with "Tự động đồng bộ" ticked:
  *
- * - App opened: what changed here goes up, then Google's copy comes down and
- *   overwrites this device's (records changed here but not uploadable by
- *   whoever is logged in are kept).
- * - Login, logout, app closed/hidden, exercise finished, work assigned: what
- *   changed here goes up — only what the person logged in (or the one just
- *   logging out) may upload, see uploadPolicy.
+ * - App opened: Google's data comes down and overwrites this device's copy —
+ *   everything except questions, plus questions/categories when "Nhận cả câu
+ *   hỏi" is ticked (optionally only newly added ones). The device may be
+ *   shared by the parent and the children, so all of it is taken; local
+ *   changes not uploaded yet are kept.
+ * - Every local save: shortly after, what changed goes up — only what the
+ *   person logged in may upload (see uploadPolicy). Nothing else triggers an
+ *   upload: a change that couldn't go up (offline, nobody logged in, another
+ *   child's) goes with the next save that can upload it.
  *
  * Fire-and-forget: never awaited on the child's login/play path; failures only
- * show on the Sync screen, and pending changes simply go up next time.
+ * show on the Sync screen.
  */
 @Injectable({ providedIn: 'root' })
 export class AutoSyncService {
   private started = false;
+  private pushTimer?: ReturnType<typeof setTimeout>;
+  private pushing = false;
+  private pushAgain = false;
 
   constructor(
     private readonly settings: AppSettingsRepository,
@@ -37,44 +46,62 @@ export class AutoSyncService {
     private readonly session: SessionService,
   ) {}
 
-  /** `profile`: whose data may go up; defaults to whoever is logged in now. */
-  request(reason: AutoSyncReason, profile: Profile | undefined = this.session.currentProfile()): void {
-    void this.run(reason, profile).catch(() => undefined);
-  }
-
-  /** Syncs once now (app opened), on every login/logout, and whenever the app is hidden/closed (switching away on a phone counts). */
+  /** Downloads once now (app opened), then uploads after every local save. */
   startLifecycleHooks(): void {
-    if (this.started || typeof document === 'undefined') return;
+    if (this.started) return;
     this.started = true;
-    this.request('open');
-
-    this.session.onProfileChange((previous, current) => {
-      if (previous) this.request('logout', previous); // what they did goes up under their own name
-      if (current) this.request('login', current);
-    });
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') this.request('close');
-    });
-    window.addEventListener('pagehide', () => this.request('close'));
+    void this.pullOnOpen().catch(() => undefined);
+    this.watchLocalSaves();
   }
 
-  private async run(reason: AutoSyncReason, profile: Profile | undefined): Promise<void> {
+  /** Schedules an upload (callers normally don't need this: saves are watched). */
+  schedulePush(): void {
+    clearTimeout(this.pushTimer);
+    this.pushTimer = setTimeout(() => void this.pushNow(), PUSH_DELAY_MS);
+  }
+
+  /** Any record written as pendingUpload (a local change) schedules an upload; sync's own writes are 'synced' and don't. */
+  private watchLocalSaves(): void {
+    for (const tableName of Object.values(TABLE_BY_ENTITY)) {
+      const table = db[tableName] as unknown as Table<{ syncStatus?: string }, string>;
+      table.hook('creating', (_key, record) => {
+        if (record.syncStatus === 'pendingUpload') this.schedulePush();
+      });
+      table.hook('updating', (changes, _key, record) => {
+        const status = 'syncStatus' in changes ? (changes as { syncStatus?: string }).syncStatus : record.syncStatus;
+        if (status === 'pendingUpload') this.schedulePush();
+      });
+    }
+  }
+
+  private async pushNow(): Promise<void> {
+    if (this.pushing) {
+      this.pushAgain = true; // a save during an upload: go again once it ends
+      return;
+    }
+    this.pushing = true;
+    try {
+      const endpoint = syncEndpointUrl();
+      const uploader = uploaderOf(this.session.currentProfile());
+      if (!endpoint || !uploader || !readAutoSyncSettings(await this.settings.get()).enabled) return;
+      await this.syncClient.run(endpoint, { scopes: ['questions', 'data'], push: true, pull: false, mode: 'changes', uploader });
+    } catch {
+      // shown on the Sync screen; the changes stay pending for the next save
+    } finally {
+      this.pushing = false;
+      if (this.pushAgain) {
+        this.pushAgain = false;
+        this.schedulePush();
+      }
+    }
+  }
+
+  private async pullOnOpen(): Promise<void> {
     const endpoint = syncEndpointUrl();
     if (!endpoint) return;
     const auto = readAutoSyncSettings(await this.settings.get());
     if (!auto.enabled) return;
-    const uploader = uploaderOf(profile);
-    const pull = reason === 'open';
-    if (!pull && !uploader) return; // nothing may go up with nobody logged in
     const scopes: SyncScope[] = auto.includeQuestions ? ['questions', 'data'] : ['data'];
-    await this.syncClient.run(endpoint, {
-      scopes,
-      push: !!uploader,
-      pull,
-      mode: 'changes',
-      addedQuestionsOnly: auto.addedQuestionsOnly,
-      uploader,
-    });
+    await this.syncClient.run(endpoint, { scopes, push: false, pull: true, mode: 'changes', addedQuestionsOnly: auto.addedQuestionsOnly });
   }
 }

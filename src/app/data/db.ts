@@ -65,6 +65,21 @@ export class QuizAppDb extends Dexie {
     this.version(2).stores({
       pointRedemptions: 'id, profileId, redeemedAt',
     });
+
+    // v3: syncStatus indexed on every synced table, so each save's upload
+    // finds the few pending records without reading whole tables.
+    this.version(3).stores({
+      profiles: 'id, role, syncStatus',
+      categories: 'id, subject, normalizedName, status, syncStatus',
+      quizItems: 'id, subject, grade, type, difficulty, status, reviewStatus, categoryId, *tags, syncStatus',
+      exercises: 'id, subject, grade, status, syncStatus',
+      assignments: 'id, profileId, assignedDate, [profileId+assignedDate], syncStatus',
+      rotations: 'id, profileId, syncStatus',
+      attempts: 'id, profileId, status, [profileId+status], exerciseId, startedAt, syncStatus',
+      answerResults: 'id, attemptId, submittedAt, syncStatus',
+      rewards: 'id, profileId, type, earnedAt, syncStatus',
+      pointRedemptions: 'id, profileId, redeemedAt, syncStatus',
+    });
   }
 }
 

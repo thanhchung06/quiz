@@ -4,6 +4,7 @@ import { GoogleAuthService } from '../services/google-auth.service';
 import { SyncClientService, SyncOutcome, SyncRunOptions } from '../../../sync-engine/sync-client.service';
 import { StorageModeService } from '../../../sync-engine/storage-mode.service';
 import { SessionService } from '../../../core/auth/session.service';
+import { AppSettingsRepository } from '../../../data/repositories/app-settings.repository';
 import { uploaderOf } from '../../../sync-engine/auto-sync.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { SYNC_ENDPOINT_KEY, syncEndpointUrl } from '../../../sync-engine/sync-endpoint';
@@ -88,6 +89,7 @@ export class SyncScreenComponent {
     private readonly syncClient: SyncClientService,
     private readonly autoSyncSettings: StorageModeService,
     private readonly session: SessionService,
+    private readonly appSettings: AppSettingsRepository,
   ) {
     this.connected = this.googleAuth.connected;
     this.spreadsheetId = this.googleAuth.spreadsheetId;
@@ -110,6 +112,8 @@ export class SyncScreenComponent {
   saveConnection(): void {
     if (!this.connectionDirty()) return;
     const endpoint = this.endpointUrl().trim();
+    // Another Web App may mean another sheet: "new questions only" starts reading from its first row again.
+    if (endpoint !== this.savedEndpointUrl()) void this.appSettings.update({ questionRowCursor: {} });
     localStorage.setItem(SYNC_ENDPOINT_KEY, endpoint);
     this.endpointUrl.set(endpoint);
     this.savedEndpointUrl.set(endpoint);
@@ -165,9 +169,9 @@ export class SyncScreenComponent {
         ? 'Đã tắt tự động đồng bộ — dữ liệu vẫn được lưu trên máy này.'
         : this.autoSyncQuestions()
           ? this.autoSyncAddedOnly()
-            ? 'Đã lưu: tự động đồng bộ dữ liệu và câu hỏi mới thêm.'
-            : 'Đã lưu: tự động đồng bộ dữ liệu và câu hỏi.'
-          : 'Đã lưu: tự động đồng bộ dữ liệu (câu hỏi đồng bộ bằng "Đồng bộ ngay").',
+            ? 'Đã lưu: mở ứng dụng nhận dữ liệu và câu hỏi mới thêm; mỗi lần lưu gửi lên.'
+            : 'Đã lưu: mở ứng dụng nhận dữ liệu và câu hỏi; mỗi lần lưu gửi lên.'
+          : 'Đã lưu: mở ứng dụng nhận dữ liệu (không có câu hỏi); mỗi lần lưu gửi lên.',
     );
   }
 
