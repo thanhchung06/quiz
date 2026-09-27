@@ -5,6 +5,7 @@ import { ExerciseRepository } from '../../../data/repositories/exercise.reposito
 import { ProfileRepository } from '../../../data/repositories/profile.repository';
 import { Assignment, Exercise, Profile } from '../../../shared/models/domain.model';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { AutoSyncService } from '../../../sync-engine/auto-sync.service';
 
 /** Schedule screen (FR-033): assign an exercise to a child (or both) for a date. */
 @Component({
@@ -30,6 +31,7 @@ export class ScheduleComponent {
     private readonly profiles: ProfileRepository,
     private readonly exerciseRepo: ExerciseRepository,
     private readonly assignments: AssignmentRepository,
+    private readonly autoSync: AutoSyncService,
   ) {
     void this.load();
   }
@@ -61,6 +63,7 @@ export class ScheduleComponent {
         await this.assignments.setPrimaryAssignment(profileId, this.selectedExerciseId(), this.assignedDate());
       }
     }
+    this.autoSync.request('assigned');
     await this.load();
   }
 

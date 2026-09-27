@@ -41,6 +41,8 @@ export interface SyncRequestBody {
   conflictResolutions?: ConflictResolutionInput[];
   /** Ask for other devices' changes committed after this revision (paged, see SyncResponseBody.hasMore). */
   pullSince?: number;
+  /** With pullSince: only these entity types. */
+  pullTypes?: string[];
 }
 
 export interface SyncConflict {

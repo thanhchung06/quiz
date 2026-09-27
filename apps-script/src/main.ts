@@ -2,8 +2,8 @@ import { withExclusiveLock } from './lock';
 import { adoptIdenticalVersion, decideVersion } from './versioning';
 import { findPriorCommit, reserveNextRevision, saveCommittedTransaction } from './transactions';
 import { readMetadata, isSchemaCompatible } from './sheets/metadata';
-import { readAllRows, readIndex, readRowBody, writeChangedRows, StoredRow } from './sheets/generic-table';
-import { appendChangeLog, readChangeLog, selectPull, ChangeLogEntry } from './sheets/change-log';
+import { readAllRows, readIndex, readRowBodies, readRowBody, writeChangedRows, StoredRow } from './sheets/generic-table';
+import { appendChangeLog, readChangeLogAfter, selectPull, ChangeLogEntry } from './sheets/change-log';
 
 const CLIENT_SUPPORTED_SCHEMA_VERSION = 1;
 const LOCK_TIMEOUT_MS = 5000;
@@ -31,6 +31,8 @@ interface SyncRequest {
   changes: ChangeInput[];
   /** When present, the response also carries other devices' changes committed after this revision (paged). */
   pullSince?: number;
+  /** With pullSince: only these entity types (e.g. just QuizItem + Category for the question sync). */
+  pullTypes?: string[];
   /** Only read for action = DEBUG_DUMP. */
   debugTabs?: EntityTab[];
 }
@@ -288,17 +290,18 @@ function addPull(
   currentRevision: number,
 ): SyncResponse {
   if (typeof request.pullSince !== 'number') return response;
-  const page = selectPull(readChangeLog(spreadsheet), request.pullSince, request.deviceId, PULL_LIMIT, currentRevision);
+  const page = selectPull(readChangeLogAfter(spreadsheet, request.pullSince), request.pullSince, request.deviceId, PULL_LIMIT, currentRevision, request.pullTypes);
   const pulled: NonNullable<SyncResponse['downloads']> = [];
-  // Pulled records need their bodies: read each needed tab in full once (only when there is something to send).
-  const fullTabs = new Map<EntityTab, Map<string, StoredRow>>();
-  const fullTab = (tab: EntityTab) => {
-    if (!fullTabs.has(tab)) fullTabs.set(tab, readAllRows(spreadsheet, tab));
-    return fullTabs.get(tab)!;
-  };
-  for (const { entityType, entityId } of page.records) {
-    const row = fullTab(entityType).get(entityId);
-    if (row) pulled.push({ entityType, entityId, version: row.version, payload: safeParse(row.bodyJson) });
+  // Only the rows being sent are read (see readRowBodies), never a whole tab.
+  const byTab = new Map<EntityTab, string[]>();
+  for (const { entityType, entityId } of page.records) byTab.set(entityType, [...(byTab.get(entityType) ?? []), entityId]);
+  for (const [tab, ids] of byTab) {
+    const index = readIndex(spreadsheet, tab);
+    const rows = ids.map((id) => index.get(id)).filter((row): row is StoredRow => row?.rowIndex !== undefined);
+    const bodies = readRowBodies(spreadsheet, tab, rows.map((row) => row.rowIndex!));
+    for (const row of rows) {
+      pulled.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(bodies.get(row.rowIndex!) ?? '') });
+    }
   }
   return { ...response, downloads: [...(response.downloads ?? []), ...pulled], dataRevision: page.nextRevision, hasMore: page.hasMore };
 }

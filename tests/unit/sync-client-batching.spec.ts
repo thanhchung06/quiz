@@ -1,4 +1,4 @@
-import { SyncClientService, SYNC_BATCH_SIZE, describeServerError } from '../../src/app/sync-engine/sync-client.service';
+import { SyncClientService, batchBySize, describeServerError } from '../../src/app/sync-engine/sync-client.service';
 import { BatchBuilderService } from '../../src/app/sync-engine/batch-builder.service';
 import { GoogleAuthService } from '../../src/app/features/sync/services/google-auth.service';
 import { ConflictStateService } from '../../src/app/sync-engine/conflict-state.service';
@@ -10,9 +10,12 @@ import { randomUUID } from 'node:crypto';
 // jsdom has no crypto.randomUUID; the app runs in real browsers, which do.
 if (!globalThis.crypto?.randomUUID) Object.defineProperty(globalThis.crypto, 'randomUUID', { value: randomUUID });
 
-function client(changeCount: number, lastPulledRevision = 0) {
-  const changes = Array.from({ length: changeCount }, (_, i) => ({ changeGroupId: `g${i}`, entityId: `g${i}`, entityType: 'Nothing' }) as unknown as SyncChange);
-  let settings = { lastPulledRevision };
+function client(changeCount: number, lastPulledRevision = 0, entityType = 'Attempt', payloadChars = 10) {
+  const changes = Array.from(
+    { length: changeCount },
+    (_, i) => ({ changeGroupId: `g${i}`, entityId: `g${i}`, entityType, payload: { text: 'x'.repeat(payloadChars) } }) as unknown as SyncChange,
+  );
+  let settings: Record<string, number> = { lastPulledRevision, lastPulledQuestionsRevision: 0 };
   const applied: unknown[][] = [];
   const c = new SyncClientService(
     { collectPendingChanges: async () => changes } as unknown as BatchBuilderService,
@@ -32,26 +35,56 @@ const bodies = () => (global.fetch as jest.Mock).mock.calls.map(([, init]) => JS
 describe('SyncClientService', () => {
   afterEach(() => jest.restoreAllMocks());
 
-  it(`pulls first, then uploads in batches of ${SYNC_BATCH_SIZE}`, async () => {
+  it('cuts upload batches by size: many small records per request, fewer big ones', () => {
+    const small = Array.from({ length: 5000 }, (_, i) => ({ id: i }));
+    expect(batchBySize(small).map((b) => b.length)).toEqual([2000, 2000, 1000]); // capped by count
+    const big = Array.from({ length: 10 }, () => ({ text: 'y'.repeat(300_000) }));
+    expect(batchBySize(big).map((b) => b.length)).toEqual([3, 3, 3, 1]); // ~1 MB per request
+    expect(batchBySize([{ text: 'z'.repeat(3_000_000) }]).length).toBe(1); // an oversized record still goes, alone
+  });
+
+  it('data scope: pulls only data types from its own cursor, then uploads only data changes', async () => {
     global.fetch = jest.fn((_u, init) => {
       const b = JSON.parse(String(init?.body));
       return reply(b.pullSince !== undefined ? ok({ dataRevision: 7, hasMore: false }) : ok());
     }) as unknown as typeof fetch;
     const { c, settings } = client(250, 3);
-    expect(await c.syncNormally('https://x/exec')).toBe('success');
+    expect(await c.syncNormally('https://x/exec', 'data')).toBe('success');
     const sent = bodies();
     expect(sent[0]).toMatchObject({ pullSince: 3, changes: [] });
-    expect(sent.slice(1).map((b) => b.changes.length)).toEqual([100, 100, 50]);
-    expect(sent.slice(1).every((b) => b.pullSince === undefined)).toBe(true);
+    expect(sent[0].pullTypes).toContain('Attempt');
+    expect(sent[0].pullTypes).not.toContain('QuizItem');
+    expect(sent.slice(1).map((b) => b.changes.length)).toEqual([250]); // small records: one request
     expect(settings().lastPulledRevision).toBe(7);
+    expect(settings().lastPulledQuestionsRevision).toBe(0); // the question cursor is untouched
     expect(c.progress()).toEqual({ sent: 250, total: 250 });
+  });
+
+  it('question scope ignores data changes and keeps its own cursor', async () => {
+    global.fetch = jest.fn((_u, init) =>
+      reply(JSON.parse(String(init?.body)).pullSince !== undefined ? ok({ dataRevision: 9 }) : ok()),
+    ) as unknown as typeof fetch;
+    const { c, settings } = client(40, 3, 'Attempt');
+    expect(await c.syncNormally('https://x/exec', 'questions')).toBe('success');
+    expect(bodies()).toHaveLength(1); // just the pull: no QuizItem/Category changes pending
+    expect(bodies()[0]).toMatchObject({ pullSince: 0, pullTypes: ['Category', 'QuizItem'] });
+    expect(settings()).toMatchObject({ lastPulledQuestionsRevision: 9, lastPulledRevision: 3 });
+  });
+
+  it("'all' syncs questions first, then data", async () => {
+    global.fetch = jest.fn((_u, init) =>
+      reply(JSON.parse(String(init?.body)).pullSince !== undefined ? ok({ dataRevision: 1 }) : ok()),
+    ) as unknown as typeof fetch;
+    const { c } = client(0);
+    await c.syncNormally('https://x/exec', 'all');
+    expect(bodies().map((b) => b.pullTypes?.[0])).toEqual(['Category', 'Profile']);
   });
 
   it('keeps asking while the server says hasMore, applying every page', async () => {
     const pages = [ok({ dataRevision: 2, hasMore: true, downloads: [{}, {}] }), ok({ dataRevision: 5, hasMore: false, downloads: [{}] })];
     global.fetch = jest.fn(() => reply(pages.shift() ?? ok())) as unknown as typeof fetch;
     const { c, settings } = client(0);
-    await c.syncNormally('https://x/exec');
+    await c.syncNormally('https://x/exec', 'data');
     expect(bodies().map((b) => b.pullSince)).toEqual([0, 2]);
     expect(c.received()).toBe(3);
     expect(settings().lastPulledRevision).toBe(5);
@@ -60,7 +93,7 @@ describe('SyncClientService', () => {
   it('works against an older script without pull support (no dataRevision)', async () => {
     global.fetch = jest.fn(() => reply(ok())) as unknown as typeof fetch;
     const { c, settings } = client(5);
-    expect(await c.syncNormally('https://x/exec')).toBe('success');
+    expect(await c.syncNormally('https://x/exec', 'data')).toBe('success');
     expect(global.fetch).toHaveBeenCalledTimes(2); // one pull attempt + one upload batch
     expect(settings().lastPulledRevision).toBe(0);
   });
@@ -73,9 +106,9 @@ describe('SyncClientService', () => {
           '<html><body><div>Exception: Your input contains more than the maximum of 50000 characters in a single cell. (line 12, file "Code")</div></body></html>',
       ),
     ) as unknown as typeof fetch;
-    const { c } = client(250);
-    expect(await c.syncNormally('https://x/exec')).toBe('server-error');
-    expect(c.progress()).toEqual({ sent: 100, total: 250 });
+    const { c } = client(4, 0, 'Attempt', 400_000); // ~1.6 MB -> two requests of ~800 KB
+    expect(await c.syncNormally('https://x/exec', 'data')).toBe('server-error');
+    expect(c.progress()).toEqual({ sent: 2, total: 4 });
     expect(c.lastError()).toContain('maximum of 50000 characters');
   });
 
@@ -88,7 +121,7 @@ describe('SyncClientService', () => {
       return reply(call === 1 ? ok({ dataRevision: 1 }) : ok());
     }) as unknown as typeof fetch;
     const { c } = client(150);
-    expect(await c.syncNormally('https://x/exec')).toBe('success');
+    expect(await c.syncNormally('https://x/exec', 'data')).toBe('success');
     const ids = bodies().map((b) => b.syncId);
     expect(ids[1]).toBe(ids[2]);
     expect(ids[2]).toBe(ids[3]);
@@ -98,11 +131,11 @@ describe('SyncClientService', () => {
   it('explains a wrong shared secret and an unreachable network', async () => {
     global.fetch = jest.fn(() => reply({ result: 'SYNC_REJECTED' })) as unknown as typeof fetch;
     const { c } = client(1);
-    expect(await c.syncNormally('https://x/exec')).toBe('rejected');
+    expect(await c.syncNormally('https://x/exec', 'data')).toBe('rejected');
     expect(c.lastError()).toContain('mã bí mật');
 
     global.fetch = jest.fn(() => Promise.reject(new TypeError('Failed to fetch'))) as unknown as typeof fetch;
-    expect(await c.syncNormally('https://x/exec')).toBe('network-error');
+    expect(await c.syncNormally('https://x/exec', 'data')).toBe('network-error');
     expect(c.lastError()).toContain('Không kết nối');
   });
 

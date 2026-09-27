@@ -3,12 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { GoogleAuthService } from '../services/google-auth.service';
 import { ConflictResolutionService } from '../services/conflict-resolution.service';
 import { ConflictStateService } from '../../../sync-engine/conflict-state.service';
-import { SyncClientService, SyncOutcome } from '../../../sync-engine/sync-client.service';
+import { SyncClientService, SyncOutcome, SyncScope } from '../../../sync-engine/sync-client.service';
 import { StorageModeService } from '../../../sync-engine/storage-mode.service';
 import { StorageMode } from '../../../shared/models/domain.model';
 import { SyncConflict } from '../../../sync-engine/sync-api.types';
 import { IconComponent } from '../../../shared/icon/icon.component';
-import { SYNC_DEFAULTS } from '../../../sync-defaults.generated';
+import { SYNC_ENDPOINT_KEY, syncEndpointUrl } from '../../../sync-engine/sync-endpoint';
 
 /**
  * Sync screen (FR-056): Sync Normally, Review Conflicts, Retry, Replace
@@ -30,7 +30,7 @@ import { SYNC_DEFAULTS } from '../../../sync-defaults.generated';
 })
 export class SyncScreenComponent {
   /** A URL saved on this device wins; otherwise the build's default (config/sync-defaults.json), if any. */
-  readonly endpointUrl = signal(localStorage.getItem('quiz-app.syncEndpoint') || SYNC_DEFAULTS.endpointUrl);
+  readonly endpointUrl = signal(syncEndpointUrl());
   readonly clientId = signal(localStorage.getItem('quiz-app.googleClientId') ?? '');
   readonly spreadsheetId: GoogleAuthService['spreadsheetId'];
   readonly sharedSecretSet = signal(false);
@@ -74,7 +74,7 @@ export class SyncScreenComponent {
   }
 
   saveSyncTarget(): void {
-    localStorage.setItem('quiz-app.syncEndpoint', this.endpointUrl());
+    localStorage.setItem(SYNC_ENDPOINT_KEY, this.endpointUrl());
     if (this.spreadsheetIdInput()) {
       this.googleAuth.setSpreadsheetId(this.spreadsheetIdInput());
     }
@@ -106,19 +106,23 @@ export class SyncScreenComponent {
     return !!this.endpointUrl() && this.sharedSecretSet();
   }
 
-  async syncNow(): Promise<void> {
+  /** Which button started the running/last sync — "Thử lại" repeats it. */
+  readonly lastScope = signal<SyncScope>('data');
+
+  async syncNow(scope: SyncScope = 'data'): Promise<void> {
     if (this.syncing()) return;
+    this.lastScope.set(scope);
     this.syncing.set(true);
     this.lastResult.set(undefined);
     try {
-      this.lastResult.set(await this.syncClient.syncNormally(this.endpointUrl()));
+      this.lastResult.set(await this.syncClient.syncNormally(this.endpointUrl(), scope));
     } finally {
       this.syncing.set(false);
     }
   }
 
   async retry(): Promise<void> {
-    await this.syncNow();
+    await this.syncNow(this.lastScope());
   }
 
   async resolve(conflict: SyncConflict, action: 'useLocal' | 'useGoogle' | 'keepBoth'): Promise<void> {

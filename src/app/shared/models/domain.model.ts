@@ -346,6 +346,8 @@ export interface AppSettings {
   defaultCategoriesSeeded?: boolean;
   /** Google Sheet revision this device has received other devices' changes up to (sync pull). */
   lastPulledRevision?: number;
+  /** Same, for the question scope (QuizItem + Category), which only syncs from its own button. */
+  lastPulledQuestionsRevision?: number;
 }
 
 // ---------------------------------------------------------------------------

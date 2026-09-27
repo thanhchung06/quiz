@@ -26,12 +26,26 @@ export function appendChangeLog(spreadsheet: GoogleSpreadsheet, entries: ChangeL
     .setValues(entries.map((e) => [e.revision, e.entityType, e.entityId, e.deviceId]));
 }
 
-export function readChangeLog(spreadsheet: GoogleSpreadsheet): ChangeLogEntry[] {
+/**
+ * Entries with revision > `since`. The log is appended in revision order, so
+ * only column A is read to find where they start (binary search), then just
+ * that tail — the part read no longer grows with the whole history.
+ */
+export function readChangeLogAfter(spreadsheet: GoogleSpreadsheet, since: number): ChangeLogEntry[] {
   const sheet = getSheet(spreadsheet);
   const lastRow = sheet.getLastRow();
   if (lastRow === 0) return [];
+  const revisions = sheet.getRange(1, 1, lastRow, 1).getValues().map(([r]) => Number(r) || 0);
+  let lo = 0;
+  let hi = revisions.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (revisions[mid] > since) hi = mid;
+    else lo = mid + 1;
+  }
+  if (lo >= revisions.length) return [];
   return sheet
-    .getRange(1, 1, lastRow, 4)
+    .getRange(lo + 1, 1, lastRow - lo, 4)
     .getValues()
     .filter(([revision, , entityId]) => revision !== '' && entityId !== '')
     .map(([revision, entityType, entityId, deviceId]) => ({
@@ -52,10 +66,19 @@ export interface PullPage {
 
 /**
  * Picks the changes after `since` made by other devices, whole revisions at a
- * time, until about `limit` records. Its own changes are skipped (the device
- * already has them) but still counted as seen via `nextRevision`.
+ * time, until about `limit` records. Its own changes, and entity types outside
+ * `types` (each sync scope — data or questions — keeps its own cursor), are
+ * skipped but still counted as seen via `nextRevision`.
  */
-export function selectPull(entries: ChangeLogEntry[], since: number, deviceId: string, limit: number, currentRevision: number): PullPage {
+export function selectPull(
+  entries: ChangeLogEntry[],
+  since: number,
+  deviceId: string,
+  limit: number,
+  currentRevision: number,
+  types?: string[],
+): PullPage {
+  const wanted = types && types.length > 0 ? new Set(types) : undefined;
   const newer = entries.filter((e) => e.revision > since).sort((a, b) => a.revision - b.revision);
   const seen = new Set<string>();
   const records: PullPage['records'] = [];
@@ -69,7 +92,7 @@ export function selectPull(entries: ChangeLogEntry[], since: number, deviceId: s
       hasMore = true;
       break;
     }
-    if (entry.deviceId === deviceId) continue;
+    if (entry.deviceId === deviceId || (wanted && !wanted.has(entry.entityType))) continue;
     const key = entry.entityType + '\u0000' + entry.entityId;
     if (seen.has(key)) continue;
     seen.add(key);

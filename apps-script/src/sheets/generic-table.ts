@@ -102,6 +102,38 @@ export function readRowBody(spreadsheet: GoogleSpreadsheet, tabName: string, row
     .join('');
 }
 
+/** Rows closer together than this are read in one call (reading a few extra rows beats one call per row). */
+const READ_GAP = 20;
+
+/**
+ * Bodies of the given rows only, keyed by row index — for sending a page of
+ * pulled records without reading every body of a large tab.
+ */
+export function readRowBodies(spreadsheet: GoogleSpreadsheet, tabName: string, rowIndexes: number[]): Map<number, string> {
+  const result = new Map<number, string>();
+  const wanted = Array.from(new Set(rowIndexes)).sort((a, b) => a - b);
+  if (wanted.length === 0) return result;
+  const sheet = getOrCreateSheet(spreadsheet, tabName);
+  const width = Math.max(3, sheet.getLastColumn());
+  for (let i = 0; i < wanted.length; ) {
+    let j = i + 1;
+    while (j < wanted.length && wanted[j] - wanted[j - 1] <= READ_GAP) j++;
+    const first = wanted[i];
+    const values = sheet.getRange(first, 1, wanted[j - 1] - first + 1, width).getValues();
+    for (const rowIndex of wanted.slice(i, j)) {
+      result.set(
+        rowIndex,
+        values[rowIndex - first]
+          .slice(2)
+          .map((part) => String(part ?? ''))
+          .join(''),
+      );
+    }
+    i = j;
+  }
+  return result;
+}
+
 /**
  * Writes only the given records: rows that already exist in place — adjacent
  * ones together in one call — padded so a body that got shorter leaves no

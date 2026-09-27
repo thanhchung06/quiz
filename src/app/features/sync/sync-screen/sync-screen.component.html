@@ -63,9 +63,19 @@
       </select>
     </label>
 
+    <p class="hint">
+      <app-icon name="info" />
+      <strong>Dữ liệu</strong> (hồ sơ, bài tập, giao bài, bài làm, kết quả, phần thưởng) ở chế độ "Đồng bộ tự động" được
+      đồng bộ khi mở và thoát ứng dụng, khi bé làm xong bài và khi giao bài. <strong>Câu hỏi và danh mục</strong> chỉ
+      đồng bộ khi bấm "Đồng bộ câu hỏi" — trên máy mới, hãy đồng bộ câu hỏi trước để bài tập có đủ câu.
+    </p>
+
     <div class="actions">
-      <button type="button" class="primary" [disabled]="syncing()" (click)="syncNow()">
-        <app-icon name="sync" />{{ syncing() ? 'Đang đồng bộ…' : 'Đồng bộ ngay' }}
+      <button type="button" class="primary" [disabled]="syncing()" (click)="syncNow('data')">
+        <app-icon name="sync" />{{ syncing() && lastScope() === 'data' ? 'Đang đồng bộ dữ liệu…' : 'Đồng bộ dữ liệu' }}
+      </button>
+      <button type="button" class="primary" [disabled]="syncing()" (click)="syncNow('questions')">
+        <app-icon name="quiz" />{{ syncing() && lastScope() === 'questions' ? 'Đang đồng bộ câu hỏi…' : 'Đồng bộ câu hỏi' }}
       </button>
       <button type="button" [disabled]="syncing()" (click)="retry()"><app-icon name="refresh" />Thử lại</button>
       <button type="button" (click)="requestReplace('toGoogle')"><app-icon name="upload" />Thay Google bằng dữ liệu cục bộ</button>

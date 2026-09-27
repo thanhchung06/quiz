@@ -11,12 +11,47 @@ import { SyncRequestBody, SyncResponseBody, SyncChange } from './sync-api.types'
 export type SyncOutcome = 'success' | 'busy' | 'rejected' | 'network-error' | 'server-error';
 
 /**
- * Changes per request. The first sync of a family's data is thousands of
- * records; one huge request risks Apps Script's execution-time limit and,
- * if anything fails, redoes everything. Batches commit (and are marked
- * synced locally) one by one, so a retry only resends what is left.
+ * Upload batches are cut by size rather than a fixed count: every request
+ * pays a few seconds of Apps Script overhead, so small records (answers,
+ * results) go up thousands at a time while long reading questions go a few
+ * hundred at a time.
  */
-export const SYNC_BATCH_SIZE = 100;
+export const SYNC_BATCH_MAX_CHARS = 1_000_000;
+export const SYNC_BATCH_MAX_CHANGES = 2_000;
+
+/**
+ * Two independent sync scopes: questions (and their categories) only move
+ * when the parent presses "Đồng bộ câu hỏi"; everything else ("data":
+ * profiles, exercises, assignments, attempts, results, rewards…) also syncs
+ * automatically. Each scope remembers its own "pulled up to" revision.
+ */
+export type SyncScope = 'questions' | 'data';
+export const QUESTION_ENTITY_TYPES = ['Category', 'QuizItem'];
+const DATA_ENTITY_TYPES = ['Profile', 'Exercise', 'Assignment', 'Rotation', 'Attempt', 'AnswerResult', 'Reward', 'PointRedemption'];
+const SCOPE_TYPES: Record<SyncScope, string[]> = { questions: QUESTION_ENTITY_TYPES, data: DATA_ENTITY_TYPES };
+const CURSOR: Record<SyncScope, 'lastPulledQuestionsRevision' | 'lastPulledRevision'> = {
+  questions: 'lastPulledQuestionsRevision',
+  data: 'lastPulledRevision',
+};
+
+/** Splits changes into requests of at most maxChars of JSON and maxChanges items (one oversized change still goes alone). */
+export function batchBySize<T>(changes: T[], maxChars = SYNC_BATCH_MAX_CHARS, maxChanges = SYNC_BATCH_MAX_CHANGES): T[][] {
+  const batches: T[][] = [];
+  let current: T[] = [];
+  let size = 0;
+  for (const change of changes) {
+    const length = JSON.stringify(change).length;
+    if (current.length > 0 && (size + length > maxChars || current.length >= maxChanges)) {
+      batches.push(current);
+      current = [];
+      size = 0;
+    }
+    current.push(change);
+    size += length;
+  }
+  if (current.length > 0) batches.push(current);
+  return batches;
+}
 
 /** Apps Script reports a thrown error as an HTML page; keep just the readable message. */
 export function describeServerError(body: string): string {
@@ -64,7 +99,9 @@ export class SyncClientService {
     private readonly downloads: DownloadApplierService,
   ) {}
 
-  private running?: Promise<SyncOutcome>;
+  /** Syncs run one after another; asking again for a scope already queued joins that run. */
+  private queue: Promise<unknown> = Promise.resolve();
+  private readonly pending = new Map<SyncScope | 'all', Promise<SyncOutcome>>();
 
   /**
    * Waits before re-sending a request that failed in transit or came back as
@@ -75,10 +112,25 @@ export class SyncClientService {
    */
   retryDelaysMs = [2000, 5000, 10000];
 
-  /** One sync at a time: an automatic sync and a button press share the same run instead of uploading twice. */
-  syncNormally(endpointUrl: string): Promise<SyncOutcome> {
-    this.running ??= this.runSync(endpointUrl).finally(() => (this.running = undefined));
-    return this.running;
+  /**
+   * `scope`: 'data' (what automatic sync uses), 'questions' (the question
+   * button), or 'all' (questions first, so exercises that use new questions
+   * arrive after them). One sync at a time.
+   */
+  syncNormally(endpointUrl: string, scope: SyncScope | 'all' = 'all'): Promise<SyncOutcome> {
+    const existing = this.pending.get(scope);
+    if (existing) return existing;
+    const run = this.queue
+      .then(() => this.runSync(endpointUrl, scope === 'all' ? ['questions', 'data'] : [scope]))
+      .finally(() => this.pending.delete(scope));
+    this.pending.set(scope, run);
+    this.queue = run.catch(() => undefined);
+    return run;
+  }
+
+  /** True while any sync is running or queued. */
+  isBusy(): boolean {
+    return this.pending.size > 0;
   }
 
   /**
@@ -86,7 +138,7 @@ export class SyncClientService {
    * other devices already stored (e.g. the default categories, which every
    * device seeds on its own) before uploading its own copies of them.
    */
-  private async runSync(endpointUrl: string): Promise<SyncOutcome> {
+  private async runSync(endpointUrl: string, scopes: SyncScope[]): Promise<SyncOutcome> {
     if (this.conflictState.hasUnresolvedConflicts()) {
       // Automatic sync stays paused until every conflict is resolved (FR-061).
       this._lastError.set('Còn xung đột chưa giải quyết — hãy chọn cách xử lý ở bên dưới trước.');
@@ -108,47 +160,54 @@ export class SyncClientService {
     this._received.set(0);
     this._progress.set(undefined);
 
-    const outcome = await this.pull(endpointUrl, sharedSecret).then((pulled) =>
-      pulled === 'success' ? this.push(endpointUrl, sharedSecret) : pulled,
-    );
+    let outcome: SyncOutcome = 'success';
+    for (const scope of scopes) {
+      outcome = await this.pull(endpointUrl, sharedSecret, scope);
+      if (outcome === 'success') outcome = await this.push(endpointUrl, sharedSecret, scope);
+      if (outcome !== 'success') break;
+    }
     this._lastOutcome.set(outcome);
     return outcome;
   }
 
   /** Receives other devices' changes page by page, remembering how far it got (per device). */
-  private async pull(endpointUrl: string, sharedSecret: string): Promise<SyncOutcome> {
-    let since = (await this.settings.get()).lastPulledRevision ?? 0;
+  private async pull(endpointUrl: string, sharedSecret: string, scope: SyncScope): Promise<SyncOutcome> {
+    let since = (await this.settings.get())[CURSOR[scope]] ?? 0;
     for (let page = 0; page < 10_000; page++) {
-      const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, [], since));
+      const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, [], since, SCOPE_TYPES[scope]));
       if (outcome !== 'success' || !response) return outcome;
       if (typeof response.dataRevision !== 'number') return 'success'; // script too old to support pulling
       const applied = await this.downloads.apply(response.downloads ?? []);
       this._received.update((n) => n + applied);
       since = response.dataRevision;
-      await this.settings.update({ lastPulledRevision: since });
+      await this.settings.update({ [CURSOR[scope]]: since });
       if (!response.hasMore) break;
     }
     return 'success';
   }
 
-  /** Uploads this device's pending changes in batches; each committed batch is marked synced right away. */
-  private async push(endpointUrl: string, sharedSecret: string): Promise<SyncOutcome> {
-    const changes = await this.batchBuilder.collectPendingChanges();
-    this._progress.set({ sent: 0, total: changes.length });
-    for (let start = 0; start < changes.length; start += SYNC_BATCH_SIZE) {
-      const batch = changes.slice(start, start + SYNC_BATCH_SIZE);
+  /** Uploads this device's pending changes of the scope, batched by size; each committed batch is marked synced right away. */
+  private async push(endpointUrl: string, sharedSecret: string, scope: SyncScope): Promise<SyncOutcome> {
+    const types = new Set(SCOPE_TYPES[scope]);
+    const changes = (await this.batchBuilder.collectPendingChanges()).filter((c) => types.has(c.entityType));
+    // Progress adds up over the scopes of one run (questions + data for a full sync).
+    const before = this._progress() ?? { sent: 0, total: 0 };
+    this._progress.set({ sent: before.sent, total: before.total + changes.length });
+    let sent = before.sent;
+    for (const batch of batchBySize(changes)) {
       const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, batch));
       if (outcome !== 'success' || !response) return outcome;
       await this.applySuccessResponse(response, batch);
       if (response.conflicts && response.conflicts.length > 0) {
         this.conflictState.setConflicts(response.conflicts);
       }
-      this._progress.set({ sent: Math.min(start + batch.length, changes.length), total: changes.length });
+      sent += batch.length;
+      this._progress.set({ sent, total: before.total + changes.length });
     }
     return 'success';
   }
 
-  private request(sharedSecret: string, changes: SyncChange[], pullSince?: number): SyncRequestBody {
+  private request(sharedSecret: string, changes: SyncChange[], pullSince?: number, pullTypes?: string[]): SyncRequestBody {
     return {
       syncId: crypto.randomUUID(),
       deviceId: currentDeviceId(),
@@ -157,7 +216,7 @@ export class SyncClientService {
       lastKnownDataRevision: pullSince ?? 0,
       action: 'SYNC_NORMAL',
       changes,
-      ...(pullSince !== undefined ? { pullSince } : {}),
+      ...(pullSince !== undefined ? { pullSince, pullTypes } : {}),
     };
   }
 
@@ -174,6 +233,7 @@ export class SyncClientService {
     let response: SyncResponseBody;
     let text: string;
     let status = 0;
+    const payload = JSON.stringify(body);
     try {
       const res = await fetch(endpointUrl, {
         method: 'POST',
@@ -183,7 +243,10 @@ export class SyncClientService {
         // Authorization — doPost still reads the raw body correctly via
         // e.postData.contents regardless of the declared Content-Type.
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(body),
+        body: payload,
+        // Lets a small sync fired while the app is being closed finish after the page is gone
+        // (browsers cap keepalive bodies at 64 KB, so large batches go without it).
+        keepalive: payload.length < 60_000,
       });
       status = res.status;
       text = await res.text();

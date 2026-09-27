@@ -14,6 +14,7 @@ import { CategoryRepository } from './data/repositories/category.repository';
 import { AppSettingsRepository } from './data/repositories/app-settings.repository';
 import { QuizItemRepository } from './data/repositories/quiz-item.repository';
 import { PwaUpdateService } from './pwa-update.service';
+import { AutoSyncService } from './sync-engine/auto-sync.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,7 +28,11 @@ export const appConfig: ApplicationConfig = {
       // Dev seed first: it only runs on an empty category table.
       const categories = inject(CategoryRepository);
       const settings = inject(AppSettingsRepository);
-      return seedDevData().then(() => seedDefaultCategories(categories, settings));
+      const autoSync = inject(AutoSyncService);
+      // Sync on open/close only after seeding, so a fresh install doesn't upload half-seeded data.
+      return seedDevData()
+        .then(() => seedDefaultCategories(categories, settings))
+        .then(() => autoSync.startLifecycleHooks());
     }),
     provideAppInitializer(() => approveAllPendingQuizItems(inject(QuizItemRepository))),
     provideAppInitializer(() => {

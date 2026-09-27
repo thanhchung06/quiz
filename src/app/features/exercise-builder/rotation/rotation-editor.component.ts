@@ -5,6 +5,7 @@ import { ExerciseRepository } from '../../../data/repositories/exercise.reposito
 import { ProfileRepository } from '../../../data/repositories/profile.repository';
 import { Exercise, Profile } from '../../../shared/models/domain.model';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { AutoSyncService } from '../../../sync-engine/auto-sync.service';
 
 /** Rotation editor (FR-069): parent-managed enabled exercise rotation per child. */
 @Component({
@@ -24,6 +25,7 @@ export class RotationEditorComponent {
     private readonly profiles: ProfileRepository,
     private readonly exerciseRepo: ExerciseRepository,
     private readonly rotations: RotationRepository,
+    private readonly autoSync: AutoSyncService,
   ) {
     void this.init();
   }
@@ -47,6 +49,7 @@ export class RotationEditorComponent {
     const next = current.includes(exerciseId) ? current.filter((id) => id !== exerciseId) : [...current, exerciseId];
     this.orderedExerciseIds.set(next);
     await this.rotations.setOrderedExercises(this.selectedChildId(), next);
+    this.autoSync.request('assigned');
   }
 
   exerciseTitle(id: string): string {
