@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 /** Repo root, independent of the directory the script was started from. */
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const BUILD_INFO_FILE = join(ROOT, 'src', 'app', 'build-info.generated.ts');
-/** Local, git-ignored sync settings baked into the build as defaults: { "endpointUrl": "...", "sharedSecret": "..." }. */
+/** The family's sync settings, committed with the code and baked into every build as defaults: { "endpointUrl": "...", "sharedSecret": "..." }. */
 export const SYNC_DEFAULTS_CONFIG = join(ROOT, 'config', 'sync-defaults.json');
 export const SYNC_DEFAULTS_FILE = join(ROOT, 'src', 'app', 'sync-defaults.generated.ts');
 
@@ -29,10 +29,10 @@ export async function writeBuildInfo() {
 }
 
 /**
- * Bakes config/sync-defaults.json (git-ignored — it holds the sync secret) into
- * the app, so every copy of it (any address, the installed phone app) starts
- * with the family's sync endpoint and secret filled in. Without the file the
- * defaults are empty and each device is configured on the Sync screen.
+ * Bakes config/sync-defaults.json (committed with the code) into the app, so
+ * every build of it — Windows or WSL, any address, the installed phone app —
+ * starts with the family's sync endpoint and secret filled in. Without the
+ * file the defaults are empty and each device is configured on the Sync screen.
  */
 export async function writeSyncDefaults() {
   let config = {};
@@ -47,7 +47,7 @@ export async function writeSyncDefaults() {
   };
   await writeGenerated(
     SYNC_DEFAULTS_FILE,
-    `// Generated from config/sync-defaults.json during build; do not edit or commit.\n` +
+    `// Generated from config/sync-defaults.json during build; do not edit.\n` +
       `export const SYNC_DEFAULTS: { endpointUrl: string; sharedSecret: string } = ${JSON.stringify(defaults, null, 2)};\n`,
   );
   console.log(`[sync-defaults] ${defaults.endpointUrl ? 'endpoint + secret from config/sync-defaults.json' : 'none (no config/sync-defaults.json)'}`);

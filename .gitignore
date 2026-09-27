@@ -58,6 +58,5 @@ src/app/build-info.generated.ts
 # Local HTTPS certificate for npm run serve:https (never commit private keys)
 /certs/
 
-# Sync endpoint + secret baked into the build as defaults (scripts/build-info.mjs) — contains a secret
-/config/sync-defaults.json
+# Generated from config/sync-defaults.json on every build/serve/install (scripts/build-info.mjs)
 src/app/sync-defaults.generated.ts
