@@ -26,8 +26,8 @@
       />
     </label>
     <div class="panel-actions">
-      <button type="button" class="primary" (click)="saveConnection()"><app-icon name="save" />Lưu kết nối</button>
-      @if (connectionMessage()) {
+      <button type="button" class="primary" [disabled]="!connectionDirty()" (click)="saveConnection()"><app-icon name="save" />Lưu kết nối</button>
+      @if (connectionMessage() && !connectionDirty()) {
         <span class="saved"><app-icon name="check_circle" />{{ connectionMessage() }}</span>
       }
     </div>
@@ -68,8 +68,8 @@
       </label>
     }
     <div class="panel-actions">
-      <button type="button" class="primary" (click)="saveAutoSync()"><app-icon name="save" />Lưu</button>
-      @if (autoSyncMessage()) {
+      <button type="button" class="primary" [disabled]="!autoSyncDirty()" (click)="saveAutoSync()"><app-icon name="save" />Lưu</button>
+      @if (autoSyncMessage() && !autoSyncDirty()) {
         <span class="saved"><app-icon name="check_circle" />{{ autoSyncMessage() }}</span>
       }
     </div>
@@ -115,24 +115,23 @@
         <h2 id="sync-dialog-title"><app-icon name="sync" />Đồng bộ ngay</h2>
 
         @if (step === 'options') {
-          <label class="check">
-            <input type="checkbox" [checked]="optPush()" (change)="optPush.set($any($event.target).checked)" />
-            <span>Máy này → Google <small>Gửi lên những gì mới/đã sửa trên máy này.</small></span>
-          </label>
-          <label class="check">
-            <input type="checkbox" [checked]="optPull()" (change)="optPull.set($any($event.target).checked)" />
-            <span>Google → máy này <small>Nhận về những gì thiết bị khác đã gửi lên.</small></span>
+          <label class="direction">
+            Chiều đồng bộ
+            <select [ngModel]="direction()" (ngModelChange)="direction.set($event)">
+              <option value="push">Máy này → Google (gửi lên)</option>
+              <option value="pull">Google → máy này (nhận về)</option>
+            </select>
+            <small>
+              {{ direction() === 'push' ? 'Gửi lên những gì mới hoặc đã sửa trên máy này.' : 'Nhận về những gì thiết bị khác đã gửi lên Google.' }}
+            </small>
           </label>
           <label class="check">
             <input type="checkbox" [checked]="optSkipQuestions()" (change)="optSkipQuestions.set($any($event.target).checked)" />
             <span>Không đồng bộ câu hỏi <small>Chỉ đồng bộ bài tập, giao bài, bài làm, kết quả, phần thưởng.</small></span>
           </label>
-          @if (!canConfirm()) {
-            <p class="error"><app-icon name="warning" />Chọn ít nhất một chiều đồng bộ.</p>
-          }
           <div class="dialog-actions">
             <button type="button" (click)="closeSyncDialog()">Hủy</button>
-            <button type="button" class="primary" [disabled]="!canConfirm()" (click)="confirmSync()"><app-icon name="check_circle" />Xác nhận</button>
+            <button type="button" class="primary" (click)="confirmSync()"><app-icon name="check_circle" />Xác nhận</button>
           </div>
         }
 

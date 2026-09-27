@@ -39,18 +39,30 @@ export class SyncScreenComponent {
   readonly sharedSecretInput = signal('');
   readonly connected: GoogleAuthService['connected'];
   readonly connectionMessage = signal('');
+  /** What is currently saved — the "Lưu kết nối" button is only enabled when the form differs from it. */
+  private readonly savedEndpointUrl = signal(syncEndpointUrl());
+  private readonly savedSpreadsheetId = signal(localStorage.getItem('quiz-app.spreadsheetId') ?? '');
+  readonly connectionDirty = computed(
+    () =>
+      this.endpointUrl().trim() !== this.savedEndpointUrl() ||
+      this.spreadsheetIdInput().trim() !== this.savedSpreadsheetId() ||
+      this.sharedSecretInput().trim() !== '',
+  );
 
   // --- Automatic sync ---------------------------------------------------------
   readonly autoSyncEnabled = signal(false);
   readonly autoSyncQuestions = signal(false);
   readonly autoSyncMessage = signal('');
+  private readonly savedAutoSync = signal({ enabled: false, includeQuestions: false });
+  readonly autoSyncDirty = computed(
+    () => this.autoSyncEnabled() !== this.savedAutoSync().enabled || this.autoSyncQuestions() !== this.savedAutoSync().includeQuestions,
+  );
 
   // --- Sync now dialog ----------------------------------------------------------
   readonly dialogStep = signal<SyncDialogStep | undefined>(undefined);
-  readonly optPush = signal(true);
-  readonly optPull = signal(true);
+  /** One direction per run: this device -> Google, or Google -> this device. */
+  readonly direction = signal<'push' | 'pull'>('push');
   readonly optSkipQuestions = signal(false);
-  readonly canConfirm = computed(() => this.optPush() || this.optPull());
 
   readonly conflicts: ConflictStateService['conflicts'];
   readonly progress: SyncClientService['progress'];
@@ -83,6 +95,7 @@ export class SyncScreenComponent {
     this.summary = this.syncClient.lastSummary;
     this.sharedSecretSet.set(!!this.googleAuth.sharedSecret());
     void this.autoSyncSettings.getAutoSync().then((value) => {
+      this.savedAutoSync.set(value);
       this.autoSyncEnabled.set(value.enabled);
       this.autoSyncQuestions.set(value.includeQuestions);
     });
@@ -91,12 +104,19 @@ export class SyncScreenComponent {
   // --- Connection -----------------------------------------------------------
 
   saveConnection(): void {
-    localStorage.setItem(SYNC_ENDPOINT_KEY, this.endpointUrl());
-    if (this.spreadsheetIdInput()) {
-      this.googleAuth.setSpreadsheetId(this.spreadsheetIdInput());
+    if (!this.connectionDirty()) return;
+    const endpoint = this.endpointUrl().trim();
+    localStorage.setItem(SYNC_ENDPOINT_KEY, endpoint);
+    this.endpointUrl.set(endpoint);
+    this.savedEndpointUrl.set(endpoint);
+    const spreadsheetId = this.spreadsheetIdInput().trim();
+    if (spreadsheetId) {
+      this.googleAuth.setSpreadsheetId(spreadsheetId);
     }
-    if (this.sharedSecretInput()) {
-      this.googleAuth.setSharedSecret(this.sharedSecretInput());
+    this.spreadsheetIdInput.set(spreadsheetId);
+    this.savedSpreadsheetId.set(spreadsheetId);
+    if (this.sharedSecretInput().trim()) {
+      this.googleAuth.setSharedSecret(this.sharedSecretInput().trim());
       this.sharedSecretSet.set(true);
       this.sharedSecretInput.set('');
     }
@@ -122,12 +142,16 @@ export class SyncScreenComponent {
 
   setAutoSyncEnabled(enabled: boolean): void {
     this.autoSyncEnabled.set(enabled);
-    if (!enabled) this.autoSyncQuestions.set(false);
+    // Unticking the parent hides the sub-option; it goes back to what is saved (or off) if re-ticked.
+    if (!enabled) this.autoSyncQuestions.set(this.savedAutoSync().enabled ? this.savedAutoSync().includeQuestions : false);
     this.autoSyncMessage.set('');
   }
 
   async saveAutoSync(): Promise<void> {
-    await this.autoSyncSettings.setAutoSync({ enabled: this.autoSyncEnabled(), includeQuestions: this.autoSyncQuestions() });
+    if (!this.autoSyncDirty()) return;
+    const value = { enabled: this.autoSyncEnabled(), includeQuestions: this.autoSyncEnabled() && this.autoSyncQuestions() };
+    await this.autoSyncSettings.setAutoSync(value);
+    this.savedAutoSync.set(value);
     this.autoSyncMessage.set(
       !this.autoSyncEnabled()
         ? 'Đã tắt tự động đồng bộ — dữ liệu vẫn được lưu trên máy này.'
@@ -141,8 +165,7 @@ export class SyncScreenComponent {
 
   openSyncDialog(): void {
     if (this.dialogStep() === 'running') return;
-    this.optPush.set(true);
-    this.optPull.set(true);
+    this.direction.set('push');
     this.optSkipQuestions.set(false);
     this.dialogStep.set('options');
   }
@@ -153,11 +176,10 @@ export class SyncScreenComponent {
   }
 
   async confirmSync(): Promise<void> {
-    if (!this.canConfirm()) return;
     const options: SyncRunOptions = {
       scopes: this.optSkipQuestions() ? ['data'] : ['questions', 'data'],
-      push: this.optPush(),
-      pull: this.optPull(),
+      push: this.direction() === 'push',
+      pull: this.direction() === 'pull',
     };
     this.dialogStep.set('running');
     try {

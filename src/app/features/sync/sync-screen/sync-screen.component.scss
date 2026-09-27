@@ -252,3 +252,25 @@ li {
   align-items: center;
   gap: 0.4rem;
 }
+
+.dialog .direction {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-weight: 600;
+
+  select {
+    padding: 0.45rem;
+    font-size: 1rem;
+  }
+
+  small {
+    font-weight: normal;
+    color: #666;
+  }
+}
+
+.sync-screen button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
