@@ -8,6 +8,7 @@ import { StorageModeService } from '../../../sync-engine/storage-mode.service';
 import { StorageMode } from '../../../shared/models/domain.model';
 import { SyncConflict } from '../../../sync-engine/sync-api.types';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { SYNC_DEFAULTS } from '../../../sync-defaults.generated';
 
 /**
  * Sync screen (FR-056): Sync Normally, Review Conflicts, Retry, Replace
@@ -28,7 +29,8 @@ import { IconComponent } from '../../../shared/icon/icon.component';
   styleUrl: './sync-screen.component.scss',
 })
 export class SyncScreenComponent {
-  readonly endpointUrl = signal(localStorage.getItem('quiz-app.syncEndpoint') ?? '');
+  /** A URL saved on this device wins; otherwise the build's default (config/sync-defaults.json), if any. */
+  readonly endpointUrl = signal(localStorage.getItem('quiz-app.syncEndpoint') || SYNC_DEFAULTS.endpointUrl);
   readonly clientId = signal(localStorage.getItem('quiz-app.googleClientId') ?? '');
   readonly spreadsheetId: GoogleAuthService['spreadsheetId'];
   readonly sharedSecretSet = signal(false);

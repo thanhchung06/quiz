@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { SYNC_DEFAULTS } from '../../../sync-defaults.generated';
 
 declare global {
   interface Window {
@@ -41,8 +42,9 @@ export class GoogleAuthService {
   private readonly _spreadsheetId = signal<string | undefined>(
     localStorage.getItem('quiz-app.spreadsheetId') ?? undefined,
   );
+  /** A secret saved on this device wins; otherwise the build's default (config/sync-defaults.json), if any. */
   private readonly _sharedSecret = signal<string | undefined>(
-    localStorage.getItem('quiz-app.sharedSecret') ?? undefined,
+    localStorage.getItem('quiz-app.sharedSecret') || SYNC_DEFAULTS.sharedSecret || undefined,
   );
   private accessToken?: string;
 

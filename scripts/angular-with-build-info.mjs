@@ -14,8 +14,8 @@ const watcher = watch(
 
     const normalized = filename.replaceAll('\\', '/');
 
-    // Prevent the generated file from triggering an infinite loop.
-    if (normalized.endsWith('build-info.generated.ts')) return;
+    // Prevent the generated files (build-info, sync-defaults) from triggering an infinite loop.
+    if (normalized.endsWith('.generated.ts')) return;
 
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {

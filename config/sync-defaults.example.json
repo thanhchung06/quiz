@@ -1,0 +1,4 @@
+{
+  "endpointUrl": "https://script.google.com/macros/s/XXXXXXXX/exec",
+  "sharedSecret": "same value as the SHARED_SECRET script property"
+}
