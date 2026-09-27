@@ -66,6 +66,15 @@ export class SyncClientService {
 
   private running?: Promise<SyncOutcome>;
 
+  /**
+   * Waits before re-sending a request that failed in transit or came back as
+   * an Apps Script error page (Google's side often fails transiently on long
+   * syncs). The same request — same syncId — is re-sent, so if Google had in
+   * fact committed it, the script replays the stored result instead of
+   * applying it twice.
+   */
+  retryDelaysMs = [2000, 5000, 10000];
+
   /** One sync at a time: an automatic sync and a button press share the same run instead of uploading twice. */
   syncNormally(endpointUrl: string): Promise<SyncOutcome> {
     this.running ??= this.runSync(endpointUrl).finally(() => (this.running = undefined));
@@ -152,9 +161,19 @@ export class SyncClientService {
     };
   }
 
-  private async post(endpointUrl: string, body: SyncRequestBody, attempt = 0): Promise<{ outcome: SyncOutcome; response?: SyncResponseBody }> {
+  private async post(endpointUrl: string, body: SyncRequestBody): Promise<{ outcome: SyncOutcome; response?: SyncResponseBody }> {
+    for (let retry = 0; ; retry++) {
+      const result = await this.postOnce(endpointUrl, body);
+      const transient = result.outcome === 'network-error' || result.outcome === 'server-error';
+      if (!transient || retry >= this.retryDelaysMs.length) return result;
+      await new Promise((resolve) => setTimeout(resolve, this.retryDelaysMs[retry]));
+    }
+  }
+
+  private async postOnce(endpointUrl: string, body: SyncRequestBody, attempt = 0): Promise<{ outcome: SyncOutcome; response?: SyncResponseBody }> {
     let response: SyncResponseBody;
     let text: string;
+    let status = 0;
     try {
       const res = await fetch(endpointUrl, {
         method: 'POST',
@@ -166,6 +185,7 @@ export class SyncClientService {
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(body),
       });
+      status = res.status;
       text = await res.text();
     } catch {
       // Offline/unreachable: local changes stay pendingUpload; never blocks child login/play.
@@ -176,7 +196,8 @@ export class SyncClientService {
       response = JSON.parse(text) as SyncResponseBody;
     } catch {
       // The script threw (quota, cell size, bad deployment…) — Apps Script answers with an HTML error page.
-      this._lastError.set(`Apps Script báo lỗi: ${describeServerError(text)}`);
+      const detail = text.trim() ? describeServerError(text) : 'phản hồi trống';
+      this._lastError.set(`Apps Script báo lỗi (HTTP ${status || '?'}): ${detail}`);
       return { outcome: 'server-error' };
     }
 
@@ -187,7 +208,7 @@ export class SyncClientService {
       }
       const backoffMs = 500 * Math.pow(2, attempt) + Math.random() * 250;
       await new Promise((resolve) => setTimeout(resolve, backoffMs));
-      return this.post(endpointUrl, body, attempt + 1);
+      return this.postOnce(endpointUrl, body, attempt + 1);
     }
 
     if (response.result === 'SYNC_REJECTED') {

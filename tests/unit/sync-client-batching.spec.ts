@@ -21,6 +21,7 @@ function client(changeCount: number, lastPulledRevision = 0) {
     { get: async () => settings, update: async (p: object) => (settings = { ...settings, ...p }) } as unknown as AppSettingsRepository,
     { apply: async (d: unknown[]) => (applied.push(d), d.length) } as unknown as DownloadApplierService,
   );
+  c.retryDelaysMs = [0, 0, 0];
   return { c, settings: () => settings, applied };
 }
 
@@ -76,6 +77,22 @@ describe('SyncClientService', () => {
     expect(await c.syncNormally('https://x/exec')).toBe('server-error');
     expect(c.progress()).toEqual({ sent: 100, total: 250 });
     expect(c.lastError()).toContain('maximum of 50000 characters');
+  });
+
+  it('re-sends the same request (same syncId) after a transient failure, then carries on', async () => {
+    let call = 0;
+    global.fetch = jest.fn(() => {
+      call++;
+      if (call === 2) return Promise.reject(new TypeError('Failed to fetch')); // first upload batch fails once
+      if (call === 3) return reply('<html><body></body></html>'); // and then gets an empty error page
+      return reply(call === 1 ? ok({ dataRevision: 1 }) : ok());
+    }) as unknown as typeof fetch;
+    const { c } = client(150);
+    expect(await c.syncNormally('https://x/exec')).toBe('success');
+    const ids = bodies().map((b) => b.syncId);
+    expect(ids[1]).toBe(ids[2]);
+    expect(ids[2]).toBe(ids[3]);
+    expect(c.progress()).toEqual({ sent: 150, total: 150 });
   });
 
   it('explains a wrong shared secret and an unreachable network', async () => {

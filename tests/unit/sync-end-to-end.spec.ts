@@ -69,18 +69,28 @@ global.fetch = jest.fn(async (_url, init) => {
   return { text: async () => text } as Response;
 }) as unknown as typeof fetch;
 
+/** When set, this request number is processed by the script but its response is lost in transit. */
+let requestCount = 0;
+let loseResponseOfRequest = -1;
+const scriptFetch = global.fetch;
+global.fetch = jest.fn(async (url, init) => {
+  requestCount++;
+  const response = await (scriptFetch as typeof fetch)(url, init);
+  if (requestCount === loseResponseOfRequest) throw new TypeError('Failed to fetch');
+  return response;
+}) as unknown as typeof fetch;
+
 function syncClient() {
   const conflicts = new ConflictStateService();
-  return {
-    client: new SyncClientService(
+  const client = new SyncClientService(
       new BatchBuilderService(new ProfileRepository()),
       { sharedSecret: () => 'secret' } as unknown as GoogleAuthService,
       conflicts,
       new AppSettingsRepository(),
       new DownloadApplierService(),
-    ),
-    conflicts,
-  };
+  );
+  client.retryDelaysMs = [0, 0, 0];
+  return { client, conflicts };
 }
 
 async function becomeDevice(id: string) {
@@ -109,7 +119,13 @@ describe('sync end to end (real Apps Script code, fake Sheet)', () => {
     await repo.update('q0', { prompt: 'sửa lần 2' }); // localVersion 3
 
     const pc = syncClient();
+    // Request 1 is the pull; request 2, the first upload batch, commits on Google but its answer is lost.
+    // The retry re-sends the same syncId, so the script must replay its stored result — not report conflicts.
+    requestCount = 0;
+    loseResponseOfRequest = 2;
     expect(await pc.client.syncNormally('https://script/exec')).toBe('success');
+    loseResponseOfRequest = -1;
+    expect(pc.conflicts.hasUnresolvedConflicts()).toBe(false);
     expect(await db.quizItems.where('id').anyOf(['q0', 'q319']).toArray()).toEqual(
       expect.arrayContaining([expect.objectContaining({ id: 'q0', syncStatus: 'synced', lastGoogleVersion: 3 })]),
     );

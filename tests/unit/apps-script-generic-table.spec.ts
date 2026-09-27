@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { MAX_CELL_CHARS, readAllRows, splitBody, writeAllRows, writeChangedRows, StoredRow } from '../../apps-script/src/sheets/generic-table';
+import { MAX_CELL_CHARS, readAllRows, readIndex, readRowBody, splitBody, writeAllRows, writeChangedRows, StoredRow } from '../../apps-script/src/sheets/generic-table';
 import { selectPull, ChangeLogEntry } from '../../apps-script/src/sheets/change-log';
 
 /** In-memory stand-in for a Google Sheet that enforces the real 50,000-characters-per-cell limit. */
@@ -80,6 +80,25 @@ describe('incremental writes', () => {
     expect(back.size).toBe(1001);
     expect(back.get('q5')).toMatchObject({ version: 2, bodyJson: '{"n":"edited"}', rowIndex: 6 });
     expect(back.get('new1')).toMatchObject({ bodyJson: '{"n":"new"}', rowIndex: 1001 });
+  });
+
+  it('writes a run of adjacent updated rows in a single call', () => {
+    const { ss, rows } = seeded(500);
+    const before = ss.writes();
+    const ids = Array.from({ length: 100 }, (_, i) => `q${200 + i}`);
+    for (const id of ids) rows.set(id, { ...rows.get(id)!, version: 2, bodyJson: `{"edited":"${id}"}` });
+    writeChangedRows(ss, 'QuizItem', rows, ids);
+    expect(ss.writes() - before).toBe(1);
+    const back = readAllRows(ss, 'QuizItem');
+    expect(back.get('q250')).toMatchObject({ version: 2, bodyJson: '{"edited":"q250"}' });
+    expect(back.get('q199')).toMatchObject({ version: 1, bodyJson: '{"n":199}' });
+  });
+
+  it('reads only ids and versions for the index, and single bodies on demand', () => {
+    const { ss } = seeded(3);
+    const index = readIndex(ss, 'QuizItem');
+    expect(index.get('q1')).toEqual({ id: 'q1', version: 1, bodyJson: '', rowIndex: 2 });
+    expect(readRowBody(ss, 'QuizItem', 2)).toBe('{"n":1}');
   });
 
   it('clears leftover chunks when an updated body gets shorter', () => {

@@ -1,4 +1,4 @@
-import { readAllRows, writeAllRows } from './generic-table';
+import { readAllRows, readIndex, readRowBody, writeAllRows, writeChangedRows } from './generic-table';
 
 const TAB = 'SyncTransactions';
 
@@ -10,32 +10,32 @@ export interface StoredSyncTransaction {
 }
 
 export function findCommittedTransaction(spreadsheet: GoogleSpreadsheet, syncId: string): StoredSyncTransaction | undefined {
-  const rows = readAllRows(spreadsheet, TAB);
-  const row = rows.get(syncId);
-  if (!row) return undefined;
-  const parsed = JSON.parse(row.bodyJson) as StoredSyncTransaction;
+  const row = readIndex(spreadsheet, TAB).get(syncId);
+  if (!row?.rowIndex) return undefined;
+  const parsed = JSON.parse(readRowBody(spreadsheet, TAB, row.rowIndex)) as StoredSyncTransaction;
   return parsed.status === 'committed' ? parsed : undefined;
 }
 
-/** Only needed to replay a retried request, so old entries are dropped instead of growing forever. */
-const KEEP_TRANSACTIONS = 200;
+/** Only needed to replay a retried request: appended, and trimmed to the newest ones once it grows. */
+const KEEP_TRANSACTIONS = 50;
+const TRIM_ABOVE = 150;
 
 export function recordTransaction(spreadsheet: GoogleSpreadsheet, tx: StoredSyncTransaction): void {
-  const rows = readAllRows(spreadsheet, TAB);
-  rows.set(tx.syncId, { id: tx.syncId, version: 1, bodyJson: JSON.stringify(tx) });
-  if (rows.size > KEEP_TRANSACTIONS) {
-    const sequence = (bodyJson: string) => {
-      try {
-        return Number((JSON.parse(bodyJson) as StoredSyncTransaction).commitSequence) || 0;
-      } catch {
-        return 0;
-      }
-    };
-    const newest = Array.from(rows.values())
-      .sort((a, b) => sequence(b.bodyJson) - sequence(a.bodyJson))
-      .slice(0, KEEP_TRANSACTIONS);
-    writeAllRows(spreadsheet, TAB, new Map(newest.map((row) => [row.id, { ...row, rowIndex: undefined }])));
-    return;
-  }
-  writeAllRows(spreadsheet, TAB, rows);
+  const index = readIndex(spreadsheet, TAB);
+  const existing = index.get(tx.syncId);
+  index.set(tx.syncId, { id: tx.syncId, version: 1, bodyJson: JSON.stringify(tx), rowIndex: existing?.rowIndex });
+  writeChangedRows(spreadsheet, TAB, index, [tx.syncId]);
+  if (index.size <= TRIM_ABOVE) return;
+
+  const sequence = (bodyJson: string) => {
+    try {
+      return Number((JSON.parse(bodyJson) as StoredSyncTransaction).commitSequence) || 0;
+    } catch {
+      return 0;
+    }
+  };
+  const newest = Array.from(readAllRows(spreadsheet, TAB).values())
+    .sort((a, b) => sequence(b.bodyJson) - sequence(a.bodyJson))
+    .slice(0, KEEP_TRANSACTIONS);
+  writeAllRows(spreadsheet, TAB, new Map(newest.map((row) => [row.id, { ...row, rowIndex: undefined }])));
 }

@@ -2,7 +2,7 @@ import { withExclusiveLock } from './lock';
 import { adoptIdenticalVersion, decideVersion } from './versioning';
 import { findPriorCommit, reserveNextRevision, saveCommittedTransaction } from './transactions';
 import { readMetadata, isSchemaCompatible } from './sheets/metadata';
-import { readAllRows, writeChangedRows, StoredRow } from './sheets/generic-table';
+import { readAllRows, readIndex, readRowBody, writeChangedRows, StoredRow } from './sheets/generic-table';
 import { appendChangeLog, readChangeLog, selectPull, ChangeLogEntry } from './sheets/change-log';
 
 const CLIENT_SUPPORTED_SCHEMA_VERSION = 1;
@@ -143,16 +143,19 @@ function processLocked(request: SyncRequest): SyncResponse {
     return { syncId: request.syncId, result: 'SYNC_REJECTED', schemaCompatible: false };
   }
 
+  // Ids/versions/positions only — bodies are read per row when needed (see readIndex).
   const tabCache = new Map<EntityTab, Map<string, StoredRow>>();
   const getTab = (tab: EntityTab) => {
-    if (!tabCache.has(tab)) tabCache.set(tab, readAllRows(spreadsheet, tab));
+    if (!tabCache.has(tab)) tabCache.set(tab, readIndex(spreadsheet, tab));
     return tabCache.get(tab)!;
   };
+  const bodyOf = (tab: EntityTab, row: StoredRow | undefined) =>
+    row?.rowIndex !== undefined && row.bodyJson === '' ? readRowBody(spreadsheet, tab, row.rowIndex) : row?.bodyJson;
 
   const priorCommit = findPriorCommit(spreadsheet, request.syncId);
   if (priorCommit) {
     const replay = JSON.parse(priorCommit.resultJson) as SyncResponse;
-    return addPull(spreadsheet, request, replay, readMetadata(spreadsheet).dataRevision, getTab);
+    return addPull(spreadsheet, request, replay, readMetadata(spreadsheet).dataRevision);
   }
 
   // Group changes so a changeGroupId commits or rejects atomically (FR-060).
@@ -198,7 +201,7 @@ function processLocked(request: SyncRequest): SyncResponse {
     for (const d of decisions) {
       if (d.decision !== 'conflict' || d.change.operation !== 'upsert') continue;
       const rows = getTab(d.change.entityType);
-      const adopted = adoptIdenticalVersion(d.change.localVersion, d.googleVersion, rows.get(d.change.entityId)?.bodyJson, JSON.stringify(d.change.payload));
+      const adopted = adoptIdenticalVersion(d.change.localVersion, d.googleVersion, bodyOf(d.change.entityType, rows.get(d.change.entityId)), JSON.stringify(d.change.payload));
       if (adopted !== undefined) {
         const existing = rows.get(d.change.entityId);
         rows.set(d.change.entityId, { id: d.change.entityId, version: adopted, bodyJson: JSON.stringify(d.change.payload), rowIndex: existing?.rowIndex });
@@ -238,7 +241,7 @@ function processLocked(request: SyncRequest): SyncResponse {
       } else if (d.decision === 'download') {
         const row = rows.get(d.change.entityId);
         if (row) {
-          downloads!.push({ entityType: d.change.entityType, entityId: d.change.entityId, version: row.version, payload: JSON.parse(row.bodyJson) });
+          downloads!.push({ entityType: d.change.entityType, entityId: d.change.entityId, version: row.version, payload: JSON.parse(bodyOf(d.change.entityType, row)!) });
         }
       }
       // 'noop' requires no action.
@@ -274,7 +277,7 @@ function processLocked(request: SyncRequest): SyncResponse {
     // Persist the final response so a retried syncId can replay it verbatim (FR-059).
     saveCommittedTransaction(spreadsheet, request.syncId, commitSequence, JSON.stringify(response));
   }
-  return addPull(spreadsheet, request, response, commitSequence, getTab);
+  return addPull(spreadsheet, request, response, commitSequence);
 }
 
 /** Adds other devices' changes after `request.pullSince` (one page) to the response. Read-only. */
@@ -283,13 +286,18 @@ function addPull(
   request: SyncRequest,
   response: SyncResponse,
   currentRevision: number,
-  getTab: (tab: EntityTab) => Map<string, StoredRow>,
 ): SyncResponse {
   if (typeof request.pullSince !== 'number') return response;
   const page = selectPull(readChangeLog(spreadsheet), request.pullSince, request.deviceId, PULL_LIMIT, currentRevision);
   const pulled: NonNullable<SyncResponse['downloads']> = [];
+  // Pulled records need their bodies: read each needed tab in full once (only when there is something to send).
+  const fullTabs = new Map<EntityTab, Map<string, StoredRow>>();
+  const fullTab = (tab: EntityTab) => {
+    if (!fullTabs.has(tab)) fullTabs.set(tab, readAllRows(spreadsheet, tab));
+    return fullTabs.get(tab)!;
+  };
   for (const { entityType, entityId } of page.records) {
-    const row = getTab(entityType).get(entityId);
+    const row = fullTab(entityType).get(entityId);
     if (row) pulled.push({ entityType, entityId, version: row.version, payload: safeParse(row.bodyJson) });
   }
   return { ...response, downloads: [...(response.downloads ?? []), ...pulled], dataRevision: page.nextRevision, hasMore: page.hasMore };

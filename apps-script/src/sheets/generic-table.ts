@@ -70,13 +70,43 @@ export function writeAllRows(spreadsheet: GoogleSpreadsheet, tabName: string, ro
   Array.from(rows.values()).forEach((row, index) => (row.rowIndex = index + 1));
 }
 
-/** Above this many in-place updates, one rewrite of the whole tab is cheaper than one Sheets call per row. */
-const MAX_ROW_UPDATES = 40;
+/**
+ * Only ids, versions and row positions (columns A:B) — what a sync needs to
+ * decide upload / no-op / conflict. Reading every body of a tab with thousands
+ * of long questions on each request was the slow part of a sync; bodies are
+ * read one row at a time with readRowBody when actually needed. Rows from
+ * here have an EMPTY bodyJson: never write them back unless you set it.
+ */
+export function readIndex(spreadsheet: GoogleSpreadsheet, tabName: string): Map<string, StoredRow> {
+  const sheet = getOrCreateSheet(spreadsheet, tabName);
+  const lastRow = sheet.getLastRow();
+  const result = new Map<string, StoredRow>();
+  if (lastRow === 0) return result;
+  sheet
+    .getRange(1, 1, lastRow, 2)
+    .getValues()
+    .forEach(([id, version], index) => {
+      if (id) result.set(String(id), { id: String(id), version: Number(version), bodyJson: '', rowIndex: index + 1 });
+    });
+  return result;
+}
+
+/** The full body stored in one row (columns C onward, joined). */
+export function readRowBody(spreadsheet: GoogleSpreadsheet, tabName: string, rowIndex: number): string {
+  const sheet = getOrCreateSheet(spreadsheet, tabName);
+  const width = Math.max(3, sheet.getLastColumn());
+  const [row] = sheet.getRange(rowIndex, 1, 1, width).getValues();
+  return row
+    .slice(2)
+    .map((part) => String(part ?? ''))
+    .join('');
+}
 
 /**
- * Writes only the given records: changed rows in place (padded so a body that
- * got shorter leaves no stale chunks), new rows appended in one block. Keeps a
- * sync of a few records cheap no matter how big the tab has grown.
+ * Writes only the given records: rows that already exist in place — adjacent
+ * ones together in one call — padded so a body that got shorter leaves no
+ * stale chunks; new rows appended in one block. Keeps a sync cheap no matter
+ * how big the tab has grown. Every record written must carry its real body.
  */
 export function writeChangedRows(spreadsheet: GoogleSpreadsheet, tabName: string, rows: Map<string, StoredRow>, changedIds: Iterable<string>): void {
   const changed = Array.from(new Set(changedIds))
@@ -84,24 +114,24 @@ export function writeChangedRows(spreadsheet: GoogleSpreadsheet, tabName: string
     .filter((row): row is StoredRow => !!row);
   if (changed.length === 0) return;
 
-  const updates = changed.filter((row) => row.rowIndex !== undefined);
-  if (updates.length > MAX_ROW_UPDATES) {
-    writeAllRows(spreadsheet, tabName, rows);
-    return;
-  }
-
   const sheet = getOrCreateSheet(spreadsheet, tabName);
   const lastColumn = Math.max(3, sheet.getLastColumn());
-  for (const row of updates) {
-    const cells: unknown[] = [row.id, row.version, ...splitBody(row.bodyJson)];
-    const width = Math.max(lastColumn, cells.length);
-    sheet.getRange(row.rowIndex!, 1, 1, width).setValues([[...cells, ...Array(width - cells.length).fill('')]]);
+  const cellsOf = (row: StoredRow): unknown[] => [row.id, row.version, ...splitBody(row.bodyJson)];
+
+  const updates = changed.filter((row) => row.rowIndex !== undefined).sort((a, b) => a.rowIndex! - b.rowIndex!);
+  for (let i = 0; i < updates.length; ) {
+    let j = i + 1;
+    while (j < updates.length && updates[j].rowIndex === updates[j - 1].rowIndex! + 1) j++;
+    const run = updates.slice(i, j).map(cellsOf);
+    const width = Math.max(lastColumn, ...run.map((c) => c.length));
+    sheet.getRange(updates[i].rowIndex!, 1, run.length, width).setValues(run.map((c) => [...c, ...Array(width - c.length).fill('')]));
+    i = j;
   }
 
   const appends = changed.filter((row) => row.rowIndex === undefined);
   if (appends.length > 0) {
     const firstRow = sheet.getLastRow() + 1;
-    const cells = appends.map((row) => [row.id, row.version, ...splitBody(row.bodyJson)] as unknown[]);
+    const cells = appends.map(cellsOf);
     const width = Math.max(3, ...cells.map((c) => c.length));
     sheet.getRange(firstRow, 1, cells.length, width).setValues(cells.map((c) => [...c, ...Array(width - c.length).fill('')]));
     appends.forEach((row, i) => (row.rowIndex = firstRow + i));
