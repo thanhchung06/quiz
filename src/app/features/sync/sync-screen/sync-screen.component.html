@@ -32,7 +32,11 @@
 
   <section class="google-account">
     <h2><app-icon name="person" />Tài khoản Google (tùy chọn)</h2>
-    <p class="hint">Chỉ cần thiết cho các tính năng chọn spreadsheet sau này — không bắt buộc để đồng bộ.</p>
+    <p class="hint">
+      Không bắt buộc để đồng bộ. Nếu kết nối, ứng dụng chỉ được phép dùng các tệp do chính nó tạo hoặc tệp bạn tự
+      chọn mở bằng nó — không đọc, sửa hay xóa được các tệp khác trên Google Drive/Sheets của bạn. Việc đồng bộ đi
+      qua Apps Script, vốn chỉ được sửa đúng một Google Sheet đã gắn với nó.
+    </p>
     @if (!connected()) {
       <label>Google Client ID <input [ngModel]="clientId()" (ngModelChange)="clientId.set($event)" /></label>
       <button type="button" (click)="connect()"><app-icon name="person" />Kết nối tài khoản Google</button>

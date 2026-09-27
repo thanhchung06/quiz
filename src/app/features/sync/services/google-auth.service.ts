@@ -17,7 +17,16 @@ declare global {
 }
 
 const GIS_SCRIPT_SRC = 'https://accounts.google.com/gsi/client';
-const SHEETS_DRIVE_SCOPE = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
+/**
+ * The only Google permission the app ever asks for: `drive.file` — access to
+ * files this app itself creates, or that the parent explicitly opens with it
+ * (e.g. the quiz's sync spreadsheet), and nothing else in their Drive/Sheets.
+ * Deliberately NOT `spreadsheets` (read/edit/delete *every* Google Sheet the
+ * account owns) or any `drive` scope. The sync itself goes through the Apps
+ * Script bound to one spreadsheet (`spreadsheets.currentonly`, see
+ * apps-script/README.md), which needs no token from here at all.
+ */
+export const GOOGLE_OAUTH_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 
 /**
  * Google account connection (FR-054): parent-initiated only, from Parent
@@ -65,7 +74,7 @@ export class GoogleAuthService {
     return new Promise((resolve, reject) => {
       const client = window.google!.accounts.oauth2.initTokenClient({
         client_id: clientId,
-        scope: SHEETS_DRIVE_SCOPE,
+        scope: GOOGLE_OAUTH_SCOPE,
         callback: (response) => {
           if (response.error || !response.access_token) {
             reject(new Error(response.error ?? 'Google authorization failed.'));
