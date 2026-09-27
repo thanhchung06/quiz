@@ -20,6 +20,9 @@ conflicts) with a layout per entity, built around who writes what.
 - **No conflicts, no version comparison, no change log.** Each record has one writer, or is changed by
   small operations the script applies (add/remove an item, set one field), never by overwriting a JSON
   another writer also changes.
+- **Schema version.** The sheet's Metadata and the app each have a schema version. Mismatch → no sync
+  (error shown). The local database also has a version: on mismatch **all local data is dropped** — so
+  installing this redesign starts from empty (export to JSON first, then import, see 6).
 - **UUID everywhere.** Every record gets a UUID generated on the device when it is created, before it is
   sent. The script never stores two records with the same UUID in a sheet — a repeated request updates or
   skips instead of duplicating. This is what makes retries safe, so SyncTransactions is not needed.
@@ -99,8 +102,9 @@ What the child is doing now, so opening the app (on any device) goes straight ba
   picked, choice order fixed) — uploaded **once**, never rewritten.
 - Progress, updated on every submitted answer: answer status per question, current question, lives left,
   **time left** (overall + per question), score so far.
-- The clock runs only while the exercise is on screen (time left is stored, not a deadline). Time left is
-  also saved locally when the app is hidden and goes up with the next answer *(proposal)*.
+- The clock keeps running while the app is hidden (switched away) and **stops only when the app is
+  closed**. Time left is stored (not a deadline): saved locally as it runs, resumed from there when the
+  app is opened again, and uploaded with the next answer.
 - Operations:
   - **START_SESSION(childUuid, session)** — replaces whatever was there.
   - **UPDATE_PROGRESS(childUuid, sessionUuid, progress)** — ignored if `sessionUuid` isn't the current
@@ -160,12 +164,14 @@ After a finish (child) or a point use (parent):
 ### 3.8 Exercise, Question, Category
 
 - One row per record, the whole JSON; only the parent writes; write = overwrite the row.
-- **updateSequence**: a counter per sheet in Metadata. Every write (including "delete", which only sets
-  a deleted mark) takes the next number; the script returns it and the caller stores it on the record.
-- Pull: records with `updateSequence > max(updateSequence)` stored locally.
-- *(proposal — keeps the "local max" rule gap-free)* Each write also sends the device's current max for
-  that sheet; the answer includes the records between that max and the new number (other devices'
-  writes this device hadn't pulled yet), which the device stores before its own.
+- **updateSequence**: every record of these sheets has this field; a counter per sheet in Metadata.
+  - Insert / update (including "delete", which only sets a deleted mark): the client does **not** send
+    the value. The script sets it to the next number, stores the record and returns the number; the
+    client then sets it on its local record.
+  - Pull: `max(updateSequence)` of the local records → get from Google the records with a larger one.
+  - Known trade-off (accepted): if another device wrote in between and this device hadn't pulled yet,
+    its own newer number raises the local max past those writes, and they are picked up only by a full
+    re-pull ("Đồng bộ ngay").
 - "Chỉ nhận câu hỏi mới thêm": pulled records whose uuid is already on the device are skipped.
 - Missing questions at play time: **FETCH_BY_UUID(sheet, uuids)**.
 
@@ -197,17 +203,26 @@ Kept: shared secret, `spreadsheets.currentonly` scope, cell chunking, schema ver
   Error → message + Thử lại.
 - **Child login** with a Session → straight into that exercise.
 - **Every write** → its operation is sent immediately; failure → error + Thử lại.
-- **"Đồng bộ ngay"** (manual) — to be reviewed against the new layout (probably: re-run the app-start
-  pull; and a parent "upload everything" for Exercise/Question/Category).
+- **"Đồng bộ ngay"** (manual) keeps today's behavior and dialog, on the new sheets: one direction per run,
+  "Không đồng bộ câu hỏi", "Chỉ đồng bộ câu hỏi mới thêm", progress + summary.
+  - Máy này → Google: send every local record the logged-in person may write (idempotent by uuid;
+    Exercise/Question/Category get new updateSequence values).
+  - Google → máy này: re-pull everything, ignoring local maxima / row pointers, overwriting local.
 
-## 6. Open points
+## 6. Moving existing data
 
-1. Manual sync ("Đồng bộ ngay") and the overwrite mirror of today — what stays?
-2. Moving existing data: assignments/rotations start fresh; how do current questions, exercises, profiles
-   and results reach the new sheets? Suggestion: a one-time "Máy này → Google" from the parent's device
-   into the new layout; old results → HistoryResult only.
-3. Reports / child history screens must read HistoryResult (and Result for detail) instead of attempts.
-4. Backup/export format (contracts/backup-format.md) follows the new entities.
+- The owner exports all data to JSON **before** installing the new code; the new version starts empty
+  (local and sheet — new schema version).
+- **Import must accept the old export file** and convert it to the new layout:
+  - Profiles, Categories, Questions, Exercises → as is (new fields filled: uuid = old id,
+    updateSequence assigned when uploaded).
+  - Attempts + AnswerResults → Result (newest 1000) and HistoryResult (all), with stars/points computed
+    by the new rules (3.5).
+  - PointRedemptions → PointUsage.
+  - Assignments, Rotations, Rewards → dropped (start fresh).
+  - Then total points are recomputed (3.7). With sync on, the imported data is uploaded.
+- The new export/backup format follows the new entities (contracts/backup-format.md to update).
+- Reports and history screens read **Result** only (the last 1000).
 
 ## 7. Implementation order (proposal)
 
@@ -220,4 +235,4 @@ Kept: shared secret, `spreadsheets.currentonly` scope, cell chunking, schema ver
 6. Session + resume on login.
 7. Finish request, Result circle, HistoryResult; reports switched over.
 8. App-start pull with blocked login; error/retry for writes; settings screen.
-9. Data move (6.2), end-to-end tests, then remove the old sync code.
+9. Import of old export files (6), new export format, end-to-end tests, then remove the old sync code.
