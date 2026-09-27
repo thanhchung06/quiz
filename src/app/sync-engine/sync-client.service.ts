@@ -34,6 +34,26 @@ const CURSOR: Record<SyncScope, 'lastPulledQuestionsRevision' | 'lastPulledRevis
   data: 'lastPulledRevision',
 };
 
+/** What one sync run does: which scopes, and in which direction(s). */
+export interface SyncRunOptions {
+  scopes: SyncScope[];
+  /** Google -> this device. */
+  pull: boolean;
+  /** This device -> Google. */
+  push: boolean;
+}
+
+export interface SyncSummary {
+  outcome: SyncOutcome;
+  options: SyncRunOptions;
+  received: number;
+  sent: number;
+  toSend: number;
+  conflicts: number;
+  seconds: number;
+  error?: string;
+}
+
 /** Splits changes into requests of at most maxChars of JSON and maxChanges items (one oversized change still goes alone). */
 export function batchBySize<T>(changes: T[], maxChars = SYNC_BATCH_MAX_CHARS, maxChanges = SYNC_BATCH_MAX_CHANGES): T[][] {
   const batches: T[][] = [];
@@ -99,9 +119,15 @@ export class SyncClientService {
     private readonly downloads: DownloadApplierService,
   ) {}
 
-  /** Syncs run one after another; asking again for a scope already queued joins that run. */
+  /** Syncs run one after another; asking again for the same run while it is queued joins it. */
   private queue: Promise<unknown> = Promise.resolve();
-  private readonly pending = new Map<SyncScope | 'all', Promise<SyncOutcome>>();
+  private readonly pending = new Map<string, Promise<SyncOutcome>>();
+  private readonly _phase = signal<'pulling' | 'pushing' | undefined>(undefined);
+  private readonly _lastSummary = signal<SyncSummary | undefined>(undefined);
+  /** What the running sync is doing right now. */
+  readonly phase = this._phase.asReadonly();
+  /** Result of the last finished run, for the summary shown after "Đồng bộ ngay". */
+  readonly lastSummary = this._lastSummary.asReadonly();
 
   /**
    * Waits before re-sending a request that failed in transit or came back as
@@ -118,12 +144,15 @@ export class SyncClientService {
    * arrive after them). One sync at a time.
    */
   syncNormally(endpointUrl: string, scope: SyncScope | 'all' = 'all'): Promise<SyncOutcome> {
-    const existing = this.pending.get(scope);
+    return this.run(endpointUrl, { scopes: scope === 'all' ? ['questions', 'data'] : [scope], pull: true, push: true });
+  }
+
+  run(endpointUrl: string, options: SyncRunOptions): Promise<SyncOutcome> {
+    const key = JSON.stringify(options);
+    const existing = this.pending.get(key);
     if (existing) return existing;
-    const run = this.queue
-      .then(() => this.runSync(endpointUrl, scope === 'all' ? ['questions', 'data'] : [scope]))
-      .finally(() => this.pending.delete(scope));
-    this.pending.set(scope, run);
+    const run = this.queue.then(() => this.runSync(endpointUrl, options)).finally(() => this.pending.delete(key));
+    this.pending.set(key, run);
     this.queue = run.catch(() => undefined);
     return run;
   }
@@ -138,7 +167,25 @@ export class SyncClientService {
    * other devices already stored (e.g. the default categories, which every
    * device seeds on its own) before uploading its own copies of them.
    */
-  private async runSync(endpointUrl: string, scopes: SyncScope[]): Promise<SyncOutcome> {
+  private async runSync(endpointUrl: string, options: SyncRunOptions): Promise<SyncOutcome> {
+    const started = Date.now();
+    const outcome = await this.runScopes(endpointUrl, options);
+    this._phase.set(undefined);
+    const progress = this._progress() ?? { sent: 0, total: 0 };
+    this._lastSummary.set({
+      outcome,
+      options,
+      received: this._received(),
+      sent: progress.sent,
+      toSend: progress.total,
+      conflicts: this.conflictState.conflicts().length,
+      seconds: Math.round((Date.now() - started) / 1000),
+      error: outcome === 'success' ? undefined : this._lastError(),
+    });
+    return outcome;
+  }
+
+  private async runScopes(endpointUrl: string, { scopes, pull, push }: SyncRunOptions): Promise<SyncOutcome> {
     if (this.conflictState.hasUnresolvedConflicts()) {
       // Automatic sync stays paused until every conflict is resolved (FR-061).
       this._lastError.set('Còn xung đột chưa giải quyết — hãy chọn cách xử lý ở bên dưới trước.');
@@ -162,8 +209,14 @@ export class SyncClientService {
 
     let outcome: SyncOutcome = 'success';
     for (const scope of scopes) {
-      outcome = await this.pull(endpointUrl, sharedSecret, scope);
-      if (outcome === 'success') outcome = await this.push(endpointUrl, sharedSecret, scope);
+      if (pull) {
+        this._phase.set('pulling');
+        outcome = await this.pull(endpointUrl, sharedSecret, scope);
+      }
+      if (outcome === 'success' && push) {
+        this._phase.set('pushing');
+        outcome = await this.push(endpointUrl, sharedSecret, scope);
+      }
       if (outcome !== 'success') break;
     }
     this._lastOutcome.set(outcome);

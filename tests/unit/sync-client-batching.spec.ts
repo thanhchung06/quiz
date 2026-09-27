@@ -20,7 +20,7 @@ function client(changeCount: number, lastPulledRevision = 0, entityType = 'Attem
   const c = new SyncClientService(
     { collectPendingChanges: async () => changes } as unknown as BatchBuilderService,
     { sharedSecret: () => 'secret' } as unknown as GoogleAuthService,
-    { hasUnresolvedConflicts: () => false, setConflicts: () => undefined } as unknown as ConflictStateService,
+    { hasUnresolvedConflicts: () => false, setConflicts: () => undefined, conflicts: () => [] } as unknown as ConflictStateService,
     { get: async () => settings, update: async (p: object) => (settings = { ...settings, ...p }) } as unknown as AppSettingsRepository,
     { apply: async (d: unknown[]) => (applied.push(d), d.length) } as unknown as DownloadApplierService,
   );
@@ -78,6 +78,25 @@ describe('SyncClientService', () => {
     const { c } = client(0);
     await c.syncNormally('https://x/exec', 'all');
     expect(bodies().map((b) => b.pullTypes?.[0])).toEqual(['Category', 'Profile']);
+  });
+
+  it('one direction only: push-only never pulls, pull-only never uploads; the summary reports the run', async () => {
+    global.fetch = jest.fn((_u, init) => {
+      const b = JSON.parse(String(init?.body));
+      return reply(b.pullSince !== undefined ? ok({ dataRevision: 4, downloads: [{}, {}] }) : ok());
+    }) as unknown as typeof fetch;
+
+    const pushOnly = client(30);
+    await pushOnly.c.run('https://x/exec', { scopes: ['data'], push: true, pull: false });
+    expect(bodies().every((b) => b.pullSince === undefined)).toBe(true);
+    expect(pushOnly.c.lastSummary()).toMatchObject({ outcome: 'success', sent: 30, toSend: 30, received: 0, conflicts: 0 });
+
+    (global.fetch as jest.Mock).mockClear();
+    const pullOnly = client(30);
+    await pullOnly.c.run('https://x/exec', { scopes: ['data'], push: false, pull: true });
+    expect(bodies()).toHaveLength(1);
+    expect(bodies()[0].pullSince).toBe(0);
+    expect(pullOnly.c.lastSummary()).toMatchObject({ outcome: 'success', received: 2, sent: 0, toSend: 0 });
   });
 
   it('keeps asking while the server says hasMore, applying every page', async () => {

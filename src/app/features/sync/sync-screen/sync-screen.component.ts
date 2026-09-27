@@ -1,25 +1,25 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GoogleAuthService } from '../services/google-auth.service';
 import { ConflictResolutionService } from '../services/conflict-resolution.service';
 import { ConflictStateService } from '../../../sync-engine/conflict-state.service';
-import { SyncClientService, SyncOutcome, SyncScope } from '../../../sync-engine/sync-client.service';
+import { SyncClientService, SyncOutcome, SyncRunOptions } from '../../../sync-engine/sync-client.service';
 import { StorageModeService } from '../../../sync-engine/storage-mode.service';
-import { StorageMode } from '../../../shared/models/domain.model';
 import { SyncConflict } from '../../../sync-engine/sync-api.types';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { SYNC_ENDPOINT_KEY, syncEndpointUrl } from '../../../sync-engine/sync-endpoint';
 
+type SyncDialogStep = 'options' | 'running' | 'done';
+
 /**
- * Sync screen (FR-056): Sync Normally, Review Conflicts, Retry, Replace
- * Google With Local, Replace Local With Google, Pause Automatic Sync,
- * Disconnect Google. Replace actions require explicit confirmation and
- * recommend a prior backup; disconnecting never deletes local data.
- *
- * Syncing itself only needs the Apps Script Web App URL, the target
- * Spreadsheet ID, and the shared secret (see apps-script/README.md) —
- * "Connect Google Account" (OAuth) is optional and only matters for a
- * future spreadsheet picker; it never gates the sync calls themselves.
+ * Sync screen (FR-056). Data always lives on the device; this screen has three
+ * independent parts, each saved on its own:
+ * - Connection: the Apps Script Web App URL + shared secret (plus the optional
+ *   Google account, see GoogleAuthService — never needed for syncing).
+ * - Automatic sync: on/off, and whether it includes questions (off by default).
+ * - "Đồng bộ ngay": a dialog to choose direction (this device → Google,
+ *   Google → this device) and whether to skip questions, then progress, then a
+ *   summary. Conflicts, when any, are resolved below it.
  */
 @Component({
   selector: 'app-sync-screen',
@@ -29,6 +29,7 @@ import { SYNC_ENDPOINT_KEY, syncEndpointUrl } from '../../../sync-engine/sync-en
   styleUrl: './sync-screen.component.scss',
 })
 export class SyncScreenComponent {
+  // --- Connection -----------------------------------------------------------
   /** A URL saved on this device wins; otherwise the build's default (config/sync-defaults.json), if any. */
   readonly endpointUrl = signal(syncEndpointUrl());
   readonly clientId = signal(localStorage.getItem('quiz-app.googleClientId') ?? '');
@@ -37,13 +38,26 @@ export class SyncScreenComponent {
   readonly spreadsheetIdInput = signal(localStorage.getItem('quiz-app.spreadsheetId') ?? '');
   readonly sharedSecretInput = signal('');
   readonly connected: GoogleAuthService['connected'];
+  readonly connectionMessage = signal('');
+
+  // --- Automatic sync ---------------------------------------------------------
+  readonly autoSyncEnabled = signal(false);
+  readonly autoSyncQuestions = signal(false);
+  readonly autoSyncMessage = signal('');
+
+  // --- Sync now dialog ----------------------------------------------------------
+  readonly dialogStep = signal<SyncDialogStep | undefined>(undefined);
+  readonly optPush = signal(true);
+  readonly optPull = signal(true);
+  readonly optSkipQuestions = signal(false);
+  readonly canConfirm = computed(() => this.optPush() || this.optPull());
+
   readonly conflicts: ConflictStateService['conflicts'];
-  readonly storageMode = signal<StorageMode>('localOnly');
-  readonly lastResult = signal<SyncOutcome | undefined>(undefined);
-  readonly syncing = signal(false);
-  readonly lastError: SyncClientService['lastError'];
   readonly progress: SyncClientService['progress'];
   readonly received: SyncClientService['received'];
+  readonly phase: SyncClientService['phase'];
+  readonly summary: SyncClientService['lastSummary'];
+  readonly schemaIncompatible: SyncClientService['schemaIncompatible'];
   readonly outcomeLabels: Record<SyncOutcome, string> = {
     success: 'Đồng bộ thành công',
     busy: 'Google Sheet đang bận',
@@ -51,29 +65,32 @@ export class SyncScreenComponent {
     'network-error': 'Lỗi kết nối',
     'server-error': 'Lỗi từ Apps Script',
   };
-  readonly schemaIncompatible: SyncClientService['schemaIncompatible'];
-  readonly confirmingReplace = signal<'toGoogle' | 'toLocal' | undefined>(undefined);
-  readonly message = signal('');
 
   constructor(
     private readonly googleAuth: GoogleAuthService,
     private readonly conflictResolution: ConflictResolutionService,
     private readonly conflictState: ConflictStateService,
     private readonly syncClient: SyncClientService,
-    private readonly storageModeService: StorageModeService,
+    private readonly autoSyncSettings: StorageModeService,
   ) {
     this.connected = this.googleAuth.connected;
     this.spreadsheetId = this.googleAuth.spreadsheetId;
     this.conflicts = this.conflictState.conflicts;
     this.schemaIncompatible = this.syncClient.schemaIncompatible;
-    this.lastError = this.syncClient.lastError;
     this.progress = this.syncClient.progress;
     this.received = this.syncClient.received;
+    this.phase = this.syncClient.phase;
+    this.summary = this.syncClient.lastSummary;
     this.sharedSecretSet.set(!!this.googleAuth.sharedSecret());
-    void this.storageModeService.getMode().then((m) => this.storageMode.set(m));
+    void this.autoSyncSettings.getAutoSync().then((value) => {
+      this.autoSyncEnabled.set(value.enabled);
+      this.autoSyncQuestions.set(value.includeQuestions);
+    });
   }
 
-  saveSyncTarget(): void {
+  // --- Connection -----------------------------------------------------------
+
+  saveConnection(): void {
     localStorage.setItem(SYNC_ENDPOINT_KEY, this.endpointUrl());
     if (this.spreadsheetIdInput()) {
       this.googleAuth.setSpreadsheetId(this.spreadsheetIdInput());
@@ -83,7 +100,7 @@ export class SyncScreenComponent {
       this.sharedSecretSet.set(true);
       this.sharedSecretInput.set('');
     }
-    this.message.set('Đã lưu cài đặt đồng bộ.');
+    this.connectionMessage.set('Đã lưu kết nối.');
   }
 
   async connect(): Promise<void> {
@@ -95,56 +112,69 @@ export class SyncScreenComponent {
     this.googleAuth.disconnect();
   }
 
-  async setMode(mode: StorageMode): Promise<void> {
-    this.storageMode.set(mode);
-    await this.storageModeService.setMode(mode);
-  }
-
   isReadyToSync(): boolean {
     // spreadsheetId is kept only as the parent's own reference link — the
     // server is bound to its one sheet regardless, so it never gates sync.
     return !!this.endpointUrl() && this.sharedSecretSet();
   }
 
-  /** Which button started the running/last sync — "Thử lại" repeats it. */
-  readonly lastScope = signal<SyncScope>('data');
+  // --- Automatic sync -----------------------------------------------------------
 
-  async syncNow(scope: SyncScope = 'data'): Promise<void> {
-    if (this.syncing()) return;
-    this.lastScope.set(scope);
-    this.syncing.set(true);
-    this.lastResult.set(undefined);
+  setAutoSyncEnabled(enabled: boolean): void {
+    this.autoSyncEnabled.set(enabled);
+    if (!enabled) this.autoSyncQuestions.set(false);
+    this.autoSyncMessage.set('');
+  }
+
+  async saveAutoSync(): Promise<void> {
+    await this.autoSyncSettings.setAutoSync({ enabled: this.autoSyncEnabled(), includeQuestions: this.autoSyncQuestions() });
+    this.autoSyncMessage.set(
+      !this.autoSyncEnabled()
+        ? 'Đã tắt tự động đồng bộ — dữ liệu vẫn được lưu trên máy này.'
+        : this.autoSyncQuestions()
+          ? 'Đã lưu: tự động đồng bộ dữ liệu và câu hỏi.'
+          : 'Đã lưu: tự động đồng bộ dữ liệu (câu hỏi đồng bộ bằng "Đồng bộ ngay").',
+    );
+  }
+
+  // --- Sync now dialog ----------------------------------------------------------
+
+  openSyncDialog(): void {
+    if (this.dialogStep() === 'running') return;
+    this.optPush.set(true);
+    this.optPull.set(true);
+    this.optSkipQuestions.set(false);
+    this.dialogStep.set('options');
+  }
+
+  closeSyncDialog(): void {
+    if (this.dialogStep() === 'running') return; // the sync keeps going; the dialog stays until it ends
+    this.dialogStep.set(undefined);
+  }
+
+  async confirmSync(): Promise<void> {
+    if (!this.canConfirm()) return;
+    const options: SyncRunOptions = {
+      scopes: this.optSkipQuestions() ? ['data'] : ['questions', 'data'],
+      push: this.optPush(),
+      pull: this.optPull(),
+    };
+    this.dialogStep.set('running');
     try {
-      this.lastResult.set(await this.syncClient.syncNormally(this.endpointUrl(), scope));
+      await this.syncClient.run(this.endpointUrl(), options);
     } finally {
-      this.syncing.set(false);
+      this.dialogStep.set('done');
     }
   }
 
-  async retry(): Promise<void> {
-    await this.syncNow(this.lastScope());
+  directionLabel(options: SyncRunOptions): string {
+    if (options.push && options.pull) return 'Hai chiều';
+    return options.push ? 'Máy này → Google' : 'Google → máy này';
   }
 
   async resolve(conflict: SyncConflict, action: 'useLocal' | 'useGoogle' | 'keepBoth'): Promise<void> {
     if (action === 'useLocal') await this.conflictResolution.useLocal(conflict);
     if (action === 'useGoogle') await this.conflictResolution.useGoogle(conflict);
     if (action === 'keepBoth') await this.conflictResolution.keepBoth(conflict);
-  }
-
-  requestReplace(direction: 'toGoogle' | 'toLocal'): void {
-    this.confirmingReplace.set(direction);
-  }
-
-  cancelReplace(): void {
-    this.confirmingReplace.set(undefined);
-  }
-
-  async confirmReplace(): Promise<void> {
-    // Full bulk replace-all is a larger, riskier operation than a normal sync
-    // batch; this pass wires the confirmation gate and leaves the bulk
-    // upload/download itself to a follow-up iteration once live-tested
-    // against a real spreadsheet.
-    this.message.set('Đã xác nhận — vui lòng chạy đồng bộ để áp dụng.');
-    this.confirmingReplace.set(undefined);
   }
 }

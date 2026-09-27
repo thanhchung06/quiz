@@ -2,40 +2,54 @@ import { AutoSyncService } from '../../src/app/sync-engine/auto-sync.service';
 import { AppSettingsRepository } from '../../src/app/data/repositories/app-settings.repository';
 import { SyncClientService } from '../../src/app/sync-engine/sync-client.service';
 
-function setup(storageMode: string) {
+function setup(settings: object) {
   localStorage.setItem('quiz-app.syncEndpoint', 'https://script/exec');
-  const syncNormally = jest.fn(async () => 'success');
+  const run = jest.fn(async () => 'success');
   const auto = new AutoSyncService(
-    { get: async () => ({ storageMode }) } as unknown as AppSettingsRepository,
-    { syncNormally } as unknown as SyncClientService,
+    { get: async () => ({ storageMode: 'localOnly', ...settings }) } as unknown as AppSettingsRepository,
+    { run } as unknown as SyncClientService,
   );
-  return { auto, syncNormally };
+  return { auto, run };
 }
 const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 describe('AutoSyncService', () => {
-  it('syncs only the data scope, and only on automatic-sync devices', async () => {
-    const on = setup('automaticSync');
+  it('syncs data both ways when "Tự động đồng bộ" is ticked, and nothing when it is not', async () => {
+    const on = setup({ autoSyncEnabled: true, autoSyncQuestions: false });
     on.auto.request('attempt-finished');
     await settle();
-    expect(on.syncNormally).toHaveBeenCalledWith('https://script/exec', 'data');
+    expect(on.run).toHaveBeenCalledWith('https://script/exec', { scopes: ['data'], pull: true, push: true });
 
-    const manual = setup('manualSync');
-    manual.auto.request('assigned');
+    const off = setup({ autoSyncEnabled: false });
+    off.auto.request('assigned');
     await settle();
-    expect(manual.syncNormally).not.toHaveBeenCalled();
+    expect(off.run).not.toHaveBeenCalled();
+  });
+
+  it('includes questions only when "Đồng bộ cả câu hỏi" is ticked too', async () => {
+    const { auto, run } = setup({ autoSyncEnabled: true, autoSyncQuestions: true });
+    auto.request('assigned');
+    await settle();
+    expect(run).toHaveBeenCalledWith('https://script/exec', { scopes: ['questions', 'data'], pull: true, push: true });
+  });
+
+  it('treats an older device set to the retired "automaticSync" mode as enabled', async () => {
+    const { auto, run } = setup({ storageMode: 'automaticSync' });
+    auto.request('assigned');
+    await settle();
+    expect(run).toHaveBeenCalled();
   });
 
   it('syncs when the app opens and whenever it is hidden or closed', async () => {
-    const { auto, syncNormally } = setup('automaticSync');
+    const { auto, run } = setup({ autoSyncEnabled: true });
     auto.startLifecycleHooks();
     await settle();
-    expect(syncNormally).toHaveBeenCalledTimes(1); // opened
+    expect(run).toHaveBeenCalledTimes(1); // opened
 
     Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
     document.dispatchEvent(new Event('visibilitychange'));
     window.dispatchEvent(new Event('pagehide'));
     await settle();
-    expect(syncNormally).toHaveBeenCalledTimes(3);
+    expect(run).toHaveBeenCalledTimes(3);
   });
 });

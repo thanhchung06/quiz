@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AppSettingsRepository } from '../data/repositories/app-settings.repository';
-import { SyncClientService } from './sync-client.service';
+import { SyncClientService, SyncScope } from './sync-client.service';
+import { readAutoSyncSettings } from './storage-mode.service';
 import { syncEndpointUrl } from './sync-endpoint';
 
 export type AutoSyncReason = 'open' | 'close' | 'attempt-finished' | 'assigned';
 
 /**
- * Automatic Sync (FR-055), for devices set to "Đồng bộ tự động": syncs the
- * data scope — everything except questions/categories, which only move with
- * the "Đồng bộ câu hỏi" button — when the app is opened or closed, after an
+ * Automatic Sync (FR-055), for devices with "Tự động đồng bộ" ticked: syncs
+ * the data scope — plus questions/categories only if "Đồng bộ cả câu hỏi" is
+ * also ticked — both ways, when the app is opened or closed, after an
  * exercise ends, and after the parent assigns work. Fire-and-forget: never
  * awaited on the child's login/play path, and failures only show on the Sync
  * screen; pending changes simply go up next time.
@@ -40,7 +41,9 @@ export class AutoSyncService {
   private async run(): Promise<void> {
     const endpoint = syncEndpointUrl();
     if (!endpoint) return;
-    if ((await this.settings.get()).storageMode !== 'automaticSync') return;
-    await this.syncClient.syncNormally(endpoint, 'data');
+    const auto = readAutoSyncSettings(await this.settings.get());
+    if (!auto.enabled) return;
+    const scopes: SyncScope[] = auto.includeQuestions ? ['questions', 'data'] : ['data'];
+    await this.syncClient.run(endpoint, { scopes, pull: true, push: true });
   }
 }

@@ -1,20 +1,34 @@
 import { Injectable } from '@angular/core';
 import { AppSettingsRepository } from '../data/repositories/app-settings.repository';
-import { StorageMode } from '../shared/models/domain.model';
+import { AppSettings } from '../shared/models/domain.model';
+
+export interface AutoSyncSettings {
+  enabled: boolean;
+  includeQuestions: boolean;
+}
+
+/** An older device may only have the retired storageMode: "automaticSync" there means enabled. */
+export function readAutoSyncSettings(settings: AppSettings): AutoSyncSettings {
+  return {
+    enabled: settings.autoSyncEnabled ?? settings.storageMode === 'automaticSync',
+    includeQuestions: settings.autoSyncQuestions ?? false,
+  };
+}
 
 /**
- * Storage-mode setting (FR-055): Local Only / Manual Sync / Automatic Sync.
- * What Automatic Sync does is in AutoSyncService.
+ * Automatic-sync settings (FR-055). Data is always stored on the device; the
+ * parent only chooses whether it also syncs automatically, and whether that
+ * automatic sync includes questions. What it does is in AutoSyncService.
  */
 @Injectable({ providedIn: 'root' })
 export class StorageModeService {
   constructor(private readonly settings: AppSettingsRepository) {}
 
-  async getMode(): Promise<StorageMode> {
-    return (await this.settings.get()).storageMode;
+  async getAutoSync(): Promise<AutoSyncSettings> {
+    return readAutoSyncSettings(await this.settings.get());
   }
 
-  async setMode(mode: StorageMode): Promise<void> {
-    await this.settings.update({ storageMode: mode });
+  async setAutoSync(value: AutoSyncSettings): Promise<void> {
+    await this.settings.update({ autoSyncEnabled: value.enabled, autoSyncQuestions: value.enabled && value.includeQuestions });
   }
 }

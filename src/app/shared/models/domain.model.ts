@@ -340,7 +340,12 @@ export interface AppSettings {
   audioEnabled: boolean;
   reducedMotion: boolean;
   feedbackDelayMs: number;
+  /** @deprecated Replaced by autoSyncEnabled/autoSyncQuestions (data is always stored locally); only read to carry an older setting over. */
   storageMode: StorageMode;
+  /** Sync automatically (app open/close, finished exercise, assigning work). */
+  autoSyncEnabled?: boolean;
+  /** Automatic sync also includes questions and categories (off by default — they normally sync from "Đồng bộ ngay"). */
+  autoSyncQuestions?: boolean;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;
