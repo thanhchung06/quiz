@@ -64,6 +64,19 @@ install it as a trusted CA certificate.`);
   }
 }
 
+/** Only a production build (npm run build) contains the service worker that makes the app installable offline. */
+async function checkBuild() {
+  const missing = [];
+  for (const file of ['index.html', 'ngsw-worker.js', 'ngsw.json']) {
+    if (!(await stat(join(WEB_ROOT, file)).catch(() => undefined))) missing.push(file);
+  }
+  if (missing.length) {
+    console.error(`No production build in ${WEB_ROOT} (missing ${missing.join(', ')}).
+Run "npm run build" first, then "npm run serve:https" again.`);
+    process.exit(1);
+  }
+}
+
 async function resolveFile(urlPath) {
   const decoded = decodeURIComponent(urlPath.split('?')[0]);
   const candidate = normalize(join(WEB_ROOT, decoded));
@@ -80,6 +93,8 @@ async function resolveFile(urlPath) {
   }
   return undefined;
 }
+
+await checkBuild();
 
 const server = createServer(await loadCertificate(), async (req, res) => {
   try {
