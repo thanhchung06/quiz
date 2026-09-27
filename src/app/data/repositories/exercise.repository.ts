@@ -61,6 +61,8 @@ export class ExerciseRepository extends BaseRepository<Exercise> {
       correctionReviewEnabled: source.correctionReviewEnabled,
       repeatSameQuestions: source.repeatSameQuestions,
       questionTimingMode: source.questionTimingMode ?? 'none',
+      defaultQuestionSeconds: source.defaultQuestionSeconds,
+      defaultQuestionPoints: source.defaultQuestionPoints,
       isDaily: source.isDaily ?? false,
       status: 'active',
     });

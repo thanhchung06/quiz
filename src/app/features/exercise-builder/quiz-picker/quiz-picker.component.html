@@ -7,8 +7,11 @@
       </button>
     </header>
 
-    <div class="picker-body">
+    <div class="picker-body" [attr.data-step]="mobileStep()">
       <nav class="tree-panel">
+        <button type="button" class="mobile-only to-added" (click)="goTo('added')">
+          <app-icon name="list_alt" />Đã thêm {{ existingItems.length }} câu — xem
+        </button>
         <div class="search-box">
           <app-icon name="search" />
           <input
@@ -43,16 +46,72 @@
           <ul>
             @for (node of group.categories; track node.category.id) {
               <li>
-                <button
-                  type="button"
-                  class="tree-node"
-                  [class.active]="selectedCategoryId() === node.category.id"
-                  (click)="selectCategory(node.category.id)"
-                >
-                  <app-icon name="folder_open" />
-                  {{ node.category.name }}
-                  <span class="count">{{ node.count }}</span>
-                </button>
+                <div class="category-row">
+                  <button
+                    type="button"
+                    class="expander"
+                    [attr.aria-expanded]="isExpanded(node.category.id)"
+                    [attr.aria-label]="(isExpanded(node.category.id) ? 'Thu gọn ' : 'Mở ') + node.category.name"
+                    (click)="toggleExpanded(node.category.id)"
+                  >
+                    <app-icon name="chevron_right" [class.rotated]="isExpanded(node.category.id)" />
+                  </button>
+                  <button
+                    type="button"
+                    class="tree-node"
+                    [class.active]="selectedCategoryId() === node.category.id && !selectedItem()"
+                    (click)="selectCategory(node.category.id)"
+                  >
+                    <app-icon name="folder_open" />
+                    {{ node.category.name }}
+                    <span class="count">{{ node.count }}</span>
+                  </button>
+                </div>
+                @if (isExpanded(node.category.id)) {
+                  <ul class="leaves">
+                    @for (entry of entriesByCategory().get(node.category.id) ?? []; track entry.key) {
+                      <li>
+                        @if (entry.kind === 'item') {
+                          <button
+                            type="button"
+                            class="leaf"
+                            [class.added]="isEntryAdded(entry)"
+                            [class.active]="selectedItem()?.id === entry.item.id"
+                            [disabled]="dailyMode"
+                            [title]="dailyMode ? 'Bài tập hàng ngày chỉ thêm theo danh mục, không thêm từng câu cụ thể' : entry.item.prompt"
+                            (click)="selectItem(entry.item)"
+                          >
+                            <app-icon name="quiz" />
+                            <span class="prompt">{{ entry.item.prompt }}</span>
+                            @if (isEntryAdded(entry)) {
+                              <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
+                            }
+                          </button>
+                        } @else {
+                          <button
+                            type="button"
+                            class="leaf"
+                            [class.added]="isEntryAdded(entry)"
+                            [class.active]="selectedItem()?.passage?.passageId === entry.key"
+                            [disabled]="dailyMode"
+                            (click)="selectItem(entry.first)"
+                          >
+                            <app-icon name="auto_stories" />
+                            <span class="prompt">
+                              {{ entry.title }}
+                              <span class="passage-count">Đoạn văn · {{ entry.items.length }} câu hỏi</span>
+                            </span>
+                            @if (isEntryAdded(entry)) {
+                              <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
+                            }
+                          </button>
+                        }
+                      </li>
+                    } @empty {
+                      <li class="leaf-empty">Không có câu hỏi phù hợp.</li>
+                    }
+                  </ul>
+                }
               </li>
             }
           </ul>
@@ -62,55 +121,10 @@
         }
       </nav>
 
-      <section class="list-panel">
-        <ul class="quiz-list">
-          @for (entry of listEntries(); track entry.key) {
-            <li>
-              @if (entry.kind === 'item') {
-                <button
-                  type="button"
-                  class="quiz-row"
-                  [class.added]="isEntryAdded(entry)"
-                  [class.selected]="selectedItem()?.id === entry.item.id"
-                  [disabled]="dailyMode"
-                  [title]="dailyMode ? 'Bài tập hàng ngày chỉ thêm theo danh mục, không thêm từng câu cụ thể' : ''"
-                  (click)="selectItem(entry.item)"
-                >
-                  <app-icon name="quiz" />
-                  <span class="prompt">{{ entry.item.prompt }}</span>
-                  @if (isEntryAdded(entry)) {
-                    <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
-                  }
-                </button>
-              } @else {
-                <button
-                  type="button"
-                  class="quiz-row passage-row"
-                  [class.added]="isEntryAdded(entry)"
-                  [class.selected]="selectedItem()?.passage?.passageId === entry.key"
-                  [disabled]="dailyMode"
-                  [title]="dailyMode ? 'Bài tập hàng ngày chỉ thêm theo danh mục, không thêm từng câu cụ thể' : ''"
-                  (click)="selectItem(entry.first)"
-                >
-                  <app-icon name="auto_stories" />
-                  <span class="prompt">
-                    {{ entry.title }}
-                    <span class="passage-count">Đoạn văn · {{ entry.items.length }} câu hỏi</span>
-                  </span>
-                  @if (isEntryAdded(entry)) {
-                    <app-icon name="check_circle" class="added-badge" label="Đã thêm" />
-                  }
-                </button>
-              }
-            </li>
-          }
-        </ul>
-        @if (filteredItems().length === 0) {
-          <p class="empty">Không có câu hỏi nào phù hợp.</p>
-        }
-      </section>
-
       <section class="detail-panel">
+        <button type="button" class="mobile-only back" (click)="goTo('tree')">
+          <app-icon name="arrow_back" />Chọn câu hỏi
+        </button>
         @if (!selectedItem()) {
           <div class="bulk-add-form">
             @if (dailyMode) {
@@ -155,7 +169,7 @@
                   pattern="[0-9]*"
                   [ngModel]="bulkSeconds()"
                   (ngModelChange)="bulkSeconds.set($event)"
-                  placeholder="để trống = không giới hạn riêng"
+                  [placeholder]="secondsPlaceholder()"
                 />
               </label>
             }
@@ -167,7 +181,7 @@
                 pattern="[0-9]*"
                 [ngModel]="bulkPoints()"
                 (ngModelChange)="bulkPoints.set($event)"
-                placeholder="để trống = mặc định của từng câu"
+                [placeholder]="defaultQuestionPoints !== undefined ? 'để trống = ' + defaultQuestionPoints + ' điểm (mặc định)' : 'để trống = điểm riêng của từng câu'"
               />
             </label>
             <p class="bulk-pool-count">
@@ -240,7 +254,7 @@
               @for (q of selectedPassageItems(); track q.id) {
                 <li [class.added]="isAdded(q.id)">
                   {{ q.prompt }}
-                  <span class="detail-meta">{{ typeLabel(q.type) }} · {{ q.points }} điểm</span>
+                  <span class="detail-meta">{{ typeLabel(q.type) }} · {{ defaultQuestionPoints ?? q.points }} điểm</span>
                 </li>
               }
             </ol>
@@ -248,7 +262,7 @@
           <p class="detail-prompt">{{ selectedItem()!.prompt }}</p>
           <p class="detail-meta">
             {{ typeLabel(selectedItem()!.type) }} · Lớp {{ selectedItem()!.grade }} · Độ khó {{ difficultyLabel(selectedItem()!.difficulty) }} ·
-            {{ selectedItem()!.points }} điểm (mặc định)
+            {{ defaultQuestionPoints ?? selectedItem()!.points }} điểm ({{ defaultQuestionPoints !== undefined ? 'mặc định của bài' : 'mặc định' }})
           </p>
           }
 
@@ -289,7 +303,7 @@
                     pattern="[0-9]*"
                     [ngModel]="draftSeconds()"
                     (ngModelChange)="draftSeconds.set($event)"
-                    placeholder="để trống = không giới hạn riêng"
+                    [placeholder]="secondsPlaceholder()"
                   />
                 </label>
               }
@@ -301,7 +315,7 @@
                   pattern="[0-9]*"
                   [ngModel]="draftPoints()"
                   (ngModelChange)="draftPoints.set($event)"
-                  [placeholder]="'để trống = mặc định ' + selectedItem()!.points"
+                  [placeholder]="pointsPlaceholder(selectedItem()!.points)"
                 />
               </label>
               <button type="button" class="confirm-add" (click)="confirmAdd()">
@@ -337,11 +351,11 @@
                   <span class="tag"><app-icon name="list_alt" />{{ allowedTypesLabel(i.randomGroup.allowedTypes) }}</span>
                   <span class="tag">
                     <app-icon name="star" />
-                    {{ i.randomGroup.pointsOverride !== undefined ? i.randomGroup.pointsOverride + ' điểm/câu' : 'điểm mặc định mỗi câu' }}
+                    {{ (i.randomGroup.pointsOverride ?? defaultQuestionPoints) !== undefined ? (i.randomGroup.pointsOverride ?? defaultQuestionPoints) + ' điểm/câu' : 'điểm riêng mỗi câu' }}
                   </span>
                   <span class="tag">
                     <app-icon name="hourglass_bottom" />
-                    {{ i.randomGroup.timeLimitSeconds ? formatSeconds(i.randomGroup.timeLimitSeconds) : 'không giới hạn riêng' }}
+                    {{ effectiveSeconds(i) ? formatSeconds(effectiveSeconds(i)!) + '/câu' : 'không giới hạn riêng' }}
                   </span>
                 </p>
               }
@@ -362,6 +376,10 @@
             </p>
           </div>
         }
+        <div class="added-actions">
+          <button type="button" class="mobile-only secondary" (click)="goTo('tree')"><app-icon name="add" />Thêm câu hỏi</button>
+          <button type="button" class="primary" (click)="closed.emit()"><app-icon name="check_circle" />Hoàn tất</button>
+        </div>
       </aside>
     </div>
   </div>

@@ -57,7 +57,8 @@ export class AttemptResolverService {
           // A per-exercise points override never mutates the bank item itself —
           // only this attempt's frozen snapshot, so other exercises using the
           // same QuizItem keep its own default points.
-          const snapshot = item.points !== undefined ? { ...quizItem, points: item.points } : quizItem;
+          const points = item.points ?? exercise.defaultQuestionPoints;
+          const snapshot = points !== undefined ? { ...quizItem, points } : quizItem;
           orderedIds.push(snapshot.id);
           usedIds.add(snapshot.id);
           itemsById.set(snapshot.id, snapshot);
@@ -68,8 +69,8 @@ export class AttemptResolverService {
         for (const quizItem of resolved) {
           // Same per-exercise points override pattern as fixed items above —
           // never mutates the bank item, only this attempt's frozen snapshot.
-          const snapshot =
-            item.randomGroup.pointsOverride !== undefined ? { ...quizItem, points: item.randomGroup.pointsOverride } : quizItem;
+          const points = item.randomGroup.pointsOverride ?? exercise.defaultQuestionPoints;
+          const snapshot = points !== undefined ? { ...quizItem, points } : quizItem;
           orderedIds.push(snapshot.id);
           usedIds.add(snapshot.id);
           itemsById.set(snapshot.id, snapshot);
@@ -93,8 +94,13 @@ export class AttemptResolverService {
     if (mode === 'distribute' && orderedIds.length > 0) {
       const perQuestion = Math.max(1, Math.round((exercise.timeLimitMinutes * 60) / orderedIds.length));
       for (const id of orderedIds) perQuestionSeconds[id] = perQuestion;
+    } else if (mode === 'uniform') {
+      if (exercise.defaultQuestionSeconds) for (const id of orderedIds) perQuestionSeconds[id] = exercise.defaultQuestionSeconds;
     } else if (mode === 'custom') {
-      for (const [id, seconds] of customSecondsById) perQuestionSeconds[id] = seconds;
+      for (const id of orderedIds) {
+        const seconds = customSecondsById.get(id) ?? exercise.defaultQuestionSeconds;
+        if (seconds) perQuestionSeconds[id] = seconds;
+      }
     }
 
     return { randomSeed: seed, resolvedItemOrder: orderedIds, answerOrderByItem, itemsById, perQuestionSeconds };

@@ -89,6 +89,10 @@ interface SubjectGroup {
 export class QuizPickerComponent {
   @Input({ required: true }) existingItems: ExerciseItem[] = [];
   @Input() questionTimingMode: QuestionTimingMode = 'none';
+  /** The exercise's default seconds per question ('uniform' mode, and fallback in 'custom'); only for display/placeholders here. */
+  @Input() defaultQuestionSeconds?: number;
+  /** The exercise's default points per question when an item has no override; only for display/placeholders here. */
+  @Input() defaultQuestionPoints?: number;
   /** The exercise's own grade — the browser only ever shows bank items matching it. */
   @Input({ required: true }) grade!: number;
   /** The exercise's own subject — 'math'/'language' restricts the browser to that subject only; 'mixed' shows both. */
@@ -107,6 +111,54 @@ export class QuizPickerComponent {
   readonly selectedCategoryId = signal<string>('all');
   readonly searchText = signal('');
   readonly selectedItem = signal<QuizItem | undefined>(undefined);
+
+  /**
+   * Phone layout shows one of the three columns at a time: the question tree,
+   * the selected entry's detail, or the list of added questions. Choosing an
+   * entry opens its detail; adding moves on to the added list, which offers
+   * "Thêm câu hỏi" (back to the tree) and "Hoàn tất". On a wide screen all
+   * three columns are always visible and this only tracks the last step.
+   */
+  readonly mobileStep = signal<'tree' | 'detail' | 'added'>('tree');
+  /** Categories opened in the tree to show their questions (all of them open while searching). */
+  readonly expandedCategories = signal<ReadonlySet<string>>(new Set());
+
+  /** Tree leaves per category: the questions (search applied) with each passage collapsed into one entry. */
+  readonly entriesByCategory = computed(() => {
+    const search = this.searchText().trim().toLowerCase();
+    const byCategory = new Map<string, PickerListEntry[]>();
+    const seenPassages = new Set<string>();
+    for (const q of this.typedItems()) {
+      if (search && !q.prompt.toLowerCase().includes(search) && !q.passage?.title.toLowerCase().includes(search)) continue;
+      const list = byCategory.get(q.categoryId) ?? [];
+      if (!q.passage) {
+        list.push({ kind: 'item', key: q.id, item: q });
+      } else if (!seenPassages.has(q.passage.passageId)) {
+        seenPassages.add(q.passage.passageId);
+        const items = this.passageSiblings(q);
+        list.push({ kind: 'passage', key: q.passage.passageId, title: q.passage.title, first: items[0] ?? q, items });
+      }
+      byCategory.set(q.categoryId, list);
+    }
+    return byCategory;
+  });
+
+  isExpanded(categoryId: string): boolean {
+    return !!this.searchText().trim() || this.expandedCategories().has(categoryId);
+  }
+
+  toggleExpanded(categoryId: string): void {
+    this.expandedCategories.update((current) => {
+      const next = new Set(current);
+      if (next.has(categoryId)) next.delete(categoryId);
+      else next.add(categoryId);
+      return next;
+    });
+  }
+
+  goTo(step: 'tree' | 'detail' | 'added'): void {
+    this.mobileStep.set(step);
+  }
 
   /** The middle list: standalone questions as-is, each passage collapsed into one entry (at its first matching sub-question's position). */
   readonly listEntries = computed<PickerListEntry[]>(() => {
@@ -273,6 +325,7 @@ export class QuizPickerComponent {
     const points = this.bulkPoints().trim() ? Math.max(0, Math.round(Number(this.bulkPoints()))) : undefined;
     this.pickedMany.emit(pool.map((q) => ({ quizItemId: q.id, timeLimitSeconds, points })));
     this.bulkMessage.set(`Đã thêm tất cả ${pool.length} câu hỏi của danh mục.`);
+    this.mobileStep.set('added');
   }
 
   constructor(
@@ -291,13 +344,17 @@ export class QuizPickerComponent {
     this.selectedCategoryId.set(id);
     this.selectedItem.set(undefined);
     this.bulkMessage.set('');
+    if (id !== 'all' && !this.expandedCategories().has(id)) this.toggleExpanded(id);
+    this.mobileStep.set('detail');
   }
 
   selectItem(item: QuizItem): void {
     if (this.dailyMode) return; // no individual-item selection in daily mode — see class doc comment
+    this.selectedCategoryId.set(item.categoryId);
     this.selectedItem.set(item);
     this.draftSeconds.set('');
     this.draftPoints.set('');
+    this.mobileStep.set('detail');
   }
 
   clearSelection(): void {
@@ -395,16 +452,33 @@ export class QuizPickerComponent {
    * `pointsOverride` — otherwise each drawn item keeps its own varying
    * default, so there's nothing meaningful to sum here ahead of time.
    */
+  /** Points this entry is worth in the exercise: its own override, else the exercise default, else the question's own. */
   effectivePoints(item: ExerciseItem): number {
     if (item.kind === 'fixed') {
       if (item.points !== undefined) return item.points;
+      if (this.defaultQuestionPoints !== undefined) return this.defaultQuestionPoints;
       return this.allItems().find((q) => q.id === item.quizItemId)?.points ?? 0;
     }
-    return item.randomGroup.pointsOverride !== undefined ? item.randomGroup.pointsOverride * item.randomGroup.count : 0;
+    const perQuestion = item.randomGroup.pointsOverride ?? this.defaultQuestionPoints;
+    return perQuestion !== undefined ? perQuestion * item.randomGroup.count : 0;
   }
 
+  /** Per-question cap as the resolver will apply it (see QuestionTimingMode). */
   effectiveSeconds(item: ExerciseItem): number | undefined {
-    return item.kind === 'fixed' ? item.timeLimitSeconds : item.randomGroup.timeLimitSeconds;
+    const own = item.kind === 'fixed' ? item.timeLimitSeconds : item.randomGroup.timeLimitSeconds;
+    if (this.questionTimingMode === 'uniform') return this.defaultQuestionSeconds;
+    if (this.questionTimingMode === 'custom') return own ?? this.defaultQuestionSeconds;
+    return undefined;
+  }
+
+  /** Placeholder for the per-question points field: what is used when it is left blank. */
+  pointsPlaceholder(questionPoints: number): string {
+    return `để trống = ${this.defaultQuestionPoints ?? questionPoints} điểm (mặc định)`;
+  }
+
+  /** Placeholder for the per-question seconds field ('custom' mode only). */
+  secondsPlaceholder(): string {
+    return this.defaultQuestionSeconds ? `để trống = ${this.defaultQuestionSeconds} giây (mặc định)` : 'để trống = không giới hạn riêng';
   }
 
   totalPoints(): number {
@@ -433,6 +507,7 @@ export class QuizPickerComponent {
     this.picked.emit({ quizItemId: item.id, timeLimitSeconds, points });
     this.draftSeconds.set('');
     this.draftPoints.set('');
+    this.mobileStep.set('added');
   }
 
   /** Draws `bulkCount` distinct, not-already-added items at random from `bulkPool()` and emits them all in one `pickedMany`. */
@@ -463,6 +538,7 @@ export class QuizPickerComponent {
         ? `Chỉ thêm được ${chosen.length}/${requested} câu — không còn đủ câu hỏi phù hợp.`
         : `Đã thêm ${chosen.length} câu hỏi ngẫu nhiên.`,
     );
+    this.mobileStep.set('added');
   }
 
   /**
@@ -503,6 +579,7 @@ export class QuizPickerComponent {
     this.bulkMessage.set(
       `Đã thêm mục ngẫu nhiên: ${count} câu, ${allowedTypesLabel(config.allowedTypes).toLowerCase()}, độ khó ${this.bulkDifficultyLabel()}.`,
     );
+    this.mobileStep.set('added');
   }
 
   bulkDifficultyLabel(): string {

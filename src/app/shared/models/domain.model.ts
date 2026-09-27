@@ -159,11 +159,13 @@ export type ExerciseItem =
  *   any one question, same as the app's original behavior.
  * - `distribute`: the exercise's overall time budget is split evenly across
  *   every resolved question.
- * - `custom`: only items the parent explicitly gave a `timeLimitSeconds` to
- *   (on the ExerciseItem, or on a random group's RandomGroupConfig) get a
- *   per-question cap; any item left unset behaves like `none` for itself.
+ * - `uniform`: every question gets the same cap, the exercise's
+ *   `defaultQuestionSeconds`.
+ * - `custom`: each item's own `timeLimitSeconds` (on the ExerciseItem, or on
+ *   a random group's RandomGroupConfig); an item left unset gets the
+ *   exercise's `defaultQuestionSeconds`, or no cap of its own if that is unset.
  */
-export type QuestionTimingMode = 'none' | 'distribute' | 'custom';
+export type QuestionTimingMode = 'none' | 'distribute' | 'uniform' | 'custom';
 
 export interface Exercise extends SyncEnvelope {
   title: string;
@@ -181,6 +183,10 @@ export interface Exercise extends SyncEnvelope {
   repeatSameQuestions: boolean;
   /** Defaults to 'none' when absent (older records predate this field) — see QuestionTimingMode. */
   questionTimingMode: QuestionTimingMode;
+  /** Seconds per question for the 'uniform' mode, and the fallback for unset items in 'custom'. */
+  defaultQuestionSeconds?: number;
+  /** Points per question in this exercise when an item has no override of its own; absent = each question's own points. */
+  defaultQuestionPoints?: number;
   status: 'active' | 'archived';
   /**
    * A daily exercise (added 2026-09-18) draws its questions fresh at random

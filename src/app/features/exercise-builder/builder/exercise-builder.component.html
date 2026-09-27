@@ -75,15 +75,48 @@
     <select [ngModel]="questionTimingMode()" (ngModelChange)="questionTimingMode.set($event)">
       <option value="none">Không giới hạn (chỉ áp dụng thời gian tổng của cả bài)</option>
       <option value="distribute">Chia đều thời gian tổng cho từng câu</option>
+      <option value="uniform">Thời gian chung cho mỗi câu</option>
       <option value="custom">Tùy chỉnh thời gian riêng cho từng câu</option>
     </select>
   </label>
   @if (questionTimingMode() === 'distribute') {
     <p class="hint">Mỗi câu sẽ có khoảng {{ distributedSecondsPreview() }} giây (thời gian tổng ÷ số câu).</p>
   }
-  @if (questionTimingMode() === 'custom') {
-    <p class="hint">Nhập số giây cho từng câu bên dưới — để trống nghĩa là câu đó không giới hạn riêng.</p>
+  @if (questionTimingMode() === 'uniform' || questionTimingMode() === 'custom') {
+    <label>
+      {{ questionTimingMode() === 'uniform' ? 'Thời gian cho mỗi câu (giây)' : 'Thời gian mặc định mỗi câu (giây)' }}
+      <!-- type="text" deliberately, not "number": keeps the string-typed signal (blank = not set). -->
+      <input
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        [ngModel]="defaultQuestionSeconds()"
+        (ngModelChange)="defaultQuestionSeconds.set($event)"
+        placeholder="ví dụ 30"
+      />
+    </label>
+    <p class="hint">
+      @if (questionTimingMode() === 'uniform') {
+        Mọi câu hỏi đều có cùng số giây này.
+      } @else {
+        Nhập số giây riêng cho từng câu bên dưới; câu để trống dùng thời gian mặc định
+        {{ parsedDefaultSeconds() ? '(' + parsedDefaultSeconds() + ' giây)' : '— chưa đặt thì câu đó không giới hạn riêng' }}.
+      }
+    </p>
   }
+
+  <label>
+    Điểm mặc định mỗi câu
+    <input
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      [ngModel]="defaultQuestionPoints()"
+      (ngModelChange)="defaultQuestionPoints.set($event)"
+      placeholder="để trống = điểm riêng của từng câu hỏi"
+    />
+  </label>
+  <p class="hint">Câu nào có điểm riêng trong bài (ô "điểm" bên dưới) thì dùng điểm đó; còn lại dùng điểm mặc định này.</p>
 
   <h2>Câu hỏi trong bài</h2>
   <ol class="item-list">
@@ -103,7 +136,7 @@
             inputmode="numeric"
             pattern="[0-9]*"
             class="item-seconds"
-            placeholder="giây"
+            [placeholder]="parsedDefaultSeconds() ? parsedDefaultSeconds() + ' giây' : 'giây'"
             [ngModel]="(item.kind === 'fixed' ? item.timeLimitSeconds : item.randomGroup.timeLimitSeconds) ?? ''"
             (ngModelChange)="item.kind === 'fixed' ? setFixedItemSeconds(item.id, $event) : setRandomGroupSeconds(item.id, $event)"
           />
@@ -114,7 +147,7 @@
             inputmode="numeric"
             pattern="[0-9]*"
             class="item-points"
-            placeholder="điểm"
+            [placeholder]="parsedDefaultPoints() !== undefined ? parsedDefaultPoints() + ' điểm' : 'điểm'"
             [ngModel]="item.points ?? ''"
             (ngModelChange)="setFixedItemPoints(item.id, $event)"
           />
@@ -139,6 +172,8 @@
     <app-quiz-picker
       [existingItems]="items()"
       [questionTimingMode]="questionTimingMode()"
+      [defaultQuestionSeconds]="parsedDefaultSeconds()"
+      [defaultQuestionPoints]="parsedDefaultPoints()"
       [grade]="grade()"
       [exerciseSubject]="subject()"
       [dailyMode]="isDaily()"

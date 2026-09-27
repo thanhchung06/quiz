@@ -46,6 +46,9 @@ export class ExerciseBuilderComponent implements OnInit {
   /** 1-3 lifetime attempts, or 'unlimited'. */
   readonly repeatLimit = signal<Exercise['repeatLimit']>(1);
   readonly questionTimingMode = signal<Exercise['questionTimingMode']>('none');
+  /** Text inputs (blank = not set): seconds per question for 'uniform' / fallback in 'custom', and points per question. */
+  readonly defaultQuestionSeconds = signal('');
+  readonly defaultQuestionPoints = signal('');
   readonly isDaily = signal(false);
   readonly items = signal<ExerciseItem[]>([]);
   readonly bankItems = signal<QuizItem[]>([]);
@@ -84,6 +87,8 @@ export class ExerciseBuilderComponent implements OnInit {
     this.lives.set(existing.lives ?? 5);
     this.repeatLimit.set(existing.repeatLimit ?? 1);
     this.questionTimingMode.set(existing.questionTimingMode ?? 'none');
+    this.defaultQuestionSeconds.set(existing.defaultQuestionSeconds ? String(existing.defaultQuestionSeconds) : '');
+    this.defaultQuestionPoints.set(existing.defaultQuestionPoints !== undefined ? String(existing.defaultQuestionPoints) : '');
     this.isDaily.set(existing.isDaily ?? false);
     this.items.set(existing.items);
   }
@@ -178,6 +183,18 @@ export class ExerciseBuilderComponent implements OnInit {
   }
 
   /** Rough count of resolved questions, for the "distribute" mode's live preview (random groups count as their configured draw size). */
+  /** Positive whole seconds, or undefined when blank/invalid. */
+  parsedDefaultSeconds(): number | undefined {
+    const n = Math.round(Number(this.defaultQuestionSeconds().trim()));
+    return this.defaultQuestionSeconds().trim() && n > 0 ? n : undefined;
+  }
+
+  /** Whole points ≥ 0, or undefined when blank/invalid. */
+  parsedDefaultPoints(): number | undefined {
+    const n = Math.round(Number(this.defaultQuestionPoints().trim()));
+    return this.defaultQuestionPoints().trim() && n >= 0 && Number.isFinite(n) ? n : undefined;
+  }
+
   distributedSecondsPreview(): number {
     const totalCount = this.items().reduce((sum, i) => sum + (i.kind === 'fixed' ? 1 : i.randomGroup.count), 0);
     if (totalCount === 0) return 0;
@@ -337,6 +354,8 @@ export class ExerciseBuilderComponent implements OnInit {
       correctionReviewEnabled: this.correctionReviewEnabled(),
       repeatSameQuestions: this.repeatSameQuestions(),
       questionTimingMode: this.questionTimingMode(),
+      defaultQuestionSeconds: this.parsedDefaultSeconds(),
+      defaultQuestionPoints: this.parsedDefaultPoints(),
       isDaily: this.isDaily(),
       status: 'active' as const,
     };
