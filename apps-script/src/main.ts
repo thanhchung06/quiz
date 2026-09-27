@@ -27,12 +27,17 @@ interface SyncRequest {
   syncId: string;
   deviceId: string;
   sharedSecret: string;
-  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
+  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'SNAPSHOT' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
   changes: ChangeInput[];
   /** When present, the response also carries other devices' changes committed after this revision (paged). */
   pullSince?: number;
   /** With pullSince: only these entity types (e.g. just QuizItem + Category for the question sync). */
   pullTypes?: string[];
+  /** REPLACE_PRUNE: every id the device has, per entity type; other rows of those types become deleted tombstones. */
+  keepIds?: Record<string, string[]>;
+  /** SNAPSHOT: which tabs to read, and where to continue (position in snapshotTypes + row offset). */
+  snapshotTypes?: string[];
+  snapshotCursor?: { typeIndex: number; offset: number };
   /** Only read for action = DEBUG_DUMP. */
   debugTabs?: EntityTab[];
 }
@@ -55,6 +60,12 @@ interface SyncResponse {
   dataRevision?: number;
   /** With pullSince: more changes remain after dataRevision; ask again. */
   hasMore?: boolean;
+  /** REPLACE_GOOGLE_WITH_LOCAL: the version each record now has on Google (the client stores it as its own). */
+  versions?: Record<string, number>;
+  /** REPLACE_PRUNE: how many Google records were marked deleted. */
+  removed?: number;
+  /** SNAPSHOT: where to continue; absent once every requested tab has been sent. */
+  nextCursor?: { typeIndex: number; offset: number };
 }
 
 /**
@@ -88,13 +99,18 @@ function handleSyncRequest(request: SyncRequest): SyncResponse | DebugDumpRespon
     return { syncId: request.syncId, result: 'SYNC_REJECTED' };
   }
 
+  if (request.action === 'SNAPSHOT') {
+    // Read-only, like DEBUG_DUMP: one page of full records for a "Google → this device" overwrite.
+    return snapshot(request);
+  }
+
   if (request.action === 'DEBUG_DUMP') {
     // Read-only inspection of tab contents, for setup verification. Never
     // used by the app itself — no lock needed since nothing is written.
     return debugDump(request);
   }
 
-  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => processLocked(request));
+  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => (request.action === 'REPLACE_PRUNE' ? prune(request) : processLocked(request)));
   if ('busy' in outcome) {
     return { syncId: request.syncId, result: 'SYNC_BUSY' };
   }
@@ -178,6 +194,10 @@ function processLocked(request: SyncRequest): SyncResponse {
     changedIds.get(tab)!.add(id);
   };
 
+  // "This device → Google" overwrite: every record is written as sent, whatever Google holds (no version checks, no conflicts).
+  const overwrite = request.action === 'REPLACE_GOOGLE_WITH_LOCAL';
+  const versions: Record<string, number> = {};
+
   for (const [groupId, changes] of byGroup) {
     const decisions = changes.map((change) => {
       const rows = getTab(change.entityType);
@@ -186,11 +206,13 @@ function processLocked(request: SyncRequest): SyncResponse {
       return {
         change,
         googleVersion,
-        decision: decideVersion({
-          localVersion: change.localVersion,
-          lastGoogleVersion: change.lastGoogleVersion,
-          googleVersion,
-        }),
+        decision: overwrite
+          ? ('upload' as const)
+          : decideVersion({
+              localVersion: change.localVersion,
+              lastGoogleVersion: change.lastGoogleVersion,
+              googleVersion,
+            }),
       };
     });
 
@@ -231,15 +253,17 @@ function processLocked(request: SyncRequest): SyncResponse {
       if (d.decision === 'upload') {
         // A delete keeps the full record (with its deletedAt tombstone) so other devices pulling it delete it too.
         const existing = rows.get(d.change.entityId);
+        // The client's own version (always ≥ G + 1 here, since L > B = G): the client records exactly this
+        // as lastGoogleVersion, so both sides agree on the next sync.
+        const version = Math.max(d.googleVersion + 1, d.change.localVersion);
         rows.set(d.change.entityId, {
           id: d.change.entityId,
-          // The client's own version (always ≥ G + 1 here, since L > B = G): the client records exactly this
-          // as lastGoogleVersion, so both sides agree on the next sync.
-          version: Math.max(d.googleVersion + 1, d.change.localVersion),
+          version,
           bodyJson: JSON.stringify(d.change.payload),
           rowIndex: existing?.rowIndex,
         });
         markChanged(d.change.entityType, d.change.entityId);
+        if (overwrite) versions[d.change.entityId] = version;
       } else if (d.decision === 'download') {
         const row = rows.get(d.change.entityId);
         if (row) {
@@ -274,6 +298,7 @@ function processLocked(request: SyncRequest): SyncResponse {
     conflicts,
     downloads,
     schemaCompatible: true,
+    ...(overwrite ? { versions } : {}),
   };
   if (wroteSomething) {
     // Persist the final response so a retried syncId can replay it verbatim (FR-059).
@@ -304,4 +329,105 @@ function addPull(
     }
   }
   return { ...response, downloads: [...(response.downloads ?? []), ...pulled], dataRevision: page.nextRevision, hasMore: page.hasMore };
+}
+
+/**
+ * Last step of a "this device → Google" overwrite: rows of the given types that
+ * the device does not have become deleted tombstones (deletedAt set, version
+ * bumped, logged), so Google matches the device and other devices delete them
+ * too on their next pull. Rows that are already tombstones are left alone.
+ */
+function prune(request: SyncRequest): SyncResponse {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const priorCommit = findPriorCommit(spreadsheet, request.syncId);
+  if (priorCommit) return JSON.parse(priorCommit.resultJson) as SyncResponse;
+
+  const deletedAt = new Date().toISOString();
+  const changed: Array<{ tab: EntityTab; rows: Map<string, StoredRow>; ids: string[] }> = [];
+  for (const [tab, keepList] of Object.entries(request.keepIds ?? {}) as Array<[EntityTab, string[]]>) {
+    const keep = new Set(keepList);
+    const rows = readIndex(spreadsheet, tab);
+    const candidates = Array.from(rows.values()).filter((row) => !keep.has(row.id) && row.rowIndex !== undefined);
+    if (candidates.length === 0) continue;
+    const bodies = readRowBodies(spreadsheet, tab, candidates.map((row) => row.rowIndex!));
+    const ids: string[] = [];
+    for (const row of candidates) {
+      const parsed = safeParse(bodies.get(row.rowIndex!) ?? '');
+      const body = parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : { id: row.id };
+      if (body['deletedAt']) continue;
+      rows.set(row.id, { id: row.id, version: row.version + 1, bodyJson: JSON.stringify({ ...body, deletedAt }), rowIndex: row.rowIndex });
+      ids.push(row.id);
+    }
+    if (ids.length > 0) changed.push({ tab, rows, ids });
+  }
+
+  const removed = changed.reduce((sum, c) => sum + c.ids.length, 0);
+  let commitSequence = readMetadata(spreadsheet).dataRevision;
+  if (removed > 0) {
+    for (const { tab, rows, ids } of changed) writeChangedRows(spreadsheet, tab, rows, new Set(ids));
+    commitSequence = reserveNextRevision(spreadsheet);
+    const entries: ChangeLogEntry[] = [];
+    for (const { tab, ids } of changed) {
+      for (const id of ids) entries.push({ revision: commitSequence, entityType: tab, entityId: id, deviceId: request.deviceId });
+    }
+    appendChangeLog(spreadsheet, entries);
+  }
+  const response: SyncResponse = {
+    syncId: request.syncId,
+    result: 'SYNC_SUCCESS',
+    commitSequence,
+    committedChangeGroupIds: [],
+    conflicts: [],
+    downloads: [],
+    schemaCompatible: true,
+    removed,
+  };
+  if (removed > 0) saveCommittedTransaction(spreadsheet, request.syncId, commitSequence, JSON.stringify(response));
+  return response;
+}
+
+/** Rows per SNAPSHOT page — whole records, so kept moderate for Apps Script's response size and run time. */
+const SNAPSHOT_PAGE_ROWS = 400;
+
+/**
+ * One page of every record (tombstones included) of the requested tabs, in
+ * sheet order, for a "Google → this device" overwrite. Read-only. The cursor
+ * walks the tabs one after another; `dataRevision` lets the device carry on
+ * with incremental pulls from this point afterwards.
+ */
+function snapshot(request: SyncRequest): SyncResponse {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const types = (request.snapshotTypes ?? []) as EntityTab[];
+  let { typeIndex, offset } = request.snapshotCursor ?? { typeIndex: 0, offset: 0 };
+  const dataRevision = readMetadata(spreadsheet).dataRevision;
+  const downloads: NonNullable<SyncResponse['downloads']> = [];
+
+  while (typeIndex < types.length && downloads.length === 0) {
+    const tab = types[typeIndex];
+    const rows = Array.from(readIndex(spreadsheet, tab).values())
+      .filter((row) => row.rowIndex !== undefined)
+      .sort((a, b) => a.rowIndex! - b.rowIndex!);
+    const page = rows.slice(offset, offset + SNAPSHOT_PAGE_ROWS);
+    if (page.length > 0) {
+      const bodies = readRowBodies(spreadsheet, tab, page.map((row) => row.rowIndex!));
+      for (const row of page) {
+        downloads.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(bodies.get(row.rowIndex!) ?? '') });
+      }
+    }
+    if (offset + SNAPSHOT_PAGE_ROWS < rows.length) {
+      offset += SNAPSHOT_PAGE_ROWS;
+    } else {
+      typeIndex++;
+      offset = 0;
+    }
+  }
+
+  return {
+    syncId: request.syncId,
+    result: 'SYNC_SUCCESS',
+    downloads,
+    schemaCompatible: true,
+    dataRevision,
+    ...(typeIndex < types.length ? { nextCursor: { typeIndex, offset } } : {}),
+  };
 }

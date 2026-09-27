@@ -23,6 +23,11 @@ export class ConflictStateService {
     this._conflicts.update((list) => list.filter((c) => !(c.entityType === entityType && c.entityId === entityId)));
   }
 
+  /** Drops the conflicts of these entity types (an overwrite in either direction settles them). */
+  clearTypes(types: readonly string[]): void {
+    this._conflicts.update((list) => list.filter((c) => !types.includes(c.entityType)));
+  }
+
   clearAll(): void {
     this._conflicts.set([]);
   }

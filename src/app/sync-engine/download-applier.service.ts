@@ -67,6 +67,48 @@ export class DownloadApplierService {
     return applied;
   }
 
+  /**
+   * "Google → this device" overwrite: each record is written exactly as Google
+   * has it, whatever the local copy (edited or not, newer or not). Only the
+   * Profile login hash stays, since it never leaves the device.
+   */
+  async overwrite(downloads: SyncDownload[]): Promise<number> {
+    let applied = 0;
+    for (const download of downloads) {
+      const tableName = TABLE_BY_ENTITY[download.entityType];
+      if (!tableName || !download.payload || typeof download.payload !== 'object') continue;
+      const table = db[tableName] as unknown as AnyTable;
+      const record: Record<string, unknown> = {
+        ...download.payload,
+        id: download.entityId,
+        lastGoogleVersion: download.version,
+        localVersion: download.version,
+        syncStatus: 'synced',
+      };
+      if (download.entityType === 'Profile') {
+        const local = (await table.get(download.entityId)) as unknown as Profile | undefined;
+        if (local?.credentialHash) record['credentialHash'] = local.credentialHash;
+      }
+      await table.put(record);
+      applied++;
+    }
+    return applied;
+  }
+
+  /**
+   * Last step of a "Google → this device" overwrite: removes local records of
+   * these types that Google does not have. Profiles are never removed — the
+   * parent/child logins on this device must keep working.
+   */
+  async removeMissing(entityType: string, keepIds: ReadonlySet<string>): Promise<number> {
+    const tableName = TABLE_BY_ENTITY[entityType];
+    if (!tableName || entityType === 'Profile') return 0;
+    const table = db[tableName] as unknown as { toCollection(): { primaryKeys(): Promise<string[]> }; bulkDelete(ids: string[]): Promise<void> };
+    const missing = (await table.toCollection().primaryKeys()).filter((id) => !keepIds.has(id));
+    if (missing.length > 0) await table.bulkDelete(missing);
+    return missing.length;
+  }
+
   private async replaceLocalDuplicates(incoming: Category): Promise<void> {
     if (incoming.deletedAt) return;
     const normalized = normalizeName(incoming.normalizedName ?? incoming.name);

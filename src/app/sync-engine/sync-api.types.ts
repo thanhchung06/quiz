@@ -36,13 +36,23 @@ export interface SyncRequestBody {
   sharedSecret: string;
   startedAt: string;
   lastKnownDataRevision: number;
-  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT';
+  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'SNAPSHOT' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT';
   changes: SyncChange[];
   conflictResolutions?: ConflictResolutionInput[];
   /** Ask for other devices' changes committed after this revision (paged, see SyncResponseBody.hasMore). */
   pullSince?: number;
   /** With pullSince: only these entity types. */
   pullTypes?: string[];
+  /** REPLACE_PRUNE: every id this device has, per entity type; Google marks the rest of those types deleted. */
+  keepIds?: Record<string, string[]>;
+  /** SNAPSHOT: the entity types to read in full, and where to continue. */
+  snapshotTypes?: string[];
+  snapshotCursor?: SnapshotCursor;
+}
+
+export interface SnapshotCursor {
+  typeIndex: number;
+  offset: number;
 }
 
 export interface SyncConflict {
@@ -72,4 +82,10 @@ export interface SyncResponseBody {
   dataRevision?: number;
   /** With pullSince: more changes remain; ask again from dataRevision. */
   hasMore?: boolean;
+  /** REPLACE_GOOGLE_WITH_LOCAL: the version each sent record now has on Google, by entity id. */
+  versions?: Record<string, number>;
+  /** REPLACE_PRUNE: how many Google records were marked deleted. */
+  removed?: number;
+  /** SNAPSHOT: where the next page starts; absent on the last page. */
+  nextCursor?: SnapshotCursor;
 }

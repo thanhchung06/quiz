@@ -264,10 +264,17 @@ li {
     font-size: 1rem;
   }
 
-  small {
-    font-weight: normal;
-    color: #666;
-  }
+}
+
+.dialog .overwrite-note {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  background: #fff4e0;
+  color: #6b4400;
 }
 
 .sync-screen button:disabled {

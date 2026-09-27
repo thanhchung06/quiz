@@ -18,6 +18,15 @@ export class BatchBuilderService {
   constructor(private readonly profiles: ProfileRepository) {}
 
   async collectPendingChanges(): Promise<SyncChange[]> {
+    return this.collect((row) => row.syncStatus === 'pendingUpload');
+  }
+
+  /** Every local record of these types, pending or not (deletions included) — for a "this device → Google" overwrite. */
+  async collectAll(types: readonly string[]): Promise<SyncChange[]> {
+    return (await this.collect(() => true)).filter((change) => types.includes(change.entityType));
+  }
+
+  private async collect(include: (row: SyncEnvelope) => boolean): Promise<SyncChange[]> {
     const tables: Array<{ type: EntityTypeName; rows: SyncEnvelope[] }> = [
       { type: 'Profile', rows: (await db.profiles.toArray()).map((p) => this.profiles.toSyncable(p) as unknown as Profile) },
       { type: 'Category', rows: await db.categories.toArray() },
@@ -34,7 +43,7 @@ export class BatchBuilderService {
     const changes: SyncChange[] = [];
     for (const { type, rows } of tables) {
       for (const row of rows) {
-        if (row.syncStatus !== 'pendingUpload') continue;
+        if (!include(row)) continue;
         changes.push({
           changeGroupId: row.id,
           entityType: type,

@@ -6,7 +6,7 @@ import { BatchBuilderService } from './batch-builder.service';
 import { GoogleAuthService } from '../features/sync/services/google-auth.service';
 import { ConflictStateService } from './conflict-state.service';
 import { DownloadApplierService, TABLE_BY_ENTITY } from './download-applier.service';
-import { SyncRequestBody, SyncResponseBody, SyncChange } from './sync-api.types';
+import { SnapshotCursor, SyncRequestBody, SyncResponseBody, SyncChange } from './sync-api.types';
 
 export type SyncOutcome = 'success' | 'busy' | 'rejected' | 'network-error' | 'server-error';
 
@@ -41,6 +41,13 @@ export interface SyncRunOptions {
   pull: boolean;
   /** This device -> Google. */
   push: boolean;
+  /**
+   * "Đồng bộ ngay": copy everything in the chosen direction instead of just
+   * the changes — the receiving side ends up identical to the sending side
+   * for the chosen scopes, with no version checks and no conflicts. Automatic
+   * sync never sets this.
+   */
+  overwrite?: boolean;
 }
 
 export interface SyncSummary {
@@ -50,6 +57,8 @@ export interface SyncSummary {
   sent: number;
   toSend: number;
   conflicts: number;
+  /** Overwrite only: records deleted on the receiving side because the sending side doesn't have them. */
+  removed: number;
   seconds: number;
   error?: string;
 }
@@ -107,6 +116,7 @@ export class SyncClientService {
   /** FR-065: true once the server has reported its schema is newer than this client supports. */
   readonly schemaIncompatible = this._schemaIncompatible.asReadonly();
 
+  private readonly _removed = signal(0);
   private readonly _received = signal(0);
   /** Records received from other devices in the running (or last) sync. */
   readonly received = this._received.asReadonly();
@@ -179,14 +189,16 @@ export class SyncClientService {
       sent: progress.sent,
       toSend: progress.total,
       conflicts: this.conflictState.conflicts().length,
+      removed: this._removed(),
       seconds: Math.round((Date.now() - started) / 1000),
       error: outcome === 'success' ? undefined : this._lastError(),
     });
     return outcome;
   }
 
-  private async runScopes(endpointUrl: string, { scopes, pull, push }: SyncRunOptions): Promise<SyncOutcome> {
-    if (this.conflictState.hasUnresolvedConflicts()) {
+  private async runScopes(endpointUrl: string, { scopes, pull, push, overwrite }: SyncRunOptions): Promise<SyncOutcome> {
+    // An overwrite settles conflicts by itself, so only incremental sync waits for them.
+    if (!overwrite && this.conflictState.hasUnresolvedConflicts()) {
       // Automatic sync stays paused until every conflict is resolved (FR-061).
       this._lastError.set('Còn xung đột chưa giải quyết — hãy chọn cách xử lý ở bên dưới trước.');
       return 'rejected';
@@ -205,17 +217,18 @@ export class SyncClientService {
 
     this._lastError.set(undefined);
     this._received.set(0);
+    this._removed.set(0);
     this._progress.set(undefined);
 
     let outcome: SyncOutcome = 'success';
     for (const scope of scopes) {
       if (pull) {
         this._phase.set('pulling');
-        outcome = await this.pull(endpointUrl, sharedSecret, scope);
+        outcome = overwrite ? await this.pullOverwrite(endpointUrl, sharedSecret, scope) : await this.pull(endpointUrl, sharedSecret, scope);
       }
       if (outcome === 'success' && push) {
         this._phase.set('pushing');
-        outcome = await this.push(endpointUrl, sharedSecret, scope);
+        outcome = overwrite ? await this.pushOverwrite(endpointUrl, sharedSecret, scope) : await this.push(endpointUrl, sharedSecret, scope);
       }
       if (outcome !== 'success') break;
     }
@@ -260,7 +273,116 @@ export class SyncClientService {
     return 'success';
   }
 
-  private request(sharedSecret: string, changes: SyncChange[], pullSince?: number, pullTypes?: string[]): SyncRequestBody {
+  /**
+   * "This device → Google" overwrite: sends every local record of the scope
+   * (Google stores each one as sent), then has Google mark deleted whatever
+   * this device doesn't have. Profiles are sent but never pruned, so another
+   * device's parent/child logins survive.
+   */
+  private async pushOverwrite(endpointUrl: string, sharedSecret: string, scope: SyncScope): Promise<SyncOutcome> {
+    const types = SCOPE_TYPES[scope];
+    const changes = await this.batchBuilder.collectAll(types);
+    const before = this._progress() ?? { sent: 0, total: 0 };
+    this._progress.set({ sent: before.sent, total: before.total + changes.length });
+    let sent = before.sent;
+    let revision = 0;
+    for (const batch of batchBySize(changes)) {
+      const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, batch, undefined, undefined, { action: 'REPLACE_GOOGLE_WITH_LOCAL' }));
+      if (outcome !== 'success' || !response) return outcome;
+      if (!response.versions) return this.scriptTooOld();
+      await this.markOverwritten(batch, response.versions);
+      revision = Math.max(revision, response.commitSequence ?? 0);
+      sent += batch.length;
+      this._progress.set({ sent, total: before.total + changes.length });
+    }
+
+    const keepIds: Record<string, string[]> = {};
+    for (const type of types) if (type !== 'Profile') keepIds[type] = [];
+    for (const change of changes) keepIds[change.entityType]?.push(change.entityId);
+    const { outcome, response } = await this.post(endpointUrl, this.request(sharedSecret, [], undefined, undefined, { action: 'REPLACE_PRUNE', keepIds }));
+    if (outcome !== 'success' || !response) return outcome;
+    this._removed.update((n) => n + (response.removed ?? 0));
+    revision = Math.max(revision, response.commitSequence ?? 0);
+
+    // Google now matches this device, so incremental pulls can go on from here.
+    const cursor = (await this.settings.get())[CURSOR[scope]] ?? 0;
+    await this.settings.update({ [CURSOR[scope]]: Math.max(cursor, revision) });
+    this.conflictState.clearTypes(types);
+    return 'success';
+  }
+
+  /** After an overwrite upload: the record's version is now Google's. An edit made meanwhile stays pending, one version above it. */
+  private async markOverwritten(batch: SyncChange[], versions: Record<string, number>): Promise<void> {
+    for (const change of batch) {
+      const version = versions[change.entityId];
+      const tableName = TABLE_BY_ENTITY[change.entityType];
+      if (version === undefined || !tableName) continue;
+      const table = db[tableName] as unknown as {
+        where(index: string): { equals(value: string): { modify(fn: (record: Record<string, unknown>) => void): Promise<number> } };
+      };
+      await table
+        .where(':id')
+        .equals(change.entityId)
+        .modify((record) => {
+          record['lastGoogleVersion'] = version;
+          if (record['localVersion'] === change.localVersion) {
+            record['localVersion'] = version;
+            record['syncStatus'] = 'synced';
+          } else {
+            record['localVersion'] = Math.max(record['localVersion'] as number, version + 1);
+          }
+        });
+    }
+  }
+
+  /**
+   * "Google → this device" overwrite: reads every Google record of the scope
+   * page by page and stores each one as is, then removes local records Google
+   * doesn't have (never Profiles, see DownloadApplierService.removeMissing).
+   */
+  private async pullOverwrite(endpointUrl: string, sharedSecret: string, scope: SyncScope): Promise<SyncOutcome> {
+    const types = SCOPE_TYPES[scope];
+    const seen = new Map<string, Set<string>>(types.map((type) => [type, new Set<string>()]));
+    let cursor: SnapshotCursor | undefined;
+    let revision: number | undefined;
+    for (let page = 0; page < 100_000; page++) {
+      const { outcome, response } = await this.post(
+        endpointUrl,
+        this.request(sharedSecret, [], undefined, undefined, { action: 'SNAPSHOT', snapshotTypes: types, snapshotCursor: cursor }),
+      );
+      if (outcome !== 'success' || !response) return outcome;
+      if (typeof response.dataRevision !== 'number') return this.scriptTooOld();
+      // Changes made while the pages are read are picked up by the next incremental pull.
+      revision ??= response.dataRevision;
+      const downloads = response.downloads ?? [];
+      for (const download of downloads) seen.get(download.entityType)?.add(download.entityId);
+      const applied = await this.downloads.overwrite(downloads);
+      this._received.update((n) => n + applied);
+      if (!response.nextCursor) break;
+      cursor = response.nextCursor;
+    }
+
+    for (const type of types) {
+      const removed = await this.downloads.removeMissing(type, seen.get(type)!);
+      this._removed.update((n) => n + removed);
+    }
+    await this.settings.update({ [CURSOR[scope]]: revision ?? 0 });
+    this.conflictState.clearTypes(types);
+    return 'success';
+  }
+
+  private scriptTooOld(): SyncOutcome {
+    this._lastError.set('Apps Script trên Google là bản cũ, chưa hỗ trợ ghi đè. Hãy dán bản Code.gs.js mới rồi Deploy → Manage deployments → ✏️ → New version.');
+    return 'server-error';
+  }
+
+  private request(
+    sharedSecret: string,
+    changes: SyncChange[],
+    pullSince?: number,
+    pullTypes?: string[],
+    extra: Partial<SyncRequestBody> = {},
+  ): SyncRequestBody {
     return {
       syncId: crypto.randomUUID(),
       deviceId: currentDeviceId(),
@@ -270,6 +392,7 @@ export class SyncClientService {
       action: 'SYNC_NORMAL',
       changes,
       ...(pullSince !== undefined ? { pullSince, pullTypes } : {}),
+      ...extra,
     };
   }
 

@@ -62,7 +62,7 @@ import { DownloadApplierService } from '../../src/app/sync-engine/download-appli
 import { GoogleAuthService } from '../../src/app/features/sync/services/google-auth.service';
 import { QuizItemRepository } from '../../src/app/data/repositories/quiz-item.repository';
 import { newSyncEnvelope } from '../../src/app/shared/models/sync.model';
-import { Category, QuizItem } from '../../src/app/shared/models/domain.model';
+import { Category, Profile, QuizItem } from '../../src/app/shared/models/domain.model';
 
 global.fetch = jest.fn(async (_url, init) => {
   const text = doPost({ postData: { contents: String(init?.body) } } as never) as string;
@@ -154,5 +154,65 @@ describe('sync end to end (real Apps Script code, fake Sheet)', () => {
     expect(await phone.client.syncNormally('https://script/exec')).toBe('success');
     expect(phone.client.received()).toBe(0);
     expect(phone.client.progress()).toEqual({ sent: 0, total: 0 });
+  }, 180_000);
+
+  it('"Đồng bộ ngay" overwrites everything in the chosen direction, with no conflicts', async () => {
+    sheets.clear();
+    const overwrite = (direction: 'push' | 'pull') => ({ scopes: ['questions', 'data'] as ('questions' | 'data')[], push: direction === 'push', pull: direction === 'pull', overwrite: true });
+
+    // --- PC: 450 questions (more than one snapshot page) sent up
+    await becomeDevice('pc');
+    await db.categories.add(category('cat', 'Phân số'));
+    await db.quizItems.bulkAdd(Array.from({ length: 450 }, (_, i) => question(i, 'cat')));
+    const pc = syncClient();
+    expect(await pc.client.run('https://script/exec', overwrite('push'))).toBe('success');
+    expect(pc.client.lastSummary()).toEqual(expect.objectContaining({ sent: 451, toSend: 451, removed: 0 }));
+    expect((await db.quizItems.toArray()).every((q) => q.syncStatus === 'synced')).toBe(true);
+
+    // --- Phone: has its own login and a question Google doesn't have; takes everything from Google
+    await becomeDevice('phone');
+    await db.profiles.add({ ...newSyncEnvelope('kid', 'phone'), role: 'child', displayName: 'Bé', avatar: 'cat', credentialHash: 'pin-hash', preferences: { audioEnabled: true, reducedMotion: false, feedbackDelayMs: 0 }, createdAt: '' } as Profile);
+    await db.quizItems.add(question(9999, 'cat'));
+    const phone = syncClient();
+    expect(await phone.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    expect(await db.quizItems.count()).toBe(450);
+    expect(await db.quizItems.get('q9999')).toBeUndefined();
+    expect(phone.client.lastSummary()).toEqual(expect.objectContaining({ received: 451, removed: 1 }));
+    expect((await db.profiles.get('kid'))?.credentialHash).toBe('pin-hash'); // profiles are never removed
+
+    // PC edits q1 and syncs normally, so Google's q1 is newer than the phone's copy…
+    await becomeDevice('pc');
+    await db.categories.add(category('cat', 'Phân số'));
+    await db.quizItems.bulkAdd(Array.from({ length: 450 }, (_, i) => question(i, 'cat')));
+    expect(await pc.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    await new QuizItemRepository().update('q1', { prompt: 'bản của PC' });
+    expect(await pc.client.syncNormally('https://script/exec')).toBe('success');
+
+    // …yet the phone's overwrite wins without a conflict, and q2 (removed on the phone) is deleted on Google.
+    await becomeDevice('phone');
+    expect(await phone.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    await new QuizItemRepository().update('q1', { prompt: 'bản của điện thoại' });
+    await db.quizItems.update('q1', { lastGoogleVersion: 1 }); // stale: an incremental sync would report a conflict
+    await db.quizItems.delete('q2');
+    expect(await phone.client.run('https://script/exec', overwrite('push'))).toBe('success');
+    expect(phone.conflicts.hasUnresolvedConflicts()).toBe(false);
+    expect(phone.client.lastSummary()).toEqual(expect.objectContaining({ removed: 1, conflicts: 0 }));
+    expect((await db.quizItems.get('q1'))?.syncStatus).toBe('synced');
+
+    // --- PC takes Google's copy: the phone's q1, q2 deleted; the next normal sync has nothing to do.
+    await becomeDevice('pc');
+    expect(await pc.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    expect((await db.quizItems.get('q1'))?.prompt).toBe('bản của điện thoại');
+    expect((await db.quizItems.get('q2'))?.deletedAt).toBeTruthy();
+    expect(await pc.client.syncNormally('https://script/exec')).toBe('success');
+    expect(pc.client.received()).toBe(0);
+    expect(pc.client.progress()).toEqual({ sent: 0, total: 0 });
+
+    // The phone edits q1 once more; an incremental sync now goes through normally.
+    await becomeDevice('phone');
+    expect(await phone.client.run('https://script/exec', overwrite('pull'))).toBe('success');
+    await new QuizItemRepository().update('q1', { prompt: 'sửa tiếp' });
+    expect(await phone.client.syncNormally('https://script/exec')).toBe('success');
+    expect(phone.conflicts.hasUnresolvedConflicts()).toBe(false);
   }, 180_000);
 });

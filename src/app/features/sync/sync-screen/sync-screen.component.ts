@@ -19,7 +19,8 @@ type SyncDialogStep = 'options' | 'running' | 'done';
  * - Automatic sync: on/off, and whether it includes questions (off by default).
  * - "Đồng bộ ngay": a dialog to choose direction (this device → Google,
  *   Google → this device) and whether to skip questions, then progress, then a
- *   summary. Conflicts, when any, are resolved below it.
+ *   summary. It overwrites the receiving side entirely (SyncRunOptions.overwrite);
+ *   conflicts from automatic sync, when any, are resolved below it.
  */
 @Component({
   selector: 'app-sync-screen',
@@ -180,6 +181,7 @@ export class SyncScreenComponent {
       scopes: this.optSkipQuestions() ? ['data'] : ['questions', 'data'],
       push: this.direction() === 'push',
       pull: this.direction() === 'pull',
+      overwrite: true,
     };
     this.dialogStep.set('running');
     try {
@@ -191,7 +193,8 @@ export class SyncScreenComponent {
 
   directionLabel(options: SyncRunOptions): string {
     if (options.push && options.pull) return 'Hai chiều';
-    return options.push ? 'Máy này → Google' : 'Google → máy này';
+    const label = options.push ? 'Máy này → Google' : 'Google → máy này';
+    return options.overwrite ? `${label} (ghi đè)` : label;
   }
 
   async resolve(conflict: SyncConflict, action: 'useLocal' | 'useGoogle' | 'keepBoth'): Promise<void> {

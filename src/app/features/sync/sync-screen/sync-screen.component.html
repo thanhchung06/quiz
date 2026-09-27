@@ -121,10 +121,22 @@
               <option value="push">Máy này → Google (gửi lên)</option>
               <option value="pull">Google → máy này (nhận về)</option>
             </select>
-            <small>
-              {{ direction() === 'push' ? 'Gửi lên những gì mới hoặc đã sửa trên máy này.' : 'Nhận về những gì thiết bị khác đã gửi lên Google.' }}
-            </small>
           </label>
+          <p class="overwrite-note">
+            <app-icon name="warning" />
+            @if (direction() === 'push') {
+              <span
+                >Ghi đè Google bằng dữ liệu trên máy này: gửi lên <strong>tất cả</strong>, và những gì có trên Google mà máy
+                này không có sẽ bị xóa khỏi Google (hồ sơ bé và phụ huynh luôn được giữ).</span
+              >
+            } @else {
+              <span
+                >Ghi đè máy này bằng dữ liệu trên Google: nhận về <strong>tất cả</strong>, và những gì chỉ có trên máy này
+                (chưa gửi lên Google) sẽ bị xóa (hồ sơ bé và phụ huynh luôn được giữ).</span
+              >
+            }
+          </p>
+          <p class="hint"><app-icon name="info" />Nên xuất một bản sao lưu trước. Không có xung đột cần giải quyết — bên nhận sẽ giống hệt bên gửi.</p>
           <label class="check">
             <input type="checkbox" [checked]="optSkipQuestions()" (change)="optSkipQuestions.set($any($event.target).checked)" />
             <span>Không đồng bộ câu hỏi <small>Chỉ đồng bộ bài tập, giao bài, bài làm, kết quả, phần thưởng.</small></span>
@@ -142,7 +154,7 @@
           </p>
           <p>Đã nhận: <strong>{{ received() }}</strong> mục</p>
           @if (progress(); as p) {
-            <p>Đã gửi: <strong>{{ p.sent }}/{{ p.total }}</strong> thay đổi</p>
+            <p>Đã gửi: <strong>{{ p.sent }}/{{ p.total }}</strong> mục</p>
             @if (p.total > 0) {
               <progress [value]="p.sent" [max]="p.total"></progress>
             }
@@ -166,10 +178,15 @@
               }
               @if (s.options.push) {
                 <dt>Đã gửi lên</dt>
-                <dd>{{ s.sent }}/{{ s.toSend }} thay đổi</dd>
+                <dd>{{ s.sent }}/{{ s.toSend }} {{ s.options.overwrite ? 'mục' : 'thay đổi' }}</dd>
               }
-              <dt>Xung đột</dt>
-              <dd>{{ s.conflicts }}{{ s.conflicts ? ' — xem bên dưới nút "Đồng bộ ngay"' : '' }}</dd>
+              @if (s.options.overwrite) {
+                <dt>Đã xóa</dt>
+                <dd>{{ s.removed }} mục {{ s.options.push ? 'trên Google' : 'trên máy này' }}</dd>
+              } @else {
+                <dt>Xung đột</dt>
+                <dd>{{ s.conflicts }}{{ s.conflicts ? ' — xem bên dưới nút "Đồng bộ ngay"' : '' }}</dd>
+              }
               <dt>Thời gian</dt>
               <dd>{{ s.seconds }} giây</dd>
             </dl>
