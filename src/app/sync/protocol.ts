@@ -6,7 +6,8 @@
 
 /**
  * The sheet's sync hash chain: every write that changes something gets a new
- * write id, and the hash becomes nextSyncHash(hash, writeId) — on Google and,
+ * write id, and the hash becomes nextSyncHash(hash, writeId) — a new fixed-size
+ * hash computed from the previous hash and the write id (never a growing string) — on Google and,
  * with the returned write id, on the device that wrote. A device whose hash
  * equals Google's has seen every write; another device's write in between
  * leaves it behind (plan §5). Shared by both sides so they compute the same.
@@ -23,7 +24,8 @@ export function nextSyncHash(previous: string | undefined, writeId: string): str
   }
   h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
   h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
+  // A fixed-size value (53 bits → always 14 hex digits), whatever the chain's length.
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(14, '0');
 }
 
 /** Bumped whenever the sheet layout changes; the script refuses a different one, the app drops its local data. */
