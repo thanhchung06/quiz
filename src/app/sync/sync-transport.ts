@@ -74,7 +74,8 @@ export interface SendOptions {
 }
 
 export async function sendWrite(ops: SyncOp[]): Promise<Extract<SyncResponse, { ok: true }>> {
-  return send({ action: 'WRITE', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId(), ops });
+  // One requestId for this request and all its resends (send() retries the same request object).
+  return send({ action: 'WRITE', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId(), requestId: crypto.randomUUID(), ops });
 }
 
 /** Google's current sync hash (and a check that the connection works). */

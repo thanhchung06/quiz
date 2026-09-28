@@ -139,6 +139,13 @@ describe('Apps Script sync (new layout)', () => {
     expect(write({ op: 'APPEND_HISTORY', history: rec('h1') }).writeId).toBeUndefined();
     expect(ping()).toBe(before);
     expect(nextSyncHash('a', 'b')).not.toBe(nextSyncHash('b', 'a'));
+
+    // A resend of the same request (its answer was lost) doesn't extend the chain again.
+    const send = () => handle({ action: 'WRITE', sharedSecret: 'secret', deviceId: 'd', requestId: 'r1', ops: [{ op: 'WRITE_RECORD', sheet: 'QuizItem', record: rec('q2') }] }) as { writeId?: string };
+    const once = send();
+    const afterOnce = ping();
+    expect(send().writeId).toBe(once.writeId);
+    expect(ping()).toBe(afterOnce);
   });
 
   it('big records are split across cells and pages stop near the size limit', () => {

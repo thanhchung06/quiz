@@ -53,6 +53,8 @@ export class StartupSyncService {
         // already carries the hash, unless this device just sent writes of its own.)
         const remote = pending > 0 ? (await sendPing()).syncHash : awake.syncHash;
         const settings = await this.settings.get();
+        // eslint-disable-next-line no-console
+        console.info(`[sync] Google hash ${remote ?? '(none)'}, this device ${settings.syncHash ?? '(none)'} →`, remote && remote === settings.syncHash ? 'up to date, no pull' : 'pull');
         if (remote && remote === settings.syncHash) {
           this._skipped.set(true);
         } else {

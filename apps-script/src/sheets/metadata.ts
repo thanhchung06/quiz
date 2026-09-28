@@ -11,10 +11,12 @@ export interface Metadata {
   nextResultId: number;
   /** Hash chain over every write that changed something (nextSyncHash): a device holding the same value has nothing new to pull. */
   syncHash?: string;
+  /** The last write requests that extended syncHash, so a resend (its answer was lost) doesn't extend it again. */
+  recentWrites?: Array<{ requestId: string; writeId: string }>;
 }
 
 function normalize(stored: Partial<Metadata>): Metadata {
-  return { schemaVersion: stored.schemaVersion ?? 1, sequences: stored.sequences ?? {}, nextResultId: stored.nextResultId ?? 1, syncHash: stored.syncHash };
+  return { schemaVersion: stored.schemaVersion ?? 1, sequences: stored.sequences ?? {}, nextResultId: stored.nextResultId ?? 1, syncHash: stored.syncHash, recentWrites: stored.recentWrites ?? [] };
 }
 
 /**

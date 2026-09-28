@@ -113,7 +113,8 @@ export interface ReadRecord {
 // --- Envelope ---------------------------------------------------------------
 
 export type SyncRequest =
-  | { action: 'WRITE'; sharedSecret: string; deviceId: string; ops: SyncOp[] }
+  /** `requestId`: the same on every resend of this request, so a resend doesn't count as another write in the sync hash chain. */
+  | { action: 'WRITE'; sharedSecret: string; deviceId: string; requestId?: string; ops: SyncOp[] }
   | { action: 'READ'; sharedSecret: string; deviceId: string; read: ReadSpec }
   | { action: 'PING'; sharedSecret: string; deviceId: string };
 

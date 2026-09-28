@@ -63,7 +63,7 @@ export function handle(request: SyncRequest): SyncResponse {
   if (request.action === 'PING') return { ok: true, syncHash: metadata?.syncHash };
   if (request.action === 'READ') return read(open(), request.read);
 
-  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => write(open(), request.ops));
+  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => write(open(), request.ops, request.requestId));
   if ('busy' in outcome) return { ok: false, error: 'BUSY' };
   return outcome;
 }
@@ -135,7 +135,10 @@ function parseBody(json: string): Record<string, unknown> | undefined {
   }
 }
 
-function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[]): SyncResponse {
+/** How many recent write requests Metadata remembers for resend detection. */
+const RECENT_WRITES_KEPT = 30;
+
+function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[], requestId?: string): SyncResponse {
   // Read again under the lock: another request may have changed it since this one started.
   const metadata = readMetadata(() => spreadsheet) ?? { schemaVersion: DATA_SCHEMA_VERSION, sequences: {}, nextResultId: 1 };
   const ws = new Workspace(spreadsheet, metadata);
@@ -193,10 +196,14 @@ function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[]): SyncResponse {
   for (const { result, row } of pendingRows) result.row = row.rowIndex;
   // Every write that changed something extends the hash chain with its own id; the device that wrote
   // does the same with the returned id, so it matches Google only if nobody else wrote in between.
-  let writeId: string | undefined;
-  if (ws.changedAnything) {
+  // A resend of a request that already extended the chain (its answer was lost on the way back): the
+  // operations were applied again harmlessly, but the chain keeps the one write id the device will fold in.
+  const earlier = requestId ? metadata.recentWrites?.find((w) => w.requestId === requestId) : undefined;
+  let writeId: string | undefined = earlier?.writeId;
+  if (!earlier && ws.changedAnything) {
     writeId = Utilities.getUuid();
     metadata.syncHash = nextSyncHash(metadata.syncHash, writeId);
+    if (requestId) metadata.recentWrites = [...(metadata.recentWrites ?? []), { requestId, writeId }].slice(-RECENT_WRITES_KEPT);
   }
   writeMetadata(metadata);
   return { ok: true, results, writeId };

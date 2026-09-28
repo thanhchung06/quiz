@@ -56,6 +56,7 @@ global.fetch = jest.fn(async (_url, init) => {
   return { status: 200, text: async () => text } as Response;
 }) as unknown as typeof fetch;
 transportOptions.retryDelaysMs = [0, 0, 0];
+jest.spyOn(console, 'info').mockImplementation(() => undefined);
 transportOptions.wakeUpDelaysMs = [0, 0, 0, 0, 0];
 
 // --- the app, wired by hand ---------------------------------------------------
@@ -332,6 +333,19 @@ describe('sync redesign end to end (real Apps Script code, fake Sheet)', () => {
     // This device's own write keeps it up to date (nobody else wrote in between).
     await quizItems.update('q0', { prompt: 'sửa trên tablet' });
     await writer.settle();
+    await openApp();
+    expect(startup.skipped()).toBe(true);
+
+    // Also when the write's answer was lost and it had to be resent (Google applied it twice).
+    const exercise = await createExercise('Bài sửa', ['q0']);
+    await writer.settle();
+    await openApp();
+    requestCount = 0;
+    loseAnswerOf = 1;
+    await exercises.update(exercise.id, { title: 'Bài sửa lại' });
+    await writer.settle();
+    loseAnswerOf = -1;
+    expect(requestCount).toBe(2); // sent twice
     await openApp();
     expect(startup.skipped()).toBe(true);
 
