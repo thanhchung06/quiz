@@ -322,7 +322,7 @@ export class QuizBankListComponent {
     // inherited from the shared passage), so every sub-question of any
     // passage inside this node is already included here as a whole unit —
     // this can never split a passage across grades (FR-074).
-    await Promise.all(group.items.map((item) => this.quizItems.update(item.id, { grade: newGrade })));
+    await this.quizItems.updateMany(group.items.map((item) => ({ id: item.id, patch: { grade: newGrade } })));
     this.bulkGradeEditKey.set(undefined);
     await this.reload();
   }
@@ -339,7 +339,8 @@ export class QuizBankListComponent {
   async confirmBulkDelete(group: CategoryGroup): Promise<void> {
     const ids = new Set(group.items.map((i) => i.id));
     if (this.selectedItemId() && ids.has(this.selectedItemId()!)) this.closeDetail();
-    await Promise.all(group.items.map((item) => this.quizItems.softDelete(item.id)));
+    const deletedAt = new Date().toISOString();
+    await this.quizItems.updateMany(group.items.map((item) => ({ id: item.id, patch: { deletedAt } })));
     this.bulkDeleteConfirmKey.set(undefined);
     await this.reload();
   }

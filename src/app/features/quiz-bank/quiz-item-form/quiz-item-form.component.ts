@@ -351,29 +351,32 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
     } else {
       const created: QuizItem[] = [];
       const passageId = crypto.randomUUID();
-      for (const [index, draft] of drafts.entries()) {
-        const passage: PassageContext | undefined = asPassage
-          ? {
-              passageId,
-              title: this.passageTitle().trim(),
-              text: this.passageText().trim(),
-              imageUrl: this.passageImageUrl().trim() || undefined,
-              order: index + 1,
-              total: drafts.length,
-            }
-          : undefined;
-        const item: QuizItem = {
-          ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
-          ...shared,
-          ...perQuestion(draft),
-          media: withImageRef(undefined, draft.imageUrl),
-          ...(passage ? { passage } : {}),
-          reviewStatus: 'approved',
-          status: 'active',
-        };
-        await this.quizItems.create(item);
-        created.push(item);
-      }
+      // All the new questions in one atomic write.
+      await this.quizItems.inBatch(async () => {
+        for (const [index, draft] of drafts.entries()) {
+          const passage: PassageContext | undefined = asPassage
+            ? {
+                passageId,
+                title: this.passageTitle().trim(),
+                text: this.passageText().trim(),
+                imageUrl: this.passageImageUrl().trim() || undefined,
+                order: index + 1,
+                total: drafts.length,
+              }
+            : undefined;
+          const item: QuizItem = {
+            ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
+            ...shared,
+            ...perQuestion(draft),
+            media: withImageRef(undefined, draft.imageUrl),
+            ...(passage ? { passage } : {}),
+            reviewStatus: 'approved',
+            status: 'active',
+          };
+          await this.quizItems.create(item);
+          created.push(item);
+        }
+      });
       saved = created[created.length - 1];
       if (asPassage) {
         this.resetToBlank();

@@ -209,48 +209,51 @@ export class PassageEditorComponent implements OnInit {
     const total = this.rows().length;
     const deviceId = currentDeviceId();
 
-    for (const itemId of this.removedItemIds) {
-      await this.quizItems.softDelete(itemId);
-    }
-
-    for (const [index, row] of this.rows().entries()) {
-      const passage: PassageContext = {
-        passageId,
-        title: this.title().trim(),
-        text: this.text().trim(),
-        imageUrl: this.imageUrl().trim() || undefined,
-        order: index + 1,
-        total,
-      };
-      const patch = {
-        subject: this.subject(),
-        grade: this.grade(),
-        type: row.type,
-        prompt: row.prompt,
-        explanation: row.explanation || undefined,
-        tags: [],
-        difficulty: row.difficulty,
-        points: row.points,
-        categoryId: this.categoryId()!,
-        shuffleChoices: true,
-        choices: this.usesChoices(row) ? row.choices : undefined,
-        answerRule: rules[index],
-        media: withImageRef(row.media, row.imageUrl),
-        passage,
-      };
-
-      if (row.existingItemId) {
-        await this.quizItems.update(row.existingItemId, patch);
-      } else {
-        const item: QuizItem = {
-          ...newSyncEnvelope(crypto.randomUUID(), deviceId),
-          ...patch,
-          reviewStatus: 'approved',
-          status: 'active',
-        };
-        await this.quizItems.create(item);
+    // Removed, changed and new sub-questions in one atomic write.
+    await this.quizItems.inBatch(async () => {
+      for (const itemId of this.removedItemIds) {
+        await this.quizItems.softDelete(itemId);
       }
-    }
+
+      for (const [index, row] of this.rows().entries()) {
+        const passage: PassageContext = {
+          passageId,
+          title: this.title().trim(),
+          text: this.text().trim(),
+          imageUrl: this.imageUrl().trim() || undefined,
+          order: index + 1,
+          total,
+        };
+        const patch = {
+          subject: this.subject(),
+          grade: this.grade(),
+          type: row.type,
+          prompt: row.prompt,
+          explanation: row.explanation || undefined,
+          tags: [],
+          difficulty: row.difficulty,
+          points: row.points,
+          categoryId: this.categoryId()!,
+          shuffleChoices: true,
+          choices: this.usesChoices(row) ? row.choices : undefined,
+          answerRule: rules[index],
+          media: withImageRef(row.media, row.imageUrl),
+          passage,
+        };
+
+        if (row.existingItemId) {
+          await this.quizItems.update(row.existingItemId, patch);
+        } else {
+          const item: QuizItem = {
+            ...newSyncEnvelope(crypto.randomUUID(), deviceId),
+            ...patch,
+            reviewStatus: 'approved',
+            status: 'active',
+          };
+          await this.quizItems.create(item);
+        }
+      }
+    });
 
     await this.router.navigateByUrl('/quiz-bank');
   }

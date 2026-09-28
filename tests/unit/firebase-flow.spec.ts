@@ -153,6 +153,17 @@ describe('online-first data (Firebase layout, in-memory database)', () => {
     expect(await quizBank.sync()).toBe(false);
     expect(remote.calls).toBe(1);
 
+    // Several questions saved together (a passage, a group's grade, "create several") — one write, still no re-download.
+    await quizItems.inBatch(async () => {
+      await quizItems.update('q1', { grade: 4 });
+      await quizItems.softDelete('q2');
+      await quizItems.create(question(900));
+    });
+    await quizItems.updateMany([{ id: 'q3', patch: { grade: 5 } }, { id: 'q4', patch: { grade: 5 } }]);
+    remote.calls = 0;
+    expect(await quizBank.sync()).toBe(false);
+    expect(remote.calls).toBe(1);
+
     // But when another device wrote in between, the next start does pull (nothing is missed).
     await becomeDevice('tablet');
     await openApp();
