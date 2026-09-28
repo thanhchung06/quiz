@@ -42,7 +42,7 @@ export class StartupSyncService {
       if (await syncEnabled()) {
         // Wake the script up first, patiently: after sitting idle, Apps Script's first answer can take long.
         this._status.set('Đang kết nối Google…');
-        const awake = await wakeUp((attempt, attempts) => this._status.set(`Google đang khởi động — thử lại lần ${attempt}/${attempts}…`));
+        const awake = await wakeUp((attempt) => this._status.set(`Google đang khởi động — thử lại lần ${attempt}…`));
         const pending = await db.outbox.count();
         if (pending > 0) {
           this._status.set('Đang gửi thay đổi còn chờ…');

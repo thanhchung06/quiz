@@ -12,31 +12,36 @@ describe('sync transport', () => {
     localStorage.setItem('quiz-app.sharedSecret', 'secret');
     transportOptions.retryDelaysMs = [0, 0, 0];
     transportOptions.busyDelaysMs = [0, 0];
-    transportOptions.wakeUpDelaysMs = [0, 0, 0, 0, 0];
-    transportOptions.wakeUpTimeoutMs = 50;
+    transportOptions.wakeUpTotalMs = 50;
   });
 
-  it('app-start wake-up: a try that hangs (cold start) is cut off and retried, reporting each retry', async () => {
+  it('app-start wake-up: one request at a time, retried right after a failure', async () => {
     let call = 0;
-    global.fetch = jest.fn((_url, init: RequestInit) => {
+    let running = 0;
+    let maxRunning = 0;
+    global.fetch = jest.fn(async () => {
       call++;
-      if (call <= 2) {
-        // Never answers until aborted.
-        return new Promise((_resolve, reject) => init.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError'))));
-      }
-      return reply({ ok: true, syncHash: 'h' });
+      running++;
+      maxRunning = Math.max(maxRunning, running);
+      await new Promise((r) => setTimeout(r, 5));
+      running--;
+      if (call <= 2) throw new TypeError('Failed to fetch');
+      return (await reply({ ok: true, syncHash: 'h' })) as Response;
     }) as unknown as typeof fetch;
-    const retries: string[] = [];
-    await expect(wakeUp((attempt, attempts) => retries.push(`${attempt}/${attempts}`))).resolves.toEqual({ ok: true, syncHash: 'h' });
-    expect(retries).toEqual(['2/6', '3/6']);
+    const retries: number[] = [];
+    await expect(wakeUp((attempt) => retries.push(attempt))).resolves.toEqual({ ok: true, syncHash: 'h' });
+    expect(retries).toEqual([2, 3]);
+    expect(maxRunning).toBe(1);
   });
 
-  it('app-start wake-up gives up after its last try with a clear message', async () => {
+  it('app-start wake-up gives up once the total time is over; a request still running is cut off then', async () => {
     global.fetch = jest.fn((_url, init: RequestInit) =>
       new Promise((_resolve, reject) => init.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')))),
     ) as unknown as typeof fetch;
-    await expect(wakeUp()).rejects.toThrow('Google không trả lời');
-    expect(global.fetch).toHaveBeenCalledTimes(6);
+    const started = Date.now();
+    await expect(wakeUp()).rejects.toThrow('Google không trả lời sau 1 phút');
+    expect(global.fetch).toHaveBeenCalledTimes(1); // it waited for the one request, never started another
+    expect(Date.now() - started).toBeGreaterThanOrEqual(40);
   });
 
   it('cuts batches by size: many small items per request, fewer big ones', () => {

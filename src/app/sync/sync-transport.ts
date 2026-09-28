@@ -57,21 +57,13 @@ export const transportOptions = {
   busyDelaysMs: [500, 1000, 2000, 4000],
   /**
    * The first request after the script sat idle hits Apps Script's cold start
-   * (can take tens of seconds, sometimes fails): the app-start "connect" ping
-   * gives up on one try after this long and tries again, up to wakeUpDelaysMs.
+   * (can take tens of seconds, sometimes fails). The app-start ping waits for
+   * each answer — one request at a time, never a second one while the first
+   * still runs on Google — retries right away after a failure, and gives up
+   * after this long in total.
    */
-  wakeUpTimeoutMs: 25_000,
-  wakeUpDelaysMs: [3000, 5000, 10000, 15000, 20000],
+  wakeUpTotalMs: 60_000,
 };
-
-export interface SendOptions {
-  /** Abandon one try after this long (then retry). */
-  timeoutMs?: number;
-  /** Waits between tries (default transportOptions.retryDelaysMs). */
-  retryDelaysMs?: number[];
-  /** Before each retry: attempt number (2, 3, …) and the total. */
-  onRetry?: (attempt: number, attempts: number) => void;
-}
 
 export async function sendWrite(ops: SyncOp[]): Promise<Extract<SyncResponse, { ok: true }>> {
   // One requestId for this request and all its resends (send() retries the same request object).
@@ -79,31 +71,46 @@ export async function sendWrite(ops: SyncOp[]): Promise<Extract<SyncResponse, { 
 }
 
 /** Google's current sync hash (and a check that the connection works). */
-export async function sendPing(options: SendOptions = {}): Promise<Extract<SyncResponse, { ok: true }>> {
-  return send({ action: 'PING', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId() }, options);
+export async function sendPing(): Promise<Extract<SyncResponse, { ok: true }>> {
+  return send({ action: 'PING', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId() });
 }
 
 /**
- * Wakes the script up (app start): a PING that allows for Apps Script's cold
- * start — each try is cut off after wakeUpTimeoutMs and repeated with growing
- * pauses, reporting each retry so the app can say it is still connecting.
+ * Wakes the script up (app start), allowing for Apps Script's cold start: one
+ * PING at a time, retried right after each failure, until wakeUpTotalMs have
+ * passed in all. Only that overall limit cuts a request off, so Google never
+ * runs two of them at once. `onRetry(attempt)` reports each retry.
  */
-export async function wakeUp(onRetry?: SendOptions['onRetry']): Promise<Extract<SyncResponse, { ok: true }>> {
-  return sendPing({ timeoutMs: transportOptions.wakeUpTimeoutMs, retryDelaysMs: transportOptions.wakeUpDelaysMs, onRetry });
+export async function wakeUp(onRetry?: (attempt: number) => void): Promise<Extract<SyncResponse, { ok: true }>> {
+  const endpoint = syncEndpointUrl();
+  const request: SyncRequest = { action: 'PING', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId() };
+  if (!endpoint || !request.sharedSecret) throw new SyncError('Chưa cấu hình kết nối Google (URL Web App và mã bí mật).', 'config');
+  const deadline = Date.now() + transportOptions.wakeUpTotalMs;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const response = await postOnce(endpoint, request, Math.max(1, deadline - Date.now()));
+      if (response.ok) return response;
+      throw rejection(response);
+    } catch (error) {
+      const transient = error instanceof SyncError && (error.kind === 'network' || error.kind === 'server');
+      if (!transient || Date.now() >= deadline) throw error;
+      onRetry?.(attempt + 1);
+    }
+  }
 }
 
 export async function sendRead(read: ReadSpec): Promise<Extract<SyncResponse, { ok: true }>> {
   return send({ action: 'READ', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId(), read });
 }
 
-async function send(request: SyncRequest, options: SendOptions = {}): Promise<Extract<SyncResponse, { ok: true }>> {
+async function send(request: SyncRequest): Promise<Extract<SyncResponse, { ok: true }>> {
   const endpoint = syncEndpointUrl();
   if (!endpoint || !request.sharedSecret) throw new SyncError('Chưa cấu hình kết nối Google (URL Web App và mã bí mật).', 'config');
-  const retryDelays = options.retryDelaysMs ?? transportOptions.retryDelaysMs;
+  const retryDelays = transportOptions.retryDelaysMs;
   let busyTries = 0;
   for (let retry = 0; ; retry++) {
     try {
-      const response = await postOnce(endpoint, request, options.timeoutMs);
+      const response = await postOnce(endpoint, request);
       if (response.ok) return response;
       if (response.error === 'BUSY' && busyTries < transportOptions.busyDelaysMs.length) {
         await delay(transportOptions.busyDelaysMs[busyTries++]);
@@ -115,7 +122,6 @@ async function send(request: SyncRequest, options: SendOptions = {}): Promise<Ex
       const transient = error instanceof SyncError && (error.kind === 'network' || error.kind === 'server');
       if (!transient || retry >= retryDelays.length) throw error;
       await delay(retryDelays[retry]);
-      options.onRetry?.(retry + 2, retryDelays.length + 1);
     }
   }
 }
@@ -136,6 +142,7 @@ function rejection(response: Extract<SyncResponse, { ok: false }>): SyncError {
   }
 }
 
+/** One try. `timeoutMs`: only the app-start wake-up uses it — the time left of its overall limit. */
 async function postOnce(endpoint: string, request: SyncRequest, timeoutMs?: number): Promise<SyncResponse> {
   const payload = JSON.stringify(request);
   let text: string;
@@ -158,7 +165,7 @@ async function postOnce(endpoint: string, request: SyncRequest, timeoutMs?: numb
   } catch {
     throw new SyncError(
       abort?.signal.aborted
-        ? 'Google không trả lời (Apps Script có thể đang khởi động). Thử lại sau ít phút.'
+        ? 'Google không trả lời sau 1 phút (Apps Script có thể đang khởi động). Thử lại sau ít phút.'
         : 'Không kết nối được tới Google. Kiểm tra mạng rồi thử lại.',
       'network',
     );

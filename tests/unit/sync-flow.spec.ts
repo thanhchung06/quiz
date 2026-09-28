@@ -57,7 +57,7 @@ global.fetch = jest.fn(async (_url, init) => {
 }) as unknown as typeof fetch;
 transportOptions.retryDelaysMs = [0, 0, 0];
 jest.spyOn(console, 'info').mockImplementation(() => undefined);
-transportOptions.wakeUpDelaysMs = [0, 0, 0, 0, 0];
+transportOptions.wakeUpTotalMs = 200;
 
 // --- the app, wired by hand ---------------------------------------------------
 const settings = new AppSettingsRepository();
