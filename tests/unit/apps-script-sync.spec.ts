@@ -1,12 +1,14 @@
 /**
  * @jest-environment node
  */
-import { resetSheets, rowCount, sheets } from '../support/fake-apps-script';
+import { properties, resetSheets, rowCount } from '../support/fake-apps-script';
 import { handle } from '../../apps-script/src/main';
 import { JsonRecord, nextSyncHash, ReadSpec, SyncOp, SyncResponse } from '../../src/app/sync/protocol';
 
 const write = (...ops: SyncOp[]) => handle({ action: 'WRITE', sharedSecret: 'secret', deviceId: 'd', ops }) as Extract<SyncResponse, { ok: true }>;
 const read = (spec: ReadSpec) => handle({ action: 'READ', sharedSecret: 'secret', deviceId: 'd', read: spec }) as Extract<SyncResponse, { ok: true }>;
+type FakeSheet = { getRange(row: number, col: number, rows?: number, cols?: number): { setValues(values: unknown[][]): void } };
+const spreadsheetApp = () => (globalThis as unknown as { SpreadsheetApp: { getActiveSpreadsheet(): { insertSheet(name: string): FakeSheet } } }).SpreadsheetApp;
 const rec = (id: string, extra: object = {}): JsonRecord => ({ id, ...extra });
 
 describe('Apps Script sync (new layout)', () => {
@@ -14,10 +16,27 @@ describe('Apps Script sync (new layout)', () => {
 
   it('rejects a wrong secret and an older sheet layout', () => {
     expect(handle({ action: 'PING', sharedSecret: 'nope', deviceId: 'd' })).toEqual({ ok: false, error: 'BAD_SECRET' });
-    write({ op: 'WRITE_RECORD', sheet: 'Category', record: rec('c1') }); // creates the Metadata tab
-    const metadata = sheets.get('Metadata')!;
+    // A sheet of the old layout: its Metadata tab says schema 1, and no metadata property exists yet.
+    const metadata = spreadsheetApp().getActiveSpreadsheet().insertSheet('Metadata');
     metadata.getRange(1, 1, 1, 3).setValues([['singleton', 1, JSON.stringify({ googleSchemaVersion: 1, dataRevision: 5 })]]);
     expect(handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' })).toEqual({ ok: false, error: 'SCHEMA_MISMATCH', sheetSchemaVersion: 1 });
+  });
+
+  it('PING never opens the spreadsheet once the metadata is in Script Properties; older tab metadata is moved there', () => {
+    // A sheet this script wrote before the move: metadata still in its tab.
+    spreadsheetApp()
+      .getActiveSpreadsheet()
+      .insertSheet('Metadata')
+      .getRange(1, 1, 1, 3)
+      .setValues([['singleton', 1, JSON.stringify({ schemaVersion: 2, sequences: { QuizItem: 7 }, nextResultId: 3, syncHash: 'abc' })]]);
+    expect(handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' })).toEqual({ ok: true, syncHash: 'abc' });
+    expect(JSON.parse(properties.get('SYNC_METADATA')!)).toMatchObject({ sequences: { QuizItem: 7 }, syncHash: 'abc' });
+    expect(write({ op: 'WRITE_RECORD', sheet: 'QuizItem', record: rec('q') }).results![0].updateSequence).toBe(8);
+
+    const open = jest.spyOn(spreadsheetApp(), 'getActiveSpreadsheet');
+    handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' });
+    expect(open).not.toHaveBeenCalled();
+    open.mockRestore();
   });
 
   it('records get increasing updateSequence per sheet; pulls return those above a number; deletes are marks', () => {

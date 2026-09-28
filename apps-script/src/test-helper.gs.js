@@ -21,9 +21,11 @@ function testDoPost() {
 
 /**
  * ONE-TIME, DESTRUCTIVE: deletes every tab of this spreadsheet so the new
- * layout (schema version 2) starts empty. Run it from the editor only after
- * exporting your data from the app (Sao lưu → Xuất). A sheet needs at least
- * one tab, so an empty "Metadata" tab is kept.
+ * layout (schema version 2) starts empty, and clears the sync metadata kept
+ * in Script Properties. Run it from the editor only after exporting your data
+ * from the app (Sao lưu → Xuất). A sheet needs at least one tab, so an empty
+ * "Metadata" tab is kept. Always wipe the sheet with this, never by hand: the
+ * metadata would otherwise survive the wipe.
  */
 function resetSheetForNewLayout() {
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -32,5 +34,7 @@ function resetSheetForNewLayout() {
     if (sheet.getSheetId() !== keep.getSheetId()) spreadsheet.deleteSheet(sheet);
   });
   keep.clear();
+  // The sync metadata (counters, sync hash) lives in Script Properties: reset it with the sheet.
+  PropertiesService.getScriptProperties().deleteProperty('SYNC_METADATA');
   Logger.log('Done: the sheet is empty and ready for the new layout.');
 }

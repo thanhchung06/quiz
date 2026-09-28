@@ -51,16 +51,19 @@ export function handle(request: SyncRequest): SyncResponse {
   const expectedSecret = PropertiesService.getScriptProperties().getProperty('SHARED_SECRET');
   if (!expectedSecret || request.sharedSecret !== expectedSecret) return { ok: false, error: 'BAD_SECRET' };
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const metadata = readMetadata(spreadsheet);
+  // The spreadsheet is only opened when a request needs it: a PING with the metadata in Script
+  // Properties never loads it (opening a large spreadsheet is the slow part of a request).
+  let opened: GoogleSpreadsheet | undefined;
+  const open = () => (opened ??= SpreadsheetApp.getActiveSpreadsheet());
+  const metadata = readMetadata(open);
   if (metadata && metadata.schemaVersion !== DATA_SCHEMA_VERSION) {
     return { ok: false, error: 'SCHEMA_MISMATCH', sheetSchemaVersion: metadata.schemaVersion ?? 1 };
   }
 
   if (request.action === 'PING') return { ok: true, syncHash: metadata?.syncHash };
-  if (request.action === 'READ') return read(spreadsheet, request.read);
+  if (request.action === 'READ') return read(open(), request.read);
 
-  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => write(spreadsheet, request.ops));
+  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => write(open(), request.ops));
   if ('busy' in outcome) return { ok: false, error: 'BUSY' };
   return outcome;
 }
@@ -133,7 +136,8 @@ function parseBody(json: string): Record<string, unknown> | undefined {
 }
 
 function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[]): SyncResponse {
-  const metadata = readMetadata(spreadsheet) ?? { schemaVersion: DATA_SCHEMA_VERSION, sequences: {}, nextResultId: 1 };
+  // Read again under the lock: another request may have changed it since this one started.
+  const metadata = readMetadata(() => spreadsheet) ?? { schemaVersion: DATA_SCHEMA_VERSION, sequences: {}, nextResultId: 1 };
   const ws = new Workspace(spreadsheet, metadata);
   /** Appended rows only know their row number after flush(). */
   const pendingRows: Array<{ result: OpResult; row: StoredRow }> = [];
@@ -194,7 +198,7 @@ function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[]): SyncResponse {
     writeId = Utilities.getUuid();
     metadata.syncHash = nextSyncHash(metadata.syncHash, writeId);
   }
-  writeMetadata(spreadsheet, metadata);
+  writeMetadata(metadata);
   return { ok: true, results, writeId };
 }
 

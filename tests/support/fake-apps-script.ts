@@ -28,6 +28,8 @@ function fakeSheet() {
 }
 
 let uuidCount = 0;
+/** Script Properties (SHARED_SECRET, SYNC_METADATA). */
+export const properties = new Map<string, string>([['SHARED_SECRET', 'secret']]);
 export const sheets = new Map<string, ReturnType<typeof fakeSheet>>();
 export let requestCount = 0;
 const spreadsheet = {
@@ -37,13 +39,21 @@ const spreadsheet = {
 Object.assign(globalThis, {
   SpreadsheetApp: { getActiveSpreadsheet: () => spreadsheet },
   LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock: () => undefined }) },
-  PropertiesService: { getScriptProperties: () => ({ getProperty: () => 'secret' }) },
+  PropertiesService: {
+    getScriptProperties: () => ({
+      getProperty: (key: string) => properties.get(key) ?? null,
+      setProperty: (key: string, value: string) => properties.set(key, value),
+      deleteProperty: (key: string) => properties.delete(key),
+    }),
+  },
   Utilities: { getUuid: () => `uuid-${++uuidCount}` },
   ContentService: { createTextOutput: (text: string) => ({ setMimeType: () => text }), MimeType: { JSON: 'json' } },
 });
 
+/** An empty spreadsheet, as after resetSheetForNewLayout (which also deletes the metadata property). */
 export function resetSheets(): void {
   sheets.clear();
+  properties.delete('SYNC_METADATA');
 }
 
 /** Number of data rows in a tab. */

@@ -45,6 +45,6 @@ this is the caller-auth layer instead).
 - `main.ts` — `doPost`: shared-secret and schema-version check, then WRITE (operations applied under the script lock, all idempotent by record UUID) or READ (no lock). Contract: `specs/002-sync-data-redesign/plan.md` §4 and `src/app/sync/protocol.ts` (shared with the app).
 - `lock.ts` — exclusive `LockService` wrapper.
 - `sheets/generic-table.ts` — row storage shared by every tab: [key, number, JSON body split over cells].
-- `sheets/metadata.ts` — schema version, updateSequence counters, next Result id.
+- `sheets/metadata.ts` — schema version, updateSequence counters, next Result id, sync hash — kept in Script Properties (`SYNC_METADATA`) so a PING never opens the spreadsheet. Wipe the sheet only with `resetSheetForNewLayout`, which clears that property too.
 - `test-helper.gs.js` — `testDoPost` (PING) and `resetSheetForNewLayout` (one-time wipe) for the editor.
 - `dist/Code.gs.js` — generated; the single file you paste into the Apps Script editor. Do not hand-edit; re-run `build.sh`.
