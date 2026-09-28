@@ -72,7 +72,7 @@ const reader = new SyncReaderService();
 const points = new PointsService(profiles, reader, writer);
 const play = new PlayService(new AttemptResolverService(quizItems, reader), sessions, assignments, results, points);
 const startup = new StartupSyncService(settings, reader, writer);
-const manual = new ManualSyncService(reader, writer);
+const manual = new ManualSyncService(reader, writer, settings);
 writer.start();
 
 /** Starts a fresh install on another device: empty database, sync on (questions pulled only when asked). */
@@ -309,6 +309,49 @@ describe('sync redesign end to end (real Apps Script code, fake Sheet)', () => {
     expect(await quizItems.getById('q99')).toBeUndefined();
     expect((await quizItems.getById('q0'))?.deletedAt).toBeTruthy();
     expect(await db.profiles.count()).toBe(3);
+  }, 60_000);
+
+  it('app start pulls nothing when Google has not changed since this device caught up', async () => {
+    await becomeDevice('pc');
+    await seedFixedProfiles(profiles);
+    await quizItems.create(question(0));
+    await writer.settle();
+
+    await becomeDevice('tablet', { questions: true });
+    await openApp();
+    expect(startup.skipped()).toBe(false);
+    expect(await db.quizItems.count()).toBe(1);
+
+    // Opening again: one PING, nothing read.
+    requestCount = 0;
+    await openApp();
+    expect(startup.skipped()).toBe(true);
+    expect(requestCount).toBe(1);
+
+    // This device's own write keeps it up to date (nobody else wrote in between).
+    await quizItems.update('q0', { prompt: 'sửa trên tablet' });
+    await writer.settle();
+    await openApp();
+    expect(startup.skipped()).toBe(true);
+
+    // Another device writes, then this one writes again: its newest syncId must NOT hide the other write.
+    const tabletData = { questions: await db.quizItems.toArray(), settings: await settings.get() };
+    store.set('quiz-app.deviceId', 'pc');
+    handle({ action: 'WRITE', sharedSecret: 'secret', deviceId: 'pc', ops: [{ op: 'APPEND_POINT_USAGE', usage: { id: 'u1', childId: KID, points: 5, usedAt: '' } }] });
+    store.set('quiz-app.deviceId', 'tablet');
+    await db.quizItems.bulkPut(tabletData.questions);
+    await quizItems.update('q0', { prompt: 'sửa lần nữa' });
+    await writer.settle();
+    await openApp();
+    expect(startup.skipped()).toBe(false);
+    expect(await db.pointUsages.get('u1')).toBeDefined();
+
+    // Changing what the pull covers makes the next start pull even with nothing new.
+    await openApp();
+    expect(startup.skipped()).toBe(true);
+    await settings.update({ lastSyncId: undefined });
+    await openApp();
+    expect(startup.skipped()).toBe(false);
   }, 60_000);
 
   it('app start with an unreachable Google shows the error; a retry gets through', async () => {

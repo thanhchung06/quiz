@@ -61,6 +61,11 @@ export async function sendWrite(ops: SyncOp[]): Promise<Extract<SyncResponse, { 
   return send({ action: 'WRITE', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId(), ops });
 }
 
+/** Google's current syncId (and a check that the connection works). */
+export async function sendPing(): Promise<Extract<SyncResponse, { ok: true }>> {
+  return send({ action: 'PING', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId() });
+}
+
 export async function sendRead(read: ReadSpec): Promise<Extract<SyncResponse, { ok: true }>> {
   return send({ action: 'READ', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId(), read });
 }

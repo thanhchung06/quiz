@@ -56,7 +56,7 @@ export function handle(request: SyncRequest): SyncResponse {
     return { ok: false, error: 'SCHEMA_MISMATCH', sheetSchemaVersion: metadata.schemaVersion ?? 1 };
   }
 
-  if (request.action === 'PING') return { ok: true };
+  if (request.action === 'PING') return { ok: true, syncId: metadata?.syncId };
   if (request.action === 'READ') return read(spreadsheet, request.read);
 
   const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => write(spreadsheet, request.ops));
@@ -109,6 +109,11 @@ class Workspace {
     const next = (this.metadata.sequences[sheet] ?? 0) + 1;
     this.metadata.sequences[sheet] = next;
     return next;
+  }
+
+  /** Whether this request wrote anything at all. */
+  get changedAnything(): boolean {
+    return this.changed.size > 0;
   }
 
   flush(): void {
@@ -181,8 +186,12 @@ function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[]): SyncResponse {
 
   ws.flush();
   for (const { result, row } of pendingRows) result.row = row.rowIndex;
+  // A new syncId whenever something changed. previousSyncId lets the device tell whether anyone else
+  // wrote since it last caught up (then it must still pull on its next start).
+  const previousSyncId = metadata.syncId;
+  if (ws.changedAnything) metadata.syncId = Utilities.getUuid();
   writeMetadata(spreadsheet, metadata);
-  return { ok: true, results };
+  return { ok: true, results, syncId: metadata.syncId, previousSyncId };
 }
 
 /** Fields that only mean something on one device, or that the sheet's number column holds. */

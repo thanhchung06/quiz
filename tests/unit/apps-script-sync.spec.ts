@@ -107,6 +107,21 @@ describe('Apps Script sync (new layout)', () => {
     expect(read({ mode: 'ROWS_AFTER', sheet: 'PointUsage', after: 0 }).records).toEqual([{ id: 'u1', points: 30, row: 1 }]);
   });
 
+  it('a new syncId after every write that changed something, returned by PING and WRITE with the one before', () => {
+    expect(handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' })).toEqual({ ok: true, syncId: undefined });
+    const first = write({ op: 'WRITE_RECORD', sheet: 'QuizItem', record: rec('q1') });
+    expect(first.previousSyncId).toBeUndefined();
+    expect(first.syncId).toBeTruthy();
+    const second = write({ op: 'APPEND_HISTORY', history: rec('h1') });
+    expect(second.previousSyncId).toBe(first.syncId);
+    expect(second.syncId).not.toBe(first.syncId);
+    // Nothing changed (a repeated insert) → same syncId.
+    const repeat = write({ op: 'APPEND_HISTORY', history: rec('h1') });
+    expect(repeat.syncId).toBe(second.syncId);
+    expect(repeat.previousSyncId).toBe(second.syncId);
+    expect(handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' })).toEqual({ ok: true, syncId: second.syncId });
+  });
+
   it('big records are split across cells and pages stop near the size limit', () => {
     const long = 'x'.repeat(120_000);
     write(...Array.from({ length: 40 }, (_, i): SyncOp => ({ op: 'WRITE_RECORD', sheet: 'QuizItem', record: rec(`q${i}`, { long }) })));

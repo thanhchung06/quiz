@@ -3,7 +3,8 @@ import { db } from '../data/db';
 import { JsonRecord, SequencedSheet, SyncOp } from './protocol';
 import { SyncReaderService } from './sync-reader.service';
 import { SyncWriterService } from './sync-writer.service';
-import { SyncError } from './sync-transport';
+import { sendPing, SyncError } from './sync-transport';
+import { AppSettingsRepository } from '../data/repositories/app-settings.repository';
 
 export interface ManualSyncOptions {
   direction: 'push' | 'pull';
@@ -43,6 +44,7 @@ export class ManualSyncService {
   constructor(
     private readonly reader: SyncReaderService,
     private readonly writer: SyncWriterService,
+    private readonly settings: AppSettingsRepository,
   ) {
     this.received = reader.received;
   }
@@ -62,6 +64,7 @@ export class ManualSyncService {
         summary.sent = Math.min(results.length, ops.length);
         summary.removed = results.reduce((sum, r) => sum + (r.removed ?? 0), 0);
       } else {
+        const remote = (await sendPing()).syncId;
         await this.reader.pull({
           questions: !options.skipQuestions,
           addedQuestionsOnly: options.addedQuestionsOnly,
@@ -70,6 +73,8 @@ export class ManualSyncService {
         });
         summary.received = this.reader.received();
         summary.removed = this.reader.removed();
+        // A partial pull (without questions, or only new ones) doesn't make this device up to date.
+        await this.settings.update({ lastSyncId: options.skipQuestions || options.addedQuestionsOnly ? undefined : remote });
       }
     } catch (error) {
       summary = { ...summary, ok: false, error: error instanceof SyncError ? error.message : String(error) };

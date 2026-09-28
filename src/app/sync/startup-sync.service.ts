@@ -3,7 +3,7 @@ import { AppSettingsRepository } from '../data/repositories/app-settings.reposit
 import { syncEnabled } from '../data/outbox';
 import { SyncReaderService } from './sync-reader.service';
 import { SyncWriterService } from './sync-writer.service';
-import { SyncError } from './sync-transport';
+import { sendPing, SyncError } from './sync-transport';
 
 export type StartupSyncState = 'running' | 'error' | 'done';
 
@@ -17,8 +17,11 @@ export type StartupSyncState = 'running' | 'error' | 'done';
 export class StartupSyncService {
   private readonly _state = signal<StartupSyncState>('running');
   private readonly _error = signal<string | undefined>(undefined);
+  private readonly _skipped = signal(false);
   readonly state = this._state.asReadonly();
   readonly error = this._error.asReadonly();
+  /** The last run found nothing new on Google (same syncId) and pulled nothing. */
+  readonly skipped = this._skipped.asReadonly();
 
   constructor(
     private readonly settings: AppSettingsRepository,
@@ -31,14 +34,23 @@ export class StartupSyncService {
     this._state.set('running');
     this._error.set(undefined);
     try {
+      this._skipped.set(false);
       if (await syncEnabled()) {
         await this.writer.flush();
+        // Nothing changed on Google since this device last caught up → no pull at all.
+        const remote = (await sendPing()).syncId;
         const settings = await this.settings.get();
-        await this.reader.pull({
-          questions: settings.autoSyncQuestions,
-          addedQuestionsOnly: settings.autoSyncAddedQuestionsOnly,
-          exercises: settings.autoSyncExercises,
-        });
+        if (remote && remote === settings.lastSyncId) {
+          this._skipped.set(true);
+        } else {
+          await this.reader.pull({
+            questions: settings.autoSyncQuestions,
+            addedQuestionsOnly: settings.autoSyncAddedQuestionsOnly,
+            exercises: settings.autoSyncExercises,
+          });
+          // The value read before pulling: anything written meanwhile makes the next start pull again.
+          await this.settings.update({ lastSyncId: remote });
+        }
       }
       this._state.set('done');
     } catch (error) {

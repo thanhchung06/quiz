@@ -41,6 +41,10 @@ declare const PropertiesService: {
   };
 };
 
+declare const Utilities: {
+  getUuid(): string;
+};
+
 declare const ContentService: {
   createTextOutput(content: string): { setMimeType(type: unknown): unknown };
   MimeType: { JSON: unknown };

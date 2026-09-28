@@ -94,5 +94,14 @@ export type SyncRequest =
   | { action: 'PING'; sharedSecret: string; deviceId: string };
 
 export type SyncResponse =
-  | { ok: true; results?: OpResult[]; records?: JsonRecord[]; truncated?: boolean }
+  | {
+      ok: true;
+      results?: OpResult[];
+      records?: JsonRecord[];
+      truncated?: boolean;
+      /** PING, WRITE: the sheet's current syncId (a new UUID after every write that changed something). */
+      syncId?: string;
+      /** WRITE: the syncId before this write — if the device held it, the device is still up to date. */
+      previousSyncId?: string;
+    }
   | { ok: false; error: 'BAD_SECRET' | 'SCHEMA_MISMATCH' | 'BUSY' | 'BAD_REQUEST'; message?: string; sheetSchemaVersion?: number };

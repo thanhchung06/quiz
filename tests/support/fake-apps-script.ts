@@ -27,6 +27,7 @@ function fakeSheet() {
   };
 }
 
+let uuidCount = 0;
 export const sheets = new Map<string, ReturnType<typeof fakeSheet>>();
 export let requestCount = 0;
 const spreadsheet = {
@@ -37,6 +38,7 @@ Object.assign(globalThis, {
   SpreadsheetApp: { getActiveSpreadsheet: () => spreadsheet },
   LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock: () => undefined }) },
   PropertiesService: { getScriptProperties: () => ({ getProperty: () => 'secret' }) },
+  Utilities: { getUuid: () => `uuid-${++uuidCount}` },
   ContentService: { createTextOutput: (text: string) => ({ setMimeType: () => text }), MimeType: { JSON: 'json' } },
 });
 

@@ -396,6 +396,12 @@ export interface AppSettings {
   autoSyncAddedQuestionsOnly: boolean;
   /** The app-start pull also takes exercises. */
   autoSyncExercises: boolean;
+  /**
+   * Google's syncId this device is up to date with (set after a full pull, and
+   * after its own writes when nobody else wrote in between). Equal to Google's
+   * at app start → nothing to pull. Cleared when what the pull covers changes.
+   */
+  lastSyncId?: string;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;

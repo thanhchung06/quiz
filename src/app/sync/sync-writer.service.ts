@@ -85,6 +85,7 @@ export class SyncWriterService {
       const response = await sendWrite(batch);
       const batchResults = response.results ?? [];
       await this.applyResults(batch, batchResults);
+      await this.noteSyncId(response);
       results.push(...batchResults);
       onProgress?.(results.length);
     }
@@ -105,6 +106,7 @@ export class SyncWriterService {
             batch.map((entry) => entry.op),
             response.results ?? [],
           );
+          await this.noteSyncId(response);
           await db.outbox.bulkDelete(batch.map((entry) => entry.seq!));
           this._error.set(undefined);
         } catch (error) {
@@ -114,6 +116,18 @@ export class SyncWriterService {
       }
     } while (this.again);
     this._pending.set(0);
+  }
+
+  /**
+   * After a write: if Google's syncId before it was the one this device was up
+   * to date with, nobody else wrote in between — the device is still up to date
+   * with the new one. Otherwise it keeps the old value, so the next app start pulls.
+   */
+  private async noteSyncId(response: { syncId?: string; previousSyncId?: string }): Promise<void> {
+    const settings = await db.appSettings.get('singleton');
+    if (settings && response.previousSyncId === settings.lastSyncId && response.syncId !== settings.lastSyncId) {
+      await db.appSettings.update('singleton', { lastSyncId: response.syncId });
+    }
   }
 
   /** Stores on the local copies what Google handed out for them. */

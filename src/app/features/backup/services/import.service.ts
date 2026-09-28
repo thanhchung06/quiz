@@ -60,7 +60,10 @@ export class BackupImportService {
     for (const profile of data.profiles.filter((p) => p.role === 'child')) {
       await db.profiles.update(profile.id, { totalPoints: await PointsService.computeLocal(profile.id) });
     }
-    await this.appSettings.update({ backupMetadata: { ...(await this.appSettings.get()).backupMetadata, lastImportAt: new Date().toISOString() } });
+    await this.appSettings.update({
+      backupMetadata: { ...(await this.appSettings.get()).backupMetadata, lastImportAt: new Date().toISOString() },
+      lastSyncId: undefined,
+    });
   }
 
   private async dataOf(envelope: BackupEnvelope | LegacyBackupEnvelope): Promise<BackupData | undefined> {
