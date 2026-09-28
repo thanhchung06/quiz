@@ -17,7 +17,7 @@ export function normalizeName(name: string): string {
 @Injectable({ providedIn: 'root' })
 export class CategoryRepository extends BaseRepository<Category> {
   constructor(private readonly quizItems: QuizItemRepository) {
-    super(db.categories);
+    super(db.categories, 'Category');
   }
 
   async findDuplicate(name: string, subject: CategorySubject): Promise<Category | undefined> {
@@ -29,7 +29,8 @@ export class CategoryRepository extends BaseRepository<Category> {
   }
 
   /** `id` is normally random; callers pass a fixed one only for records every device must share (default categories). */
-  async createCategory(name: string, subject: CategorySubject, description?: string, id: string = crypto.randomUUID()): Promise<Category> {
+  /** `asDefault`: a seeded default category (see BaseRepository.createDefault). */
+  async createCategory(name: string, subject: CategorySubject, description?: string, id: string = crypto.randomUUID(), asDefault = false): Promise<Category> {
     const existing = await this.findDuplicate(name, subject);
     if (existing) {
       throw new Error(`Category "${name}" already exists for subject ${subject}`);
@@ -42,7 +43,8 @@ export class CategoryRepository extends BaseRepository<Category> {
       description,
       status: 'active',
     };
-    await this.create(category);
+    if (asDefault) await this.createDefault(category);
+    else await this.create(category);
     return category;
   }
 

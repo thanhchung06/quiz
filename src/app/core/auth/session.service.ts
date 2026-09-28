@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ProfileRepository } from '../../data/repositories/profile.repository';
 import { Profile } from '../../shared/models/domain.model';
-import { hashCredential } from './credential-hash';
 
 export interface LoginResult {
   success: boolean;
@@ -32,8 +31,7 @@ export class SessionService {
       this._currentProfile.set(profile);
       return { success: true, profile };
     }
-    const candidateHash = await hashCredential(rawCredential, profile.id);
-    if (candidateHash !== profile.credentialHash) {
+    if (rawCredential !== profile.password) {
       return { success: false };
     }
     this._currentProfile.set(profile);

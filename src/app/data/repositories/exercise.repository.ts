@@ -12,7 +12,7 @@ import { newSyncEnvelope } from '../../shared/models/sync.model';
 @Injectable({ providedIn: 'root' })
 export class ExerciseRepository extends BaseRepository<Exercise> {
   constructor() {
-    super(db.exercises);
+    super(db.exercises, 'Exercise');
   }
 
   async reorderItems(exerciseId: string, orderedItemIds: string[]): Promise<void> {
@@ -64,19 +64,15 @@ export class ExerciseRepository extends BaseRepository<Exercise> {
       defaultQuestionSeconds: source.defaultQuestionSeconds,
       defaultQuestionPoints: source.defaultQuestionPoints,
       isDaily: source.isDaily ?? false,
+      repeatLimit: source.repeatLimit,
+      allowPractice: source.allowPractice,
+      practiceEarnsPoints: source.practiceEarnsPoints,
       status: 'active',
     });
   }
 
-  /** Only an exercise no active attempt currently uses may be archived/deleted (FR-034). */
-  async isInUseByActiveAttempt(exerciseId: string): Promise<boolean> {
-    const inProgress = await db.attempts.where('status').equals('inProgress').toArray();
-    return inProgress.some((a) => a.exerciseId === exerciseId);
-  }
-
-  async archiveIfUnused(exerciseId: string): Promise<boolean> {
-    if (await this.isInUseByActiveAttempt(exerciseId)) return false;
+  /** Assignments and ongoing plays keep their own snapshot, so an exercise can always be archived. */
+  async archive(exerciseId: string): Promise<void> {
     await this.update(exerciseId, { status: 'archived' });
-    return true;
   }
 }

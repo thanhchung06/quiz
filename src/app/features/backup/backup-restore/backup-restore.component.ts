@@ -3,7 +3,9 @@ import { KeyValuePipe } from '@angular/common';
 import { BackupExportService } from '../services/export.service';
 import { BackupImportService, ImportSummary } from '../services/import.service';
 import { ResetService } from '../services/reset.service';
-import { BackupEnvelope } from '../services/export.service';
+import { BackupEnvelope, LegacyBackupEnvelope } from '../services/backup-format';
+import { ManualSyncService } from '../../../sync/manual-sync.service';
+import { syncEnabled } from '../../../data/outbox';
 import { SessionService } from '../../../core/auth/session.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 
@@ -16,7 +18,8 @@ import { IconComponent } from '../../../shared/icon/icon.component';
   styleUrl: './backup-restore.component.scss',
 })
 export class BackupRestoreComponent {
-  readonly pendingImport = signal<BackupEnvelope | undefined>(undefined);
+  readonly pendingImport = signal<BackupEnvelope | LegacyBackupEnvelope | undefined>(undefined);
+  readonly busy = signal(false);
   readonly importSummary = signal<ImportSummary | undefined>(undefined);
   readonly resetStep = signal(0); // 0 = idle, 1 = warning shown, 2 = confirmed
   readonly message = signal('');
@@ -26,6 +29,7 @@ export class BackupRestoreComponent {
     private readonly importService: BackupImportService,
     private readonly resetService: ResetService,
     private readonly session: SessionService,
+    private readonly manualSync: ManualSyncService,
   ) {}
 
   async exportBackup(): Promise<void> {
@@ -37,7 +41,7 @@ export class BackupRestoreComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
-    const envelope = JSON.parse(await file.text()) as BackupEnvelope;
+    const envelope = JSON.parse(await file.text()) as BackupEnvelope | LegacyBackupEnvelope;
     this.pendingImport.set(envelope);
     this.importSummary.set(await this.importService.previewSummary(envelope));
   }
@@ -45,9 +49,26 @@ export class BackupRestoreComponent {
   async confirmImport(): Promise<void> {
     const envelope = this.pendingImport();
     if (!envelope) return;
-    await this.importService.restore(envelope);
-    this.pendingImport.set(undefined);
-    this.message.set('Đã khôi phục dữ liệu.');
+    this.busy.set(true);
+    try {
+      await this.importService.restore(envelope);
+      this.pendingImport.set(undefined);
+      this.importSummary.set(undefined);
+      if (await syncEnabled()) {
+        // Plan §6: with sync on, the imported data also goes to Google.
+        this.message.set('Đã khôi phục dữ liệu. Đang gửi lên Google…');
+        const summary = await this.manualSync.run({ direction: 'push', skipQuestions: false, addedQuestionsOnly: false });
+        this.message.set(
+          summary.ok
+            ? `Đã khôi phục dữ liệu và gửi lên Google (${summary.sent} mục).`
+            : `Đã khôi phục dữ liệu trên máy này, nhưng chưa gửi hết lên Google: ${summary.error} — dùng "Đồng bộ ngay" (Máy này → Google) để gửi lại.`,
+        );
+      } else {
+        this.message.set('Đã khôi phục dữ liệu.');
+      }
+    } finally {
+      this.busy.set(false);
+    }
   }
 
   startReset(): void {

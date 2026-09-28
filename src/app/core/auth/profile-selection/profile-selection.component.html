@@ -1,7 +1,14 @@
 <main class="profile-screen">
   <h1>{{ strings.auth.chooseProfile }}</h1>
 
-  @if (!selected()) {
+  @if (startup() === 'running') {
+    <p class="startup" role="status"><span class="spinner" aria-hidden="true"></span>Đang lấy dữ liệu mới nhất từ Google…</p>
+  } @else if (startup() === 'error') {
+    <div class="startup error" role="alert">
+      <p><app-icon name="warning" />{{ startupError() }}</p>
+      <button type="button" (click)="retryStartup()"><app-icon name="refresh" />Thử lại</button>
+    </div>
+  } @else if (!selected()) {
     <div class="profile-cards">
       @for (profile of profiles(); track profile.id) {
         <button class="profile-card" type="button" (click)="select(profile)">

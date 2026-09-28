@@ -30,7 +30,11 @@
   </label>
 
   <label>Thời gian (phút) <input type="number" min="1" max="60" [ngModel]="timeLimitMinutes()" (ngModelChange)="timeLimitMinutes.set($event)" /></label>
-  <label>Ngưỡng đạt (%) <input type="number" [ngModel]="passingPercent()" (ngModelChange)="passingPercent.set($event)" /></label>
+  <label>Ngưỡng đạt (%) <input type="number" min="0" max="100" [ngModel]="passingPercent()" (ngModelChange)="passingPercent.set($event)" /></label>
+  <p class="hint">
+    Đạt ngưỡng: 1 sao, được cộng điểm. 2 sao (+25% điểm): từ {{ passingPercent() > 0 ? ((+passingPercent() + 100) / 2 | number: '1.0-0') : 80 }}%.
+    3 sao (+50% điểm): đúng hết. Để 0 nếu không cần ngưỡng đạt (lần nào cũng đạt).
+  </p>
 
   <label>
     Số lượt sai tối đa (lives)
@@ -62,6 +66,10 @@
 
   <label><input type="checkbox" [ngModel]="orderMode() === 'randomized'" (ngModelChange)="orderMode.set($event ? 'randomized' : 'fixed')" /> Xáo trộn thứ tự câu hỏi</label>
   <label><input type="checkbox" [ngModel]="correctionReviewEnabled()" (ngModelChange)="correctionReviewEnabled.set($event)" /> Xem lại đáp án</label>
+  <label><input type="checkbox" [ngModel]="allowPractice()" (ngModelChange)="allowPractice.set($event)" /> Cho phép luyện tập (bé tự làm, không cần giao)</label>
+  @if (allowPractice()) {
+    <label class="sub"><input type="checkbox" [ngModel]="practiceEarnsPoints()" (ngModelChange)="practiceEarnsPoints.set($event)" /> Luyện tập được cộng điểm</label>
+  }
   <label><input type="checkbox" [ngModel]="isDaily()" (ngModelChange)="setDaily($event)" /> Bài tập hàng ngày (đổi mới mỗi ngày, câu hỏi chọn ngẫu nhiên)</label>
   @if (isDaily()) {
     <p class="hint">

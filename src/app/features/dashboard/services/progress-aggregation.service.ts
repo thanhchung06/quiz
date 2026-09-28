@@ -1,69 +1,56 @@
 import { Injectable } from '@angular/core';
-import { AttemptRepository } from '../../../data/repositories/attempt.repository';
-import { Attempt } from '../../../shared/models/domain.model';
+import { ResultRepository } from '../../../data/repositories/result.repository';
+import { AssignmentRepository } from '../../../data/repositories/assignment.repository';
+import { PlayResult } from '../../../shared/models/domain.model';
 
 export type PeriodFilter = 7 | 30 | 'all';
 
 export interface ProgressOverview {
+  /** Assignments the child still has. */
   assigned: number;
   completed: number;
   passed: number;
+  /** Given up. */
   unfinished: number;
-  accuracyBySubject: Record<string, number>;
   totalPracticeMinutes: number;
   livesLost: number;
-  recentActivity: Attempt[];
+  recentActivity: PlayResult[];
 }
 
 /**
- * Per-child progress aggregation (FR-046): assigned/completed/passed/
- * unfinished counts, accuracy, practice time, lives lost, filtered by the
- * last 7 days (default), 30 days, or all time.
+ * Per-child progress (FR-046) from the detailed results this device holds
+ * (Google keeps the last 1000): completed / passed / given-up counts, practice
+ * time and lives lost, for the last 7 days (default), 30 days, or all.
  */
 @Injectable({ providedIn: 'root' })
 export class ProgressAggregationService {
-  constructor(private readonly attempts: AttemptRepository) {}
+  constructor(
+    private readonly results: ResultRepository,
+    private readonly assignments: AssignmentRepository,
+  ) {}
 
-  async overview(profileId: string, period: PeriodFilter = 7): Promise<ProgressOverview> {
-    const all = await this.attempts.listForProfile(profileId);
-    const cutoff = period === 'all' ? 0 : Date.now() - period * 24 * 60 * 60 * 1000;
-    const inRange = all.filter((a) => new Date(a.startedAt).getTime() >= cutoff);
+  async overview(childId: string, period: PeriodFilter = 7): Promise<ProgressOverview> {
+    const all = await this.results.resultsForChild(childId);
+    const cutoff = period === 'all' ? '' : new Date(Date.now() - period * 24 * 60 * 60 * 1000).toISOString();
+    const inRange = all.filter((r) => r.attemptedAt >= cutoff);
+    const finished = inRange.filter((r) => r.status !== 'abandoned');
 
-    const completed = inRange.filter((a) => a.status === 'completed' || a.status === 'timeUp' || a.status === 'tryAgain');
-    const passed = inRange.filter((a) => a.passed);
-    const unfinished = inRange.filter((a) => a.status === 'inProgress' || a.status === 'abandoned');
-
-    const bySubjectAccuracy: Record<string, number[]> = {};
-    let totalMinutes = 0;
+    let minutes = 0;
     let livesLost = 0;
-    for (const attempt of completed) {
-      totalMinutes += this.minutesSpent(attempt);
-      // An unlimited-lives exercise has nothing to "lose" here.
-      if (attempt.exerciseSnapshot.lives !== 'unlimited' && attempt.livesRemaining !== 'unlimited') {
-        livesLost += attempt.exerciseSnapshot.lives - attempt.livesRemaining;
-      }
-      const subjectKey = 'all'; // Exercise.subject would require a join; kept simple for this pass.
-      (bySubjectAccuracy[subjectKey] ??= []).push(attempt.accuracy);
-    }
-    const accuracyBySubject: Record<string, number> = {};
-    for (const [subject, values] of Object.entries(bySubjectAccuracy)) {
-      accuracyBySubject[subject] = values.reduce((s, v) => s + v, 0) / values.length;
+    for (const r of finished) {
+      minutes += Math.max(0, new Date(r.attemptedAt).getTime() - new Date(r.startedAt).getTime()) / 60_000;
+      const lives = r.exerciseSnapshot.lives;
+      if (lives !== 'unlimited' && r.livesRemaining !== 'unlimited') livesLost += lives - r.livesRemaining;
     }
 
     return {
-      assigned: inRange.length,
-      completed: completed.length,
-      passed: passed.length,
-      unfinished: unfinished.length,
-      accuracyBySubject,
-      totalPracticeMinutes: Math.round(totalMinutes),
+      assigned: (await this.assignments.listForChild(childId)).length,
+      completed: finished.length,
+      passed: finished.filter((r) => r.stars >= 1).length,
+      unfinished: inRange.length - finished.length,
+      totalPracticeMinutes: Math.round(minutes),
       livesLost,
-      recentActivity: [...inRange].sort((a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime()).slice(0, 20),
+      recentActivity: inRange.slice(0, 20),
     };
-  }
-
-  private minutesSpent(attempt: Attempt): number {
-    if (!attempt.completedAt) return 0;
-    return (new Date(attempt.completedAt).getTime() - new Date(attempt.startedAt).getTime()) / 60_000;
   }
 }

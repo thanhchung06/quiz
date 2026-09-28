@@ -222,3 +222,11 @@
     transform: translateY(0);
   }
 }
+
+.link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  color: inherit;
+}

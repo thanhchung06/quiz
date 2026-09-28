@@ -1,0 +1,41 @@
+@if (result(); as r) {
+  <main class="result-detail">
+    <header class="screen-header">
+      <app-icon name="fact_check" />
+      <h1>{{ r.exerciseTitle }}</h1>
+    </header>
+    <p class="status" [class.correct]="r.stars >= 1">
+      <app-icon [name]="r.stars >= 1 ? 'check_circle' : 'info'" />
+      {{ endLabel[r.status] ?? r.status }} — lần {{ r.tryNumber }} · {{ r.correctCount }}/{{ r.totalQuestions }} đúng · {{ r.stars }}⭐ ·
+      {{ r.counted ? '+' + r.pointsEarned + ' điểm' : 'không cộng điểm' }}{{ r.late ? ' · trễ hạn' : '' }}
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Câu hỏi</th>
+            <th>Trả lời</th>
+            <th>Đáp án đúng</th>
+            <th>Kết quả</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.quizItemId) {
+            <tr>
+              <td>{{ row.prompt }}</td>
+              <td>{{ row.selectedText }}</td>
+              <td>{{ row.correctText }}</td>
+              <td [class.correct]="row.isCorrect" [class.incorrect]="!row.isCorrect">
+                <app-icon [name]="row.isCorrect ? 'check_circle' : 'cancel'" />
+                {{ row.isCorrect ? 'Đúng' : row.answered ? 'Sai' : 'Không trả lời' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </main>
+} @else {
+  <main class="result-detail"><p>Không còn chi tiết của lượt này (chỉ giữ 1000 kết quả gần nhất).</p></main>
+}

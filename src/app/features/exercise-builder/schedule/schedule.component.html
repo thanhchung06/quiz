@@ -1,7 +1,7 @@
 <main class="schedule-screen">
   <header class="screen-header">
     <app-icon name="calendar_month" />
-    <h1>Lịch giao bài</h1>
+    <h1>Giao bài</h1>
   </header>
 
   <label>
@@ -12,7 +12,7 @@
       }
     </select>
   </label>
-  <label class="checkbox-row"><input type="checkbox" [ngModel]="bothChildren()" (ngModelChange)="bothChildren.set($event)" /> Cả hai bé</label>
+  <label class="checkbox-row"><input type="checkbox" [ngModel]="bothChildren()" (ngModelChange)="bothChildren.set($event)" /> Tất cả các bé</label>
 
   <label>
     Bài tập
@@ -25,38 +25,52 @@
 
   <fieldset class="assign-mode">
     <label class="checkbox-row">
-      <input type="radio" name="assignMode" [checked]="assignMode() === 'dated'" (change)="assignMode.set('dated')" />
-      Giao theo ngày cụ thể
+      <input type="radio" name="opens" [checked]="!opensLater()" (change)="opensLater.set(false)" />
+      Mở ngay
     </label>
     <label class="checkbox-row">
-      <input type="radio" name="assignMode" [checked]="assignMode() === 'onetime'" (change)="assignMode.set('onetime')" />
-      Giao không chọn ngày (bài tập một lần)
+      <input type="radio" name="opens" [checked]="opensLater()" (change)="opensLater.set(true)" />
+      Mở từ thời điểm
     </label>
+    @if (opensLater()) {
+      <input type="datetime-local" [ngModel]="availableFrom()" (ngModelChange)="availableFrom.set($event)" aria-label="Mở từ" />
+    }
   </fieldset>
 
-  @if (assignMode() === 'dated') {
-    <label>Ngày <input type="date" [ngModel]="assignedDate()" (ngModelChange)="assignedDate.set($event)" /></label>
+  <label class="checkbox-row">
+    <input type="checkbox" [ngModel]="hasDeadline()" (ngModelChange)="hasDeadline.set($event)" /> Có hạn chót
+  </label>
+  @if (hasDeadline()) {
+    <input type="datetime-local" [ngModel]="deadline()" (ngModelChange)="deadline.set($event)" aria-label="Hạn chót" />
+    <p class="hint">Làm sau hạn chót vẫn được ghi kết quả và điểm, kèm dấu "trễ hạn".</p>
   }
 
   <button type="button" (click)="assign()">
     <app-icon name="add" />
     Giao bài
   </button>
+  @if (message()) {
+    <p class="hint" role="status">{{ message() }}</p>
+  }
 
-  <h2><app-icon name="history" />Lịch sắp tới</h2>
-  @if (upcoming().length === 0) {
+  <h2><app-icon name="history" />Bài đang giao</h2>
+  @if (current().length === 0) {
     <p class="empty">Chưa có bài nào được giao.</p>
   }
   <ul>
-    @for (a of upcoming(); track a.id) {
+    @for (a of current(); track a.id) {
       <li>
-        <app-icon [name]="a.assignedDate ? 'calendar_month' : 'refresh'" />
-        @if (a.assignedDate) {
-          {{ a.assignedDate }}
-        } @else {
-          Một lần
-        }
-        — {{ childName(a.profileId) }} — {{ exerciseTitle(a.exerciseId) }}
+        <span>
+          {{ childName(a.childId) }} — {{ a.exerciseSnapshot.title }}
+          @if (a.availableFrom) {
+            · mở {{ formatDateTime(a.availableFrom) }}
+          }
+          @if (a.deadline) {
+            · hạn {{ formatDateTime(a.deadline) }}
+          }
+          · đã làm {{ a.tries }} lần
+        </span>
+        <button type="button" (click)="takeBack(a)" aria-label="Gỡ bài đã giao"><app-icon name="delete" />Gỡ</button>
       </li>
     }
   </ul>

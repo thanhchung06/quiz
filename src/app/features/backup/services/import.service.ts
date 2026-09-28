@@ -1,101 +1,76 @@
 import { Injectable } from '@angular/core';
+import Dexie from 'dexie';
 import { db } from '../../../data/db';
 import { AppSettingsRepository } from '../../../data/repositories/app-settings.repository';
-import { BackupEnvelope } from './export.service';
+import { PointsService } from '../../rewards/services/points.service';
+import { BackupData, BackupEnvelope, convertLegacyBackup, LegacyBackupEnvelope } from './backup-format';
 
 export interface ImportSummary {
-  counts: Record<keyof BackupEnvelope['data'], number>;
+  counts: Record<string, number>;
   compatible: boolean;
+  /** An old (pre-redesign) file, converted on import. */
+  legacy: boolean;
 }
 
-const SUPPORTED_FORMAT_VERSIONS = ['1.0'];
-
 /**
- * Backup import (FR-052, contracts/backup-format.md): validates format/
- * schema version, shows a summary, and replaces local data only after
- * explicit confirmation, all-or-nothing within one transaction.
+ * Backup import (FR-052): accepts the current format (2.0) and old files
+ * (1.0, converted — see convertLegacyBackup), shows a summary, and replaces
+ * local data only after confirmation, all-or-nothing within one transaction.
+ * Profiles keep the password this device has when the file has none.
  */
 @Injectable({ providedIn: 'root' })
 export class BackupImportService {
   constructor(private readonly appSettings: AppSettingsRepository) {}
 
-  async previewSummary(envelope: BackupEnvelope): Promise<ImportSummary> {
-    const settings = await this.appSettings.get();
-    const compatible =
-      SUPPORTED_FORMAT_VERSIONS.includes(envelope.formatVersion) &&
-      envelope.localSchemaVersion <= settings.schemaVersion;
-
-    const counts = Object.fromEntries(
-      Object.entries(envelope.data).map(([key, value]) => [key, Array.isArray(value) ? value.length : 0]),
-    ) as ImportSummary['counts'];
-
-    return { counts, compatible };
+  async previewSummary(envelope: BackupEnvelope | LegacyBackupEnvelope): Promise<ImportSummary> {
+    const data = await this.dataOf(envelope);
+    if (!data) return { counts: {}, compatible: false, legacy: false };
+    const counts = Object.fromEntries(Object.entries(data).map(([key, value]) => [key, (value as unknown[]).length]));
+    return { counts, compatible: true, legacy: envelope.formatVersion === '1.0' };
   }
 
-  /** Replaces all local collections in one Dexie transaction (all-or-nothing). */
-  async restore(envelope: BackupEnvelope): Promise<void> {
-    const summary = await this.previewSummary(envelope);
-    if (!summary.compatible) {
-      throw new Error('Backup format/schema version is not compatible with this installation.');
-    }
-
-    await db.transaction(
-      'rw',
-      [
-        db.profiles,
-        db.categories,
-        db.quizItems,
-        db.exercises,
-        db.assignments,
-        db.rotations,
-        db.attempts,
-        db.answerResults,
-        db.rewards,
-        db.pointRedemptions,
-        db.deletedRecords,
-      ],
-      async () => {
-        const existingProfiles = await db.profiles.toArray();
-        const credentialByProfileId = new Map(existingProfiles.map((p) => [p.id, p.credentialHash]));
-
-        await Promise.all([
-          db.categories.clear(),
-          db.quizItems.clear(),
-          db.exercises.clear(),
-          db.assignments.clear(),
-          db.rotations.clear(),
-          db.attempts.clear(),
-          db.answerResults.clear(),
-          db.rewards.clear(),
-          db.pointRedemptions.clear(),
-          db.deletedRecords.clear(),
-          db.profiles.clear(),
-        ]);
-
-        // Existing device credentials are preserved rather than overwritten
-        // by the backup (contracts/backup-format.md import behavior).
-        const restoredProfiles = (envelope.data.profiles as Array<Record<string, unknown>>).map((p) => ({
-          ...p,
-          credentialHash: credentialByProfileId.get(p['id'] as string) ?? '',
-        }));
-
-        await Promise.all([
-          db.profiles.bulkAdd(restoredProfiles as never[]),
-          db.categories.bulkAdd(envelope.data.categories as never[]),
-          db.quizItems.bulkAdd(envelope.data.quizItems as never[]),
-          db.exercises.bulkAdd(envelope.data.exercises as never[]),
-          db.assignments.bulkAdd(envelope.data.assignments as never[]),
-          db.rotations.bulkAdd(envelope.data.rotations as never[]),
-          db.attempts.bulkAdd(envelope.data.attempts as never[]),
-          db.answerResults.bulkAdd(envelope.data.answerResults as never[]),
-          db.rewards.bulkAdd(envelope.data.rewards as never[]),
-          // Older backups predate this field — restore them as having no redemption history rather than throwing.
-          db.pointRedemptions.bulkAdd((envelope.data.pointRedemptions ?? []) as never[]),
-          db.deletedRecords.bulkAdd(envelope.data.deletedRecords as never[]),
-        ]);
-      },
+  async restore(envelope: BackupEnvelope | LegacyBackupEnvelope): Promise<void> {
+    const data = await this.dataOf(envelope);
+    if (!data) throw new Error('Backup format is not compatible with this installation.');
+    const tables = [
+      db.profiles,
+      db.categories,
+      db.quizItems,
+      db.exercises,
+      db.assignments,
+      db.sessions,
+      db.results,
+      db.historyResults,
+      db.pointUsages,
+    ];
+    // Plain Dexie promise chain (no await inside), so the transaction stays open under zone.js.
+    await db.transaction('rw', tables, () =>
+      tables
+        .reduce((chain, table) => chain.then(() => table.clear()), Dexie.Promise.resolve())
+        .then(() => db.profiles.bulkAdd(data.profiles))
+        .then(() => db.categories.bulkAdd(data.categories))
+        .then(() => db.quizItems.bulkAdd(data.quizItems))
+        .then(() => db.exercises.bulkAdd(data.exercises))
+        .then(() => db.assignments.bulkAdd(data.assignments))
+        .then(() => db.sessions.bulkAdd(data.sessions))
+        .then(() => db.results.bulkAdd(data.results))
+        .then(() => db.historyResults.bulkAdd(data.historyResults))
+        .then(() => db.pointUsages.bulkAdd(data.pointUsages)),
     );
-
+    for (const profile of data.profiles.filter((p) => p.role === 'child')) {
+      await db.profiles.update(profile.id, { totalPoints: await PointsService.computeLocal(profile.id) });
+    }
     await this.appSettings.update({ backupMetadata: { ...(await this.appSettings.get()).backupMetadata, lastImportAt: new Date().toISOString() } });
+  }
+
+  private async dataOf(envelope: BackupEnvelope | LegacyBackupEnvelope): Promise<BackupData | undefined> {
+    const localPasswords = new Map((await db.profiles.toArray()).map((p) => [p.id, p.password]));
+    if (envelope?.formatVersion === '1.0') return convertLegacyBackup(envelope, localPasswords);
+    if (envelope?.formatVersion !== '2.0') return undefined;
+    const data = envelope.data;
+    return {
+      ...data,
+      profiles: data.profiles.map((p) => ({ ...p, password: p.password || localPasswords.get(p.id) || '' })),
+    };
   }
 }

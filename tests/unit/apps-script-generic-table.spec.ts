@@ -2,7 +2,6 @@
  * @jest-environment node
  */
 import { MAX_CELL_CHARS, readAllRows, readIndex, readRowBody, splitBody, writeAllRows, writeChangedRows, StoredRow } from '../../apps-script/src/sheets/generic-table';
-import { selectPull, ChangeLogEntry } from '../../apps-script/src/sheets/change-log';
 
 /** In-memory stand-in for a Google Sheet that enforces the real 50,000-characters-per-cell limit. */
 function fakeSpreadsheet() {
@@ -108,32 +107,5 @@ describe('incremental writes', () => {
     rows.set('a', { ...rows.get('a')!, version: 2, bodyJson: '{"short":true}' });
     writeChangedRows(ss, 'Attempt', rows, ['a']);
     expect(readAllRows(ss, 'Attempt').get('a')?.bodyJson).toBe('{"short":true}');
-  });
-});
-
-describe('selectPull', () => {
-  const log = (rev: number, id: string, device = 'pc'): ChangeLogEntry => ({ revision: rev, entityType: 'QuizItem', entityId: id, deviceId: device });
-
-  it("returns other devices' records after the revision, each once, and skips the asker's own", () => {
-    const entries = [log(1, 'a'), log(2, 'b', 'phone'), log(3, 'a'), log(3, 'c')];
-    expect(selectPull(entries, 1, 'phone', 500, 3)).toEqual({
-      records: [{ entityType: 'QuizItem', entityId: 'a' }, { entityType: 'QuizItem', entityId: 'c' }],
-      nextRevision: 3,
-      hasMore: false,
-    });
-  });
-
-  it('pages at whole-revision boundaries', () => {
-    const entries = [log(1, 'a'), log(1, 'b'), log(2, 'c'), log(2, 'd'), log(3, 'e')];
-    const first = selectPull(entries, 0, 'phone', 2, 3);
-    expect(first).toEqual({ records: [{ entityType: 'QuizItem', entityId: 'a' }, { entityType: 'QuizItem', entityId: 'b' }], nextRevision: 1, hasMore: true });
-    const second = selectPull(entries, first.nextRevision, 'phone', 2, 3);
-    expect(second.records.map((r) => r.entityId)).toEqual(['c', 'd']);
-    expect(second).toMatchObject({ nextRevision: 2, hasMore: true });
-    expect(selectPull(entries, 2, 'phone', 2, 3)).toMatchObject({ nextRevision: 3, hasMore: false });
-  });
-
-  it('jumps to the current revision when nothing new is from other devices', () => {
-    expect(selectPull([log(4, 'x', 'phone')], 3, 'phone', 500, 4)).toEqual({ records: [], nextRevision: 4, hasMore: false });
   });
 });

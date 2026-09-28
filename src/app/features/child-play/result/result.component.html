@@ -1,29 +1,23 @@
-@if (attempt(); as a) {
+@if (result(); as a) {
   <main class="result-screen">
     <h1>{{ outcomeLabel[a.status] ?? a.status }}</h1>
-    <p class="score">{{ a.score }} điểm</p>
+    <p class="score">{{ a.pointsEarned }} điểm</p>
+    <p class="stars" [attr.aria-label]="a.stars + ' sao'">
+      @for (i of [0, 1, 2]; track i) {
+        <app-icon name="star" [class.earned]="i < a.stars" />
+      }
+    </p>
     <ul class="stats">
-      <li>Độ chính xác: {{ (a.accuracy * 100) | number: '1.0-0' }}%</li>
+      <li>Đúng {{ a.correctCount }}/{{ a.totalQuestions }} câu</li>
+      <li>Điểm câu hỏi: {{ a.score }}{{ a.bonus ? ' · Thưởng sao: +' + a.bonus : '' }}</li>
       <li>❤️ Còn lại: {{ a.livesRemaining === 'unlimited' ? '∞' : a.livesRemaining }}</li>
-      <li>⭐ Sao: {{ a.starsAwarded }}</li>
+      @if (!a.counted) {
+        <li>{{ a.stars === 0 ? 'Chưa đạt — điểm lần này không được cộng.' : 'Bài luyện tập — không cộng điểm.' }}</li>
+      }
+      @if (a.late) {
+        <li>Nộp sau hạn chót</li>
+      }
     </ul>
-
-    @if (rewardsOutcome(); as r) {
-      <div class="rewards-banner">
-        @if (r.streak > 0) {
-          <p>🔥 Chuỗi ngày: {{ r.streak }}</p>
-        }
-        @if (r.personalBest) {
-          <p>🏅 Kỷ lục cá nhân mới!</p>
-        }
-        @if (r.dailyBonus) {
-          <p>🎁 Thưởng bất ngờ hôm nay!</p>
-        }
-        @for (badge of r.newBadges; track badge) {
-          <p>🏆 Huy hiệu mới: {{ badge }}</p>
-        }
-      </div>
-    }
 
     @if (breakdown().length) {
       <section class="review">

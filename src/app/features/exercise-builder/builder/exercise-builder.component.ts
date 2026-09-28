@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExerciseRepository } from '../../../data/repositories/exercise.repository';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
@@ -27,7 +28,7 @@ import { allowedTypesLabel } from '../../../shared/question-type-groups';
 @Component({
   selector: 'app-exercise-builder',
   standalone: true,
-  imports: [FormsModule, QuizPickerComponent],
+  imports: [FormsModule, DecimalPipe, QuizPickerComponent],
   templateUrl: './exercise-builder.component.html',
   styleUrl: './exercise-builder.component.scss',
 })
@@ -50,6 +51,9 @@ export class ExerciseBuilderComponent implements OnInit {
   readonly defaultQuestionSeconds = signal('');
   readonly defaultQuestionPoints = signal('');
   readonly isDaily = signal(false);
+  /** A child may also play it as practice, without it being assigned — and whether that earns points. */
+  readonly allowPractice = signal(false);
+  readonly practiceEarnsPoints = signal(false);
   readonly items = signal<ExerciseItem[]>([]);
   readonly bankItems = signal<QuizItem[]>([]);
   readonly categories = signal<Category[]>([]);
@@ -90,6 +94,8 @@ export class ExerciseBuilderComponent implements OnInit {
     this.defaultQuestionSeconds.set(existing.defaultQuestionSeconds ? String(existing.defaultQuestionSeconds) : '');
     this.defaultQuestionPoints.set(existing.defaultQuestionPoints !== undefined ? String(existing.defaultQuestionPoints) : '');
     this.isDaily.set(existing.isDaily ?? false);
+    this.allowPractice.set(existing.allowPractice ?? false);
+    this.practiceEarnsPoints.set(existing.practiceEarnsPoints ?? false);
     this.items.set(existing.items);
   }
 
@@ -348,7 +354,7 @@ export class ExerciseBuilderComponent implements OnInit {
       timeLimitMinutes: this.timeLimitMinutes(),
       lives: this.lives(),
       repeatLimit: this.repeatLimit(),
-      passingPercent: this.passingPercent(),
+      passingPercent: Math.max(0, Math.min(100, Number(this.passingPercent()) || 0)),
       orderMode: this.orderMode(),
       replayAllowed: this.replayAllowed(),
       correctionReviewEnabled: this.correctionReviewEnabled(),
@@ -357,6 +363,8 @@ export class ExerciseBuilderComponent implements OnInit {
       defaultQuestionSeconds: this.parsedDefaultSeconds(),
       defaultQuestionPoints: this.parsedDefaultPoints(),
       isDaily: this.isDaily(),
+      allowPractice: this.allowPractice(),
+      practiceEarnsPoints: this.allowPractice() && this.practiceEarnsPoints(),
       status: 'active' as const,
     };
 

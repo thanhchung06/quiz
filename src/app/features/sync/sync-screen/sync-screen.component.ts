@@ -1,27 +1,30 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GoogleAuthService } from '../services/google-auth.service';
-import { SyncClientService, SyncOutcome, SyncRunOptions } from '../../../sync-engine/sync-client.service';
-import { StorageModeService } from '../../../sync-engine/storage-mode.service';
-import { SessionService } from '../../../core/auth/session.service';
-import { AppSettingsRepository } from '../../../data/repositories/app-settings.repository';
-import { uploaderOf } from '../../../sync-engine/auto-sync.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
-import { SYNC_ENDPOINT_KEY, syncEndpointUrl } from '../../../sync-engine/sync-endpoint';
+import { AppSettingsRepository } from '../../../data/repositories/app-settings.repository';
+import { SYNC_ENDPOINT_KEY, syncEndpointUrl } from '../../../sync/sync-config';
+import { ManualSyncOptions, ManualSyncService } from '../../../sync/manual-sync.service';
 
 type SyncDialogStep = 'options' | 'running' | 'done';
 
+interface AutoSyncForm {
+  enabled: boolean;
+  questions: boolean;
+  addedQuestionsOnly: boolean;
+  exercises: boolean;
+}
+
 /**
- * Sync screen (FR-056). Data always lives on the device; this screen has three
+ * Sync screen. Data always lives on the device; this screen has three
  * independent parts, each saved on its own:
  * - Connection: the Apps Script Web App URL + shared secret (plus the optional
  *   Google account, see GoogleAuthService — never needed for syncing).
- * - Automatic sync: on/off, whether it includes questions (off by default),
- *   and whether that only takes newly added questions.
- * - "Đồng bộ ngay": a dialog to choose direction (this device → Google,
- *   Google → this device), whether to skip questions or only move newly added
- *   ones, then progress, then a summary. It mirrors the chosen direction
- *   (SyncRunOptions mode 'mirror'), uploading only what the logged-in person may.
+ * - Automatic sync: on/off; what the app-start pull includes (questions — or
+ *   only newly added ones — and exercises). With it on, every write goes to
+ *   Google right away.
+ * - "Đồng bộ ngay": one direction, everything (ManualSyncService), with
+ *   progress and a summary.
  */
 @Component({
   selector: 'app-sync-screen',
@@ -55,14 +58,14 @@ export class SyncScreenComponent {
   readonly autoSyncEnabled = signal(false);
   readonly autoSyncQuestions = signal(false);
   readonly autoSyncAddedOnly = signal(false);
+  readonly autoSyncExercises = signal(true);
   readonly autoSyncMessage = signal('');
-  private readonly savedAutoSync = signal({ enabled: false, includeQuestions: false, addedQuestionsOnly: false });
-  readonly autoSyncDirty = computed(
-    () =>
-      this.autoSyncEnabled() !== this.savedAutoSync().enabled ||
-      this.autoSyncQuestions() !== this.savedAutoSync().includeQuestions ||
-      (this.autoSyncQuestions() && this.autoSyncAddedOnly() !== this.savedAutoSync().addedQuestionsOnly),
-  );
+  private readonly savedAutoSync = signal<AutoSyncForm>({ enabled: false, questions: false, addedQuestionsOnly: false, exercises: true });
+  readonly autoSyncDirty = computed(() => {
+    const saved = this.savedAutoSync();
+    const form = this.autoSyncForm();
+    return JSON.stringify(saved) !== JSON.stringify(form);
+  });
 
   // --- Sync now dialog ----------------------------------------------------------
   readonly dialogStep = signal<SyncDialogStep | undefined>(undefined);
@@ -70,40 +73,30 @@ export class SyncScreenComponent {
   readonly direction = signal<'push' | 'pull'>('push');
   readonly optSkipQuestions = signal(false);
   readonly optAddedQuestionsOnly = signal(false);
-
-  readonly progress: SyncClientService['progress'];
-  readonly received: SyncClientService['received'];
-  readonly phase: SyncClientService['phase'];
-  readonly summary: SyncClientService['lastSummary'];
-  readonly schemaIncompatible: SyncClientService['schemaIncompatible'];
-  readonly outcomeLabels: Record<SyncOutcome, string> = {
-    success: 'Đồng bộ thành công',
-    busy: 'Google Sheet đang bận',
-    rejected: 'Bị từ chối',
-    'network-error': 'Lỗi kết nối',
-    'server-error': 'Lỗi từ Apps Script',
-  };
+  readonly progress: ManualSyncService['progress'];
+  readonly received: ManualSyncService['received'];
+  readonly summary: ManualSyncService['summary'];
 
   constructor(
     private readonly googleAuth: GoogleAuthService,
-    private readonly syncClient: SyncClientService,
-    private readonly autoSyncSettings: StorageModeService,
-    private readonly session: SessionService,
+    private readonly manualSync: ManualSyncService,
     private readonly appSettings: AppSettingsRepository,
   ) {
     this.connected = this.googleAuth.connected;
     this.spreadsheetId = this.googleAuth.spreadsheetId;
-    this.schemaIncompatible = this.syncClient.schemaIncompatible;
-    this.progress = this.syncClient.progress;
-    this.received = this.syncClient.received;
-    this.phase = this.syncClient.phase;
-    this.summary = this.syncClient.lastSummary;
+    this.progress = this.manualSync.progress;
+    this.received = this.manualSync.received;
+    this.summary = this.manualSync.summary;
     this.sharedSecretSet.set(!!this.googleAuth.sharedSecret());
-    void this.autoSyncSettings.getAutoSync().then((value) => {
-      this.savedAutoSync.set(value);
-      this.autoSyncEnabled.set(value.enabled);
-      this.autoSyncQuestions.set(value.includeQuestions);
-      this.autoSyncAddedOnly.set(value.addedQuestionsOnly);
+    void this.appSettings.get().then((settings) => {
+      const form: AutoSyncForm = {
+        enabled: settings.autoSyncEnabled,
+        questions: settings.autoSyncQuestions,
+        addedQuestionsOnly: settings.autoSyncAddedQuestionsOnly,
+        exercises: settings.autoSyncExercises,
+      };
+      this.savedAutoSync.set(form);
+      this.setAutoSyncForm(form);
     });
   }
 
@@ -112,8 +105,6 @@ export class SyncScreenComponent {
   saveConnection(): void {
     if (!this.connectionDirty()) return;
     const endpoint = this.endpointUrl().trim();
-    // Another Web App may mean another sheet: "new questions only" starts reading from its first row again.
-    if (endpoint !== this.savedEndpointUrl()) void this.appSettings.update({ questionRowCursor: {} });
     localStorage.setItem(SYNC_ENDPOINT_KEY, endpoint);
     this.endpointUrl.set(endpoint);
     this.savedEndpointUrl.set(endpoint);
@@ -148,30 +139,38 @@ export class SyncScreenComponent {
 
   // --- Automatic sync -----------------------------------------------------------
 
+  private autoSyncForm(): AutoSyncForm {
+    const enabled = this.autoSyncEnabled();
+    const questions = enabled && this.autoSyncQuestions();
+    return { enabled, questions, addedQuestionsOnly: questions && this.autoSyncAddedOnly(), exercises: enabled && this.autoSyncExercises() };
+  }
+
+  private setAutoSyncForm(form: AutoSyncForm): void {
+    this.autoSyncEnabled.set(form.enabled);
+    this.autoSyncQuestions.set(form.questions);
+    this.autoSyncAddedOnly.set(form.addedQuestionsOnly);
+    this.autoSyncExercises.set(form.enabled ? form.exercises : true);
+  }
+
   setAutoSyncEnabled(enabled: boolean): void {
     this.autoSyncEnabled.set(enabled);
-    // Unticking the parent hides the sub-option; it goes back to what is saved (or off) if re-ticked.
-    if (!enabled) {
-      this.autoSyncQuestions.set(this.savedAutoSync().enabled ? this.savedAutoSync().includeQuestions : false);
-      this.autoSyncAddedOnly.set(this.savedAutoSync().enabled ? this.savedAutoSync().addedQuestionsOnly : false);
-    }
     this.autoSyncMessage.set('');
   }
 
   async saveAutoSync(): Promise<void> {
     if (!this.autoSyncDirty()) return;
-    const includeQuestions = this.autoSyncEnabled() && this.autoSyncQuestions();
-    const value = { enabled: this.autoSyncEnabled(), includeQuestions, addedQuestionsOnly: includeQuestions && this.autoSyncAddedOnly() };
-    await this.autoSyncSettings.setAutoSync(value);
-    this.savedAutoSync.set(value);
+    const form = this.autoSyncForm();
+    await this.appSettings.update({
+      autoSyncEnabled: form.enabled,
+      autoSyncQuestions: form.questions,
+      autoSyncAddedQuestionsOnly: form.addedQuestionsOnly,
+      autoSyncExercises: form.exercises,
+    });
+    this.savedAutoSync.set(form);
     this.autoSyncMessage.set(
-      !this.autoSyncEnabled()
-        ? 'Đã tắt tự động đồng bộ — dữ liệu vẫn được lưu trên máy này.'
-        : this.autoSyncQuestions()
-          ? this.autoSyncAddedOnly()
-            ? 'Đã lưu: mở ứng dụng nhận dữ liệu và câu hỏi mới thêm; mỗi lần lưu gửi lên.'
-            : 'Đã lưu: mở ứng dụng nhận dữ liệu và câu hỏi; mỗi lần lưu gửi lên.'
-          : 'Đã lưu: mở ứng dụng nhận dữ liệu (không có câu hỏi); mỗi lần lưu gửi lên.',
+      form.enabled
+        ? 'Đã lưu. Lần mở ứng dụng sau sẽ nhận dữ liệu từ Google; mỗi thay đổi được gửi lên ngay.'
+        : 'Đã tắt tự động đồng bộ — dữ liệu chỉ lưu trên máy này.',
     );
   }
 
@@ -191,30 +190,25 @@ export class SyncScreenComponent {
   }
 
   async confirmSync(): Promise<void> {
-    const options: SyncRunOptions = {
-      scopes: this.optSkipQuestions() ? ['data'] : ['questions', 'data'],
-      push: this.direction() === 'push',
-      pull: this.direction() === 'pull',
-      mode: 'mirror',
+    const options: ManualSyncOptions = {
+      direction: this.direction(),
+      skipQuestions: this.optSkipQuestions(),
       addedQuestionsOnly: !this.optSkipQuestions() && this.optAddedQuestionsOnly(),
-      uploader: uploaderOf(this.session.currentProfile()),
     };
     this.dialogStep.set('running');
     try {
-      await this.syncClient.run(this.endpointUrl(), options);
+      await this.manualSync.run(options);
     } finally {
       this.dialogStep.set('done');
     }
   }
 
-  directionLabel(options: SyncRunOptions): string {
-    if (options.push && options.pull) return 'Hai chiều';
-    const label = options.push ? 'Máy này → Google' : 'Google → máy này';
-    return options.mode === 'mirror' ? `${label} (ghi đè)` : label;
+  directionLabel(options: ManualSyncOptions): string {
+    return options.direction === 'push' ? 'Máy này → Google (ghi đè)' : 'Google → máy này (ghi đè)';
   }
 
-  scopeLabel(options: SyncRunOptions): string {
-    if (!options.scopes.includes('questions')) return 'Chỉ dữ liệu (không có câu hỏi)';
+  scopeLabel(options: ManualSyncOptions): string {
+    if (options.skipQuestions) return 'Chỉ dữ liệu (không có câu hỏi)';
     return options.addedQuestionsOnly ? 'Dữ liệu và câu hỏi mới thêm' : 'Câu hỏi và dữ liệu';
   }
 }

@@ -24,12 +24,15 @@
       @if (!s.compatible) {
         <p class="error"><app-icon name="cancel" />Phiên bản bản sao lưu không tương thích với ứng dụng này.</p>
       } @else {
+        @if (s.legacy) {
+          <p class="message"><app-icon name="info" />Tệp của phiên bản cũ: sẽ được chuyển sang dạng mới (bài giao cũ, vòng luyện tập và huy hiệu không được chuyển; điểm được tính lại theo cách mới).</p>
+        }
         <ul>
           @for (entry of s.counts | keyvalue; track entry.key) {
             <li>{{ entry.key }}: {{ entry.value }}</li>
           }
         </ul>
-        <button type="button" (click)="confirmImport()">
+        <button type="button" [disabled]="busy()" (click)="confirmImport()">
           <app-icon name="check_circle" />
           Xác nhận khôi phục (sẽ thay thế dữ liệu hiện tại)
         </button>

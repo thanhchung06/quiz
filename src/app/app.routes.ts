@@ -17,7 +17,7 @@ export const routes: Routes = [
       import('./features/child-play/child-home/child-home.component').then((m) => m.ChildHomeComponent),
   },
   {
-    path: 'exercise-intro',
+    path: 'practice/:exerciseId',
     canActivate: [authGuard, childGuard],
     loadComponent: () =>
       import('./features/child-play/exercise-intro/exercise-intro.component').then((m) => m.ExerciseIntroComponent),
@@ -53,9 +53,9 @@ export const routes: Routes = [
           import('./features/dashboard/overview/overview.component').then((m) => m.OverviewComponent),
       },
       {
-        path: 'dashboard/attempt/:attemptId',
+        path: 'dashboard/result/:resultId',
         loadComponent: () =>
-          import('./features/dashboard/attempt-detail/attempt-detail.component').then((m) => m.AttemptDetailComponent),
+          import('./features/dashboard/result-detail/result-detail.component').then((m) => m.ResultDetailComponent),
       },
       {
         path: 'dashboard/:profileId/learning-needs',
@@ -135,13 +135,6 @@ export const routes: Routes = [
         path: 'schedule',
         loadComponent: () =>
           import('./features/exercise-builder/schedule/schedule.component').then((m) => m.ScheduleComponent),
-      },
-      {
-        path: 'rotation',
-        loadComponent: () =>
-          import('./features/exercise-builder/rotation/rotation-editor.component').then(
-            (m) => m.RotationEditorComponent,
-          ),
       },
       {
         path: 'redeem-points',

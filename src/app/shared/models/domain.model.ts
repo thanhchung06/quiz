@@ -10,8 +10,12 @@ export interface Profile extends SyncEnvelope {
   role: ProfileRole;
   displayName: string;
   avatar: string;
-  /** Hashed PIN (child) or hashed password (parent). Never synced/exported. */
-  credentialHash: string;
+  /**
+   * The parent's password, stored as typed (plan §3.1: synced so the parent
+   * can log in on any device). Children log in by picking their avatar and
+   * never need one.
+   */
+  password: string;
   grade?: number; // 1-5, informational only (FR-033); parent has none
   preferences: {
     audioEnabled: boolean;
@@ -19,6 +23,11 @@ export interface Profile extends SyncEnvelope {
     feedbackDelayMs: number;
   };
   createdAt: string;
+  /**
+   * A child's spendable points: counted HistoryResult points minus PointUsage
+   * points, computed on a device and stored here (plan §3.7). Parent: 0.
+   */
+  totalPoints: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -175,7 +184,8 @@ export interface Exercise extends SyncEnvelope {
   timeLimitMinutes: number; // 1-60 (FR-032)
   /** 3-10, or 'unlimited' for no life limit at all. Configured per exercise at creation. */
   lives: number | 'unlimited';
-  passingPercent: number; // default 70 (FR-032)
+  /** 0 = no pass rate: every try passes (see shared/scoring). Default 70 (FR-032). */
+  passingPercent: number;
   orderMode: 'fixed' | 'randomized';
   /** No longer enforced — every exercise is strictly one-attempt-per-child now, kept only so old records keep a value. */
   replayAllowed: boolean;
@@ -209,187 +219,184 @@ export interface Exercise extends SyncEnvelope {
    * untouched by this field.
    */
   repeatLimit?: RepeatLimit;
+  /** A child may also play this exercise as practice, without it being assigned. */
+  allowPractice?: boolean;
+  /** Practice plays of this exercise earn points too (by the same rules as an assignment). */
+  practiceEarnsPoints?: boolean;
 }
 
 /** 1-3 lifetime attempts, or 'unlimited' for no cap at all. See `Exercise.repeatLimit`. */
 export type RepeatLimit = 1 | 2 | 3 | 'unlimited';
 
 // ---------------------------------------------------------------------------
-// Assignment + Rotation (data-model.md §5/§5a)
+// Assignment (plan §3.2) — one list per child on Google
 // ---------------------------------------------------------------------------
 
-export interface Assignment extends SyncEnvelope {
-  profileId: string;
+export interface Assignment {
+  /** UUID made on the parent's device. */
+  id: string;
+  childId: string;
   exerciseId: string;
-  /** YYYY-MM-DD, local calendar date. Absent for a one-time (day-less) assignment — see AssignmentRepository.assignOnetime. */
-  assignedDate?: string;
-  /** Only meaningful when `assignedDate` is set (single per-date slot winner); always false for a one-time assignment. */
-  isPrimary: boolean;
-  replayAllowed?: boolean;
-}
-
-export interface Rotation extends SyncEnvelope {
-  profileId: string;
-  orderedExerciseIds: string[];
-  cursor: number;
+  /** The exercise as it was when assigned; editing or deleting the exercise later doesn't change it. Questions stay references into the bank. */
+  exerciseSnapshot: Exercise;
+  assignedAt: string;
+  /** Not playable before this moment (absent = right away). */
+  availableFrom?: string;
+  /** Finishing after it still counts, flagged late. */
+  deadline?: string;
+  /** Tries started so far. */
+  tries: number;
 }
 
 // ---------------------------------------------------------------------------
-// Attempt + AnswerResult (data-model.md §6/§7)
+// PlaySession (plan §3.3) — what a child is doing right now, one per child
 // ---------------------------------------------------------------------------
 
-export type AttemptStatus = 'inProgress' | 'completed' | 'timeUp' | 'tryAgain' | 'abandoned';
+export type EndStatus = 'completed' | 'timeUp' | 'tryAgain' | 'abandoned';
 
 export interface ExerciseSnapshot {
   title: string;
   timeLimitMinutes: number;
   lives: number | 'unlimited';
+  /** 0 = no pass rate. */
   passingPercent: number;
 }
 
-export interface Attempt extends SyncEnvelope {
-  profileId: string;
-  exerciseId: string;
-  assignmentId?: string;
-  exerciseSnapshot: ExerciseSnapshot;
-  randomSeed: number;
-  resolvedItemOrder: string[]; // QuizItem ids in play order
-  answerOrderByItem: Record<string, string[]>; // quizItemId -> displayed choiceId order
-  /**
-   * Frozen copy of every resolved QuizItem, captured at attempt start.
-   * Play and resume ALWAYS render from here, never from the live
-   * QuizItemRepository, so a later edit/archive/delete never changes an
-   * active attempt (FR-020, FR-034, edge cases).
-   */
-  itemSnapshots: Record<string, QuizItem>;
-  isScored: boolean;
-  startedAt: string;
-  /** Overall exercise deadline — always enforced as a hard backstop, in every questionTimingMode. */
-  deadlineAt: string;
-  /** quizItemId -> seconds allotted, only for ids with a per-question cap (see QuestionTimingMode). Empty/absent when the exercise's mode is 'none'. */
-  perQuestionSeconds?: Record<string, number>;
-  /** Recomputed each time the child moves to a new question that has a per-question cap; absent when the current question has none. */
-  currentQuestionDeadlineAt?: string;
-  completedAt?: string;
-  status: AttemptStatus;
-  livesRemaining: number | 'unlimited';
-  score: number;
-  accuracy: number; // 0-1
-  passed: boolean;
-  starsAwarded: number; // 0-3
-  ownerDeviceId: string;
-}
-
-export interface QuizItemSnapshot {
-  prompt: string;
-  type: QuizItemType;
-  choices?: Choice[];
-  correctAnswer: unknown;
-  explanation?: string;
-  passage?: PassageContext;
-}
-
-export interface AnswerResult extends SyncEnvelope {
-  attemptId: string;
-  /** Links back to the original QuizItem for aggregation (FR-048); display always uses quizItemSnapshot. */
-  quizItemId: string;
-  quizItemSnapshot: QuizItemSnapshot;
+/** One submitted (or timed-out) answer. */
+export interface AnswerRecord {
   submittedAnswer: unknown;
   isCorrect: boolean;
   pointsEarned: number;
-  responseSeconds: number;
   submittedAt: string;
+  /** The per-question timer ran out before an answer: counted wrong and cost a life. */
+  timedOut?: boolean;
+}
+
+export interface SessionProgress {
+  /** Position in itemOrder of the question on screen. */
+  currentIndex: number;
+  /** quizItemId -> answer. */
+  answers: Record<string, AnswerRecord>;
+  livesRemaining: number | 'unlimited';
+  /** The clock only runs while the app is open, so time left is stored rather than a deadline. */
+  timeLeftSeconds: number;
+  /** Per-question cap of the current question, when it has one. */
+  questionTimeLeftSeconds?: number;
+  score: number;
+  updatedAt: string;
+}
+
+export interface PlaySession {
+  /** UUID made when the child started. */
+  id: string;
+  childId: string;
+  exerciseId: string;
+  /** Absent for practice. */
+  assignmentId?: string;
+  exerciseSnapshot: ExerciseSnapshot;
+  /** Practice earns points only when the exercise says so; an assignment always can. */
+  earnsPoints: boolean;
+  tryNumber: number;
+  startedAt: string;
+  /** QuizItem ids in play order. */
+  itemOrder: string[];
+  /** Frozen copy of every question of this play (random groups already picked). */
+  itemSnapshots: Record<string, QuizItem>;
+  /** quizItemId -> displayed choice order. */
+  answerOrderByItem: Record<string, string[]>;
+  /** quizItemId -> seconds, only for questions with their own cap. */
+  perQuestionSeconds: Record<string, number>;
+  progress: SessionProgress;
 }
 
 // ---------------------------------------------------------------------------
-// Reward (data-model.md §8)
+// Result / HistoryResult (plan §3.4) and PointUsage (plan §3.6)
 // ---------------------------------------------------------------------------
 
-export type RewardType = 'star' | 'badge' | 'streakMilestone' | 'personalBest' | 'unlock';
+/** The numbers every finished try records, in both Result and HistoryResult. */
+export interface ResultSummary {
+  /** UUID made on the child's device when the try ended. */
+  id: string;
+  childId: string;
+  exerciseId: string;
+  assignmentId?: string;
+  exerciseTitle: string;
+  tryNumber: number;
+  status: EndStatus;
+  startedAt: string;
+  attemptedAt: string;
+  totalQuestions: number;
+  correctCount: number;
+  wrongCount: number;
+  /** Points of the correct answers. */
+  score: number;
+  stars: number;
+  bonus: number;
+  /** score + bonus. */
+  pointsEarned: number;
+  /** Passed (and allowed to earn): these points count toward the child's total. */
+  counted: boolean;
+  /** Finished after the assignment's deadline. */
+  late: boolean;
+}
 
-export interface Reward extends SyncEnvelope {
-  profileId: string;
-  type: RewardType;
-  key: string;
-  earnedAt: string;
-  sourceAttemptId?: string;
+/** Full detail of a finished try, for review — Google keeps the last RESULT_CIRCLE_SIZE. */
+export interface PlayResult extends ResultSummary {
+  /** Position in Google's circle; set once uploaded. */
+  resultId?: number;
+  exerciseSnapshot: ExerciseSnapshot;
+  itemOrder: string[];
+  itemSnapshots: Record<string, QuizItem>;
+  answerOrderByItem: Record<string, string[]>;
+  answers: Record<string, AnswerRecord>;
+  livesRemaining: number | 'unlimited';
+}
+
+/** Short record of a finished try, kept forever (append-only). */
+export interface HistoryResult extends ResultSummary {
+  /** Sheet row; set once uploaded. */
+  row?: number;
+}
+
+/** A parent trading a child's points for something (append-only). */
+export interface PointUsage {
+  id: string;
+  row?: number;
+  childId: string;
+  points: number;
+  note?: string;
+  usedAt: string;
 }
 
 // ---------------------------------------------------------------------------
-// PointRedemption — parent-recorded real-world point spend
+// Outbox — writes waiting to reach Google, in order
 // ---------------------------------------------------------------------------
 
-/**
- * One append-only record of a parent trading a child's earned points for a
- * real-world item/privilege (never edited after write, same as AnswerResult/
- * Reward). A child's spendable point balance is always computed, never
- * stored: sum of every Attempt.score for that profile, minus the sum of
- * every PointRedemption.points for that profile.
- */
-export interface PointRedemption extends SyncEnvelope {
-  profileId: string;
-  points: number; // positive — points deducted
-  note?: string; // what was traded, e.g. "Đổi đồ chơi"
-  redeemedAt: string;
+export interface OutboxEntry {
+  seq?: number;
+  op: import('../../sync/protocol').SyncOp;
+  createdAt: string;
 }
 
 // ---------------------------------------------------------------------------
 // AppSettings (data-model.md §9, local only)
 // ---------------------------------------------------------------------------
 
-export type StorageMode = 'localOnly' | 'manualSync' | 'automaticSync';
-
 export interface AppSettings {
   id: 'singleton';
-  schemaVersion: number;
   timerVisibility: boolean;
   audioEnabled: boolean;
   reducedMotion: boolean;
   feedbackDelayMs: number;
-  /** @deprecated Replaced by autoSyncEnabled/autoSyncQuestions (data is always stored locally); only read to carry an older setting over. */
-  storageMode: StorageMode;
-  /** Sync automatically: download on app open, upload after every local save. */
-  autoSyncEnabled?: boolean;
-  /** The download on app open also includes questions and categories (off by default). Question edits always upload. */
-  autoSyncQuestions?: boolean;
-  /** With autoSyncQuestions: only take questions/categories this device doesn't have yet — never updates to existing ones. */
-  autoSyncAddedQuestionsOnly?: boolean;
-  /** Per question sheet (Category, QuizItem): the last row already downloaded — new questions are the rows after it. */
-  questionRowCursor?: Record<string, number>;
+  /** Pull everything on app start and send every write to Google right away. Off = this device only. */
+  autoSyncEnabled: boolean;
+  /** The app-start pull also takes questions and categories. */
+  autoSyncQuestions: boolean;
+  /** With autoSyncQuestions: skip questions/categories already on this device. */
+  autoSyncAddedQuestionsOnly: boolean;
+  /** The app-start pull also takes exercises. */
+  autoSyncExercises: boolean;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;
-  /** Google Sheet revision this device has received other devices' changes up to (sync pull). */
-  lastPulledRevision?: number;
-  /** Same, for the question scope (QuizItem + Category), which only syncs from its own button. */
-  lastPulledQuestionsRevision?: number;
-}
-
-// ---------------------------------------------------------------------------
-// SyncTransaction (data-model.md §10)
-// ---------------------------------------------------------------------------
-
-export interface SyncTransaction {
-  syncId: string;
-  deviceId: string;
-  status: 'started' | 'committed' | 'failed' | 'conflict';
-  startedAt: string;
-  completedAt?: string;
-  recordCount: number;
-  changeGroupIds: string[];
-  error?: string;
-  commitSequence?: number;
-}
-
-// ---------------------------------------------------------------------------
-// DeletedRecord (data-model.md §11)
-// ---------------------------------------------------------------------------
-
-export interface DeletedRecord {
-  id: string; // `${entityType}:${entityId}` composite key
-  entityType: string;
-  entityId: string;
-  version: number;
-  deletedAt: string;
-  updatedByDeviceId: string;
 }

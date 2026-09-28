@@ -23,3 +23,18 @@
     color: white;
   }
 }
+
+.warning {
+  background: #fff4e0;
+  color: #6b4400;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.8rem;
+}
+
+.back-button {
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}

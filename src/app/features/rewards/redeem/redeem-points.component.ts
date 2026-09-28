@@ -1,18 +1,17 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProfileRepository } from '../../../data/repositories/profile.repository';
-import { AttemptRepository } from '../../../data/repositories/attempt.repository';
-import { PointRedemptionRepository } from '../../../data/repositories/point-redemption.repository';
-import { Profile, PointRedemption } from '../../../shared/models/domain.model';
+import { PointUsageRepository } from '../../../data/repositories/point-usage.repository';
+import { ResultRepository } from '../../../data/repositories/result.repository';
+import { PointsService } from '../services/points.service';
+import { Profile, PointUsage } from '../../../shared/models/domain.model';
 import { IconComponent } from '../../../shared/icon/icon.component';
 
 /**
- * Parent screen for trading a child's earned points for a real-world item:
- * pick a child, see their current spendable balance (earned − already
- * redeemed, both computed from immutable history, never a stored running
- * total), enter how many points to deduct, and submit. Every redemption is
- * an append-only record — same "never edited after write" rule as
- * AnswerResult/Reward — which doubles as the usage history shown below.
+ * Parent screen for trading a child's points for a real-world item (plan
+ * §3.6–3.7): the balance is counted history points minus point usage; each
+ * use is an append-only PointUsage record (the history below), after which
+ * the child's total is recomputed and stored in their profile.
  */
 @Component({
   selector: 'app-redeem-points',
@@ -26,7 +25,7 @@ export class RedeemPointsComponent {
   readonly selectedChildId = signal('');
   readonly earnedPoints = signal(0);
   readonly redeemedPoints = signal(0);
-  readonly history = signal<PointRedemption[]>([]);
+  readonly history = signal<PointUsage[]>([]);
 
   readonly pointsToRedeem = signal('');
   readonly note = signal('');
@@ -39,8 +38,9 @@ export class RedeemPointsComponent {
 
   constructor(
     private readonly profiles: ProfileRepository,
-    private readonly attempts: AttemptRepository,
-    private readonly redemptions: PointRedemptionRepository,
+    private readonly usages: PointUsageRepository,
+    private readonly results: ResultRepository,
+    private readonly points: PointsService,
   ) {
     void this.load();
   }
@@ -68,10 +68,11 @@ export class RedeemPointsComponent {
   private async loadBalanceAndHistory(): Promise<void> {
     const profileId = this.selectedChildId();
     if (!profileId) return;
-    const allAttempts = await this.attempts.listForProfile(profileId);
-    this.earnedPoints.set(allAttempts.reduce((sum, a) => sum + a.score, 0));
-    this.redeemedPoints.set(await this.redemptions.totalRedeemed(profileId));
-    this.history.set(await this.redemptions.listForProfile(profileId));
+    const history = await this.results.historyForChild(profileId);
+    this.earnedPoints.set(history.filter((h) => h.counted).reduce((sum, h) => sum + h.pointsEarned, 0));
+    const usages = await this.usages.listForChild(profileId);
+    this.redeemedPoints.set(usages.reduce((sum, u) => sum + u.points, 0));
+    this.history.set(usages);
   }
 
   async submitRedemption(): Promise<void> {
@@ -93,7 +94,8 @@ export class RedeemPointsComponent {
       return;
     }
 
-    await this.redemptions.redeem(profileId, points, this.note().trim() || undefined);
+    await this.usages.use(profileId, points, this.note().trim() || undefined);
+    await this.points.recompute(profileId).catch(() => undefined);
     this.successMessage.set(`Đã trừ ${points} điểm của ${this.selectedChildName()}.`);
     this.pointsToRedeem.set('');
     this.note.set('');

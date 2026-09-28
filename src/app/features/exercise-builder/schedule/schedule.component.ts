@@ -6,7 +6,12 @@ import { ProfileRepository } from '../../../data/repositories/profile.repository
 import { Assignment, Exercise, Profile } from '../../../shared/models/domain.model';
 import { IconComponent } from '../../../shared/icon/icon.component';
 
-/** Schedule screen (FR-033): assign an exercise to a child (or both) for a date. */
+/**
+ * Assign an exercise to a child (or both) — plan §3.2: open right away or
+ * from a date and time, with an optional deadline. The assignment keeps its
+ * own copy of the exercise. Current assignments are listed per child and can
+ * be taken back.
+ */
 @Component({
   selector: 'app-schedule',
   standalone: true,
@@ -17,14 +22,17 @@ import { IconComponent } from '../../../shared/icon/icon.component';
 export class ScheduleComponent {
   readonly children = signal<Profile[]>([]);
   readonly exercises = signal<Exercise[]>([]);
-  readonly upcoming = signal<Assignment[]>([]);
+  readonly current = signal<Assignment[]>([]);
 
   readonly selectedChildId = signal<string>('');
   readonly bothChildren = signal(false);
   readonly selectedExerciseId = signal<string>('');
-  readonly assignedDate = signal(new Date().toISOString().slice(0, 10));
-  /** 'dated' assigns for the chosen date (existing flow); 'onetime' assigns with no day attached at all. */
-  readonly assignMode = signal<'dated' | 'onetime'>('dated');
+  readonly opensLater = signal(false);
+  /** datetime-local values (local time). */
+  readonly availableFrom = signal('');
+  readonly hasDeadline = signal(false);
+  readonly deadline = signal('');
+  readonly message = signal('');
 
   constructor(
     private readonly profiles: ProfileRepository,
@@ -37,38 +45,45 @@ export class ScheduleComponent {
   private async load(): Promise<void> {
     this.children.set(await this.profiles.findByRoleAndName('child'));
     this.exercises.set((await this.exerciseRepo.list()).filter((e) => e.status === 'active'));
-    this.upcoming.set(await this.assignments.list());
-
-    // The <select>s default to whatever is first in each list, but the signals
-    // they're bound to start empty and only update on a user-driven
-    // ngModelChange — without seeding them here, clicking "Giao bài" before
-    // ever touching either dropdown silently assigns nothing (assign() bails
-    // out on an empty id) even though a child and exercise already *look*
-    // selected on screen.
+    this.current.set(await this.assignments.listAll());
+    // The <select>s show the first entry, but their signals only change on user input — seed them.
     if (!this.selectedChildId() && this.children().length > 0) this.selectedChildId.set(this.children()[0].id);
     if (!this.selectedExerciseId() && this.exercises().length > 0) this.selectedExerciseId.set(this.exercises()[0].id);
   }
 
   async assign(): Promise<void> {
-    if (!this.selectedExerciseId()) return;
-    if (this.assignMode() === 'dated' && !this.assignedDate()) return;
-    const targets = this.bothChildren() ? this.children().map((c) => c.id) : [this.selectedChildId()];
-    for (const profileId of targets) {
-      if (!profileId) continue;
-      if (this.assignMode() === 'onetime') {
-        await this.assignments.assignOnetime(profileId, this.selectedExerciseId());
-      } else {
-        await this.assignments.setPrimaryAssignment(profileId, this.selectedExerciseId(), this.assignedDate());
-      }
+    this.message.set('');
+    const exercise = this.exercises().find((e) => e.id === this.selectedExerciseId());
+    if (!exercise) return;
+    const availableFrom = this.opensLater() && this.availableFrom() ? new Date(this.availableFrom()).toISOString() : undefined;
+    const deadline = this.hasDeadline() && this.deadline() ? new Date(this.deadline()).toISOString() : undefined;
+    if (this.opensLater() && !availableFrom) {
+      this.message.set('Hãy chọn thời điểm mở bài.');
+      return;
     }
+    if (deadline && availableFrom && deadline <= availableFrom) {
+      this.message.set('Hạn chót phải sau thời điểm mở bài.');
+      return;
+    }
+    const targets = this.bothChildren() ? this.children().map((c) => c.id) : [this.selectedChildId()];
+    for (const childId of targets.filter(Boolean)) {
+      await this.assignments.assign(childId, exercise, { availableFrom, deadline });
+    }
+    this.message.set(`Đã giao "${exercise.title}".`);
     await this.load();
   }
 
-  childName(profileId: string): string {
-    return this.children().find((c) => c.id === profileId)?.displayName ?? profileId;
+  async takeBack(assignment: Assignment): Promise<void> {
+    await this.assignments.remove(assignment);
+    await this.load();
   }
 
-  exerciseTitle(exerciseId: string): string {
-    return this.exercises().find((e) => e.id === exerciseId)?.title ?? exerciseId;
+  childName(childId: string): string {
+    return this.children().find((c) => c.id === childId)?.displayName ?? childId;
+  }
+
+  formatDateTime(iso: string): string {
+    const d = new Date(iso);
+    return `${d.toLocaleDateString('vi-VN')} ${d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}`;
   }
 }

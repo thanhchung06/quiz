@@ -41,16 +41,11 @@ export class ExerciseLibraryComponent {
   }
 
   async archive(exercise: Exercise): Promise<void> {
-    const ok = await this.exerciseRepo.archiveIfUnused(exercise.id);
-    this.message.set(ok ? '' : 'Không thể lưu trữ: bài tập đang được làm dở bởi một lượt đang hoạt động.');
+    await this.exerciseRepo.archive(exercise.id);
     await this.load();
   }
 
   async remove(exercise: Exercise): Promise<void> {
-    if (await this.exerciseRepo.isInUseByActiveAttempt(exercise.id)) {
-      this.message.set('Không thể xóa: bài tập đang được làm dở bởi một lượt đang hoạt động.');
-      return;
-    }
     await this.exerciseRepo.softDelete(exercise.id);
     await this.load();
   }

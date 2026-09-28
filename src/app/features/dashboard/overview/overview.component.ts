@@ -3,8 +3,6 @@ import { SlicePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ProfileRepository } from '../../../data/repositories/profile.repository';
 import { ProgressAggregationService, PeriodFilter, ProgressOverview } from '../services/progress-aggregation.service';
-import { AttemptAdminService } from '../../child-play/services/attempt-admin.service';
-import { AttemptRepository } from '../../../data/repositories/attempt.repository';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { Profile } from '../../../shared/models/domain.model';
 
@@ -21,13 +19,11 @@ export class OverviewComponent {
   readonly selectedChildId = signal('');
   readonly period = signal<PeriodFilter>(7);
   readonly overview = signal<ProgressOverview | undefined>(undefined);
-  readonly hasActiveAttempt = signal(false);
+  readonly statusLabel: Partial<Record<string, string>> = { completed: 'Hoàn thành', timeUp: 'Hết giờ', tryAgain: 'Hết lượt', abandoned: 'Bỏ dở' };
 
   constructor(
     private readonly profiles: ProfileRepository,
     private readonly aggregation: ProgressAggregationService,
-    private readonly attemptAdmin: AttemptAdminService,
-    private readonly attempts: AttemptRepository,
     private readonly router: Router,
   ) {
     void this.init();
@@ -54,14 +50,6 @@ export class OverviewComponent {
   private async refresh(): Promise<void> {
     if (!this.selectedChildId()) return;
     this.overview.set(await this.aggregation.overview(this.selectedChildId(), this.period()));
-    const active = await this.attempts.findInProgress(this.selectedChildId());
-    this.hasActiveAttempt.set(!!active);
-  }
-
-  /** Parent "reset unfinished attempt" entry point (FR-016). */
-  async resetUnfinishedAttempt(): Promise<void> {
-    await this.attemptAdmin.resetUnfinishedAttempt(this.selectedChildId());
-    await this.refresh();
   }
 
   goToLearningNeeds(): void {

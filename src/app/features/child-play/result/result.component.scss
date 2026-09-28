@@ -125,3 +125,13 @@
   display: inline-block;
   vertical-align: middle;
 }
+
+.stars {
+  font-size: 2rem;
+  color: #c8c8c8;
+  margin: 0;
+
+  .earned {
+    color: #f5b301;
+  }
+}

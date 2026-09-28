@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { db } from '../db';
 import { Profile } from '../../shared/models/domain.model';
 import { BaseRepository } from './base-repository';
+import { enqueue } from '../outbox';
 
 /**
- * Exactly 3 Profile records exist for the app's lifetime (2 child + 1 parent,
- * FR-001, spec Assumptions) — there is no create/delete UI for profiles.
- * `credentialHash` is stripped by `toSyncable`/`toExportable` before this
- * entity ever leaves the device (FR-066).
+ * The fixed profiles (2 children + 1 parent, FR-001) — there is no create/
+ * delete UI. The parent edits name/avatar/grade/preferences/password (a whole
+ * record write); `totalPoints` only changes through setTotalPoints, its own
+ * operation on Google so the two never overwrite each other (plan §3.1).
  */
 @Injectable({ providedIn: 'root' })
 export class ProfileRepository extends BaseRepository<Profile> {
   constructor() {
-    super(db.profiles);
+    super(db.profiles, 'Profile');
   }
 
   async findByRoleAndName(role: Profile['role'], displayName?: string): Promise<Profile[]> {
@@ -20,13 +21,18 @@ export class ProfileRepository extends BaseRepository<Profile> {
     return all.filter((p) => p.role === role && (!displayName || p.displayName === displayName));
   }
 
-  async updateCredential(id: string, credentialHash: string): Promise<void> {
-    await this.update(id, { credentialHash } as Partial<Profile>);
+  async updatePassword(id: string, password: string): Promise<void> {
+    await this.update(id, { password } as Partial<Profile>);
   }
 
-  /** Strips fields that must never be exported or synchronized (FR-066). */
-  toSyncable(profile: Profile): Omit<Profile, 'credentialHash'> {
-    const { credentialHash: _credentialHash, ...rest } = profile;
-    return rest;
+  /** Stores a child's recomputed total and sends only that field to Google. */
+  async setTotalPoints(id: string, totalPoints: number): Promise<void> {
+    await db.profiles.update(id, { totalPoints });
+    await enqueue({ op: 'SET_TOTAL_POINTS', profileId: id, totalPoints });
+  }
+
+  /** Seeded profiles go to Google only if Google doesn't have them yet (never overwriting another device's edits). */
+  async createIfAbsentOnGoogle(profile: Profile): Promise<void> {
+    await this.createDefault(profile);
   }
 }

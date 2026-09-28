@@ -1,485 +1,330 @@
 import { withExclusiveLock } from './lock';
-import { adoptIdenticalVersion, decideVersion } from './versioning';
-import { findPriorCommit, reserveNextRevision, saveCommittedTransaction } from './transactions';
-import { readMetadata, isSchemaCompatible } from './sheets/metadata';
-import { readAllRows, readIndex, readIndexAfter, readRowBodies, readRowBody, writeChangedRows, StoredRow } from './sheets/generic-table';
-import { appendChangeLog, readChangeLogAfter, selectPull, ChangeLogEntry } from './sheets/change-log';
+import { readMetadata, writeMetadata, Metadata } from './sheets/metadata';
+import { readAllRows, readIndex, readIndexAfter, readRowBodies, writeChangedRows, StoredRow } from './sheets/generic-table';
+import {
+  DATA_SCHEMA_VERSION,
+  JsonRecord,
+  OpResult,
+  ReadSpec,
+  RESULT_CIRCLE_SIZE,
+  SequencedSheet,
+  SyncOp,
+  SyncRequest,
+  SyncResponse,
+} from '../../src/app/sync/protocol';
 
-const CLIENT_SUPPORTED_SCHEMA_VERSION = 1;
-const LOCK_TIMEOUT_MS = 5000;
-/** About how many records one pull response carries; the client keeps asking while `hasMore`. */
-const PULL_LIMIT = 500;
-
-/** Each entity type is stored in the tab of the same name (Profile, Category, QuizItem, …). */
-type EntityTab = string;
-
-interface ChangeInput {
-  changeGroupId: string;
-  entityType: EntityTab;
-  entityId: string;
-  localVersion: number;
-  lastGoogleVersion: number;
-  operation: 'upsert' | 'delete';
-  payload: Record<string, unknown>;
-}
-
-interface SyncRequest {
-  syncId: string;
-  deviceId: string;
-  sharedSecret: string;
-  action: 'SYNC_NORMAL' | 'REPLACE_GOOGLE_WITH_LOCAL' | 'REPLACE_PRUNE' | 'INDEX' | 'FETCH' | 'ROWS_AFTER' | 'REPLACE_LOCAL_WITH_GOOGLE' | 'RESOLVE_CONFLICT' | 'DEBUG_DUMP';
-  changes: ChangeInput[];
-  /** When present, the response also carries other devices' changes committed after this revision (paged). */
-  pullSince?: number;
-  /** With pullSince: only these entity types (e.g. just QuizItem + Category for the question sync). */
-  pullTypes?: string[];
-  /** REPLACE_PRUNE: every id the device has, per entity type; other rows of those types become deleted tombstones. */
-  keepIds?: Record<string, string[]>;
-  /** INDEX: which tabs to list. */
-  indexTypes?: string[];
-  /** FETCH: the records to send, by tab. */
-  fetchIds?: Record<string, string[]>;
-  /** ROWS_AFTER: per tab, the last row the device has already read (0: none). */
-  rowsAfter?: Record<string, number>;
-  /** Only read for action = DEBUG_DUMP. */
-  debugTabs?: EntityTab[];
-}
-
-interface DebugDumpResponse {
-  syncId: string;
-  result: 'DEBUG_DUMP';
-  tabs: Record<string, Array<{ id: string; version: number; body: unknown }>>;
-}
-
-interface SyncResponse {
-  syncId: string;
-  result: 'SYNC_SUCCESS' | 'SYNC_BUSY' | 'SYNC_REJECTED';
-  commitSequence?: number;
-  committedChangeGroupIds?: string[];
-  conflicts?: Array<{ entityType: string; entityId: string; localVersion: number; googleVersion: number; lastGoogleVersion: number }>;
-  downloads?: Array<{ entityType: string; entityId: string; version: number; payload: unknown }>;
-  schemaCompatible?: boolean;
-  /** With pullSince: the revision the client has now pulled up to. */
-  dataRevision?: number;
-  /** With pullSince: more changes remain after dataRevision; ask again. */
-  hasMore?: boolean;
-  /** REPLACE_GOOGLE_WITH_LOCAL: the version each record now has on Google (the client stores it as its own). */
-  versions?: Record<string, number>;
-  /** REPLACE_PRUNE: how many Google records were marked deleted. */
-  removed?: number;
-  /** INDEX: [id, version] of every row, by tab. */
-  index?: Record<string, Array<[string, number]>>;
-  /** FETCH / ROWS_AFTER: the answer stopped early; ask again for the rest. */
-  truncated?: boolean;
-  /** INDEX / ROWS_AFTER: per tab, the last row covered by this answer — the device's next `rowsAfter`. */
-  lastRows?: Record<string, number>;
-}
+const LOCK_TIMEOUT_MS = 10000;
+/** A read answer stops near this many characters of records; the app asks again from where it ended. */
+const READ_MAX_CHARS = 4_000_000;
+/** Rows whose bodies are read per call while paging. */
+const READ_CHUNK = 200;
+/** How many removed assignment ids a child's row remembers (so a late re-add can't bring one back). */
+const REMOVED_ASSIGNMENTS_KEPT = 500;
 
 /**
- * contracts/sync-api.md: the single doPost entry point implementing the
- * exclusive-lock sync algorithm. This script must be CONTAINER-BOUND to
- * exactly one spreadsheet (created via Extensions > Apps Script from
- * inside that Sheet, not as a standalone script) and uses
- * `getActiveSpreadsheet()` rather than `openById(someId)`. This is
- * deliberate: `openById` can open *any* spreadsheet the deploying account
- * can reach, which forces Google's OAuth consent to request the broad
- * "all your Spreadsheets" scope. A bound script that never calls `openById`
- * can instead request the much narrower `spreadsheets.currentonly` scope
- * (see appsscript.json) — Google's consent screen then reads "only this
- * spreadsheet," and the running script is structurally unable to touch any
- * other sheet, regardless of what a request claims.
+ * Contract: specs/002-sync-data-redesign/plan.md §4. One doPost entry point:
+ * WRITE applies a list of operations under the script lock, READ returns
+ * records without locking.
  *
- * `sharedSecret` is the caller-auth mechanism on top of that: Apps Script
- * Web Apps have no clean way to verify an arbitrary Google OAuth bearer
- * token, so instead the deployer sets a random secret in Script Properties
- * (see setup docs) and every request must include the matching value.
+ * This script must be CONTAINER-BOUND to exactly one spreadsheet (created via
+ * Extensions > Apps Script from inside that Sheet) and only ever uses
+ * `getActiveSpreadsheet()`: with the `spreadsheets.currentonly` scope (see
+ * appsscript.json) it is structurally unable to touch any other file.
+ * `sharedSecret` (Script Properties → SHARED_SECRET) authenticates callers.
+ *
+ * Every sheet row is [key, number, body…]: the number is the updateSequence
+ * (Profile, Category, QuizItem, Exercise), the result id (Result) or 0; the
+ * body is the record's JSON, split over several cells when long.
  */
 export function doPost(e: GoogleAppsScriptDoPostEvent): unknown {
-  const request = JSON.parse(e.postData.contents) as SyncRequest;
-  const response = handleSyncRequest(request);
+  let response: SyncResponse;
+  try {
+    response = handle(JSON.parse(e.postData.contents) as SyncRequest);
+  } catch (error) {
+    response = { ok: false, error: 'BAD_REQUEST', message: String(error) };
+  }
   return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
 }
 
-function handleSyncRequest(request: SyncRequest): SyncResponse | DebugDumpResponse {
+export function handle(request: SyncRequest): SyncResponse {
   const expectedSecret = PropertiesService.getScriptProperties().getProperty('SHARED_SECRET');
-  if (!expectedSecret || request.sharedSecret !== expectedSecret) {
-    return { syncId: request.syncId, result: 'SYNC_REJECTED' };
+  if (!expectedSecret || request.sharedSecret !== expectedSecret) return { ok: false, error: 'BAD_SECRET' };
+
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const metadata = readMetadata(spreadsheet);
+  if (metadata && metadata.schemaVersion !== DATA_SCHEMA_VERSION) {
+    return { ok: false, error: 'SCHEMA_MISMATCH', sheetSchemaVersion: metadata.schemaVersion ?? 1 };
   }
 
-  // Read-only, like DEBUG_DUMP: no lock needed.
-  if (request.action === 'INDEX') return index(request);
-  if (request.action === 'FETCH') return fetchRecords(request);
-  if (request.action === 'ROWS_AFTER') return rowsAfter(request);
+  if (request.action === 'PING') return { ok: true };
+  if (request.action === 'READ') return read(spreadsheet, request.read);
 
-  if (request.action === 'DEBUG_DUMP') {
-    // Read-only inspection of tab contents, for setup verification. Never
-    // used by the app itself — no lock needed since nothing is written.
-    return debugDump(request);
-  }
-
-  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => (request.action === 'REPLACE_PRUNE' ? prune(request) : processLocked(request)));
-  if ('busy' in outcome) {
-    return { syncId: request.syncId, result: 'SYNC_BUSY' };
-  }
+  const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => write(spreadsheet, request.ops));
+  if ('busy' in outcome) return { ok: false, error: 'BUSY' };
   return outcome;
 }
 
-function debugDump(request: SyncRequest): DebugDumpResponse {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const tabsToRead = request.debugTabs && request.debugTabs.length > 0 ? request.debugTabs : ENTITY_TABS_FOR_DEBUG;
-  const tabs: DebugDumpResponse['tabs'] = {};
-  for (const tab of tabsToRead) {
-    const rows = readAllRows(spreadsheet, tab);
-    tabs[tab] = Array.from(rows.values()).map((r) => ({
-      id: r.id,
-      version: r.version,
-      body: safeParse(r.bodyJson),
-    }));
+// --- Writes -----------------------------------------------------------------
+
+/** Rows of the sheets touched by one request, written back once at the end. */
+class Workspace {
+  private readonly indexes = new Map<string, Map<string, StoredRow>>();
+  private readonly changed = new Map<string, Set<string>>();
+
+  constructor(
+    readonly spreadsheet: GoogleSpreadsheet,
+    readonly metadata: Metadata,
+  ) {}
+
+  rows(sheet: string): Map<string, StoredRow> {
+    let rows = this.indexes.get(sheet);
+    if (!rows) {
+      rows = readIndex(this.spreadsheet, sheet);
+      this.indexes.set(sheet, rows);
+    }
+    return rows;
   }
-  return { syncId: request.syncId, result: 'DEBUG_DUMP', tabs };
+
+  /** The record stored under `key`, parsed (undefined when absent or empty). */
+  body(sheet: string, key: string): Record<string, unknown> | undefined {
+    const row = this.rows(sheet).get(key);
+    if (!row) return undefined;
+    if (row.bodyJson === '' && row.rowIndex !== undefined) {
+      row.bodyJson = readRowBodies(this.spreadsheet, sheet, [row.rowIndex]).get(row.rowIndex) ?? '';
+    }
+    return parseBody(row.bodyJson);
+  }
+
+  put(sheet: string, key: string, number: number, body: unknown): StoredRow {
+    const rows = this.rows(sheet);
+    const existing = rows.get(key);
+    const row: StoredRow = { id: key, version: number, bodyJson: JSON.stringify(body), rowIndex: existing?.rowIndex };
+    rows.set(key, row);
+    if (!this.changed.has(sheet)) this.changed.set(sheet, new Set());
+    this.changed.get(sheet)!.add(key);
+    return row;
+  }
+
+  nextSequence(sheet: SequencedSheet): number {
+    const next = (this.metadata.sequences[sheet] ?? 0) + 1;
+    this.metadata.sequences[sheet] = next;
+    return next;
+  }
+
+  flush(): void {
+    for (const [sheet, keys] of this.changed) writeChangedRows(this.spreadsheet, sheet, this.rows(sheet), keys);
+  }
 }
 
-function safeParse(json: string): unknown {
+function parseBody(json: string): Record<string, unknown> | undefined {
+  if (!json) return undefined;
   try {
-    return JSON.parse(json);
+    const value = JSON.parse(json);
+    return value && typeof value === 'object' ? (value as Record<string, unknown>) : undefined;
   } catch {
-    return json;
+    return undefined;
   }
 }
 
-const ENTITY_TABS_FOR_DEBUG: EntityTab[] = [
-  'Profile',
-  'Category',
-  'QuizItem',
-  'Exercise',
-  'Assignment',
-  'Rotation',
-  'Attempt',
-  'AnswerResult',
-  'Reward',
-  'PointRedemption',
-];
+function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[]): SyncResponse {
+  const metadata = readMetadata(spreadsheet) ?? { schemaVersion: DATA_SCHEMA_VERSION, sequences: {}, nextResultId: 1 };
+  const ws = new Workspace(spreadsheet, metadata);
+  /** Appended rows only know their row number after flush(). */
+  const pendingRows: Array<{ result: OpResult; row: StoredRow }> = [];
 
-function processLocked(request: SyncRequest): SyncResponse {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-
-  const metadata = readMetadata(spreadsheet);
-  if (!isSchemaCompatible(metadata, CLIENT_SUPPORTED_SCHEMA_VERSION)) {
-    return { syncId: request.syncId, result: 'SYNC_REJECTED', schemaCompatible: false };
-  }
-
-  // Ids/versions/positions only — bodies are read per row when needed (see readIndex).
-  const tabCache = new Map<EntityTab, Map<string, StoredRow>>();
-  const getTab = (tab: EntityTab) => {
-    if (!tabCache.has(tab)) tabCache.set(tab, readIndex(spreadsheet, tab));
-    return tabCache.get(tab)!;
-  };
-  const bodyOf = (tab: EntityTab, row: StoredRow | undefined) =>
-    row?.rowIndex !== undefined && row.bodyJson === '' ? readRowBody(spreadsheet, tab, row.rowIndex) : row?.bodyJson;
-
-  const priorCommit = findPriorCommit(spreadsheet, request.syncId);
-  if (priorCommit) {
-    const replay = JSON.parse(priorCommit.resultJson) as SyncResponse;
-    return addPull(spreadsheet, request, replay, readMetadata(spreadsheet).dataRevision);
-  }
-
-  // Group changes so a changeGroupId commits or rejects atomically (FR-060).
-  const byGroup = new Map<string, ChangeInput[]>();
-  for (const change of request.changes) {
-    const group = byGroup.get(change.changeGroupId) ?? [];
-    group.push(change);
-    byGroup.set(change.changeGroupId, group);
-  }
-
-  const committedGroupIds: string[] = [];
-  const conflicts: SyncResponse['conflicts'] = [];
-  const downloads: SyncResponse['downloads'] = [];
-  /** Records written by this request, per tab — only these rows are written back and logged. */
-  const changedIds = new Map<EntityTab, Set<string>>();
-  const markChanged = (tab: EntityTab, id: string) => {
-    if (!changedIds.has(tab)) changedIds.set(tab, new Set());
-    changedIds.get(tab)!.add(id);
-  };
-
-  // "This device → Google" overwrite: every record is written as sent, whatever Google holds (no version checks, no conflicts).
-  const overwrite = request.action === 'REPLACE_GOOGLE_WITH_LOCAL';
-  const versions: Record<string, number> = {};
-
-  for (const [groupId, changes] of byGroup) {
-    const decisions = changes.map((change) => {
-      const rows = getTab(change.entityType);
-      const existing = rows.get(change.entityId);
-      const googleVersion = existing?.version ?? 0;
-      return {
-        change,
-        googleVersion,
-        decision: overwrite
-          ? ('upload' as const)
-          : decideVersion({
-              localVersion: change.localVersion,
-              lastGoogleVersion: change.lastGoogleVersion,
-              googleVersion,
-            }),
-      };
-    });
-
-    const hasInvalid = decisions.some((d) => d.decision === 'invalid');
-    if (hasInvalid) {
-      return { syncId: request.syncId, result: 'SYNC_REJECTED' };
-    }
-
-    // Leftovers of an earlier sync that failed after writing (identical content) are adopted, not reported.
-    for (const d of decisions) {
-      if (d.decision !== 'conflict' || d.change.operation !== 'upsert') continue;
-      const rows = getTab(d.change.entityType);
-      const adopted = adoptIdenticalVersion(d.change.localVersion, d.googleVersion, bodyOf(d.change.entityType, rows.get(d.change.entityId)), JSON.stringify(d.change.payload));
-      if (adopted !== undefined) {
-        const existing = rows.get(d.change.entityId);
-        rows.set(d.change.entityId, { id: d.change.entityId, version: adopted, bodyJson: JSON.stringify(d.change.payload), rowIndex: existing?.rowIndex });
-        markChanged(d.change.entityType, d.change.entityId);
-        d.decision = 'noop';
+  const results = ops.map((op): OpResult => {
+    switch (op.op) {
+      case 'WRITE_RECORD':
+        return writeRecord(ws, op.sheet, op.record, !!op.onlyIfAbsent);
+      case 'PRUNE':
+        return prune(ws, op.sheet, new Set(op.keepIds));
+      case 'SET_TOTAL_POINTS': {
+        const body = ws.body('Profile', op.profileId);
+        if (!body) return { skipped: true };
+        const updateSequence = ws.nextSequence('Profile');
+        ws.put('Profile', op.profileId, updateSequence, { ...body, totalPoints: op.totalPoints });
+        return { updateSequence };
+      }
+      case 'ADD_ASSIGNMENT':
+      case 'REMOVE_ASSIGNMENT':
+      case 'SET_TRY':
+        return changeAssignments(ws, op);
+      case 'START_SESSION':
+        ws.put('Session', op.childId, 0, { ...op.session, childId: op.childId });
+        return {};
+      case 'UPDATE_PROGRESS': {
+        const session = ws.body('Session', op.childId);
+        if (!session || session['id'] !== op.sessionId) return { skipped: true };
+        ws.put('Session', op.childId, 0, { ...session, progress: op.progress });
+        return {};
+      }
+      case 'END_SESSION': {
+        const session = ws.body('Session', op.childId);
+        if (!session || session['id'] !== op.sessionId) return { skipped: true };
+        ws.put('Session', op.childId, 0, {});
+        return {};
+      }
+      case 'INSERT_RESULT':
+        return insertResult(ws, op.result);
+      case 'APPEND_HISTORY':
+      case 'APPEND_POINT_USAGE': {
+        const sheet = op.op === 'APPEND_HISTORY' ? 'HistoryResult' : 'PointUsage';
+        const record = op.op === 'APPEND_HISTORY' ? op.history : op.usage;
+        const existing = ws.rows(sheet).get(record.id);
+        if (existing) return { row: existing.rowIndex, skipped: true };
+        const result: OpResult = {};
+        pendingRows.push({ result, row: ws.put(sheet, record.id, 0, withoutLocalFields(record)) });
+        return result;
       }
     }
+  });
 
-    const hasConflict = decisions.some((d) => d.decision === 'conflict');
-    if (hasConflict) {
-      for (const d of decisions.filter((x) => x.decision === 'conflict')) {
-        conflicts!.push({
-          entityType: d.change.entityType,
-          entityId: d.change.entityId,
-          localVersion: d.change.localVersion,
-          googleVersion: d.googleVersion,
-          lastGoogleVersion: d.change.lastGoogleVersion,
-        });
-      }
-      continue; // whole group excluded from commit (FR-060)
-    }
-
-    for (const d of decisions) {
-      const rows = getTab(d.change.entityType);
-      if (d.decision === 'upload') {
-        // A delete keeps the full record (with its deletedAt tombstone) so other devices pulling it delete it too.
-        const existing = rows.get(d.change.entityId);
-        // The client's own version (always ≥ G + 1 here, since L > B = G): the client records exactly this
-        // as lastGoogleVersion, so both sides agree on the next sync.
-        const version = Math.max(d.googleVersion + 1, d.change.localVersion);
-        rows.set(d.change.entityId, {
-          id: d.change.entityId,
-          version,
-          bodyJson: JSON.stringify(d.change.payload),
-          rowIndex: existing?.rowIndex,
-        });
-        markChanged(d.change.entityType, d.change.entityId);
-        if (overwrite) versions[d.change.entityId] = version;
-      } else if (d.decision === 'download') {
-        const row = rows.get(d.change.entityId);
-        if (row) {
-          downloads!.push({ entityType: d.change.entityType, entityId: d.change.entityId, version: row.version, payload: JSON.parse(bodyOf(d.change.entityType, row)!) });
-        }
-      }
-      // 'noop' requires no action.
-    }
-    committedGroupIds.push(groupId);
-  }
-
-  for (const [tab, ids] of changedIds) {
-    writeChangedRows(spreadsheet, tab, getTab(tab), ids);
-  }
-
-  // A request that wrote nothing (e.g. a pure pull) creates no revision and no transaction record.
-  const wroteSomething = changedIds.size > 0;
-  const commitSequence = wroteSomething ? reserveNextRevision(spreadsheet) : metadata.dataRevision;
-  if (wroteSomething) {
-    const entries: ChangeLogEntry[] = [];
-    for (const [tab, ids] of changedIds) {
-      for (const id of ids) entries.push({ revision: commitSequence, entityType: tab, entityId: id, deviceId: request.deviceId });
-    }
-    appendChangeLog(spreadsheet, entries);
-  }
-
-  const response: SyncResponse = {
-    syncId: request.syncId,
-    result: 'SYNC_SUCCESS',
-    commitSequence,
-    committedChangeGroupIds: committedGroupIds,
-    conflicts,
-    downloads,
-    schemaCompatible: true,
-    ...(overwrite ? { versions } : {}),
-  };
-  if (wroteSomething) {
-    // Persist the final response so a retried syncId can replay it verbatim (FR-059).
-    saveCommittedTransaction(spreadsheet, request.syncId, commitSequence, JSON.stringify(response));
-  }
-  return addPull(spreadsheet, request, response, commitSequence);
+  ws.flush();
+  for (const { result, row } of pendingRows) result.row = row.rowIndex;
+  writeMetadata(spreadsheet, metadata);
+  return { ok: true, results };
 }
 
-/** Adds other devices' changes after `request.pullSince` (one page) to the response. Read-only. */
-function addPull(
-  spreadsheet: GoogleSpreadsheet,
-  request: SyncRequest,
-  response: SyncResponse,
-  currentRevision: number,
-): SyncResponse {
-  if (typeof request.pullSince !== 'number') return response;
-  const page = selectPull(readChangeLogAfter(spreadsheet, request.pullSince), request.pullSince, request.deviceId, PULL_LIMIT, currentRevision, request.pullTypes);
-  const pulled: NonNullable<SyncResponse['downloads']> = [];
-  // Only the rows being sent are read (see readRowBodies), never a whole tab.
-  const byTab = new Map<EntityTab, string[]>();
-  for (const { entityType, entityId } of page.records) byTab.set(entityType, [...(byTab.get(entityType) ?? []), entityId]);
-  for (const [tab, ids] of byTab) {
-    const index = readIndex(spreadsheet, tab);
-    const rows = ids.map((id) => index.get(id)).filter((row): row is StoredRow => row?.rowIndex !== undefined);
-    const bodies = readRowBodies(spreadsheet, tab, rows.map((row) => row.rowIndex!));
-    for (const row of rows) {
-      pulled.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(bodies.get(row.rowIndex!) ?? '') });
-    }
-  }
-  return { ...response, downloads: [...(response.downloads ?? []), ...pulled], dataRevision: page.nextRevision, hasMore: page.hasMore };
+/** Fields that only mean something on one device, or that the sheet's number column holds. */
+function withoutLocalFields(record: JsonRecord): JsonRecord {
+  const { updateSequence: _s, resultId: _r, row: _row, ...rest } = record;
+  return rest as JsonRecord;
 }
 
-/**
- * Last step of a "this device → Google" overwrite: rows of the given types that
- * the device does not have become deleted tombstones (deletedAt set, version
- * bumped, logged), so Google matches the device and other devices delete them
- * too on their next pull. Rows that are already tombstones are left alone.
- */
-function prune(request: SyncRequest): SyncResponse {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const priorCommit = findPriorCommit(spreadsheet, request.syncId);
-  if (priorCommit) return JSON.parse(priorCommit.resultJson) as SyncResponse;
+function writeRecord(ws: Workspace, sheet: SequencedSheet, record: JsonRecord, onlyIfAbsent: boolean): OpResult {
+  const existing = ws.rows(sheet).get(record.id);
+  if (existing && onlyIfAbsent) return { updateSequence: existing.version, skipped: true };
+  let body = withoutLocalFields(record);
+  if (sheet === 'Profile' && existing) {
+    // totalPoints only changes through SET_TOTAL_POINTS.
+    const stored = ws.body(sheet, record.id);
+    body = { ...body, totalPoints: stored?.['totalPoints'] ?? 0 };
+  }
+  const updateSequence = ws.nextSequence(sheet);
+  ws.put(sheet, record.id, updateSequence, body);
+  return { updateSequence };
+}
 
+function prune(ws: Workspace, sheet: SequencedSheet, keep: Set<string>): OpResult {
   const deletedAt = new Date().toISOString();
-  const changed: Array<{ tab: EntityTab; rows: Map<string, StoredRow>; ids: string[] }> = [];
-  for (const [tab, keepList] of Object.entries(request.keepIds ?? {}) as Array<[EntityTab, string[]]>) {
-    const keep = new Set(keepList);
-    const rows = readIndex(spreadsheet, tab);
-    const candidates = Array.from(rows.values()).filter((row) => !keep.has(row.id) && row.rowIndex !== undefined);
-    if (candidates.length === 0) continue;
-    const bodies = readRowBodies(spreadsheet, tab, candidates.map((row) => row.rowIndex!));
-    const ids: string[] = [];
-    for (const row of candidates) {
-      const parsed = safeParse(bodies.get(row.rowIndex!) ?? '');
-      const body = parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : { id: row.id };
-      if (body['deletedAt']) continue;
-      rows.set(row.id, { id: row.id, version: row.version + 1, bodyJson: JSON.stringify({ ...body, deletedAt }), rowIndex: row.rowIndex });
-      ids.push(row.id);
-    }
-    if (ids.length > 0) changed.push({ tab, rows, ids });
+  let removed = 0;
+  const candidates = Array.from(ws.rows(sheet).values()).filter((row) => !keep.has(row.id));
+  const bodies = readRowBodies(
+    ws.spreadsheet,
+    sheet,
+    candidates.filter((row) => row.rowIndex !== undefined && row.bodyJson === '').map((row) => row.rowIndex!),
+  );
+  for (const row of candidates) {
+    const body = parseBody(row.bodyJson || bodies.get(row.rowIndex!) || '') ?? { id: row.id };
+    if (body['deletedAt']) continue;
+    ws.put(sheet, row.id, ws.nextSequence(sheet), { ...body, deletedAt });
+    removed++;
   }
-
-  const removed = changed.reduce((sum, c) => sum + c.ids.length, 0);
-  let commitSequence = readMetadata(spreadsheet).dataRevision;
-  if (removed > 0) {
-    for (const { tab, rows, ids } of changed) writeChangedRows(spreadsheet, tab, rows, new Set(ids));
-    commitSequence = reserveNextRevision(spreadsheet);
-    const entries: ChangeLogEntry[] = [];
-    for (const { tab, ids } of changed) {
-      for (const id of ids) entries.push({ revision: commitSequence, entityType: tab, entityId: id, deviceId: request.deviceId });
-    }
-    appendChangeLog(spreadsheet, entries);
-  }
-  const response: SyncResponse = {
-    syncId: request.syncId,
-    result: 'SYNC_SUCCESS',
-    commitSequence,
-    committedChangeGroupIds: [],
-    conflicts: [],
-    downloads: [],
-    schemaCompatible: true,
-    removed,
-  };
-  if (removed > 0) saveCommittedTransaction(spreadsheet, request.syncId, commitSequence, JSON.stringify(response));
-  return response;
+  return { removed };
 }
 
-/** FETCH answers are capped near this many characters of records (Apps Script responses must stay reasonable); the client asks again for the rest. */
-const FETCH_MAX_CHARS = 4_000_000;
-
-/**
- * Read-only: the id and version of every row of the requested tabs (columns
- * A:B only — no bodies), so a device can tell which records differ from its
- * own copy and FETCH just those.
- */
-function index(request: SyncRequest): SyncResponse {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const result: Record<string, Array<[string, number]>> = {};
-  const lastRows: Record<string, number> = {};
-  for (const tab of request.indexTypes ?? []) {
-    const { rows, lastRow } = readIndexAfter(spreadsheet, tab, 0);
-    result[tab] = rows.map((row) => [row.id, row.version]);
-    lastRows[tab] = lastRow;
-  }
-  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, index: result, lastRows, dataRevision: readMetadata(spreadsheet).dataRevision };
+interface AssignmentRow {
+  childId: string;
+  assignments: Array<Record<string, unknown> & { id: string; tries?: number }>;
+  removed: string[];
 }
 
-/**
- * Read-only: the full records with the requested ids (tombstones included).
- * Ids Google doesn't have are left out. When the answer would get too big it
- * stops early and says `truncated`; the device asks again for what is missing.
- */
-function fetchRecords(request: SyncRequest): SyncResponse {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const downloads: NonNullable<SyncResponse['downloads']> = [];
+function changeAssignments(
+  ws: Workspace,
+  op: Extract<SyncOp, { op: 'ADD_ASSIGNMENT' | 'REMOVE_ASSIGNMENT' | 'SET_TRY' }>,
+): OpResult {
+  const stored = ws.body('Assignment', op.childId) as Partial<AssignmentRow> | undefined;
+  const row: AssignmentRow = { childId: op.childId, assignments: stored?.assignments ?? [], removed: stored?.removed ?? [] };
+
+  if (op.op === 'ADD_ASSIGNMENT') {
+    const id = op.assignment.id;
+    if (row.removed.includes(id) || row.assignments.some((a) => a.id === id)) return { skipped: true };
+    row.assignments.push(op.assignment);
+  } else if (op.op === 'REMOVE_ASSIGNMENT') {
+    const present = row.assignments.some((a) => a.id === op.assignmentId);
+    if (row.removed.includes(op.assignmentId) && !present) return { skipped: true };
+    row.removed = [...row.removed.filter((id) => id !== op.assignmentId), op.assignmentId].slice(-REMOVED_ASSIGNMENTS_KEPT);
+    row.assignments = row.assignments.filter((a) => a.id !== op.assignmentId);
+    ws.put('Assignment', op.childId, 0, row);
+    return present ? {} : { skipped: true };
+  } else {
+    const assignment = row.assignments.find((a) => a.id === op.assignmentId);
+    if (!assignment) return { skipped: true };
+    assignment.tries = Math.max(assignment.tries ?? 0, op.tries);
+  }
+  ws.put('Assignment', op.childId, 0, row);
+  return {};
+}
+
+/** The circle: result id N lives in row (N − 1) mod RESULT_CIRCLE_SIZE + 1, overwriting id N − RESULT_CIRCLE_SIZE. */
+function insertResult(ws: Workspace, result: JsonRecord): OpResult {
+  const rows = ws.rows('Result');
+  const existing = rows.get(result.id);
+  if (existing) return { resultId: existing.version, skipped: true };
+
+  const resultId = ws.metadata.nextResultId;
+  ws.metadata.nextResultId = resultId + 1;
+  const rowIndex = ((resultId - 1) % RESULT_CIRCLE_SIZE) + 1;
+  for (const [key, row] of rows) {
+    if (row.rowIndex === rowIndex) rows.delete(key);
+  }
+  ws.put('Result', result.id, resultId, withoutLocalFields(result)).rowIndex = rowIndex;
+  return { resultId };
+}
+
+// --- Reads ------------------------------------------------------------------
+
+function read(spreadsheet: GoogleSpreadsheet, spec: ReadSpec): SyncResponse {
+  if (spec.mode === 'ALL') {
+    const records: JsonRecord[] = [];
+    for (const row of readAllRows(spreadsheet, spec.sheet).values()) {
+      const body = parseBody(row.bodyJson);
+      if (!body || Object.keys(body).length === 0) continue; // an ended session
+      records.push(decorate(spec.sheet, row, body));
+    }
+    return { ok: true, records };
+  }
+
+  const sheet = spec.mode === 'RESULTS_AFTER' ? 'Result' : spec.sheet;
+  let rows: StoredRow[];
+  if (spec.mode === 'ROWS_AFTER') {
+    rows = readIndexAfter(spreadsheet, sheet, spec.after).rows;
+  } else if (spec.mode === 'BY_ID') {
+    const index = readIndex(spreadsheet, sheet);
+    rows = spec.ids.map((id) => index.get(id)).filter((row): row is StoredRow => !!row);
+  } else {
+    rows = Array.from(readIndex(spreadsheet, sheet).values())
+      .filter((row) => row.version > spec.after)
+      .sort((a, b) => a.version - b.version);
+  }
+  return readPage(spreadsheet, sheet, rows);
+}
+
+/** Bodies of `rows` in order, stopping near READ_MAX_CHARS (then `truncated`: ask again after the last one received). */
+function readPage(spreadsheet: GoogleSpreadsheet, sheet: string, rows: StoredRow[]): SyncResponse {
+  const records: JsonRecord[] = [];
   let size = 0;
-  let truncated = false;
-  for (const [tab, ids] of Object.entries(request.fetchIds ?? {})) {
-    if (truncated) break;
-    const rowsById = readIndex(spreadsheet, tab);
-    const rows = ids.map((id) => rowsById.get(id)).filter((row): row is StoredRow => row?.rowIndex !== undefined);
-    const bodies = readRowBodies(spreadsheet, tab, rows.map((row) => row.rowIndex!));
-    for (const row of rows) {
-      const body = bodies.get(row.rowIndex!) ?? '';
-      if (downloads.length > 0 && size + body.length > FETCH_MAX_CHARS) {
-        truncated = true;
-        break;
-      }
-      size += body.length;
-      downloads.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(body) });
+  for (let start = 0; start < rows.length; start += READ_CHUNK) {
+    const chunk = rows.slice(start, start + READ_CHUNK);
+    const bodies = readRowBodies(spreadsheet, sheet, chunk.map((row) => row.rowIndex!));
+    for (const [i, row] of chunk.entries()) {
+      const json = bodies.get(row.rowIndex!) ?? '';
+      size += json.length;
+      const body = parseBody(json);
+      if (body) records.push(decorate(sheet, row, body));
+      const more = start + i + 1 < rows.length;
+      if (more && size >= READ_MAX_CHARS) return { ok: true, records, truncated: true };
     }
   }
-  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, downloads, truncated };
+  return { ok: true, records };
 }
 
-/** ROWS_AFTER reads bodies this many rows at a time, checking the answer size in between. */
-const ROWS_AFTER_CHUNK = 200;
-
-/**
- * Read-only: the records in the rows after each tab's `rowsAfter` — the ones
- * added since the device last looked (new records are always appended; edits
- * stay in their row). Answers stop early near FETCH_MAX_CHARS with
- * `truncated`; `lastRows` says where to continue. A device whose remembered
- * row is past the end (e.g. a different or emptied sheet) starts over from 0.
- */
-function rowsAfter(request: SyncRequest): SyncResponse {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const downloads: NonNullable<SyncResponse['downloads']> = [];
-  const lastRows: Record<string, number> = {};
-  let size = 0;
-  let truncated = false;
-  for (const [tab, requested] of Object.entries(request.rowsAfter ?? {})) {
-    let after = requested;
-    let { rows, lastRow } = readIndexAfter(spreadsheet, tab, after);
-    if (lastRow < after) {
-      after = 0;
-      ({ rows, lastRow } = readIndexAfter(spreadsheet, tab, 0));
-    }
-    lastRows[tab] = truncated ? after : lastRow;
-    if (truncated) continue;
-    for (let start = 0; start < rows.length; start += ROWS_AFTER_CHUNK) {
-      if (downloads.length > 0 && size >= FETCH_MAX_CHARS) {
-        truncated = true;
-        lastRows[tab] = rows[start].rowIndex! - 1;
-        break;
-      }
-      const chunk = rows.slice(start, start + ROWS_AFTER_CHUNK);
-      const bodies = readRowBodies(spreadsheet, tab, chunk.map((row) => row.rowIndex!));
-      for (const row of chunk) {
-        const body = bodies.get(row.rowIndex!) ?? '';
-        size += body.length;
-        downloads.push({ entityType: tab, entityId: row.id, version: row.version, payload: safeParse(body) });
-      }
-    }
-  }
-  return { syncId: request.syncId, result: 'SYNC_SUCCESS', schemaCompatible: true, downloads, lastRows, truncated };
+/** Puts the sheet's number column (or row) back on the record under its own name. */
+function decorate(sheet: string, row: StoredRow, body: Record<string, unknown>): JsonRecord {
+  const record = { ...body, id: (body['id'] as string) ?? row.id } as JsonRecord;
+  if (sheet === 'Result') record['resultId'] = row.version;
+  else if (sheet === 'HistoryResult' || sheet === 'PointUsage') record['row'] = row.rowIndex;
+  else if (sheet === 'Assignment') record['id'] = row.id;
+  else if (sheet !== 'Session') record['updateSequence'] = row.version;
+  return record;
 }

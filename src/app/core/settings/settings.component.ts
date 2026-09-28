@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProfileRepository } from '../../data/repositories/profile.repository';
-import { hashCredential } from '../auth/credential-hash';
 import { Profile } from '../../shared/models/domain.model';
 import { IconComponent } from '../../shared/icon/icon.component';
 
@@ -37,8 +36,7 @@ export class SettingsComponent {
 
   async saveCredential(profile: Profile, rawCredential: string): Promise<void> {
     if (!rawCredential) return;
-    const hash = await hashCredential(rawCredential, profile.id);
-    await this.profileRepo.updateCredential(profile.id, hash);
+    await this.profileRepo.updatePassword(profile.id, rawCredential);
     this.flashSaved();
   }
 

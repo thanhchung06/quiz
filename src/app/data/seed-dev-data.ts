@@ -1,25 +1,21 @@
+import { isDevMode } from '@angular/core';
 import { db } from './db';
-import { seedFixedProfiles, CHILD_ONE_ID, CHILD_TWO_ID } from './seed';
+import { seedFixedProfiles } from './seed';
 import { newSyncEnvelope } from '../shared/models/sync.model';
 import { currentDeviceId } from './repositories/base-repository';
 import { normalizeName } from './repositories/category.repository';
-import { Category, QuizItem, Exercise, Assignment, Rotation } from '../shared/models/domain.model';
+import { Category, QuizItem, Exercise } from '../shared/models/domain.model';
 
-function todayLocalDate(): string {
-  const now = new Date();
-  const tzOffsetMs = now.getTimezoneOffset() * 60000;
-  return new Date(now.getTime() - tzOffsetMs).toISOString().slice(0, 10);
-}
 
 /**
- * Dev/test seed data enabling every user story's independent test (per
- * tasks.md T026): a math category with a handful of single-choice/short-text/
- * number quiz items, one exercise built from them, and both a dated
- * Assignment and a Rotation entry so US1 can be exercised with or without an
- * explicit daily assignment. Idempotent — skips if already seeded.
+ * The fixed profiles, plus — in a development build only — sample data: a
+ * math category with a handful of single-choice/short-text/number quiz items
+ * and one exercise built from them (stored locally only, never sent to
+ * Google). Idempotent — skips if already seeded.
  */
-export async function seedDevData(): Promise<void> {
+export async function seedDevData(sampleData = isDevMode()): Promise<void> {
   await seedFixedProfiles();
+  if (!sampleData) return;
 
   const alreadySeeded = await db.categories.count();
   if (alreadySeeded > 0) return;
@@ -106,22 +102,4 @@ export async function seedDevData(): Promise<void> {
     status: 'active',
   };
   await db.exercises.add(exercise);
-
-  const assignment: Assignment = {
-    ...newSyncEnvelope('assignment-child-one-today', deviceId),
-    profileId: CHILD_ONE_ID,
-    exerciseId: exercise.id,
-    assignedDate: todayLocalDate(),
-    isPrimary: true,
-  };
-  await db.assignments.add(assignment);
-
-  // Child Two has no dated assignment — exercises the rotation fallback (FR-069).
-  const rotation: Rotation = {
-    ...newSyncEnvelope('rotation-child-two', deviceId),
-    profileId: CHILD_TWO_ID,
-    orderedExerciseIds: [exercise.id],
-    cursor: 0,
-  };
-  await db.rotations.add(rotation);
 }

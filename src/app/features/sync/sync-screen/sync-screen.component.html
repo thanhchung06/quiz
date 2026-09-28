@@ -63,7 +63,7 @@
         <input type="checkbox" [checked]="autoSyncQuestions()" (change)="autoSyncQuestions.set($any($event.target).checked); autoSyncMessage.set('')" />
         <span>
           Nhận cả câu hỏi khi mở ứng dụng
-          <small>Câu hỏi phụ huynh sửa trên máy này luôn được gửi lên; ô này chỉ quyết định việc nhận về.</small>
+          <small>Câu hỏi sửa trên máy này luôn được gửi lên; ô này chỉ quyết định việc nhận về. Câu hỏi còn thiếu khi bé làm bài được tải riêng.</small>
         </span>
       </label>
       @if (autoSyncQuestions()) {
@@ -71,15 +71,21 @@
           <input type="checkbox" [checked]="autoSyncAddedOnly()" (change)="autoSyncAddedOnly.set($any($event.target).checked); autoSyncMessage.set('')" />
           <span>
             Chỉ nhận câu hỏi mới thêm
-            <small>Chỉ đọc các dòng mới trong sheet kể từ lần trước (nhanh); bỏ qua câu hỏi đã có dù được sửa ở máy khác.</small>
+            <small>Bỏ qua câu hỏi đã có trên máy này dù được sửa ở máy khác.</small>
           </span>
         </label>
       }
+      <label class="check sub">
+        <input type="checkbox" [checked]="autoSyncExercises()" (change)="autoSyncExercises.set($any($event.target).checked); autoSyncMessage.set('')" />
+        <span>
+          Nhận bài tập khi mở ứng dụng
+          <small>Bài được giao đã mang theo bài tập của nó; ô này dành cho danh sách bài tập và bài luyện tập.</small>
+        </span>
+      </label>
     }
     <p class="hint">
-      <app-icon name="info" />Bé chỉ gửi dữ liệu của chính bé (hồ sơ, bài làm, kết quả, phần thưởng); phụ huynh gửi câu hỏi, bài
-      tập, giao bài, đổi điểm nhưng không gửi kết quả của bé. Thay đổi chưa gửi được (mất mạng, chưa đăng nhập) sẽ đi cùng lần
-      lưu sau.
+      <app-icon name="info" />Khi đang bật, cần có mạng: nếu không gửi được lên Google, ứng dụng sẽ báo lỗi và chờ bấm "Thử lại".
+      Khi mở ứng dụng, phải nhận xong dữ liệu mới đăng nhập được.
     </p>
     <div class="panel-actions">
       <button type="button" class="primary" [disabled]="!autoSyncDirty()" (click)="saveAutoSync()"><app-icon name="save" />Lưu</button>
@@ -92,12 +98,6 @@
   <!-- 3. Sync now -->
   <section class="panel">
     <h2><app-icon name="sync" />Đồng bộ</h2>
-    @if (schemaIncompatible()) {
-      <p class="error">
-        <app-icon name="warning" />
-        Dữ liệu trên Google mới hơn phiên bản ứng dụng này hỗ trợ. Vui lòng cập nhật ứng dụng trước khi đồng bộ.
-      </p>
-    }
     @if (isReadyToSync()) {
       <button type="button" class="primary sync-now" [disabled]="dialogStep() === 'running'" (click)="openSyncDialog()">
         <app-icon name="sync" />{{ dialogStep() === 'running' ? 'Đang đồng bộ…' : 'Đồng bộ ngay' }}
@@ -125,14 +125,13 @@
             <app-icon name="warning" />
             @if (direction() === 'push') {
               <span
-                >Ghi đè Google bằng dữ liệu trên máy này: gửi lên <strong>tất cả</strong> câu hỏi, bài tập, giao bài; những gì có
-                trên Google mà máy này không có sẽ bị xóa khỏi Google. Hồ sơ, bài làm, kết quả và phần thưởng của bé không bị
-                xóa và chỉ được gửi khi bé đăng nhập.</span
+                >Gửi lên <strong>tất cả</strong> dữ liệu trên máy này. Câu hỏi, danh mục và bài tập có trên Google mà máy này không có
+                sẽ bị đánh dấu xóa. Kết quả, lịch sử và đổi điểm chỉ được thêm, không bao giờ bị xóa.</span
               >
             } @else {
               <span
                 >Ghi đè máy này bằng dữ liệu trên Google: nhận về <strong>tất cả</strong>; những gì chỉ có trên máy này sẽ bị xóa
-                (hồ sơ luôn được giữ, kết quả bé chưa gửi lên cũng được giữ).</span
+                (hồ sơ luôn được giữ).</span
               >
             }
           </p>
@@ -149,7 +148,7 @@
                 <small>{{
                   direction() === 'push'
                     ? 'Chỉ gửi câu hỏi chưa từng gửi lên; không sửa, không xóa câu hỏi trên Google.'
-                    : 'Chỉ đọc các dòng mới trong sheet kể từ lần trước; không sửa, không xóa câu hỏi trên máy.'
+                    : 'Chỉ nhận câu hỏi máy này chưa có; không sửa, không xóa câu hỏi trên máy.'
                 }}</small></span
               >
             </label>
@@ -163,7 +162,7 @@
         @if (step === 'running') {
           <p class="running">
             <span class="spinner" aria-hidden="true"></span>
-            {{ phase() === 'pushing' ? 'Đang gửi lên Google…' : 'Đang nhận từ Google…' }}
+            {{ direction() === 'push' ? 'Đang gửi lên Google…' : 'Đang nhận từ Google…' }}
           </p>
           <p>Đã nhận: <strong>{{ received() }}</strong> mục</p>
           @if (progress(); as p) {
@@ -177,24 +176,24 @@
 
         @if (step === 'done') {
           @if (summary(); as s) {
-            <p class="outcome" [class.error]="s.outcome !== 'success'">
-              <app-icon [name]="s.outcome === 'success' ? 'check_circle' : 'warning'" />{{ outcomeLabels[s.outcome] }}
+            <p class="outcome" [class.error]="!s.ok">
+              <app-icon [name]="s.ok ? 'check_circle' : 'warning'" />{{ s.ok ? 'Đồng bộ thành công' : 'Đồng bộ chưa xong' }}
             </p>
             <dl class="summary">
               <dt>Chiều</dt>
               <dd>{{ directionLabel(s.options) }}</dd>
               <dt>Phạm vi</dt>
               <dd>{{ scopeLabel(s.options) }}</dd>
-              @if (s.options.pull) {
+              @if (s.options.direction === 'pull') {
                 <dt>Đã nhận về</dt>
                 <dd>{{ s.received }} mục</dd>
               }
-              @if (s.options.push) {
+              @if (s.options.direction === 'push') {
                 <dt>Đã gửi lên</dt>
                 <dd>{{ s.sent }}/{{ s.toSend }} mục</dd>
               }
               <dt>Đã xóa</dt>
-              <dd>{{ s.removed }} mục {{ s.options.push ? 'trên Google' : 'trên máy này' }}</dd>
+              <dd>{{ s.removed }} mục {{ s.options.direction === 'push' ? 'trên Google' : 'trên máy này' }}</dd>
               <dt>Thời gian</dt>
               <dd>{{ s.seconds }} giây</dd>
             </dl>

@@ -1,5 +1,10 @@
 # Contract: Google Apps Script Sync Endpoint
 
+> **Superseded** by the sync redesign: `specs/002-sync-data-redesign/plan.md` §4 and the typed contract in
+> `src/app/sync/protocol.ts` (WRITE of idempotent operations / READ, no version compare, no ChangeLog or
+> SyncTransactions). The transport and security notes below (container-bound script, `spreadsheets.currentonly`,
+> shared secret) still apply; the request/response shapes and algorithm do not.
+
 This is the only network contract the app has, and it exists solely to implement FR-054–066 (optional Google Sheets synchronization). It is a single Web App exposing one `doPost` entry point. There is no `doGet` data API — reads happen only as part of a sync request/response cycle, never as ad hoc queries, so the spreadsheet cannot be scraped as a general backend.
 
 ## Transport

@@ -6,10 +6,31 @@
       <li>{{ ex.items.length }} câu hỏi</li>
       <li>❤️ {{ strings.exercise.lives }}: {{ ex.lives === 'unlimited' ? 'Không giới hạn' : ex.lives }}</li>
       <li>⏱ {{ strings.exercise.timeLimit }}: {{ ex.timeLimitMinutes }} phút</li>
-      @if (!ex.isDaily && ex.repeatLimit && ex.repeatLimit !== 1) {
-        <li>🔁 Số lần được làm: {{ ex.repeatLimit === 'unlimited' ? 'Không giới hạn' : ex.repeatLimit }}</li>
+      @if (ex.passingPercent > 0) {
+        <li>🎯 Cần đúng {{ ex.passingPercent }}% để đạt</li>
+      }
+      @if (triesLeft(); as left) {
+        <li>🔁 Số lần còn được làm: {{ left === 'unlimited' ? 'Không giới hạn' : left }}</li>
       }
     </ul>
-    <button type="button" class="start-button" (click)="start()">{{ strings.common.start }}</button>
+
+    @if (otherSession(); as other) {
+      <p class="warning">
+        Bé đang làm dở bài "{{ other.exerciseSnapshot.title }}". Bắt đầu bài này sẽ <strong>bỏ bài đang làm</strong> (vẫn tính là một lần làm).
+      </p>
+    }
+    @if (errorMessage()) {
+      <p class="warning" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <button type="button" class="start-button" [disabled]="starting()" (click)="start()">
+      {{ otherSession() ? 'Bỏ bài kia và bắt đầu' : strings.common.start }}
+    </button>
+    <button type="button" class="back-button" (click)="back()">{{ strings.common.back }}</button>
+  </main>
+} @else {
+  <main class="intro-screen">
+    <p>Không tìm thấy bài tập này (có thể đã bị gỡ).</p>
+    <button type="button" class="back-button" (click)="back()">{{ strings.common.back }}</button>
   </main>
 }

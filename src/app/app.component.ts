@@ -3,9 +3,10 @@ import { DatePipe } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { OfflineReadyService } from './core/offline/offline-ready.service';
 import { BUILD_TIMESTAMP } from './build-info.generated';
+import { SyncBlockerComponent } from './sync/sync-blocker/sync-blocker.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SyncBlockerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

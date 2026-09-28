@@ -1,5 +1,7 @@
 import { Table } from 'dexie';
 import { SyncEnvelope } from '../../shared/models/sync.model';
+import { JsonRecord, SequencedSheet } from '../../sync/protocol';
+import { enqueue } from '../outbox';
 
 export function currentDeviceId(): string {
   const key = 'quiz-app.deviceId';
@@ -12,12 +14,16 @@ export function currentDeviceId(): string {
 }
 
 /**
- * Generic CRUD over a Dexie table for entities carrying the sync envelope
- * (data-model.md §0). Every local write increments localVersion and leaves
- * lastGoogleVersion untouched, per FR-057's version-only conflict detection.
+ * CRUD for the records of a sequenced sheet (Profile, Category, QuizItem,
+ * Exercise — plan §3.8). Every write is stored locally and, with sync on,
+ * queued as a WRITE_RECORD that overwrites the whole record on Google; Google
+ * answers with the record's new updateSequence (see SyncWriterService).
  */
 export class BaseRepository<T extends SyncEnvelope> {
-  constructor(protected readonly table: Table<T, string>) {}
+  constructor(
+    protected readonly table: Table<T, string>,
+    protected readonly sheet: SequencedSheet,
+  ) {}
 
   async getById(id: string): Promise<T | undefined> {
     return this.table.get(id);
@@ -29,24 +35,34 @@ export class BaseRepository<T extends SyncEnvelope> {
 
   async create(entity: T): Promise<T> {
     await this.table.add(entity);
+    await this.upload(entity);
     return entity;
   }
 
-  /** Applies a partial update, bumping localVersion (never lastGoogleVersion). */
+  /** A default the app seeds on every device: goes to Google only if Google doesn't have it (never overwriting another device's edit). */
+  async createDefault(entity: T): Promise<T> {
+    await this.table.add(entity);
+    await this.upload(entity, true);
+    return entity;
+  }
+
   async update(id: string, patch: Partial<T>): Promise<void> {
     await this.table.where(':id').equals(id).modify((record: T) => {
       Object.assign(record, patch);
-      record.localVersion += 1;
       record.updatedAt = new Date().toISOString();
       record.updatedByDeviceId = currentDeviceId();
-      record.syncStatus = 'pendingUpload';
     });
+    const record = await this.table.get(id);
+    if (record) await this.upload(record);
   }
 
-  /** Soft-delete: stamps deletedAt rather than removing the row (FR-064 tombstones). */
+  /** Soft-delete: only sets deletedAt, so other devices learn about it on their next pull. */
   async softDelete(id: string): Promise<void> {
-    await this.update(id, {
-      deletedAt: new Date().toISOString(),
-    } as Partial<T>);
+    await this.update(id, { deletedAt: new Date().toISOString() } as Partial<T>);
+  }
+
+  /** Queues the record's current state for Google (a no-op with sync off). */
+  protected async upload(record: T, onlyIfAbsent = false): Promise<void> {
+    await enqueue({ op: 'WRITE_RECORD', sheet: this.sheet, record: record as unknown as JsonRecord, onlyIfAbsent });
   }
 }

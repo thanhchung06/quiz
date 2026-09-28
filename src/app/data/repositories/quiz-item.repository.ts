@@ -24,7 +24,7 @@ export interface QuizItemFilter {
 @Injectable({ providedIn: 'root' })
 export class QuizItemRepository extends BaseRepository<QuizItem> {
   constructor() {
-    super(db.quizItems);
+    super(db.quizItems, 'QuizItem');
   }
 
   async search(filter: QuizItemFilter): Promise<QuizItem[]> {

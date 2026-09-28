@@ -2,62 +2,30 @@ import { Injectable } from '@angular/core';
 import { db } from '../../../data/db';
 import { currentDeviceId } from '../../../data/repositories/base-repository';
 import { AppSettingsRepository } from '../../../data/repositories/app-settings.repository';
-import { ProfileRepository } from '../../../data/repositories/profile.repository';
+import { BackupEnvelope } from './backup-format';
 
-export interface BackupEnvelope {
-  formatVersion: string;
-  appVersion: string;
-  localSchemaVersion: number;
-  exportedAt: string;
-  exportedByDeviceId: string;
-  data: {
-    profiles: unknown[];
-    categories: unknown[];
-    quizItems: unknown[];
-    exercises: unknown[];
-    assignments: unknown[];
-    rotations: unknown[];
-    attempts: unknown[];
-    answerResults: unknown[];
-    rewards: unknown[];
-    pointRedemptions: unknown[];
-    deletedRecords: unknown[];
-  };
-}
+export type { BackupEnvelope } from './backup-format';
 
-/**
- * Full local backup export (FR-052, contracts/backup-format.md).
- * `Profile.credential` is stripped — same rule as sync (FR-066).
- */
+/** Full local backup export (FR-052, contracts/backup-format.md format 2.0). */
 @Injectable({ providedIn: 'root' })
 export class BackupExportService {
-  constructor(
-    private readonly profiles: ProfileRepository,
-    private readonly appSettings: AppSettingsRepository,
-  ) {}
+  constructor(private readonly appSettings: AppSettingsRepository) {}
 
   async exportAll(): Promise<BackupEnvelope> {
-    const settings = await this.appSettings.get();
-    const rawProfiles = await db.profiles.toArray();
-
     return {
-      formatVersion: '1.0',
-      appVersion: '0.0.0',
-      localSchemaVersion: settings.schemaVersion,
+      formatVersion: '2.0',
       exportedAt: new Date().toISOString(),
       exportedByDeviceId: currentDeviceId(),
       data: {
-        profiles: rawProfiles.map((p) => this.profiles.toSyncable(p)),
+        profiles: await db.profiles.toArray(),
         categories: await db.categories.toArray(),
         quizItems: await db.quizItems.toArray(),
         exercises: await db.exercises.toArray(),
         assignments: await db.assignments.toArray(),
-        rotations: await db.rotations.toArray(),
-        attempts: await db.attempts.toArray(),
-        answerResults: await db.answerResults.toArray(),
-        rewards: await db.rewards.toArray(),
-        pointRedemptions: await db.pointRedemptions.toArray(),
-        deletedRecords: await db.deletedRecords.toArray(),
+        sessions: await db.sessions.toArray(),
+        results: await db.results.toArray(),
+        historyResults: await db.historyResults.toArray(),
+        pointUsages: await db.pointUsages.toArray(),
       },
     };
   }

@@ -1,71 +1,55 @@
 import { Injectable } from '@angular/core';
 import { db } from '../db';
-import { Assignment } from '../../shared/models/domain.model';
-import { BaseRepository, currentDeviceId } from './base-repository';
-import { newSyncEnvelope } from '../../shared/models/sync.model';
+import { enqueue } from '../outbox';
+import { Assignment, Exercise } from '../../shared/models/domain.model';
+import { JsonRecord } from '../../sync/protocol';
 
 /**
- * Plain CRUD for Assignment (data-model.md §5). At most one `isPrimary`
- * Assignment may exist per (profileId, assignedDate) (FR-033) — enforced
- * here at write time so no caller can accidentally create a second one.
+ * Assignments (plan §3.2): on Google one row per child holding that child's
+ * list; changed only by small operations — the parent adds or removes, the
+ * child removes (done) or raises the try count — never by rewriting the list.
  */
 @Injectable({ providedIn: 'root' })
-export class AssignmentRepository extends BaseRepository<Assignment> {
-  constructor() {
-    super(db.assignments);
+export class AssignmentRepository {
+  async getById(id: string): Promise<Assignment | undefined> {
+    return db.assignments.get(id);
   }
 
-  async findPrimaryFor(profileId: string, assignedDate: string): Promise<Assignment | undefined> {
-    const matches = await db.assignments
-      .where('[profileId+assignedDate]')
-      .equals([profileId, assignedDate])
-      .toArray();
-    return matches.find((a) => a.isPrimary && !a.deletedAt);
+  async listForChild(childId: string): Promise<Assignment[]> {
+    const all = await db.assignments.where('childId').equals(childId).toArray();
+    return all.sort((a, b) => a.assignedAt.localeCompare(b.assignedAt));
   }
 
-  async setPrimaryAssignment(
-    profileId: string,
-    exerciseId: string,
-    assignedDate: string,
-  ): Promise<Assignment> {
-    const existing = await this.findPrimaryFor(profileId, assignedDate);
-    if (existing) {
-      await this.update(existing.id, { exerciseId });
-      return { ...existing, exerciseId };
-    }
+  async listAll(): Promise<Assignment[]> {
+    return (await db.assignments.toArray()).sort((a, b) => a.assignedAt.localeCompare(b.assignedAt));
+  }
+
+  /** Parent: gives `exercise` (as it is now) to a child. */
+  async assign(childId: string, exercise: Exercise, options: { availableFrom?: string; deadline?: string } = {}): Promise<Assignment> {
     const assignment: Assignment = {
-      ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
-      profileId,
-      exerciseId,
-      assignedDate,
-      isPrimary: true,
+      id: crypto.randomUUID(),
+      childId,
+      exerciseId: exercise.id,
+      exerciseSnapshot: { ...exercise },
+      assignedAt: new Date().toISOString(),
+      availableFrom: options.availableFrom,
+      deadline: options.deadline,
+      tries: 0,
     };
-    await this.create(assignment);
+    await db.assignments.add(assignment);
+    await enqueue({ op: 'ADD_ASSIGNMENT', childId, assignment: assignment as unknown as JsonRecord });
     return assignment;
   }
 
-  /** Every active (non-deleted) one-time — i.e. no `assignedDate` — assignment for this child. */
-  async listOnetimeFor(profileId: string): Promise<Assignment[]> {
-    const all = await this.list();
-    return all.filter((a) => a.profileId === profileId && !a.assignedDate && !a.deletedAt);
+  /** Parent (take back) or child (no tries left / passed). Removing twice is harmless. */
+  async remove(assignment: Pick<Assignment, 'id' | 'childId'>): Promise<void> {
+    await db.assignments.delete(assignment.id);
+    await enqueue({ op: 'REMOVE_ASSIGNMENT', childId: assignment.childId, assignmentId: assignment.id });
   }
 
-  /**
-   * Assigns an exercise to a child with no specific day attached. Idempotent:
-   * reuses an existing one-time assignment of the same exercise for the same
-   * child rather than creating a duplicate.
-   */
-  async assignOnetime(profileId: string, exerciseId: string): Promise<Assignment> {
-    const existing = (await this.listOnetimeFor(profileId)).find((a) => a.exerciseId === exerciseId);
-    if (existing) return existing;
-
-    const assignment: Assignment = {
-      ...newSyncEnvelope(crypto.randomUUID(), currentDeviceId()),
-      profileId,
-      exerciseId,
-      isPrimary: false,
-    };
-    await this.create(assignment);
-    return assignment;
+  /** Child, when starting a try: Google keeps the larger count, so a repeat is harmless. */
+  async setTries(assignment: Pick<Assignment, 'id' | 'childId'>, tries: number): Promise<void> {
+    await db.assignments.update(assignment.id, { tries });
+    await enqueue({ op: 'SET_TRY', childId: assignment.childId, assignmentId: assignment.id, tries });
   }
 }

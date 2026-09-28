@@ -18,10 +18,10 @@
 
   @if (overview(); as o) {
     <div class="metrics">
-      <div class="metric"><span>{{ o.assigned }}</span><label>Đã giao</label></div>
+      <div class="metric"><span>{{ o.assigned }}</span><label>Đang giao</label></div>
       <div class="metric"><span>{{ o.completed }}</span><label>Hoàn thành</label></div>
       <div class="metric"><span>{{ o.passed }}</span><label>Đạt</label></div>
-      <div class="metric"><span>{{ o.unfinished }}</span><label>Chưa xong</label></div>
+      <div class="metric"><span>{{ o.unfinished }}</span><label>Bỏ dở</label></div>
       <div class="metric"><span>{{ o.totalPracticeMinutes }}</span><label>Phút luyện tập</label></div>
       <div class="metric"><span>{{ o.livesLost }}</span><label>Số lượt sai</label></div>
     </div>
@@ -30,22 +30,16 @@
       <button type="button" (click)="goToLearningNeeds()">
         <app-icon name="fact_check" /> Xem điểm cần luyện thêm
       </button>
-
-      @if (hasActiveAttempt()) {
-        <button type="button" class="reset-attempt" (click)="resetUnfinishedAttempt()">
-          <app-icon name="warning" /> Đặt lại lượt làm bài dang dở
-        </button>
-      }
     </div>
 
     <h2>Hoạt động gần đây</h2>
     <ul class="activity-list">
       @for (a of o.recentActivity; track a.id) {
         <li>
-          <a [routerLink]="['/dashboard/attempt', a.id]">
-            <span class="date">{{ a.startedAt | slice: 0 : 10 }}</span>
-            <span class="status">{{ a.status }}</span>
-            <span class="score">{{ a.score }} điểm</span>
+          <a [routerLink]="['/dashboard/result', a.id]">
+            <span class="date">{{ a.attemptedAt | slice: 0 : 10 }}</span>
+            <span class="status">{{ a.exerciseTitle }} · {{ statusLabel[a.status] ?? a.status }}</span>
+            <span class="score">{{ a.stars }}⭐ {{ a.counted ? '+' + a.pointsEarned : '0' }} điểm{{ a.late ? ' · trễ hạn' : '' }}</span>
             <app-icon name="chevron_right" />
           </a>
         </li>

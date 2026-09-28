@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Exercise, ExerciseItem, QuizItem, RandomGroupConfig } from '../../../shared/models/domain.model';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
-import { AnswerResultRepository } from '../../../data/repositories/answer-result.repository';
-import { AttemptRepository } from '../../../data/repositories/attempt.repository';
+import { syncEnabled } from '../../../data/outbox';
+import { SyncReaderService } from '../../../sync/sync-reader.service';
 import { mulberry32, generateSeed, seededShuffle, seededSample } from '../../../shared/random/seeded-random';
 import { db } from '../../../data/db';
 
@@ -25,12 +25,19 @@ export interface ResolvedAttemptPlan {
 export class AttemptResolverService {
   constructor(
     private readonly quizItems: QuizItemRepository,
-    private readonly answerResults: AnswerResultRepository,
-    private readonly attempts: AttemptRepository,
+    private readonly reader: SyncReaderService,
   ) {}
 
-  /** Resolve a brand-new attempt's plan (new seed, fresh random-group draw). */
+  /**
+   * Resolve a brand-new play (new seed, fresh random-group draw). A fixed
+   * question this device doesn't have (question pull turned off) is fetched
+   * from Google first, when sync is on; one that can't be found is skipped.
+   */
   async resolveNew(exercise: Exercise, profileId: string): Promise<ResolvedAttemptPlan> {
+    const fixedIds = exercise.items.flatMap((item) => (item.kind === 'fixed' ? [item.quizItemId] : []));
+    const missing: string[] = [];
+    for (const id of fixedIds) if (!(await this.quizItems.getById(id))) missing.push(id);
+    if (missing.length > 0 && (await syncEnabled())) await this.reader.fetchByIds('QuizItem', missing);
     const seed = generateSeed();
     return this.resolveWithSeed(exercise, profileId, seed);
   }
@@ -176,15 +183,12 @@ export class AttemptResolverService {
   private async missedCounts(profileId: string, candidateIds: string[]): Promise<Map<string, number>> {
     const counts = new Map<string, number>();
     if (candidateIds.length === 0) return counts;
-    const attempts = await this.attempts.listForProfile(profileId);
-    if (attempts.length === 0) return counts;
-    const attemptIds = attempts.map((a) => a.id);
-    const allAnswers = await db.answerResults.where('attemptId').anyOf(attemptIds).toArray();
+    const results = await db.results.where('childId').equals(profileId).toArray();
     const candidateIdSet = new Set(candidateIds);
-    for (const answer of allAnswers) {
-      if (answer.isCorrect) continue;
-      if (candidateIdSet.has(answer.quizItemId)) {
-        counts.set(answer.quizItemId, (counts.get(answer.quizItemId) ?? 0) + 1);
+    for (const result of results) {
+      for (const [quizItemId, answer] of Object.entries(result.answers)) {
+        if (answer.isCorrect || !candidateIdSet.has(quizItemId)) continue;
+        counts.set(quizItemId, (counts.get(quizItemId) ?? 0) + 1);
       }
     }
     return counts;

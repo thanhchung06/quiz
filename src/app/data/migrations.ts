@@ -43,7 +43,7 @@ export async function seedDefaultCategories(categories: CategoryRepository, sett
   if ((await settings.get()).defaultCategoriesSeeded) return;
   for (const suggestion of CATEGORY_SUGGESTIONS) {
     if (await categories.findDuplicate(suggestion.name, suggestion.subject)) continue;
-    await categories.createCategory(suggestion.name, suggestion.subject, suggestion.examples, defaultCategoryId(suggestion.subject, suggestion.name));
+    await categories.createCategory(suggestion.name, suggestion.subject, suggestion.examples, defaultCategoryId(suggestion.subject, suggestion.name), true);
   }
   await settings.update({ defaultCategoriesSeeded: true });
 }

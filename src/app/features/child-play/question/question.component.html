@@ -5,6 +5,7 @@
     </div>
 
     <header>
+      <button type="button" class="leave" (click)="leave()" aria-label="Về trang chủ (làm tiếp sau)"><app-icon name="home" /></button>
       <span class="position">Câu {{ index() + 1 }} / {{ total() }}</span>
 
       <span class="lives" aria-label="Số lượt sai còn lại">

@@ -9,136 +9,77 @@
 
   <p class="greeting">Chào {{ childName() }}! 👋</p>
 
-  @if (todayCard(); as card) {
+  @if (ongoing(); as s) {
     <section class="today-exercise">
-      <app-icon name="rocket_launch" class="hero-icon" />
-      <h2>{{ strings.childHome.todayExercise }}</h2>
-      <p class="title">
-        {{ card.exercise.title }}
-        @if (card.exercise.isDaily) {
-          <span class="daily-badge"><app-icon name="refresh" />Hàng ngày</span>
-        }
-      </p>
-      <p class="meta">
-        {{ card.exercise.items.length }} câu · {{ card.exercise.timeLimitMinutes }} phút · Lớp {{ card.exercise.grade }}
-      </p>
-
-      @switch (card.status) {
-        @case ('activeElsewhere') {
-          <p class="device-notice">
-            <app-icon name="info" />
-            Đang làm dở trên thiết bị khác — hãy dùng thiết bị đó để tiếp tục.
-          </p>
-        }
-        @case ('blocked') {
-          <p class="device-notice">
-            <app-icon name="info" />
-            {{ strings.childHome.blockedByOtherExercise }}
-          </p>
-        }
-        @case ('completed') {
-          <p class="done-notice">
-            <app-icon name="check_circle" />
-            Đã hoàn thành — {{ card.completedAttempt!.score }} điểm, độ chính xác
-            {{ (card.completedAttempt!.accuracy * 100) | number: '1.0-0' }}%
-            @if (card.exercise.isDaily) {
-              — quay lại vào ngày mai để làm bài mới
-            }
-          </p>
-          <button type="button" class="start-button" (click)="viewPastResult(card)">
-            <app-icon name="visibility" />
-            Xem kết quả
-          </button>
-        }
-        @default {
-          @if (showsRemainingHint(card)) {
-            <p class="meta">
-              {{ strings.childHome.attemptsRemainingPrefix }}
-              {{ card.attemptsRemaining === 'unlimited' ? 'không giới hạn' : card.attemptsRemaining }}
-              {{ strings.childHome.attemptsRemainingSuffix }}
-            </p>
-          }
-          <button type="button" class="start-button" (click)="startCard(card)">
-            <app-icon [name]="card.status === 'activeHere' ? 'refresh' : 'rocket_launch'" />
-            {{ card.status === 'activeHere' ? 'Tiếp tục' : strings.common.start }}
-          </button>
-        }
-      }
+      <app-icon name="hourglass_bottom" class="hero-icon" />
+      <h2>Bài đang làm dở</h2>
+      <p class="title">{{ s.exerciseSnapshot.title }}</p>
+      <p class="meta">Câu {{ s.progress.currentIndex + 1 }} / {{ s.itemOrder.length }} · còn {{ (s.progress.timeLeftSeconds / 60).toFixed(0) }} phút</p>
+      <button type="button" class="start-button" (click)="continueOngoing()"><app-icon name="refresh" />Tiếp tục</button>
     </section>
-  } @else {
-    <p class="no-exercise">
-      <app-icon name="info" />
-      {{ strings.childHome.noExerciseYet }}
-    </p>
   }
 
-  @if (onetimeCards().length) {
+  @if (cards().length) {
     <section class="onetime-section">
-      <h3><app-icon name="quiz" />{{ strings.childHome.oneTimeExercises }}</h3>
-      @for (card of onetimeCards(); track card.assignmentId) {
+      <h3><app-icon name="quiz" />Bài được giao</h3>
+      @for (card of cards(); track card.assignment.id) {
         <div class="today-exercise onetime-card">
-          <p class="title">{{ card.exercise.title }}</p>
-          <p class="meta">
-            {{ card.exercise.items.length }} câu · {{ card.exercise.timeLimitMinutes }} phút · Lớp {{ card.exercise.grade }}
+          <p class="title">
+            {{ card.exercise.title }}
+            @if (card.exercise.isDaily) {
+              <span class="daily-badge"><app-icon name="refresh" />Hàng ngày</span>
+            }
           </p>
-
-          @switch (card.status) {
-            @case ('activeElsewhere') {
-              <p class="device-notice">
-                <app-icon name="info" />
-                Đang làm dở trên thiết bị khác — hãy dùng thiết bị đó để tiếp tục.
-              </p>
-            }
-            @case ('blocked') {
-              <p class="device-notice">
-                <app-icon name="info" />
-                {{ strings.childHome.blockedByOtherExercise }}
-              </p>
-            }
-            @case ('completed') {
-              <p class="done-notice">
-                <app-icon name="check_circle" />
-                Đã hoàn thành — {{ card.completedAttempt!.score }} điểm
-              </p>
-              <button type="button" class="start-button" (click)="viewPastResult(card)">
-                <app-icon name="visibility" />
-                Xem kết quả
-              </button>
-            }
-            @default {
-              @if (showsRemainingHint(card)) {
-                <p class="meta">
-                  {{ strings.childHome.attemptsRemainingPrefix }}
-                  {{ card.attemptsRemaining === 'unlimited' ? 'không giới hạn' : card.attemptsRemaining }}
-                  {{ strings.childHome.attemptsRemainingSuffix }}
-                </p>
-              }
-              <button type="button" class="start-button" (click)="startCard(card)">
-                <app-icon [name]="card.status === 'activeHere' ? 'refresh' : 'rocket_launch'" />
-                {{ card.status === 'activeHere' ? 'Tiếp tục' : strings.common.start }}
-              </button>
-            }
+          <p class="meta">{{ card.exercise.items.length }} câu · {{ card.exercise.timeLimitMinutes }} phút · Lớp {{ card.exercise.grade }}</p>
+          @if (card.assignment.deadline) {
+            <p class="meta"><app-icon name="calendar_month" />Hạn chót: {{ formatDateTime(card.assignment.deadline) }}</p>
           }
+          @if (card.opensAt) {
+            <p class="device-notice"><app-icon name="info" />Mở lúc {{ formatDateTime(card.opensAt) }}</p>
+          } @else if (card.triesLeft === 0) {
+            <p class="done-notice"><app-icon name="check_circle" />Đã làm hôm nay — quay lại vào ngày mai</p>
+          } @else {
+            @if (card.triesLeft !== 'unlimited' && card.triesLeft > 1) {
+              <p class="meta">{{ strings.childHome.attemptsRemainingPrefix }} {{ card.triesLeft }} {{ strings.childHome.attemptsRemainingSuffix }}</p>
+            }
+            <button type="button" class="start-button" (click)="open(card)"><app-icon name="rocket_launch" />{{ strings.common.start }}</button>
+          }
+        </div>
+      }
+    </section>
+  } @else if (!ongoing()) {
+    <p class="no-exercise"><app-icon name="info" />{{ strings.childHome.noExerciseYet }}</p>
+  }
+
+  @if (practice().length) {
+    <section class="onetime-section">
+      <h3><app-icon name="school" />Luyện tập</h3>
+      @for (ex of practice(); track ex.id) {
+        <div class="today-exercise onetime-card">
+          <p class="title">{{ ex.title }}</p>
+          <p class="meta">{{ ex.items.length }} câu · {{ ex.timeLimitMinutes }} phút{{ ex.practiceEarnsPoints ? ' · có cộng điểm' : '' }}</p>
+          <button type="button" class="start-button" (click)="openPractice(ex)"><app-icon name="rocket_launch" />Luyện tập</button>
         </div>
       }
     </section>
   }
 
   <section class="stats">
-    <span class="stat streak"><app-icon name="whatshot" />{{ strings.childHome.streak }}: {{ streak() }}</span>
+    <span class="stat points"><app-icon name="trophy" />Tổng điểm: {{ totalPoints() }}</span>
     <span class="stat stars"><app-icon name="star" />{{ strings.childHome.stars }}: {{ totalStars() }}</span>
-    <span class="stat points"><app-icon name="quiz" />Tổng điểm: {{ totalPoints() }}</span>
-    <span class="stat badges"><app-icon name="trophy" />{{ strings.childHome.badges }}: {{ badgeCount() }}</span>
   </section>
 
   @if (last7Days().length) {
     <section class="recent">
       <h3><app-icon name="history" />{{ strings.childHome.last7Days }}</h3>
       <ul>
-        @for (a of last7Days(); track a.id) {
+        @for (h of last7Days(); track h.id) {
           <li>
-            <app-icon [name]="endConditionIcon[a.status] ?? 'history'" />
-            <span>{{ a.startedAt.slice(0, 10) }} — {{ a.status }}</span>
+            <app-icon [name]="endIcon[h.status] ?? 'history'" />
+            <span>{{ h.attemptedAt.slice(0, 10) }} — {{ h.exerciseTitle }} — {{ h.stars }}⭐ · {{ h.counted ? '+' + h.pointsEarned : 0 }} điểm</span>
+            @if (availableResultIds().has(h.id)) {
+              <button type="button" class="link" (click)="viewResult(h)"><app-icon name="visibility" />Xem</button>
+            }
           </li>
         }
       </ul>

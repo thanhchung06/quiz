@@ -218,7 +218,9 @@ export class ImportCommitService {
     const batchItems = all.filter((i) => i.importBatchId === importBatchId);
     const batchItemIds = new Set(batchItems.map((i) => i.id));
 
-    const anyUsed = await db.answerResults.filter((a) => batchItemIds.has(a.quizItemId)).first();
+    const anyUsed =
+      (await db.results.filter((r) => r.itemOrder.some((id) => batchItemIds.has(id))).first()) ??
+      (await db.sessions.filter((s) => s.itemOrder.some((id) => batchItemIds.has(id))).first());
     if (anyUsed) {
       return { undone: false, reason: 'One or more items from this batch have already been used in an attempt.' };
     }

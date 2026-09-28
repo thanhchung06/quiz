@@ -1,7 +1,7 @@
-import { Component, computed, effect, signal } from '@angular/core';
+import { Component, computed, effect, OnDestroy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AttemptLifecycleService } from '../services/attempt-lifecycle.service';
+import { PlayService } from '../services/play.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { vi } from '../../../shared/i18n/vi';
 import { parseNumberAnswer } from '../services/answer-evaluator';
@@ -25,13 +25,13 @@ const CHOICE_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
   templateUrl: './question.component.html',
   styleUrl: './question.component.scss',
 })
-export class QuestionComponent {
+export class QuestionComponent implements OnDestroy {
   readonly strings = vi;
-  readonly item: AttemptLifecycleService['currentQuizItem'];
-  readonly index: AttemptLifecycleService['currentIndex'];
-  readonly total: AttemptLifecycleService['totalQuestions'];
-  readonly isEvaluating: AttemptLifecycleService['isEvaluating'];
-  readonly attempt: AttemptLifecycleService['attempt'];
+  readonly item: PlayService['currentQuizItem'];
+  readonly index: PlayService['currentIndex'];
+  readonly total: PlayService['totalQuestions'];
+  readonly isEvaluating: PlayService['isEvaluating'];
+  readonly session: PlayService['session'];
 
   readonly choiceAnswer = signal<string[]>([]);
   readonly textAnswer = signal('');
@@ -51,14 +51,15 @@ export class QuestionComponent {
 
   readonly choiceLetters = CHOICE_LETTERS;
 
-  readonly isUnlimitedLives = computed(() => this.attempt()?.exerciseSnapshot.lives === 'unlimited');
+  readonly isUnlimitedLives = computed(() => this.session()?.exerciseSnapshot.lives === 'unlimited');
 
-  /** One entry per possible life (as configured on the exercise), true = still held. Drives heart icons; empty/unused when lives are unlimited (see isUnlimitedLives). */
+  /** One entry per possible life (as configured on the exercise), true = still held. Empty when lives are unlimited. */
   readonly livesDots = computed(() => {
-    const attempt = this.attempt();
-    if (!attempt || attempt.exerciseSnapshot.lives === 'unlimited') return [];
-    const max = attempt.exerciseSnapshot.lives;
-    const remaining = attempt.livesRemaining === 'unlimited' ? max : attempt.livesRemaining;
+    const session = this.session();
+    if (!session || session.exerciseSnapshot.lives === 'unlimited') return [];
+    const max = session.exerciseSnapshot.lives;
+    const held = session.progress.livesRemaining;
+    const remaining = held === 'unlimited' ? max : held;
     return Array.from({ length: max }, (_, i) => i < remaining);
   });
 
@@ -67,36 +68,27 @@ export class QuestionComponent {
     return total > 0 ? Math.round((this.index() / total) * 100) : 0;
   });
 
+  private readonly totalSeconds = computed(() => (this.session()?.exerciseSnapshot.timeLimitMinutes ?? 0) * 60);
+
   /** True once under a fifth of the exercise's own time limit remains — used to color the timer as urgent. */
   readonly timeIsLow = computed(() => {
-    const attempt = this.attempt();
-    if (!attempt) return false;
-    const totalSeconds = attempt.exerciseSnapshot.timeLimitMinutes * 60;
-    return totalSeconds > 0 && this.remainingSeconds() <= Math.max(10, totalSeconds * 0.2);
+    const total = this.totalSeconds();
+    return total > 0 && this.remainingSeconds() <= Math.max(10, total * 0.2);
   });
 
   readonly timeLabel = computed(() => {
     const s = this.remainingSeconds();
-    const m = Math.floor(s / 60);
-    const rest = s % 60;
-    return `${m}:${rest.toString().padStart(2, '0')}`;
+    return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
   });
 
   /** Fraction of the exercise's time limit still remaining; drives the burning-fuse ring around the timer. */
   readonly timeRatio = computed(() => {
-    const attempt = this.attempt();
-    if (!attempt) return 1;
-    const totalSeconds = attempt.exerciseSnapshot.timeLimitMinutes * 60;
-    return totalSeconds > 0 ? Math.max(0, Math.min(1, this.remainingSeconds() / totalSeconds)) : 1;
+    const total = this.totalSeconds();
+    return total > 0 ? Math.max(0, Math.min(1, this.remainingSeconds() / total)) : 1;
   });
 
   /** Whether the current question has its own per-question time cap (see QuestionTimingMode). */
-  readonly hasQuestionTimer = computed(() => {
-    const attempt = this.attempt();
-    const item = this.item();
-    if (!attempt || !item) return false;
-    return !!attempt.perQuestionSeconds?.[item.id];
-  });
+  readonly hasQuestionTimer = computed(() => this.play.questionDeadlineAt() !== undefined);
 
   readonly questionTimeLabel = computed(() => {
     const s = this.remainingQuestionSeconds() ?? 0;
@@ -107,17 +99,22 @@ export class QuestionComponent {
 
   readonly questionTimeIsLow = computed(() => (this.remainingQuestionSeconds() ?? 0) <= 3);
 
-  private timerHandle?: ReturnType<typeof setInterval>;
+  private readonly timerHandle: ReturnType<typeof setInterval>;
+  private readonly clockHandle: ReturnType<typeof setInterval>;
+  private readonly onHidden = () => {
+    if (document.visibilityState === 'hidden') void this.play.saveClock();
+  };
+  private readonly onPageHide = () => void this.play.saveClock();
 
   constructor(
-    private readonly lifecycle: AttemptLifecycleService,
+    private readonly play: PlayService,
     private readonly router: Router,
   ) {
-    this.item = this.lifecycle.currentQuizItem;
-    this.index = this.lifecycle.currentIndex;
-    this.total = this.lifecycle.totalQuestions;
-    this.isEvaluating = this.lifecycle.isEvaluating;
-    this.attempt = this.lifecycle.attempt;
+    this.item = this.play.currentQuizItem;
+    this.index = this.play.currentIndex;
+    this.total = this.play.totalQuestions;
+    this.isEvaluating = this.play.isEvaluating;
+    this.session = this.play.session;
 
     effect(() => {
       // Reset local answer state whenever the current question changes.
@@ -128,39 +125,36 @@ export class QuestionComponent {
     });
 
     effect(() => {
-      const attempt = this.attempt();
-      if (attempt && attempt.status !== 'inProgress') {
+      if (this.play.status() !== 'inProgress') {
         void this.router.navigateByUrl('/exercise/result');
         return;
       }
+      if (!this.session()) void this.router.navigateByUrl('/child-home');
       this.updateRemainingSeconds();
     });
 
     this.timerHandle = setInterval(() => this.updateRemainingSeconds(), 1000);
+    // The clock keeps running while the app is hidden and stops only when it is closed: save it often.
+    this.clockHandle = setInterval(() => void this.play.saveClock(), 5000);
+    document.addEventListener('visibilitychange', this.onHidden);
+    window.addEventListener('pagehide', this.onPageHide);
   }
 
   private updateRemainingSeconds(): void {
-    const attempt = this.attempt();
-    if (!attempt) return;
-    const remaining = Math.max(0, Math.floor((new Date(attempt.deadlineAt).getTime() - Date.now()) / 1000));
+    if (!this.session() || this.play.status() !== 'inProgress') return;
+    const now = Date.now();
+    const remaining = Math.max(0, Math.floor((this.play.deadlineAt() - now) / 1000));
     this.remainingSeconds.set(remaining);
-    if (remaining === 0 && attempt.status === 'inProgress') {
-      // Overall exercise deadline reached: end as Time Up without scoring
-      // the current unsubmitted response (edge case, FR-013). This always
-      // takes priority over — and stays independent of — any per-question
-      // timer below, since it's a hard backstop in every timing mode.
-      void this.lifecycle.expireDueToTimeout().then(() => this.router.navigateByUrl('/exercise/result'));
+    if (remaining === 0) {
+      // Overall exercise time is a hard backstop in every timing mode; the unsubmitted response isn't scored.
+      void this.play.expireDueToTimeout();
       return;
     }
-
-    if (attempt.currentQuestionDeadlineAt && attempt.status === 'inProgress') {
-      const qRemaining = Math.max(0, Math.floor((new Date(attempt.currentQuestionDeadlineAt).getTime() - Date.now()) / 1000));
+    const questionDeadline = this.play.questionDeadlineAt();
+    if (questionDeadline !== undefined) {
+      const qRemaining = Math.max(0, Math.floor((questionDeadline - now) / 1000));
       this.remainingQuestionSeconds.set(qRemaining);
-      if (qRemaining === 0) {
-        void this.lifecycle.expirePerQuestionTimeout().then(() => {
-          if (this.attempt()?.status !== 'inProgress') this.router.navigateByUrl('/exercise/result');
-        });
-      }
+      if (qRemaining === 0) void this.play.expirePerQuestionTimeout();
     } else {
       this.remainingQuestionSeconds.set(undefined);
     }
@@ -185,23 +179,20 @@ export class QuestionComponent {
     else if (item.type === 'number') value = parseNumberAnswer(this.numberAnswer());
     else value = this.choiceAnswer();
 
-    const result = await this.lifecycle.submitAnswer(value);
-    if (!result) return;
-
-    this.goNext();
+    await this.play.submitAnswer(value);
   }
 
-  /** Moves to the next question, or to the result screen if the attempt already ended (e.g. that was the last question, or the last life). */
-  private goNext(): void {
-    const attempt = this.attempt();
-    if (attempt && attempt.status !== 'inProgress') {
-      void this.router.navigateByUrl('/exercise/result');
-      return;
-    }
-    this.lifecycle.advanceToNext();
+  /** Leaves the exercise without ending it: it stays open and continues from here next time. */
+  async leave(): Promise<void> {
+    await this.play.saveClock();
+    await this.router.navigateByUrl('/child-home');
   }
 
   ngOnDestroy(): void {
-    if (this.timerHandle) clearInterval(this.timerHandle);
+    clearInterval(this.timerHandle);
+    clearInterval(this.clockHandle);
+    document.removeEventListener('visibilitychange', this.onHidden);
+    window.removeEventListener('pagehide', this.onPageHide);
+    void this.play.saveClock();
   }
 }

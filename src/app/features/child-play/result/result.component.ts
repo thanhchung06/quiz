@@ -1,9 +1,7 @@
 import { Component, effect, signal } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { AttemptLifecycleService } from '../services/attempt-lifecycle.service';
-import { AnswerResultRepository } from '../../../data/repositories/answer-result.repository';
-import { Attempt, Choice, QuizItemType } from '../../../shared/models/domain.model';
+import { PlayService } from '../services/play.service';
+import { Choice, PlayResult, QuizItemType } from '../../../shared/models/domain.model';
 import { vi } from '../../../shared/i18n/vi';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
@@ -30,53 +28,52 @@ export interface QuestionReview {
 @Component({
   selector: 'app-result',
   standalone: true,
-  imports: [DecimalPipe, IconComponent, QuizImageComponent],
+  imports: [IconComponent, QuizImageComponent],
   templateUrl: './result.component.html',
   styleUrl: './result.component.scss',
 })
 export class ResultComponent {
   readonly strings = vi;
-  readonly attempt: AttemptLifecycleService['attempt'];
-  readonly rewardsOutcome: AttemptLifecycleService['rewardsOutcome'];
+  readonly result: PlayService['result'];
   readonly breakdown = signal<QuestionReview[]>([]);
 
   readonly outcomeLabel: Partial<Record<string, string>> = {
     completed: vi.exercise.resultCompleted,
     timeUp: vi.exercise.resultTimeUp,
     tryAgain: vi.exercise.resultTryAgain,
+    abandoned: 'Đã bỏ bài',
   };
 
   constructor(
-    private readonly lifecycle: AttemptLifecycleService,
-    private readonly answerResults: AnswerResultRepository,
+    private readonly play: PlayService,
     private readonly router: Router,
   ) {
-    this.attempt = this.lifecycle.attempt;
-    this.rewardsOutcome = this.lifecycle.rewardsOutcome;
+    this.result = this.play.result;
 
     effect(() => {
-      const attempt = this.attempt();
-      if (attempt) void this.loadBreakdown(attempt);
+      const result = this.result();
+      if (result) this.breakdown.set(buildBreakdown(result));
     });
   }
 
-  /**
-   * Builds one review row per resolved question, in play order, always from
-   * `Attempt.itemSnapshots` (never the live QuizItemRepository) — same
-   * frozen-snapshot rule as play itself, so an edit to the bank afterward
-   * never changes what a past result shows. A question with no matching
-   * AnswerResult was left unanswered (e.g. a per-question timeout) and is
-   * shown as such, still revealing the correct answer.
-   */
-  private async loadBreakdown(attempt: Attempt): Promise<void> {
-    const results = await this.answerResults.listForAttempt(attempt.id);
-    const byItemId = new Map(results.map((r) => [r.quizItemId, r]));
+  async goHome(): Promise<void> {
+    await this.router.navigateByUrl('/child-home');
+  }
+}
 
-    const rows: QuestionReview[] = attempt.resolvedItemOrder
+/**
+ * One review row per question, in play order, always from the result's own
+ * frozen question copies — an edit to the bank afterwards never changes what
+ * a past result shows. A question with no answer was left unanswered and is
+ * shown as such, still revealing the correct answer.
+ */
+export function buildBreakdown(resultRecord: PlayResult): QuestionReview[] {
+  return resultRecord.itemOrder
       .map((quizItemId, index) => {
-        const item = attempt.itemSnapshots[quizItemId];
+        const item = resultRecord.itemSnapshots[quizItemId];
         if (!item) return undefined;
-        const result = byItemId.get(quizItemId);
+        const answer = resultRecord.answers[quizItemId];
+        const result = answer && !answer.timedOut ? answer : undefined;
         const answered = !!result;
         const rule = item.answerRule;
 
@@ -130,11 +127,4 @@ export class ResultComponent {
         return row;
       })
       .filter((row): row is QuestionReview => !!row);
-
-    this.breakdown.set(rows);
-  }
-
-  async goHome(): Promise<void> {
-    await this.router.navigateByUrl('/child-home');
-  }
 }

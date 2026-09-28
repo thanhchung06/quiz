@@ -10,11 +10,13 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { routes } from './app.routes';
 import { seedDevData } from './data/seed-dev-data';
 import { approveAllPendingQuizItems, seedDefaultCategories } from './data/migrations';
+import { dropOldDatabases } from './data/db';
 import { CategoryRepository } from './data/repositories/category.repository';
 import { AppSettingsRepository } from './data/repositories/app-settings.repository';
 import { QuizItemRepository } from './data/repositories/quiz-item.repository';
 import { PwaUpdateService } from './pwa-update.service';
-import { AutoSyncService } from './sync-engine/auto-sync.service';
+import { SyncWriterService } from './sync/sync-writer.service';
+import { StartupSyncService } from './sync/startup-sync.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,11 +30,17 @@ export const appConfig: ApplicationConfig = {
       // Dev seed first: it only runs on an empty category table.
       const categories = inject(CategoryRepository);
       const settings = inject(AppSettingsRepository);
-      const autoSync = inject(AutoSyncService);
-      // Sync on open/close only after seeding, so a fresh install doesn't upload half-seeded data.
-      return seedDevData()
+      const writer = inject(SyncWriterService);
+      const startupSync = inject(StartupSyncService);
+      // Seeds are queued for Google (only-if-absent) before the writer starts; the app-start pull
+      // (login waits for it) runs in the background so the first screen shows right away.
+      return dropOldDatabases()
+        .then(() => seedDevData())
         .then(() => seedDefaultCategories(categories, settings))
-        .then(() => autoSync.startLifecycleHooks());
+        .then(() => {
+          writer.start();
+          void startupSync.run();
+        });
     }),
     provideAppInitializer(() => approveAllPendingQuizItems(inject(QuizItemRepository))),
     provideAppInitializer(() => {
