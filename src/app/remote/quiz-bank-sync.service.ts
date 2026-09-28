@@ -12,8 +12,9 @@ const PAGE = 1000;
 /**
  * Keeps this device's copy of the quiz bank (questions, categories) up to date
  * (specs/003-firebase/plan.md §3): at app start one small read of
- * meta/quizVersion; only if it moved are the questions and categories newer
- * than the last pull downloaded, page by page.
+ * meta/quizVersion (a counter, +1 on every question/category write); only if
+ * it differs from this device's are the questions and categories newer than
+ * the last pull downloaded, page by page.
  */
 @Injectable({ providedIn: 'root' })
 export class QuizBankSyncService {

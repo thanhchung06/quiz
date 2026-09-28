@@ -367,7 +367,7 @@ export interface AppSettings {
   audioEnabled: boolean;
   reducedMotion: boolean;
   feedbackDelayMs: number;
-  /** meta/quizVersion when this device last brought its quiz bank up to date (specs/003 §3). */
+  /** meta/quizVersion (a write counter) this device's quiz bank is up to date with (specs/003 §3). */
   quizVersion?: number;
   /** Newest question/category updatedAt (server time, ms) this device has — the next pull asks for newer ones. */
   quizPulledAt?: number;

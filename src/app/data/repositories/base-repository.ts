@@ -1,6 +1,7 @@
 import { Table } from 'dexie';
 import { SyncEnvelope } from '../../shared/models/sync.model';
-import { RemoteStore, SERVER_TIME } from '../../remote/remote-store';
+import { increment, RemoteStore } from '../../remote/remote-store';
+import { db } from '../db';
 import { decode, encode, StoredNode } from '../../remote/record-codec';
 
 export function currentDeviceId(): string {
@@ -19,8 +20,10 @@ const WRITE_CHUNK = 200;
 /**
  * The quiz bank (questions, categories — specs/003-firebase/plan.md §3):
  * cached on the device for fast search and play, and written through to
- * Firebase. Every write goes online first, together with meta/quizVersion
- * (so other devices know to pull), then into the local cache.
+ * Firebase. Every write goes online first, together with a +1 on
+ * meta/quizVersion (so other devices know to pull), then into the local cache.
+ * When nobody else wrote in between, this device also takes the new version as
+ * its own, so its next start doesn't download what it just wrote.
  */
 export class QuizBankRepository<T extends SyncEnvelope> {
   constructor(
@@ -102,10 +105,25 @@ export class QuizBankRepository<T extends SyncEnvelope> {
       for (const record of records) this.buffer.set(record.id, record);
       return;
     }
-    const values: Record<string, unknown> = { 'meta/quizVersion': SERVER_TIME };
+    const values: Record<string, unknown> = { 'meta/quizVersion': increment(1) };
     for (const record of records) values[`${this.path}/${record.id}`] = encode(record);
+    const before = await this.remote.get<number>('meta/quizVersion');
+    const settings = await db.appSettings.get('singleton');
     await this.remote.update(values);
     await this.table.bulkPut(records);
+
+    // Up to date before, and the version moved by exactly this write → nothing new from anyone else:
+    // take the new version, and this write's server time as the pull cursor.
+    if (settings && before === settings.quizVersion) {
+      const after = await this.remote.get<number>('meta/quizVersion');
+      if (after === (before ?? 0) + 1) {
+        const writtenAt = await this.remote.get<number>(`${this.path}/${records[0].id}/updatedAt`);
+        await db.appSettings.update('singleton', {
+          quizVersion: after,
+          quizPulledAt: Math.max(settings.quizPulledAt ?? 0, writtenAt ?? 0),
+        });
+      }
+    }
   }
 }
 

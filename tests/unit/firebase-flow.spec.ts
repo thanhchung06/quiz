@@ -19,6 +19,8 @@ if (!globalThis.crypto?.randomUUID) Object.defineProperty(globalThis.crypto, 'ra
 
 import { db } from '../../src/app/data/db';
 import { MemoryRemoteStore } from '../../src/app/remote/memory-remote-store';
+import { increment } from '../../src/app/remote/remote-store';
+import { encode } from '../../src/app/remote/record-codec';
 import { QuizBankSyncService } from '../../src/app/remote/quiz-bank-sync.service';
 import { StartupService } from '../../src/app/remote/startup.service';
 import { AppSettingsRepository } from '../../src/app/data/repositories/app-settings.repository';
@@ -88,6 +90,14 @@ async function createExercise(title: string, ids: string[], extra: Partial<Exerc
   });
 }
 
+/** A question write made by another device (its own local copy isn't this test's). */
+async function otherDeviceWrites(...records: QuizItem[]) {
+  await remote.update({
+    'meta/quizVersion': increment(1),
+    ...Object.fromEntries(records.map((r) => [`questions/${r.id}`, encode(r)])),
+  });
+}
+
 async function answerAll(correct: number) {
   for (let i = play.currentIndex(); i < play.totalQuestions(); i++) await play.submitAnswer([i < correct ? 'a' : 'b']);
 }
@@ -128,14 +138,28 @@ describe('online-first data (Firebase layout, in-memory database)', () => {
     await openApp();
     expect(await db.quizItems.count()).toBe(2500);
 
-    store.set('quiz-app.deviceId', 'pc');
-    await quizItems.update('q7', { prompt: 'đã sửa' });
-    await quizItems.softDelete('q8');
-    store.set('quiz-app.deviceId', 'tablet');
+    await otherDeviceWrites({ ...question(7), prompt: 'đã sửa' }, { ...question(8), deletedAt: new Date().toISOString() });
     expect(await quizBank.sync()).toBe(true);
     expect(quizBank.received()).toBe(2);
     expect((await quizItems.getById('q7'))?.prompt).toBe('đã sửa');
     expect((await quizItems.list()).some((q) => q.id === 'q8')).toBe(false);
+  }, 120_000);
+
+  it("a device's own question writes (an import) don't make its next start download them again", async () => {
+    await becomeDevice('pc');
+    await openApp();
+    await quizItems.createMany(Array.from({ length: 450 }, (_, i) => question(i))); // 3 atomic chunks
+    remote.calls = 0;
+    expect(await quizBank.sync()).toBe(false);
+    expect(remote.calls).toBe(1);
+
+    // But when another device wrote in between, the next start does pull (nothing is missed).
+    await becomeDevice('tablet');
+    await openApp();
+    await otherDeviceWrites(question(1000)); // another device writes…
+    await quizItems.create(question(1001)); // …then this one: it must not treat itself as up to date
+    expect(await quizBank.sync()).toBe(true);
+    expect(await quizItems.getById('q1000')).toBeDefined();
   }, 120_000);
 
   it('parent assigns; the child plays on another device; the finish updates everything at once and raises points', async () => {

@@ -21,7 +21,7 @@ Status: **agreed, being implemented.** Replaces the Apps Script + Google Sheet s
 
 ```
 families/<familyKey>/
-  meta/quizVersion              server time of the last question/category write
+  meta/quizVersion              write counter: +1 (atomic) on every question/category write
   profiles/{profileId}          role, name, avatar, grade, preferences, password, updatedAt
   points/{childId}              the child's spendable points (number; atomic +/−)
   categories/{id}               ┐ quiz bank — also cached on every device (§3),
@@ -40,8 +40,11 @@ families/<familyKey>/
   playing).
 - App start: read `meta/quizVersion`. Same as the device's → nothing to do. Otherwise pull questions and
   categories with `updatedAt` newer than the device's last pull, then store the version.
-- A question/category write goes to Firebase together with `meta/quizVersion` (one atomic multi-path
-  update), then to the local cache.
+- A question/category write goes to Firebase together with a +1 on `meta/quizVersion` (one atomic
+  multi-path update), then to the local cache. The writing device reads the version before and after: if
+  it was up to date before and the version moved by exactly 1, nobody else wrote in between, so it takes
+  the new version (and its write's server time as pull cursor) — its next start doesn't re-download its
+  own writes. Otherwise it keeps the old one and pulls at the next start.
 - A question an exercise needs but the device lacks is fetched when the child starts.
 - "Tải lại toàn bộ câu hỏi" re-downloads the whole bank.
 

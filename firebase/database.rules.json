@@ -8,7 +8,7 @@
         "meta": {
           "quizVersion": {
             ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
-            ".validate": "newData.val() === now"
+            ".validate": "newData.isNumber()"
           }
         },
         "profiles": {
