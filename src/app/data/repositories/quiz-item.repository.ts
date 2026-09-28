@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { db } from '../db';
 import { QuizDifficulty, QuizItem, QuizItemType, Subject } from '../../shared/models/domain.model';
-import { BaseRepository } from './base-repository';
+import { QuizBankRepository } from './base-repository';
+import { RemoteStore } from '../../remote/remote-store';
 
 export interface QuizItemFilter {
   subject?: Subject;
@@ -22,9 +23,9 @@ export interface QuizItemFilter {
  * story needs (including US1's read-only attempt resolution).
  */
 @Injectable({ providedIn: 'root' })
-export class QuizItemRepository extends BaseRepository<QuizItem> {
-  constructor() {
-    super(db.quizItems, 'QuizItem');
+export class QuizItemRepository extends QuizBankRepository<QuizItem> {
+  constructor(remote: RemoteStore) {
+    super(db.quizItems, remote, 'questions');
   }
 
   async search(filter: QuizItemFilter): Promise<QuizItem[]> {
@@ -61,10 +62,7 @@ export class QuizItemRepository extends BaseRepository<QuizItem> {
 
   /** Updates the shared title/text copy on every sub-question of a passage at once, keeping them from drifting apart. */
   async retextPassage(passageId: string, title: string, text: string): Promise<void> {
-    const siblings = await this.byPassage(passageId);
-    for (const item of siblings) {
-      if (!item.passage) continue;
-      await this.update(item.id, { passage: { ...item.passage, title, text } });
-    }
+    const siblings = (await this.byPassage(passageId)).filter((item) => item.passage);
+    await this.updateMany(siblings.map((item) => ({ id: item.id, patch: { passage: { ...item.passage!, title, text } } })));
   }
 }

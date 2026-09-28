@@ -46,7 +46,7 @@ export class ExerciseIntroComponent implements OnInit {
     const assignmentId = this.route.snapshot.paramMap.get('assignmentId');
     const exerciseId = this.route.snapshot.paramMap.get('exerciseId');
     if (assignmentId) {
-      this.assignment = await this.assignments.getById(assignmentId);
+      this.assignment = await this.assignments.getById(child.id, assignmentId);
       if (this.assignment) {
         this.exercise.set(this.assignment.exerciseSnapshot);
         this.triesLeft.set(await this.play.triesLeft(this.assignment));

@@ -1,7 +1,7 @@
 import { Table } from 'dexie';
 import { SyncEnvelope } from '../../shared/models/sync.model';
-import { JsonRecord, SequencedSheet } from '../../sync/protocol';
-import { enqueue } from '../outbox';
+import { RemoteStore, SERVER_TIME } from '../../remote/remote-store';
+import { decode, encode, StoredNode } from '../../remote/record-codec';
 
 export function currentDeviceId(): string {
   const key = 'quiz-app.deviceId';
@@ -13,16 +13,20 @@ export function currentDeviceId(): string {
   return id;
 }
 
+/** Questions/categories written to Firebase per request (one atomic update each). */
+const WRITE_CHUNK = 200;
+
 /**
- * CRUD for the records of a sequenced sheet (Profile, Category, QuizItem,
- * Exercise — plan §3.8). Every write is stored locally and, with sync on,
- * queued as a WRITE_RECORD that overwrites the whole record on Google; Google
- * answers with the record's new updateSequence (see SyncWriterService).
+ * The quiz bank (questions, categories — specs/003-firebase/plan.md §3):
+ * cached on the device for fast search and play, and written through to
+ * Firebase. Every write goes online first, together with meta/quizVersion
+ * (so other devices know to pull), then into the local cache.
  */
-export class BaseRepository<T extends SyncEnvelope> {
+export class QuizBankRepository<T extends SyncEnvelope> {
   constructor(
     protected readonly table: Table<T, string>,
-    protected readonly sheet: SequencedSheet,
+    protected readonly remote: RemoteStore,
+    protected readonly path: 'questions' | 'categories',
   ) {}
 
   async getById(id: string): Promise<T | undefined> {
@@ -34,35 +38,112 @@ export class BaseRepository<T extends SyncEnvelope> {
   }
 
   async create(entity: T): Promise<T> {
-    await this.table.add(entity);
-    await this.upload(entity);
+    await this.write([entity]);
     return entity;
   }
 
-  /** A default the app seeds on every device: goes to Google only if Google doesn't have it (never overwriting another device's edit). */
-  async createDefault(entity: T): Promise<T> {
-    await this.table.add(entity);
-    await this.upload(entity, true);
-    return entity;
+  /** Many records (an import): written in atomic chunks. */
+  async createMany(entities: T[]): Promise<void> {
+    for (let i = 0; i < entities.length; i += WRITE_CHUNK) await this.write(entities.slice(i, i + WRITE_CHUNK));
+  }
+
+  /** A default the app seeds on every device: written only if Firebase doesn't have it yet. */
+  async createDefault(entity: T): Promise<void> {
+    const existing = decode<T>(await this.remote.get<StoredNode>(`${this.path}/${entity.id}`));
+    if (existing) await this.table.put(existing);
+    else await this.write([entity]);
   }
 
   async update(id: string, patch: Partial<T>): Promise<void> {
-    await this.table.where(':id').equals(id).modify((record: T) => {
-      Object.assign(record, patch);
-      record.updatedAt = new Date().toISOString();
-      record.updatedByDeviceId = currentDeviceId();
-    });
     const record = await this.table.get(id);
-    if (record) await this.upload(record);
+    if (!record) return;
+    await this.write([{ ...record, ...patch, updatedAt: new Date().toISOString(), updatedByDeviceId: currentDeviceId() }]);
   }
 
-  /** Soft-delete: only sets deletedAt, so other devices learn about it on their next pull. */
+  /** Several records changed together (one atomic update). */
+  async updateMany(changes: Array<{ id: string; patch: Partial<T> }>): Promise<void> {
+    const records: T[] = [];
+    for (const { id, patch } of changes) {
+      const record = await this.table.get(id);
+      if (record) records.push({ ...record, ...patch, updatedAt: new Date().toISOString(), updatedByDeviceId: currentDeviceId() });
+    }
+    for (let i = 0; i < records.length; i += WRITE_CHUNK) await this.write(records.slice(i, i + WRITE_CHUNK));
+  }
+
+  /** Soft-delete: only sets deletedAt, so devices caching the bank learn about it on their next pull. */
   async softDelete(id: string): Promise<void> {
     await this.update(id, { deletedAt: new Date().toISOString() } as Partial<T>);
   }
 
-  /** Queues the record's current state for Google (a no-op with sync off). */
-  protected async upload(record: T, onlyIfAbsent = false): Promise<void> {
-    await enqueue({ op: 'WRITE_RECORD', sheet: this.sheet, record: record as unknown as JsonRecord, onlyIfAbsent });
+  private buffer?: Map<string, T>;
+
+  /**
+   * Runs `work` with writes collected instead of sent one by one (an import of
+   * many questions), then sends them in atomic chunks. Records written inside
+   * are readable from the local copy only after it ends.
+   */
+  async inBatch<R>(work: () => Promise<R>): Promise<R> {
+    if (this.buffer) return work();
+    this.buffer = new Map();
+    try {
+      const result = await work();
+      const records = [...this.buffer.values()];
+      this.buffer = undefined;
+      for (let i = 0; i < records.length; i += WRITE_CHUNK) await this.write(records.slice(i, i + WRITE_CHUNK));
+      return result;
+    } finally {
+      this.buffer = undefined;
+    }
+  }
+
+  protected async write(records: T[]): Promise<void> {
+    if (records.length === 0) return;
+    if (this.buffer) {
+      for (const record of records) this.buffer.set(record.id, record);
+      return;
+    }
+    const values: Record<string, unknown> = { 'meta/quizVersion': SERVER_TIME };
+    for (const record of records) values[`${this.path}/${record.id}`] = encode(record);
+    await this.remote.update(values);
+    await this.table.bulkPut(records);
+  }
+}
+
+/**
+ * Records that live only in Firebase (exercises, profiles): read and written
+ * online, nothing kept on the device.
+ */
+export class RemoteRecordRepository<T extends SyncEnvelope> {
+  constructor(
+    protected readonly remote: RemoteStore,
+    protected readonly path: 'exercises' | 'profiles',
+  ) {}
+
+  /** Everything, deleted ones included. */
+  async all(): Promise<T[]> {
+    return (await this.remote.list<StoredNode>(this.path)).map((c) => decode<T>(c.value)).filter((r): r is T => !!r);
+  }
+
+  async list(): Promise<T[]> {
+    return (await this.all()).filter((r) => !r.deletedAt);
+  }
+
+  async getById(id: string): Promise<T | undefined> {
+    return decode<T>(await this.remote.get<StoredNode>(`${this.path}/${id}`));
+  }
+
+  async create(entity: T): Promise<T> {
+    await this.remote.update({ [`${this.path}/${entity.id}`]: encode(entity) });
+    return entity;
+  }
+
+  async update(id: string, patch: Partial<T>): Promise<void> {
+    const record = await this.getById(id);
+    if (!record) return;
+    await this.remote.update({ [`${this.path}/${id}`]: encode({ ...record, ...patch, updatedByDeviceId: currentDeviceId() }) });
+  }
+
+  async softDelete(id: string): Promise<void> {
+    await this.update(id, { deletedAt: new Date().toISOString() } as Partial<T>);
   }
 }

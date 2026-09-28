@@ -1,31 +1,18 @@
 import { Injectable } from '@angular/core';
-import Dexie from 'dexie';
 import { db } from '../../../data/db';
-import { seedFixedProfiles } from '../../../data/seed';
+import { QuizBankSyncService } from '../../../remote/quiz-bank-sync.service';
 
 /**
- * Reset-all-data flow (FR-053): the parent-login + warning + second
- * confirmation gate is enforced by the calling UI (backup-restore screen);
- * this service clears this device and re-seeds the profiles. Google is not
- * touched.
+ * "Xóa dữ liệu trên máy này": clears what this device keeps — its copy of the
+ * quiz bank and its settings — and downloads the quiz bank again. The
+ * family's data on the server is not touched.
  */
 @Injectable({ providedIn: 'root' })
 export class ResetService {
+  constructor(private readonly quizBank: QuizBankSyncService) {}
+
   async resetAllData(): Promise<void> {
-    const tables = [
-      db.profiles,
-      db.categories,
-      db.quizItems,
-      db.exercises,
-      db.assignments,
-      db.sessions,
-      db.results,
-      db.historyResults,
-      db.pointUsages,
-      db.outbox,
-    ];
-    await db.transaction('rw', tables, () => tables.reduce((chain, table) => chain.then(() => table.clear()), Dexie.Promise.resolve()));
-    await db.appSettings.update('singleton', { syncHash: undefined });
-    await seedFixedProfiles();
+    await db.appSettings.clear();
+    await this.quizBank.reloadAll();
   }
 }

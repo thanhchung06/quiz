@@ -4,6 +4,7 @@ import { ProfileRepository } from '../../../data/repositories/profile.repository
 import { PointUsageRepository } from '../../../data/repositories/point-usage.repository';
 import { ResultRepository } from '../../../data/repositories/result.repository';
 import { PointsService } from '../services/points.service';
+import { PointsRepository } from '../../../data/repositories/points.repository';
 import { Profile, PointUsage } from '../../../shared/models/domain.model';
 import { IconComponent } from '../../../shared/icon/icon.component';
 
@@ -11,7 +12,7 @@ import { IconComponent } from '../../../shared/icon/icon.component';
  * Parent screen for trading a child's points for a real-world item (plan
  * §3.6–3.7): the balance is counted history points minus point usage; each
  * use is an append-only PointUsage record (the history below), after which
- * the child's total is recomputed and stored in their profile.
+ * points go down in the same atomic write; "Tính lại điểm" rebuilds them from the records.
  */
 @Component({
   selector: 'app-redeem-points',
@@ -32,7 +33,10 @@ export class RedeemPointsComponent {
   readonly errorMessage = signal('');
   readonly successMessage = signal('');
 
-  readonly balance = computed(() => this.earnedPoints() - this.redeemedPoints());
+  /** The stored points (kept up to date by atomic +/−). */
+  readonly balance = signal(0);
+  /** What history − point usage adds up to; differs from balance only if something went wrong. */
+  readonly fromRecords = computed(() => this.earnedPoints() - this.redeemedPoints());
 
   readonly selectedChildName = computed(() => this.children().find((c) => c.id === this.selectedChildId())?.displayName ?? '');
 
@@ -41,6 +45,7 @@ export class RedeemPointsComponent {
     private readonly usages: PointUsageRepository,
     private readonly results: ResultRepository,
     private readonly points: PointsService,
+    private readonly pointsRepo: PointsRepository,
   ) {
     void this.load();
   }
@@ -73,6 +78,16 @@ export class RedeemPointsComponent {
     const usages = await this.usages.listForChild(profileId);
     this.redeemedPoints.set(usages.reduce((sum, u) => sum + u.points, 0));
     this.history.set(usages);
+    this.balance.set(await this.pointsRepo.get(profileId));
+  }
+
+  /** "Tính lại điểm": points from the records (only needed if they ever disagree). */
+  async recompute(): Promise<void> {
+    const profileId = this.selectedChildId();
+    if (!profileId) return;
+    const total = await this.points.recompute(profileId);
+    this.successMessage.set(`Đã tính lại: ${this.selectedChildName()} có ${total} điểm.`);
+    await this.loadBalanceAndHistory();
   }
 
   async submitRedemption(): Promise<void> {
@@ -95,7 +110,7 @@ export class RedeemPointsComponent {
     }
 
     await this.usages.use(profileId, points, this.note().trim() || undefined);
-    await this.points.recompute(profileId).catch(() => undefined);
+
     this.successMessage.set(`Đã trừ ${points} điểm của ${this.selectedChildName()}.`);
     this.pointsToRedeem.set('');
     this.note.set('');

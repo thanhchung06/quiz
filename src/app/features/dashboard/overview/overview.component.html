@@ -36,7 +36,7 @@
     <ul class="activity-list">
       @for (a of o.recentActivity; track a.id) {
         <li>
-          <a [routerLink]="['/dashboard/result', a.id]">
+          <a [routerLink]="['/dashboard/result', a.childId, a.id]">
             <span class="date">{{ a.attemptedAt | slice: 0 : 10 }}</span>
             <span class="status">{{ a.exerciseTitle }} · {{ statusLabel[a.status] ?? a.status }}</span>
             <span class="score">{{ a.stars }}⭐ {{ a.counted ? '+' + a.pointsEarned : '0' }} điểm{{ a.late ? ' · trễ hạn' : '' }}</span>

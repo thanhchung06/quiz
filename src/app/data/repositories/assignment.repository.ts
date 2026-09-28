@@ -1,27 +1,35 @@
 import { Injectable } from '@angular/core';
-import { db } from '../db';
-import { enqueue } from '../outbox';
 import { Assignment, Exercise } from '../../shared/models/domain.model';
-import { JsonRecord } from '../../sync/protocol';
+import { increment, RemoteStore } from '../../remote/remote-store';
+import { decode, encode, StoredNode } from '../../remote/record-codec';
 
 /**
- * Assignments (plan §3.2): on Google one row per child holding that child's
- * list; changed only by small operations — the parent adds or removes, the
- * child removes (done) or raises the try count — never by rewriting the list.
+ * Assignments (specs/003 §2): assignments/{childId}/{id}, one row each. The
+ * parent adds or removes; the child's device removes it when done and raises
+ * the try count (an atomic +1).
  */
 @Injectable({ providedIn: 'root' })
 export class AssignmentRepository {
-  async getById(id: string): Promise<Assignment | undefined> {
-    return db.assignments.get(id);
+  constructor(private readonly remote: RemoteStore) {}
+
+  async getById(childId: string, id: string): Promise<Assignment | undefined> {
+    return this.read(await this.remote.get<StoredNode>(`assignments/${childId}/${id}`));
   }
 
   async listForChild(childId: string): Promise<Assignment[]> {
-    const all = await db.assignments.where('childId').equals(childId).toArray();
-    return all.sort((a, b) => a.assignedAt.localeCompare(b.assignedAt));
+    const rows = await this.remote.list<StoredNode>(`assignments/${childId}`);
+    return rows
+      .map((row) => this.read(row.value))
+      .filter((a): a is Assignment => !!a)
+      .sort((a, b) => a.assignedAt.localeCompare(b.assignedAt));
   }
 
   async listAll(): Promise<Assignment[]> {
-    return (await db.assignments.toArray()).sort((a, b) => a.assignedAt.localeCompare(b.assignedAt));
+    const children = await this.remote.list<Record<string, StoredNode>>('assignments');
+    return children
+      .flatMap((child) => Object.values(child.value).map((node) => this.read(node)))
+      .filter((a): a is Assignment => !!a)
+      .sort((a, b) => a.assignedAt.localeCompare(b.assignedAt));
   }
 
   /** Parent: gives `exercise` (as it is now) to a child. */
@@ -36,20 +44,25 @@ export class AssignmentRepository {
       deadline: options.deadline,
       tries: 0,
     };
-    await db.assignments.add(assignment);
-    await enqueue({ op: 'ADD_ASSIGNMENT', childId, assignment: assignment as unknown as JsonRecord });
+    const { tries, ...rest } = assignment;
+    await this.remote.update({ [`assignments/${childId}/${assignment.id}`]: encode(rest, 'updatedAt', { tries }) });
     return assignment;
   }
 
-  /** Parent (take back) or child (no tries left / passed). Removing twice is harmless. */
+  /** Parent (take back). The child's removal is part of the finish (ResultRepository.recordFinish). */
   async remove(assignment: Pick<Assignment, 'id' | 'childId'>): Promise<void> {
-    await db.assignments.delete(assignment.id);
-    await enqueue({ op: 'REMOVE_ASSIGNMENT', childId: assignment.childId, assignmentId: assignment.id });
+    await this.remote.update({ [`assignments/${assignment.childId}/${assignment.id}`]: null });
   }
 
-  /** Child, when starting a try: Google keeps the larger count, so a repeat is harmless. */
-  async setTries(assignment: Pick<Assignment, 'id' | 'childId'>, tries: number): Promise<void> {
-    await db.assignments.update(assignment.id, { tries });
-    await enqueue({ op: 'SET_TRY', childId: assignment.childId, assignmentId: assignment.id, tries });
+  /** Child, when starting a try: an atomic +1, so two devices never count one try. */
+  async addTry(assignment: Pick<Assignment, 'id' | 'childId'>): Promise<void> {
+    await this.remote.update({ [`assignments/${assignment.childId}/${assignment.id}/tries`]: increment(1) });
+  }
+
+  private read(node: StoredNode | undefined): Assignment | undefined {
+    const assignment = decode<Assignment & { updatedAt?: string }>(node);
+    if (!assignment) return undefined;
+    const { updatedAt: _u, ...rest } = assignment;
+    return { ...rest, tries: typeof node?.['tries'] === 'number' ? (node['tries'] as number) : 0 };
   }
 }

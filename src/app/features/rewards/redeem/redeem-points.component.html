@@ -20,6 +20,12 @@
       <p class="balance-number">{{ balance() }}</p>
       <p class="balance-label">điểm khả dụng của {{ selectedChildName() }}</p>
       <p class="balance-detail">Đã kiếm được {{ earnedPoints() }} · Đã đổi {{ redeemedPoints() }}</p>
+      @if (fromRecords() !== balance()) {
+        <p class="balance-detail">
+          Theo lịch sử: {{ fromRecords() }} điểm.
+          <button type="button" (click)="recompute()"><app-icon name="refresh" />Tính lại điểm</button>
+        </p>
+      }
     </section>
 
     <form class="redeem-form" (ngSubmit)="submitRedemption()">

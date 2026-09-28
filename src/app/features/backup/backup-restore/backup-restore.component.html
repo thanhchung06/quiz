@@ -13,7 +13,7 @@
   </section>
 
   <section>
-    <h2><app-icon name="restore_page" />Khôi phục từ bản sao lưu</h2>
+    <h2><app-icon name="restore_page" />Nhập từ bản sao lưu</h2>
     <label class="file-picker">
       <app-icon name="folder_open" />
       <span>Chọn tệp bản sao lưu (.json)</span>
@@ -34,23 +34,23 @@
         </ul>
         <button type="button" [disabled]="busy()" (click)="confirmImport()">
           <app-icon name="check_circle" />
-          Xác nhận khôi phục (sẽ thay thế dữ liệu hiện tại)
+          Xác nhận nhập lên máy chủ (thêm vào dữ liệu hiện có)
         </button>
       }
     }
   </section>
 
   <section class="danger">
-    <h2><app-icon name="warning" />Đặt lại toàn bộ dữ liệu</h2>
+    <h2><app-icon name="warning" />Xóa dữ liệu trên máy này</h2>
     @if (resetStep() === 0) {
-      <button type="button" (click)="startReset()"><app-icon name="delete" />Đặt lại dữ liệu…</button>
+      <button type="button" (click)="startReset()"><app-icon name="delete" />Xóa dữ liệu trên máy này…</button>
     } @else {
-      <p class="warning"><app-icon name="warning" />Thao tác này sẽ xóa toàn bộ dữ liệu cục bộ. Nên sao lưu trước khi tiếp tục.</p>
+      <p class="warning"><app-icon name="warning" />Xóa bản sao ngân hàng câu hỏi và cài đặt trên máy này rồi tải lại từ máy chủ. Dữ liệu trên máy chủ không bị ảnh hưởng.</p>
       <div class="danger-actions">
         <button type="button" (click)="cancelReset()"><app-icon name="close" />Hủy</button>
         <button type="button" class="confirm-danger" (click)="confirmReset()">
           <app-icon name="delete" />
-          Tôi chắc chắn, xóa toàn bộ
+          Xóa và tải lại
         </button>
       </div>
     }

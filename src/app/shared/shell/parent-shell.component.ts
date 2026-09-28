@@ -17,7 +17,7 @@ const NAV_ITEMS: NavItem[] = [
   { path: '/exercise-library', label: 'Bài tập', icon: 'book' },
   { path: '/schedule', label: 'Giao bài', icon: 'calendar_month' },
   { path: '/redeem-points', label: 'Đổi điểm thưởng', icon: 'star' },
-  { path: '/sync', label: 'Đồng bộ', icon: 'sync' },
+  { path: '/sync', label: 'Kết nối', icon: 'sync' },
   { path: '/backup', label: 'Sao lưu', icon: 'backup' },
   { path: '/settings', label: 'Cài đặt', icon: 'settings' },
 ];

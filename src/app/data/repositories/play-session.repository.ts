@@ -1,32 +1,43 @@
 import { Injectable } from '@angular/core';
-import { db } from '../db';
-import { enqueue } from '../outbox';
 import { PlaySession, SessionProgress } from '../../shared/models/domain.model';
-import { JsonRecord } from '../../sync/protocol';
+import { RemoteStore, SERVER_TIME } from '../../remote/remote-store';
+import { decode, encode, StoredNode } from '../../remote/record-codec';
+
+interface StoredSession extends StoredNode {
+  /** JSON of { sessionId, progress } — kept apart so each answer only sends the progress. */
+  progress?: string;
+}
 
 /**
- * The exercise a child is doing now (plan §3.3), one per child. The question
- * snapshot goes to Google once, at start; after that only progress.
+ * The exercise a child is doing now (sessions/{childId}, one per child). The
+ * questions go up once, at start; after that only the progress. A progress
+ * write that arrives late for a session that already ended (or was replaced)
+ * carries the old session id and is ignored when read.
  */
 @Injectable({ providedIn: 'root' })
 export class PlaySessionRepository {
+  constructor(private readonly remote: RemoteStore) {}
+
   async forChild(childId: string): Promise<PlaySession | undefined> {
-    return db.sessions.get(childId);
+    const node = await this.remote.get<StoredSession>(`sessions/${childId}`);
+    const session = decode<PlaySession & { updatedAt?: string; progress?: unknown }>(node ? { json: node.json, updatedAt: node.updatedAt } : undefined);
+    if (!session) return undefined;
+    const { updatedAt: _u, ...rest } = session;
+    const stored = node?.progress ? (JSON.parse(node.progress) as { sessionId: string; progress: SessionProgress }) : undefined;
+    return { ...rest, progress: stored && stored.sessionId === session.id ? stored.progress : session.progress };
   }
 
   async start(session: PlaySession): Promise<void> {
-    await db.sessions.put(session);
-    await enqueue({ op: 'START_SESSION', childId: session.childId, session: session as unknown as JsonRecord });
+    await this.remote.update({
+      [`sessions/${session.childId}`]: encode(session, 'updatedAt', { progress: JSON.stringify({ sessionId: session.id, progress: session.progress }) }),
+    });
   }
 
-  /** Saves progress locally; `upload` also sends it (on each answer — the running clock is only saved locally). */
-  async saveProgress(session: PlaySession, progress: SessionProgress, upload: boolean): Promise<void> {
-    await db.sessions.update(session.childId, { progress });
-    if (upload) await enqueue({ op: 'UPDATE_PROGRESS', childId: session.childId, sessionId: session.id, progress: progress as unknown as Record<string, unknown> });
-  }
-
-  /** Local removal only — on Google the finish request ends it (see ResultRepository.recordFinish). */
-  async clearLocal(childId: string): Promise<void> {
-    await db.sessions.delete(childId);
+  /** On each answer, and every few seconds for the running clock. */
+  async saveProgress(session: PlaySession, progress: SessionProgress): Promise<void> {
+    await this.remote.update({
+      [`sessions/${session.childId}/progress`]: JSON.stringify({ sessionId: session.id, progress }),
+      [`sessions/${session.childId}/updatedAt`]: SERVER_TIME,
+    });
   }
 }

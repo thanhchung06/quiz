@@ -5,7 +5,7 @@ import { ExerciseRepository } from '../../../data/repositories/exercise.reposito
 import { AssignmentRepository } from '../../../data/repositories/assignment.repository';
 import { PlaySessionRepository } from '../../../data/repositories/play-session.repository';
 import { ResultRepository } from '../../../data/repositories/result.repository';
-import { ProfileRepository } from '../../../data/repositories/profile.repository';
+import { PointsRepository } from '../../../data/repositories/points.repository';
 import { PlayService } from '../services/play.service';
 import { Assignment, Exercise, HistoryResult, PlaySession } from '../../../shared/models/domain.model';
 import { vi } from '../../../shared/i18n/vi';
@@ -47,7 +47,7 @@ export class ChildHomeComponent implements OnInit {
 
   constructor(
     private readonly session: SessionService,
-    private readonly profiles: ProfileRepository,
+    private readonly points: PointsRepository,
     private readonly exercises: ExerciseRepository,
     private readonly assignments: AssignmentRepository,
     private readonly sessions: PlaySessionRepository,
@@ -76,8 +76,7 @@ export class ChildHomeComponent implements OnInit {
     this.cards.set(cards);
     this.practice.set((await this.exercises.list()).filter((e) => e.allowPractice && e.status === 'active'));
 
-    const profile = await this.profiles.getById(child.id);
-    this.totalPoints.set(profile?.totalPoints ?? 0);
+    this.totalPoints.set(await this.points.get(child.id));
     const history = await this.results.historyForChild(child.id);
     this.totalStars.set(history.reduce((sum, h) => sum + h.stars, 0));
     const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -105,7 +104,7 @@ export class ChildHomeComponent implements OnInit {
   }
 
   async viewResult(history: HistoryResult): Promise<void> {
-    const result = await this.results.getById(history.id);
+    const result = await this.results.getById(history.childId, history.id);
     if (!result) return;
     this.play.viewResult(result);
     await this.router.navigateByUrl('/exercise/result');

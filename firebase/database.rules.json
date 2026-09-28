@@ -1,0 +1,92 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "families": {
+      "$family": {
+        ".read": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+        "meta": {
+          "quizVersion": {
+            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+            ".validate": "newData.val() === now"
+          }
+        },
+        "profiles": {
+          "$id": {
+            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+            ".validate": "newData.child('updatedAt').val() === now"
+          }
+        },
+        "points": {
+          "$child": {
+            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+            ".validate": "newData.isNumber()"
+          }
+        },
+        "categories": {
+          ".indexOn": ["updatedAt"],
+          "$id": {
+            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+            ".validate": "newData.child('updatedAt').val() === now"
+          }
+        },
+        "questions": {
+          ".indexOn": ["updatedAt"],
+          "$id": {
+            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+            ".validate": "newData.child('updatedAt').val() === now"
+          }
+        },
+        "exercises": {
+          "$id": {
+            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+            ".validate": "newData.child('updatedAt').val() === now"
+          }
+        },
+        "assignments": {
+          "$child": {
+            "$id": {
+              ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+              ".validate": "newData.hasChildren(['updatedAt', 'tries'])",
+              "updatedAt": { ".validate": "newData.val() === now || newData.val() === data.val()" },
+              "tries": { ".validate": "newData.isNumber()" }
+            }
+          }
+        },
+        "sessions": {
+          "$child": {
+            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
+            ".validate": "newData.child('updatedAt').val() === now"
+          }
+        },
+        "results": {
+          "$child": {
+            ".indexOn": ["createdAt"],
+            "$id": {
+              ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4' && (!data.exists() || !newData.exists())",
+              ".validate": "newData.child('createdAt').val() === now"
+            }
+          }
+        },
+        "history": {
+          "$child": {
+            ".indexOn": ["createdAt"],
+            "$id": {
+              ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4' && !data.exists()",
+              ".validate": "newData.child('createdAt').val() === now"
+            }
+          }
+        },
+        "pointUsage": {
+          "$child": {
+            ".indexOn": ["createdAt"],
+            "$id": {
+              ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4' && !data.exists()",
+              ".validate": "newData.child('createdAt').val() === now"
+            }
+          }
+        }
+      }
+    }
+  }
+}

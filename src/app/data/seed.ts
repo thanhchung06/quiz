@@ -1,4 +1,3 @@
-import { db } from './db';
 import { newSyncEnvelope } from '../shared/models/sync.model';
 import { Profile } from '../shared/models/domain.model';
 import { currentDeviceId } from './repositories/base-repository';
@@ -12,12 +11,11 @@ export const PARENT_ID = 'profile-parent';
  * Seeds exactly the 3 fixed profiles (FR-001, spec Assumptions) on first
  * launch. Names and passwords are the family's real, fixed values (hard coded
  * per explicit request) rather than placeholders — the parent can change them
- * later from Settings. Idempotent: does nothing if profiles already exist.
- * With sync on they go to Google only if Google doesn't have them yet; the
- * app-start pull then brings Google's copies (the same ids) down.
+ * later from Settings. Written to Firebase only if the family has no such
+ * profile yet (runs at every app start; the ids are fixed).
  */
-export async function seedFixedProfiles(profiles = new ProfileRepository()): Promise<void> {
-  if ((await db.profiles.count()) > 0) return;
+export async function seedFixedProfiles(profiles: ProfileRepository): Promise<void> {
+  if ((await profiles.all()).length > 0) return;
 
   const deviceId = currentDeviceId();
   const defaults: Array<Pick<Profile, 'id' | 'role' | 'displayName' | 'avatar' | 'password'>> = [
@@ -27,12 +25,11 @@ export async function seedFixedProfiles(profiles = new ProfileRepository()): Pro
   ];
 
   for (const d of defaults) {
-    await profiles.createIfAbsentOnGoogle({
+    await profiles.createIfAbsent({
       ...newSyncEnvelope(d.id, deviceId),
       ...d,
       preferences: { audioEnabled: true, reducedMotion: false, feedbackDelayMs: 1200 },
       createdAt: new Date().toISOString(),
-      totalPoints: 0,
     });
   }
 }

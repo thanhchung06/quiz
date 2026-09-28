@@ -64,7 +64,12 @@ export class ImportCommitService {
     private readonly validator: PackageValidatorService,
   ) {}
 
+  /** Writes the import in atomic chunks rather than one request per question (see QuizBankRepository.inBatch). */
   async commit(pkg: QuizPackage, validIndexes: number[], options: CommitOptions): Promise<CommitResult> {
+    return this.quizItems.inBatch(() => this.commitItems(pkg, validIndexes, options));
+  }
+
+  private async commitItems(pkg: QuizPackage, validIndexes: number[], options: CommitOptions): Promise<CommitResult> {
     const importBatchId = crypto.randomUUID();
     const deviceId = currentDeviceId();
     const savedIds: string[] = [];
@@ -212,22 +217,16 @@ export class ImportCommitService {
     return undefined;
   }
 
-  /** Undo the most recent import batch, only if none of its items has been used in an attempt (FR-030). */
+  /**
+   * Undo the most recent import batch (FR-030). Results and ongoing plays keep
+   * their own copies of the questions, so removing them from the bank never
+   * changes those.
+   */
   async undoBatch(importBatchId: string): Promise<{ undone: boolean; reason?: string }> {
     const all = await this.quizItems.list();
     const batchItems = all.filter((i) => i.importBatchId === importBatchId);
-    const batchItemIds = new Set(batchItems.map((i) => i.id));
-
-    const anyUsed =
-      (await db.results.filter((r) => r.itemOrder.some((id) => batchItemIds.has(id))).first()) ??
-      (await db.sessions.filter((s) => s.itemOrder.some((id) => batchItemIds.has(id))).first());
-    if (anyUsed) {
-      return { undone: false, reason: 'One or more items from this batch have already been used in an attempt.' };
-    }
-
-    for (const item of batchItems) {
-      await this.quizItems.softDelete(item.id);
-    }
+    const deletedAt = new Date().toISOString();
+    await this.quizItems.updateMany(batchItems.map((item) => ({ id: item.id, patch: { deletedAt } })));
     return { undone: true };
   }
 }

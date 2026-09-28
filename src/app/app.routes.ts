@@ -53,7 +53,7 @@ export const routes: Routes = [
           import('./features/dashboard/overview/overview.component').then((m) => m.OverviewComponent),
       },
       {
-        path: 'dashboard/result/:resultId',
+        path: 'dashboard/result/:childId/:resultId',
         loadComponent: () =>
           import('./features/dashboard/result-detail/result-detail.component').then((m) => m.ResultDetailComponent),
       },

@@ -289,7 +289,7 @@ export class QuizBankListComponent {
     // A duplicated passage sub-question becomes a standalone item rather than
     // silently claiming its sibling's shared passageId/order — editing a
     // whole passage's question set is done from the passage editor instead.
-    const copy: QuizItem = { ...item, id: crypto.randomUUID(), updateSequence: undefined, passage: undefined };
+    const copy: QuizItem = { ...item, id: crypto.randomUUID(), passage: undefined };
     await this.quizItems.create(copy);
     await this.reload();
     this.selectedItemId.set(copy.id);

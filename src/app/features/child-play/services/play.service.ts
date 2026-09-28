@@ -13,7 +13,6 @@ import {
 import { AssignmentRepository } from '../../../data/repositories/assignment.repository';
 import { PlaySessionRepository } from '../../../data/repositories/play-session.repository';
 import { ResultRepository } from '../../../data/repositories/result.repository';
-import { PointsService } from '../../rewards/services/points.service';
 import { AttemptResolverService } from './attempt-resolver.service';
 import { evaluateAnswer } from './answer-evaluator';
 import { outcomeOf } from './scoring.service';
@@ -73,7 +72,6 @@ export class PlayService {
     private readonly sessions: PlaySessionRepository,
     private readonly assignments: AssignmentRepository,
     private readonly results: ResultRepository,
-    private readonly points: PointsService,
   ) {}
 
   // --- Can the child play? ------------------------------------------------------
@@ -83,7 +81,7 @@ export class PlayService {
     const exercise = assignment.exerciseSnapshot;
     if (exercise.isDaily) {
       const today = localDateOf(new Date().toISOString());
-      const history = await this.results.historyForAssignment(assignment.id);
+      const history = await this.results.historyForAssignment(assignment.childId, assignment.id);
       return history.some((h) => localDateOf(h.attemptedAt) === today) ? 0 : 'unlimited';
     }
     const allowed = triesAllowed(exercise);
@@ -98,7 +96,7 @@ export class PlayService {
 
   async startAssignment(childId: string, assignment: Assignment): Promise<void> {
     const tryNumber = assignment.tries + 1;
-    await this.assignments.setTries(assignment, tryNumber);
+    await this.assignments.addTry(assignment);
     await this.start(childId, assignment.exerciseSnapshot, tryNumber, true, assignment.id);
   }
 
@@ -177,11 +175,11 @@ export class PlayService {
 
   // --- Clock --------------------------------------------------------------------
 
-  /** Stores the running clock on this device (not uploaded — that happens with the next answer). */
+  /** Stores the running clock (the app calls it every few seconds and when hidden), so another device resumes with the right time left. */
   async saveClock(): Promise<void> {
     const session = this._session();
     if (!session || this._status() !== 'inProgress') return;
-    await this.sessions.saveProgress(session, this.withClock(session.progress), false);
+    await this.sessions.saveProgress(session, this.withClock(session.progress));
   }
 
   private withClock(progress: SessionProgress): SessionProgress {
@@ -268,7 +266,7 @@ export class PlayService {
     } else if (nextIndex >= session.itemOrder.length) {
       await this.finish('completed');
     } else {
-      await this.sessions.saveProgress(updated, progress, true);
+      await this.sessions.saveProgress(updated, progress);
     }
   }
 
@@ -282,7 +280,7 @@ export class PlayService {
     const correctCount = answers.filter((a) => a.isCorrect).length;
     const total = session.itemOrder.length;
     const outcome = outcomeOf(progress.score, correctCount, total, session.exerciseSnapshot.passingPercent, status === 'abandoned');
-    const assignment = session.assignmentId ? await this.assignments.getById(session.assignmentId) : undefined;
+    const assignment = session.assignmentId ? await this.assignments.getById(session.childId, session.assignmentId) : undefined;
     const now = new Date().toISOString();
 
     const summary: ResultSummary = {
@@ -327,7 +325,5 @@ export class PlayService {
     this._session.set({ ...session, progress });
     this._result.set(result);
     this._status.set(status);
-
-    if (summary.counted) void this.points.recompute(session.childId).catch(() => undefined);
   }
 }

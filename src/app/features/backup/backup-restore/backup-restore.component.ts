@@ -4,8 +4,6 @@ import { BackupExportService } from '../services/export.service';
 import { BackupImportService, ImportSummary } from '../services/import.service';
 import { ResetService } from '../services/reset.service';
 import { BackupEnvelope, LegacyBackupEnvelope } from '../services/backup-format';
-import { ManualSyncService } from '../../../sync/manual-sync.service';
-import { syncEnabled } from '../../../data/outbox';
 import { SessionService } from '../../../core/auth/session.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 
@@ -29,7 +27,6 @@ export class BackupRestoreComponent {
     private readonly importService: BackupImportService,
     private readonly resetService: ResetService,
     private readonly session: SessionService,
-    private readonly manualSync: ManualSyncService,
   ) {}
 
   async exportBackup(): Promise<void> {
@@ -51,21 +48,12 @@ export class BackupRestoreComponent {
     if (!envelope) return;
     this.busy.set(true);
     try {
-      await this.importService.restore(envelope);
+      await this.importService.restore(envelope, (done, total) => this.message.set(`Đang ghi lên máy chủ… ${done}/${total}`));
       this.pendingImport.set(undefined);
       this.importSummary.set(undefined);
-      if (await syncEnabled()) {
-        // Plan §6: with sync on, the imported data also goes to Google.
-        this.message.set('Đã khôi phục dữ liệu. Đang gửi lên Google…');
-        const summary = await this.manualSync.run({ direction: 'push', skipQuestions: false, addedQuestionsOnly: false });
-        this.message.set(
-          summary.ok
-            ? `Đã khôi phục dữ liệu và gửi lên Google (${summary.sent} mục).`
-            : `Đã khôi phục dữ liệu trên máy này, nhưng chưa gửi hết lên Google: ${summary.error} — dùng "Đồng bộ ngay" (Máy này → Google) để gửi lại.`,
-        );
-      } else {
-        this.message.set('Đã khôi phục dữ liệu.');
-      }
+      this.message.set('Đã nhập dữ liệu lên máy chủ.');
+    } catch (error) {
+      this.message.set(`Chưa nhập xong: ${error instanceof Error ? error.message : String(error)} — bấm nhập lại để tiếp tục (phần đã ghi không bị ghi trùng).`);
     } finally {
       this.busy.set(false);
     }
@@ -85,6 +73,6 @@ export class BackupRestoreComponent {
     await this.resetService.resetAllData();
     this.session.logout();
     this.resetStep.set(0);
-    this.message.set('Đã đặt lại toàn bộ dữ liệu.');
+    this.message.set('Đã xóa dữ liệu trên máy này và tải lại ngân hàng câu hỏi.');
   }
 }

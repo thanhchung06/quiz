@@ -37,9 +37,12 @@ points are recomputed after import.
 
 1. Accept `formatVersion` "2.0", or "1.0" (converted, see above); anything else fails with a clear message.
 2. Show the parent a summary (counts per collection) and require explicit confirmation before replacing any current local data.
-3. Replace local IndexedDB contents with the backup's `data` in a single local transaction (all-or-nothing) — a failure partway through must not leave a half-restored database.
-4. A profile without a password in the file keeps this device's; everything else matches the file exactly (SC-011). With sync on, the imported data is then sent to Google ("Máy này → Google").
+3. Write the file into the family's Firebase data (specs/003-firebase), adding to what is there: profiles,
+   questions, categories, exercises, assignments and ongoing exercises as in the file; results, history and
+   point uses the server already has are skipped (they can never be changed). Written in atomic chunks — an
+   import stopped halfway can simply be run again.
+4. A profile without a password in the file keeps the server's; points are recomputed from the records.
 
 ## Reset-all-data flow (FR-053)
 
-A destructive reset (distinct from import) requires: parent login → explicit warning screen recommending a backup first → a second explicit confirmation → then, and only then, clearing all local collections and re-seeding the three fixed Profile records with their default passwords. Google is not touched.
+"Xóa dữ liệu trên máy này" requires parent login and a confirmation; it clears this device's copy of the quiz bank and its settings, then downloads the quiz bank again. The family's data on the server is not touched.

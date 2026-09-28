@@ -8,15 +8,11 @@ import {
 import { provideRouter } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { routes } from './app.routes';
-import { seedDevData } from './data/seed-dev-data';
-import { approveAllPendingQuizItems, seedDefaultCategories } from './data/migrations';
 import { dropOldDatabases } from './data/db';
-import { CategoryRepository } from './data/repositories/category.repository';
-import { AppSettingsRepository } from './data/repositories/app-settings.repository';
-import { QuizItemRepository } from './data/repositories/quiz-item.repository';
+import { RemoteStore } from './remote/remote-store';
+import { FirebaseRemoteStore } from './remote/firebase-remote-store';
+import { StartupService } from './remote/startup.service';
 import { PwaUpdateService } from './pwa-update.service';
-import { SyncWriterService } from './sync/sync-writer.service';
-import { StartupSyncService } from './sync/startup-sync.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,23 +22,15 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerImmediately',
     }),
+    { provide: RemoteStore, useExisting: FirebaseRemoteStore },
     provideAppInitializer(() => {
-      // Dev seed first: it only runs on an empty category table.
-      const categories = inject(CategoryRepository);
-      const settings = inject(AppSettingsRepository);
-      const writer = inject(SyncWriterService);
-      const startupSync = inject(StartupSyncService);
-      // Seeds are queued for Google (only-if-absent) before the writer starts; the app-start pull
-      // (login waits for it) runs in the background so the first screen shows right away.
-      return dropOldDatabases()
-        .then(() => seedDevData())
-        .then(() => seedDefaultCategories(categories, settings))
-        .then(() => {
-          writer.start();
-          void startupSync.run();
-        });
+      // App start (connect, profiles, quiz bank) runs in the background: the first screen shows right
+      // away, and login waits for it.
+      const startup = inject(StartupService);
+      return dropOldDatabases().then(() => {
+        void startup.run();
+      });
     }),
-    provideAppInitializer(() => approveAllPendingQuizItems(inject(QuizItemRepository))),
     provideAppInitializer(() => {
       inject(PwaUpdateService).start();
     }),    

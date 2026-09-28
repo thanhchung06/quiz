@@ -2,7 +2,7 @@
   <h1>{{ strings.auth.chooseProfile }}</h1>
 
   @if (startup() === 'running') {
-    <p class="startup" role="status"><span class="spinner" aria-hidden="true"></span>{{ startupStatus() || 'Đang lấy dữ liệu mới nhất từ Google…' }}</p>
+    <p class="startup" role="status"><span class="spinner" aria-hidden="true"></span>{{ startupStatus() || 'Đang kết nối máy chủ…' }}</p>
   } @else if (startup() === 'error') {
     <div class="startup error" role="alert">
       <p><app-icon name="warning" />{{ startupError() }}</p>

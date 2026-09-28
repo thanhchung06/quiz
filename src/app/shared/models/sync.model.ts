@@ -1,16 +1,12 @@
-/**
- * Fields every record of a sequenced sheet (Profile, Category, QuizItem,
- * Exercise) carries — plan §3.8.
- */
+/** Fields every question, category, exercise and profile carries. */
 export interface SyncEnvelope {
   /** UUID made on the device that created the record. */
   id: string;
+  /** Set by the server on every write (ISO string when read back). */
   updatedAt: string;
   updatedByDeviceId: string;
-  /** A delete only sets this mark (other devices learn about it on their next pull). */
+  /** A delete only sets this mark (devices caching the quiz bank learn about it on their next pull). */
   deletedAt?: string;
-  /** Handed out by Google on every write; absent until the record has been uploaded. The app-start pull asks for records above the local maximum. */
-  updateSequence?: number;
 }
 
 export function newSyncEnvelope(id: string, deviceId: string): SyncEnvelope {

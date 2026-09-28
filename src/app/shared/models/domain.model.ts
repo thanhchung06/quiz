@@ -23,11 +23,6 @@ export interface Profile extends SyncEnvelope {
     feedbackDelayMs: number;
   };
   createdAt: string;
-  /**
-   * A child's spendable points: counted HistoryResult points minus PointUsage
-   * points, computed on a device and stored here (plan §3.7). Parent: 0.
-   */
-  totalPoints: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -340,10 +335,8 @@ export interface ResultSummary {
   late: boolean;
 }
 
-/** Full detail of a finished try, for review — Google keeps the last RESULT_CIRCLE_SIZE. */
+/** Full detail of a finished try, for review — the last RESULTS_KEPT per child are kept. */
 export interface PlayResult extends ResultSummary {
-  /** Position in Google's circle; set once uploaded. */
-  resultId?: number;
   exerciseSnapshot: ExerciseSnapshot;
   itemOrder: string[];
   itemSnapshots: Record<string, QuizItem>;
@@ -353,29 +346,15 @@ export interface PlayResult extends ResultSummary {
 }
 
 /** Short record of a finished try, kept forever (append-only). */
-export interface HistoryResult extends ResultSummary {
-  /** Sheet row; set once uploaded. */
-  row?: number;
-}
+export type HistoryResult = ResultSummary;
 
 /** A parent trading a child's points for something (append-only). */
 export interface PointUsage {
   id: string;
-  row?: number;
   childId: string;
   points: number;
   note?: string;
   usedAt: string;
-}
-
-// ---------------------------------------------------------------------------
-// Outbox — writes waiting to reach Google, in order
-// ---------------------------------------------------------------------------
-
-export interface OutboxEntry {
-  seq?: number;
-  op: import('../../sync/protocol').SyncOp;
-  createdAt: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -388,21 +367,10 @@ export interface AppSettings {
   audioEnabled: boolean;
   reducedMotion: boolean;
   feedbackDelayMs: number;
-  /** Pull everything on app start and send every write to Google right away. Off = this device only. */
-  autoSyncEnabled: boolean;
-  /** The app-start pull also takes questions and categories. */
-  autoSyncQuestions: boolean;
-  /** With autoSyncQuestions: skip questions/categories already on this device. */
-  autoSyncAddedQuestionsOnly: boolean;
-  /** The app-start pull also takes exercises. */
-  autoSyncExercises: boolean;
-  /**
-   * This device's copy of Google's sync hash chain (see nextSyncHash): set to
-   * Google's after a full pull, extended with the write id of each of its own
-   * writes. Equal to Google's at app start → nothing to pull. Cleared when what
-   * the pull covers changes.
-   */
-  syncHash?: string;
+  /** meta/quizVersion when this device last brought its quiz bank up to date (specs/003 §3). */
+  quizVersion?: number;
+  /** Newest question/category updatedAt (server time, ms) this device has — the next pull asks for newer ones. */
+  quizPulledAt?: number;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;

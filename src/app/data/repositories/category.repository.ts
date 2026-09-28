@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { db } from '../db';
 import { Category, CategorySubject } from '../../shared/models/domain.model';
 import { newSyncEnvelope } from '../../shared/models/sync.model';
-import { BaseRepository, currentDeviceId } from './base-repository';
+import { QuizBankRepository, currentDeviceId } from './base-repository';
+import { RemoteStore } from '../../remote/remote-store';
 import { QuizItemRepository } from './quiz-item.repository';
 
 export function normalizeName(name: string): string {
@@ -15,9 +16,12 @@ export function normalizeName(name: string): string {
  * merge/rename-with-reference-update live in US2's quiz-bank feature layer.
  */
 @Injectable({ providedIn: 'root' })
-export class CategoryRepository extends BaseRepository<Category> {
-  constructor(private readonly quizItems: QuizItemRepository) {
-    super(db.categories, 'Category');
+export class CategoryRepository extends QuizBankRepository<Category> {
+  constructor(
+    remote: RemoteStore,
+    private readonly quizItems: QuizItemRepository,
+  ) {
+    super(db.categories, remote, 'categories');
   }
 
   async findDuplicate(name: string, subject: CategorySubject): Promise<Category | undefined> {
@@ -29,7 +33,7 @@ export class CategoryRepository extends BaseRepository<Category> {
   }
 
   /** `id` is normally random; callers pass a fixed one only for records every device must share (default categories). */
-  /** `asDefault`: a seeded default category (see BaseRepository.createDefault). */
+  /** `asDefault`: a seeded default category (see QuizBankRepository.createDefault). */
   async createCategory(name: string, subject: CategorySubject, description?: string, id: string = crypto.randomUUID(), asDefault = false): Promise<Category> {
     const existing = await this.findDuplicate(name, subject);
     if (existing) {
@@ -75,9 +79,7 @@ export class CategoryRepository extends BaseRepository<Category> {
    */
   async merge(winningId: string, losingId: string): Promise<void> {
     const items = await this.quizItems.byCategory(losingId);
-    for (const item of items) {
-      await this.quizItems.update(item.id, { categoryId: winningId });
-    }
+    await this.quizItems.updateMany(items.map((item) => ({ id: item.id, patch: { categoryId: winningId } })));
     await this.softDelete(losingId);
   }
 

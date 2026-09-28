@@ -11,7 +11,7 @@ import {
   QuizItem,
   ResultSummary,
 } from '../../../shared/models/domain.model';
-import { RESULT_CIRCLE_SIZE } from '../../../sync/protocol';
+import { RESULTS_KEPT } from '../../../data/repositories/result.repository';
 import { outcomeOf } from '../../child-play/services/scoring.service';
 
 /** Backup file (contracts/backup-format.md, format 2.0 — the redesigned entities). */
@@ -32,6 +32,8 @@ export interface BackupData {
   results: PlayResult[];
   historyResults: HistoryResult[];
   pointUsages: PointUsage[];
+  /** childId → spendable points when exported (recomputed from the records on import anyway). */
+  points?: Record<string, number>;
 }
 
 /** The pre-redesign file (format 1.0), as far as the conversion needs it. */
@@ -83,7 +85,7 @@ function withoutLegacyFields<T>(record: Record<string, unknown>): T {
 /**
  * Converts a pre-redesign backup (plan §6): profiles, categories, questions and
  * exercises as they are; finished attempts → HistoryResult (all) and Result
- * (the newest RESULT_CIRCLE_SIZE), with stars and points by the new rules;
+ * (the newest RESULTS_KEPT per child), with stars and points by the new rules;
  * point redemptions → PointUsage. Assignments, rotations and rewards are
  * dropped. A profile keeps the password this device has for it (old backups
  * never held one); total points are recomputed after import.
@@ -93,7 +95,6 @@ export function convertLegacyBackup(legacy: LegacyBackupEnvelope, localPasswords
   const profiles = (d.profiles ?? []).map((p) => ({
     ...withoutLegacyFields<Profile>(p),
     password: localPasswords.get(p['id'] as string) ?? '',
-    totalPoints: 0,
   }));
 
   const answersByAttempt = new Map<string, LegacyAnswer[]>();
@@ -160,10 +161,17 @@ export function convertLegacyBackup(legacy: LegacyBackupEnvelope, localPasswords
     exercises: (d.exercises ?? []).map((e) => withoutLegacyFields<Exercise>(e)),
     assignments: [],
     sessions: [],
-    results: results.slice(-RESULT_CIRCLE_SIZE),
+    results: newestPerChild(results),
     historyResults,
     pointUsages: (d.pointRedemptions ?? [])
       .filter((r) => !r.deletedAt)
       .map((r) => ({ id: r.id, childId: r.profileId, points: r.points, note: r.note, usedAt: r.redeemedAt })),
   };
+}
+
+/** The newest RESULTS_KEPT results of each child (the input is oldest first). */
+function newestPerChild(results: PlayResult[]): PlayResult[] {
+  const byChild = new Map<string, PlayResult[]>();
+  for (const r of results) byChild.set(r.childId, [...(byChild.get(r.childId) ?? []), r]);
+  return [...byChild.values()].flatMap((list) => list.slice(-RESULTS_KEPT));
 }

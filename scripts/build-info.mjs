@@ -1,5 +1,5 @@
 // Shared helpers for the build/serve wrappers: writing the generated source files
-// (src/app/build-info.generated.ts, src/app/sync-defaults.generated.ts) and launching
+// (src/app/build-info.generated.ts, src/app/firebase-config.generated.ts) and launching
 // the Angular CLI — written to behave the same on Windows and Linux.
 import { spawn } from 'node:child_process';
 import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -9,9 +9,9 @@ import { fileURLToPath } from 'node:url';
 /** Repo root, independent of the directory the script was started from. */
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const BUILD_INFO_FILE = join(ROOT, 'src', 'app', 'build-info.generated.ts');
-/** The family's sync settings, committed with the code and baked into every build as defaults: { "endpointUrl": "...", "sharedSecret": "..." }. */
-export const SYNC_DEFAULTS_CONFIG = join(ROOT, 'config', 'sync-defaults.json');
-export const SYNC_DEFAULTS_FILE = join(ROOT, 'src', 'app', 'sync-defaults.generated.ts');
+/** The family's Firebase project + family key, committed with the code and baked into every build. */
+export const FIREBASE_CONFIG = join(ROOT, 'config', 'firebase.json');
+export const FIREBASE_CONFIG_FILE = join(ROOT, 'src', 'app', 'firebase-config.generated.ts');
 
 const RETRYABLE = new Set(['EPERM', 'EBUSY', 'EACCES']);
 
@@ -25,32 +25,31 @@ export async function writeBuildInfo() {
   const timestamp = new Date().toISOString();
   await writeGenerated(BUILD_INFO_FILE, `// Generated during build; do not edit.\nexport const BUILD_TIMESTAMP = '${timestamp}';\n`);
   console.log(`[build-info] ${timestamp}`);
-  await writeSyncDefaults();
+  await writeFirebaseConfig();
 }
 
+const FIREBASE_KEYS = ['apiKey', 'authDomain', 'databaseURL', 'projectId', 'appId', 'familyKey'];
+
 /**
- * Bakes config/sync-defaults.json (committed with the code) into the app, so
- * every build of it — Windows or WSL, any address, the installed phone app —
- * starts with the family's sync endpoint and secret filled in. Without the
- * file the defaults are empty and each device is configured on the Sync screen.
+ * Bakes config/firebase.json (committed with the code) into the app, so every
+ * build of it — Windows or WSL, any address, the installed phone app — talks
+ * to the family's Firebase database. Without the file the values are empty and
+ * the app says it isn't configured.
  */
-export async function writeSyncDefaults() {
+export async function writeFirebaseConfig() {
   let config = {};
   try {
-    config = JSON.parse(await readFile(SYNC_DEFAULTS_CONFIG, 'utf8'));
+    config = JSON.parse(await readFile(FIREBASE_CONFIG, 'utf8'));
   } catch (error) {
-    if (error.code !== 'ENOENT') throw new Error(`Cannot read ${SYNC_DEFAULTS_CONFIG}: ${error.message}`);
+    if (error.code !== 'ENOENT') throw new Error(`Cannot read ${FIREBASE_CONFIG}: ${error.message}`);
   }
-  const defaults = {
-    endpointUrl: typeof config.endpointUrl === 'string' ? config.endpointUrl.trim() : '',
-    sharedSecret: typeof config.sharedSecret === 'string' ? config.sharedSecret.trim() : '',
-  };
+  const values = Object.fromEntries(FIREBASE_KEYS.map((key) => [key, typeof config[key] === 'string' ? config[key].trim() : '']));
   await writeGenerated(
-    SYNC_DEFAULTS_FILE,
-    `// Generated from config/sync-defaults.json during build; do not edit.\n` +
-      `export const SYNC_DEFAULTS: { endpointUrl: string; sharedSecret: string } = ${JSON.stringify(defaults, null, 2)};\n`,
+    FIREBASE_CONFIG_FILE,
+    `// Generated from config/firebase.json during build; do not edit.\n` +
+      `export const FIREBASE_CONFIG: Record<'${FIREBASE_KEYS.join("' | '")}', string> = ${JSON.stringify(values, null, 2)};\n`,
   );
-  console.log(`[sync-defaults] ${defaults.endpointUrl ? 'endpoint + secret from config/sync-defaults.json' : 'none (no config/sync-defaults.json)'}`);
+  console.log(`[firebase-config] ${values.databaseURL ? `project ${values.projectId}` : 'none (no config/firebase.json)'}`);
 }
 
 async function writeGenerated(file, content) {

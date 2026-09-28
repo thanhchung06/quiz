@@ -5,7 +5,7 @@ import { ProfileRepository } from '../../../data/repositories/profile.repository
 import { SessionService } from '../session.service';
 import { Profile } from '../../../shared/models/domain.model';
 import { vi } from '../../../shared/i18n/vi';
-import { StartupSyncService } from '../../../sync/startup-sync.service';
+import { StartupService } from '../../../remote/startup.service';
 import { PlayService } from '../../../features/child-play/services/play.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 
@@ -23,14 +23,14 @@ export class ProfileSelectionComponent {
   readonly credential = signal('');
   readonly errorMessage = signal('');
   /** Login waits for the app-start pull from Google (plan §5). */
-  readonly startup: StartupSyncService['state'];
-  readonly startupError: StartupSyncService['error'];
-  readonly startupStatus: StartupSyncService['status'];
+  readonly startup: StartupService['state'];
+  readonly startupError: StartupService['error'];
+  readonly startupStatus: StartupService['status'];
 
   constructor(
     private readonly profileRepo: ProfileRepository,
     private readonly session: SessionService,
-    private readonly startupSync: StartupSyncService,
+    private readonly startupSync: StartupService,
     private readonly play: PlayService,
     private readonly router: Router,
   ) {

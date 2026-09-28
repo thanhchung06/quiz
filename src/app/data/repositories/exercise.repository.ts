@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { db } from '../db';
 import { Exercise, ExerciseItem } from '../../shared/models/domain.model';
-import { BaseRepository, currentDeviceId } from './base-repository';
+import { RemoteRecordRepository, currentDeviceId } from './base-repository';
+import { RemoteStore } from '../../remote/remote-store';
 import { newSyncEnvelope } from '../../shared/models/sync.model';
 
 /**
@@ -10,9 +10,9 @@ import { newSyncEnvelope } from '../../shared/models/sync.model';
  * authoring operations (reorder, Mixed-subject validation, duplicate/archive).
  */
 @Injectable({ providedIn: 'root' })
-export class ExerciseRepository extends BaseRepository<Exercise> {
-  constructor() {
-    super(db.exercises, 'Exercise');
+export class ExerciseRepository extends RemoteRecordRepository<Exercise> {
+  constructor(remote: RemoteStore) {
+    super(remote, 'exercises');
   }
 
   async reorderItems(exerciseId: string, orderedItemIds: string[]): Promise<void> {

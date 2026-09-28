@@ -27,7 +27,7 @@ const envelope = (): LegacyBackupEnvelope => ({
 describe('importing a pre-redesign backup (plan §6)', () => {
   it('keeps profiles/questions without the old sync fields, turns finished attempts into results by the new rules, redemptions into point usage', () => {
     const data = convertLegacyBackup(envelope(), new Map([['kid', 'pin']]));
-    expect(data.profiles).toEqual([{ id: 'kid', role: 'child', displayName: 'Nam', avatar: 'a', password: 'pin', totalPoints: 0 }]);
+    expect(data.profiles).toEqual([{ id: 'kid', role: 'child', displayName: 'Nam', avatar: 'a', password: 'pin' }]);
     expect(data.quizItems).toEqual([{ id: 'q1', prompt: 'x' }]);
 
     // Only the finished attempt; 2/2 correct → 3 stars, +50% bonus.

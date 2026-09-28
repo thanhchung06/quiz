@@ -1,212 +1,32 @@
 <main class="sync-screen">
   <header class="screen-header">
     <app-icon name="sync" />
-    <h1>Đồng bộ Google Sheets</h1>
+    <h1>Kết nối máy chủ</h1>
   </header>
-  <p class="hint"><app-icon name="info" />Dữ liệu luôn được lưu trên máy này; đồng bộ chỉ sao chép qua lại với Google Sheet.</p>
+  <p class="hint">
+    <app-icon name="info" />Dữ liệu của cả nhà (bài giao, bài làm, kết quả, điểm) nằm trên máy chủ Firebase và được đọc/ghi trực tiếp — cần có
+    mạng. Máy này chỉ giữ bản sao ngân hàng câu hỏi, tự cập nhật khi mở ứng dụng.
+  </p>
 
-  <!-- 1. Connection -->
   <section class="panel">
-    <h2><app-icon name="settings" />Kết nối Google Sheets</h2>
-    <label>
-      URL Web App (Apps Script)
-      <input [ngModel]="endpointUrl()" (ngModelChange)="endpointUrl.set($event)" placeholder="https://script.google.com/macros/s/.../exec" />
-    </label>
-    <label>
-      Spreadsheet ID <span class="hint">(chỉ để bạn tự tham khảo/mở sheet — script luôn gắn cố định với một sheet duy nhất)</span>
-      <input [ngModel]="spreadsheetIdInput()" (ngModelChange)="spreadsheetIdInput.set($event)" placeholder="ID trong URL của Google Sheet" />
-    </label>
-    <label>
-      Mã bí mật (Shared Secret)
-      <input
-        type="password"
-        [ngModel]="sharedSecretInput()"
-        (ngModelChange)="sharedSecretInput.set($event)"
-        [placeholder]="sharedSecretSet() ? 'Đã lưu — nhập để đổi' : 'Giá trị SHARED_SECRET trong Apps Script'"
-      />
-    </label>
-    <div class="panel-actions">
-      <button type="button" class="primary" [disabled]="!connectionDirty()" (click)="saveConnection()"><app-icon name="save" />Lưu kết nối</button>
-      @if (connectionMessage() && !connectionDirty()) {
-        <span class="saved"><app-icon name="check_circle" />{{ connectionMessage() }}</span>
-      }
-    </div>
-
-    <details class="google-account">
-      <summary><app-icon name="person" />Tài khoản Google (tùy chọn, không cần để đồng bộ)</summary>
-      <p class="hint">
-        Nếu kết nối, ứng dụng chỉ được phép dùng các tệp do chính nó tạo hoặc tệp bạn tự chọn mở bằng nó — không đọc,
-        sửa hay xóa được các tệp khác trên Google Drive/Sheets của bạn.
-      </p>
-      @if (!connected()) {
-        <label>Google Client ID <input [ngModel]="clientId()" (ngModelChange)="clientId.set($event)" /></label>
-        <button type="button" (click)="connect()"><app-icon name="person" />Kết nối tài khoản Google</button>
-      } @else {
-        <p class="connected-badge"><app-icon name="cloud_done" />Đã kết nối Google.</p>
-        <button type="button" (click)="disconnect()"><app-icon name="logout" />Ngắt kết nối</button>
-      }
-    </details>
-  </section>
-
-  <!-- 2. Automatic sync -->
-  <section class="panel">
-    <h2><app-icon name="refresh" />Tự động đồng bộ</h2>
-    <label class="check">
-      <input type="checkbox" [checked]="autoSyncEnabled()" (change)="setAutoSyncEnabled($any($event.target).checked)" />
-      <span>
-        Tự động đồng bộ
-        <small>Mở ứng dụng: nhận dữ liệu từ Google. Mỗi lần lưu trên máy: gửi ngay lên Google.</small>
-      </span>
-    </label>
-    @if (autoSyncEnabled()) {
-      <label class="check sub">
-        <input type="checkbox" [checked]="autoSyncQuestions()" (change)="autoSyncQuestions.set($any($event.target).checked); autoSyncMessage.set('')" />
-        <span>
-          Nhận cả câu hỏi khi mở ứng dụng
-          <small>Câu hỏi sửa trên máy này luôn được gửi lên; ô này chỉ quyết định việc nhận về. Câu hỏi còn thiếu khi bé làm bài được tải riêng.</small>
-        </span>
-      </label>
-      @if (autoSyncQuestions()) {
-        <label class="check sub sub2">
-          <input type="checkbox" [checked]="autoSyncAddedOnly()" (change)="autoSyncAddedOnly.set($any($event.target).checked); autoSyncMessage.set('')" />
-          <span>
-            Chỉ nhận câu hỏi mới thêm
-            <small>Bỏ qua câu hỏi đã có trên máy này dù được sửa ở máy khác.</small>
-          </span>
-        </label>
-      }
-      <label class="check sub">
-        <input type="checkbox" [checked]="autoSyncExercises()" (change)="autoSyncExercises.set($any($event.target).checked); autoSyncMessage.set('')" />
-        <span>
-          Nhận bài tập khi mở ứng dụng
-          <small>Bài được giao đã mang theo bài tập của nó; ô này dành cho danh sách bài tập và bài luyện tập.</small>
-        </span>
-      </label>
-    }
-    <p class="hint">
-      <app-icon name="info" />Khi đang bật, cần có mạng: nếu không gửi được lên Google, ứng dụng sẽ báo lỗi và chờ bấm "Thử lại".
-      Khi mở ứng dụng, phải nhận xong dữ liệu mới đăng nhập được.
+    <h2><app-icon name="cloud_done" />Trạng thái</h2>
+    <p>Máy chủ: <strong>{{ project }}</strong></p>
+    <p class="status" [class.error]="!connected()">
+      <app-icon [name]="connected() ? 'check_circle' : 'warning'" />{{ connected() ? 'Đang kết nối' : 'Mất kết nối — đang thử lại' }}
     </p>
-    <div class="panel-actions">
-      <button type="button" class="primary" [disabled]="!autoSyncDirty()" (click)="saveAutoSync()"><app-icon name="save" />Lưu</button>
-      @if (autoSyncMessage() && !autoSyncDirty()) {
-        <span class="saved"><app-icon name="check_circle" />{{ autoSyncMessage() }}</span>
-      }
-    </div>
   </section>
 
-  <!-- 3. Sync now -->
   <section class="panel">
-    <h2><app-icon name="sync" />Đồng bộ</h2>
-    @if (isReadyToSync()) {
-      <button type="button" class="primary sync-now" [disabled]="dialogStep() === 'running'" (click)="openSyncDialog()">
-        <app-icon name="sync" />{{ dialogStep() === 'running' ? 'Đang đồng bộ…' : 'Đồng bộ ngay' }}
+    <h2><app-icon name="quiz" />Ngân hàng câu hỏi trên máy này</h2>
+    <p>{{ questions() }} câu hỏi · {{ categories() }} danh mục</p>
+    <p class="hint">Cập nhật lần cuối: {{ quizVersion() ?? 'chưa có' }}</p>
+    <div class="panel-actions">
+      <button type="button" class="primary" [disabled]="reloading()" (click)="reloadQuizBank()">
+        <app-icon name="refresh" />{{ reloading() ? 'Đang tải… ' + received() : 'Tải lại toàn bộ câu hỏi' }}
       </button>
-    } @else {
-      <p class="hint"><app-icon name="info" />Điền và lưu URL Web App và Mã bí mật ở phần Kết nối để bắt đầu đồng bộ.</p>
-    }
-
-  </section>
-
-  @if (dialogStep(); as step) {
-    <div class="dialog-backdrop" (click)="closeSyncDialog()">
-      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="sync-dialog-title" (click)="$event.stopPropagation()">
-        <h2 id="sync-dialog-title"><app-icon name="sync" />Đồng bộ ngay</h2>
-
-        @if (step === 'options') {
-          <label class="direction">
-            Chiều đồng bộ
-            <select [ngModel]="direction()" (ngModelChange)="direction.set($event)">
-              <option value="push">Máy này → Google (gửi lên)</option>
-              <option value="pull">Google → máy này (nhận về)</option>
-            </select>
-          </label>
-          <p class="overwrite-note">
-            <app-icon name="warning" />
-            @if (direction() === 'push') {
-              <span
-                >Gửi lên <strong>tất cả</strong> dữ liệu trên máy này. Câu hỏi, danh mục và bài tập có trên Google mà máy này không có
-                sẽ bị đánh dấu xóa. Kết quả, lịch sử và đổi điểm chỉ được thêm, không bao giờ bị xóa.</span
-              >
-            } @else {
-              <span
-                >Ghi đè máy này bằng dữ liệu trên Google: nhận về <strong>tất cả</strong>; những gì chỉ có trên máy này sẽ bị xóa
-                (hồ sơ luôn được giữ).</span
-              >
-            }
-          </p>
-          <p class="hint"><app-icon name="info" />Nên xuất một bản sao lưu trước. Không có xung đột cần giải quyết — bên nhận được ghi đè.</p>
-          <label class="check">
-            <input type="checkbox" [checked]="optSkipQuestions()" (change)="optSkipQuestions.set($any($event.target).checked)" />
-            <span>Không đồng bộ câu hỏi <small>Chỉ đồng bộ bài tập, giao bài, bài làm, kết quả, phần thưởng.</small></span>
-          </label>
-          @if (!optSkipQuestions()) {
-            <label class="check sub">
-              <input type="checkbox" [checked]="optAddedQuestionsOnly()" (change)="optAddedQuestionsOnly.set($any($event.target).checked)" />
-              <span
-                >Chỉ đồng bộ câu hỏi mới thêm
-                <small>{{
-                  direction() === 'push'
-                    ? 'Chỉ gửi câu hỏi chưa từng gửi lên; không sửa, không xóa câu hỏi trên Google.'
-                    : 'Chỉ nhận câu hỏi máy này chưa có; không sửa, không xóa câu hỏi trên máy.'
-                }}</small></span
-              >
-            </label>
-          }
-          <div class="dialog-actions">
-            <button type="button" (click)="closeSyncDialog()">Hủy</button>
-            <button type="button" class="primary" (click)="confirmSync()"><app-icon name="check_circle" />Xác nhận</button>
-          </div>
-        }
-
-        @if (step === 'running') {
-          <p class="running">
-            <span class="spinner" aria-hidden="true"></span>
-            {{ direction() === 'push' ? 'Đang gửi lên Google…' : 'Đang nhận từ Google…' }}
-          </p>
-          <p>Đã nhận: <strong>{{ received() }}</strong> mục</p>
-          @if (progress(); as p) {
-            <p>Đã gửi: <strong>{{ p.sent }}/{{ p.total }}</strong> mục</p>
-            @if (p.total > 0) {
-              <progress [value]="p.sent" [max]="p.total"></progress>
-            }
-          }
-          <p class="hint"><app-icon name="info" />Giữ trang này mở cho tới khi xong.</p>
-        }
-
-        @if (step === 'done') {
-          @if (summary(); as s) {
-            <p class="outcome" [class.error]="!s.ok">
-              <app-icon [name]="s.ok ? 'check_circle' : 'warning'" />{{ s.ok ? 'Đồng bộ thành công' : 'Đồng bộ chưa xong' }}
-            </p>
-            <dl class="summary">
-              <dt>Chiều</dt>
-              <dd>{{ directionLabel(s.options) }}</dd>
-              <dt>Phạm vi</dt>
-              <dd>{{ scopeLabel(s.options) }}</dd>
-              @if (s.options.direction === 'pull') {
-                <dt>Đã nhận về</dt>
-                <dd>{{ s.received }} mục</dd>
-              }
-              @if (s.options.direction === 'push') {
-                <dt>Đã gửi lên</dt>
-                <dd>{{ s.sent }}/{{ s.toSend }} mục</dd>
-              }
-              <dt>Đã xóa</dt>
-              <dd>{{ s.removed }} mục {{ s.options.direction === 'push' ? 'trên Google' : 'trên máy này' }}</dd>
-              <dt>Thời gian</dt>
-              <dd>{{ s.seconds }} giây</dd>
-            </dl>
-            @if (s.error) {
-              <p class="error"><app-icon name="info" />{{ s.error }}</p>
-              <p class="hint">Phần đã gửi/nhận xong được giữ lại — bấm "Đồng bộ ngay" lần nữa để làm tiếp phần còn lại.</p>
-            }
-          }
-          <div class="dialog-actions">
-            <button type="button" class="primary" (click)="closeSyncDialog()">Đóng</button>
-          </div>
-        }
-      </div>
     </div>
-  }
+    @if (message()) {
+      <p class="saved">{{ message() }}</p>
+    }
+  </section>
 </main>

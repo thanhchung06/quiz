@@ -58,5 +58,6 @@ src/app/build-info.generated.ts
 # Local HTTPS certificate for npm run serve:https (never commit private keys)
 /certs/
 
-# Generated from config/sync-defaults.json on every build/serve/install (scripts/build-info.mjs)
+# Generated from config/firebase.json on every build/serve/install (scripts/build-info.mjs)
+src/app/firebase-config.generated.ts
 src/app/sync-defaults.generated.ts

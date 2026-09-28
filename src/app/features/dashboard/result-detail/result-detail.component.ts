@@ -35,9 +35,10 @@ export class ResultDetailComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    const childId = this.route.snapshot.paramMap.get('childId');
     const id = this.route.snapshot.paramMap.get('resultId');
-    if (!id) return;
-    const result = await this.results.getById(id);
+    if (!childId || !id) return;
+    const result = await this.results.getById(childId, id);
     this.result.set(result);
     if (result) this.rows.set(buildBreakdown(result));
   }

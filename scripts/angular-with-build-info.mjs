@@ -14,7 +14,7 @@ const watcher = watch(
 
     const normalized = filename.replaceAll('\\', '/');
 
-    // Prevent the generated files (build-info, sync-defaults) from triggering an infinite loop.
+    // Prevent the generated files (build-info, firebase-config) from triggering an infinite loop.
     if (normalized.endsWith('.generated.ts')) return;
 
     clearTimeout(debounceTimer);

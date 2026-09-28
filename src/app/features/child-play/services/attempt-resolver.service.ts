@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Exercise, ExerciseItem, QuizItem, RandomGroupConfig } from '../../../shared/models/domain.model';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
-import { syncEnabled } from '../../../data/outbox';
-import { SyncReaderService } from '../../../sync/sync-reader.service';
+import { QuizBankSyncService } from '../../../remote/quiz-bank-sync.service';
 import { mulberry32, generateSeed, seededShuffle, seededSample } from '../../../shared/random/seeded-random';
-import { db } from '../../../data/db';
+import { ResultRepository } from '../../../data/repositories/result.repository';
 
 export interface ResolvedAttemptPlan {
   randomSeed: number;
@@ -25,19 +24,20 @@ export interface ResolvedAttemptPlan {
 export class AttemptResolverService {
   constructor(
     private readonly quizItems: QuizItemRepository,
-    private readonly reader: SyncReaderService,
+    private readonly quizBank: QuizBankSyncService,
+    private readonly results: ResultRepository,
   ) {}
 
   /**
    * Resolve a brand-new play (new seed, fresh random-group draw). A fixed
-   * question this device doesn't have (question pull turned off) is fetched
-   * from Google first, when sync is on; one that can't be found is skipped.
+   * question this device doesn't have yet is fetched from the server first; one
+   * that can't be found is skipped.
    */
   async resolveNew(exercise: Exercise, profileId: string): Promise<ResolvedAttemptPlan> {
     const fixedIds = exercise.items.flatMap((item) => (item.kind === 'fixed' ? [item.quizItemId] : []));
     const missing: string[] = [];
     for (const id of fixedIds) if (!(await this.quizItems.getById(id))) missing.push(id);
-    if (missing.length > 0 && (await syncEnabled())) await this.reader.fetchByIds('QuizItem', missing);
+    if (missing.length > 0) await this.quizBank.fetchQuestions(missing);
     const seed = generateSeed();
     return this.resolveWithSeed(exercise, profileId, seed);
   }
@@ -183,7 +183,7 @@ export class AttemptResolverService {
   private async missedCounts(profileId: string, candidateIds: string[]): Promise<Map<string, number>> {
     const counts = new Map<string, number>();
     if (candidateIds.length === 0) return counts;
-    const results = await db.results.where('childId').equals(profileId).toArray();
+    const results = await this.results.resultsForChild(profileId);
     const candidateIdSet = new Set(candidateIds);
     for (const result of results) {
       for (const [quizItemId, answer] of Object.entries(result.answers)) {

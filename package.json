@@ -5,14 +5,10 @@
     "ng": "ng",
     "generate:build-info": "node scripts/generate-build-info.mjs",
     "postinstall": "node scripts/generate-build-info.mjs",
-
     "start": "node scripts/angular-with-build-info.mjs serve",
-
     "build": "node scripts/build.mjs",
     "serve:https": "node scripts/serve-https.mjs",
-
     "watch": "node scripts/angular-with-build-info.mjs build --watch --configuration development",
-
     "pretest": "node scripts/generate-build-info.mjs",
     "test": "jest",
     "e2e": "playwright test",
@@ -30,6 +26,9 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@angular/service-worker": "^19.2.0",
+    "@firebase/app": "^0.16.2",
+    "@firebase/auth": "^1.13.6",
+    "@firebase/database": "^1.1.5",
     "ajv": "^8.17.1",
     "dexie": "^4.0.10",
     "exceljs": "^4.4.0",

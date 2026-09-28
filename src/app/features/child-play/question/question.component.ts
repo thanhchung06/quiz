@@ -135,7 +135,7 @@ export class QuestionComponent implements OnDestroy {
 
     this.timerHandle = setInterval(() => this.updateRemainingSeconds(), 1000);
     // The clock keeps running while the app is hidden and stops only when it is closed: save it often.
-    this.clockHandle = setInterval(() => void this.play.saveClock(), 5000);
+    this.clockHandle = setInterval(() => void this.play.saveClock(), 10_000);
     document.addEventListener('visibilitychange', this.onHidden);
     window.addEventListener('pagehide', this.onPageHide);
   }
