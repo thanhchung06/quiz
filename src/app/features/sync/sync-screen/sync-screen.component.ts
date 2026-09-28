@@ -106,7 +106,7 @@ export class SyncScreenComponent {
     if (!this.connectionDirty()) return;
     const endpoint = this.endpointUrl().trim();
     // Another Web App may be another sheet: pull everything at the next start.
-    void this.appSettings.update({ lastSyncId: undefined });
+    void this.appSettings.update({ syncHash: undefined });
     localStorage.setItem(SYNC_ENDPOINT_KEY, endpoint);
     this.endpointUrl.set(endpoint);
     this.savedEndpointUrl.set(endpoint);
@@ -168,7 +168,7 @@ export class SyncScreenComponent {
       autoSyncAddedQuestionsOnly: form.addedQuestionsOnly,
       autoSyncExercises: form.exercises,
       // What the app-start pull covers changed: the next start pulls even if Google has nothing new.
-      lastSyncId: undefined,
+      syncHash: undefined,
     });
     this.savedAutoSync.set(form);
     this.autoSyncMessage.set(

@@ -397,11 +397,12 @@ export interface AppSettings {
   /** The app-start pull also takes exercises. */
   autoSyncExercises: boolean;
   /**
-   * Google's syncId this device is up to date with (set after a full pull, and
-   * after its own writes when nobody else wrote in between). Equal to Google's
-   * at app start → nothing to pull. Cleared when what the pull covers changes.
+   * This device's copy of Google's sync hash chain (see nextSyncHash): set to
+   * Google's after a full pull, extended with the write id of each of its own
+   * writes. Equal to Google's at app start → nothing to pull. Cleared when what
+   * the pull covers changes.
    */
-  lastSyncId?: string;
+  syncHash?: string;
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;

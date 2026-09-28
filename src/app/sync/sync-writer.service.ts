@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { db } from '../data/db';
 import { OutboxEntry } from '../shared/models/domain.model';
-import { RESULT_CIRCLE_SIZE, OpResult, SequencedSheet, SyncOp } from './protocol';
+import { nextSyncHash, RESULT_CIRCLE_SIZE, OpResult, SequencedSheet, SyncOp } from './protocol';
 import { batchBySize, sendWrite, SyncError } from './sync-transport';
 
 const TABLE_OF: Record<SequencedSheet, 'profiles' | 'categories' | 'quizItems' | 'exercises'> = {
@@ -85,7 +85,7 @@ export class SyncWriterService {
       const response = await sendWrite(batch);
       const batchResults = response.results ?? [];
       await this.applyResults(batch, batchResults);
-      await this.noteSyncId(response);
+      await this.noteWrite(response.writeId);
       results.push(...batchResults);
       onProgress?.(results.length);
     }
@@ -106,7 +106,7 @@ export class SyncWriterService {
             batch.map((entry) => entry.op),
             response.results ?? [],
           );
-          await this.noteSyncId(response);
+          await this.noteWrite(response.writeId);
           await db.outbox.bulkDelete(batch.map((entry) => entry.seq!));
           this._error.set(undefined);
         } catch (error) {
@@ -119,15 +119,14 @@ export class SyncWriterService {
   }
 
   /**
-   * After a write: if Google's syncId before it was the one this device was up
-   * to date with, nobody else wrote in between — the device is still up to date
-   * with the new one. Otherwise it keeps the old value, so the next app start pulls.
+   * After a write that changed something: extend this device's hash chain with
+   * its id, as Google did. If another device wrote in between, Google's chain
+   * also holds that write, the two hashes differ, and the next app start pulls.
    */
-  private async noteSyncId(response: { syncId?: string; previousSyncId?: string }): Promise<void> {
+  private async noteWrite(writeId: string | undefined): Promise<void> {
+    if (!writeId) return;
     const settings = await db.appSettings.get('singleton');
-    if (settings && response.previousSyncId === settings.lastSyncId && response.syncId !== settings.lastSyncId) {
-      await db.appSettings.update('singleton', { lastSyncId: response.syncId });
-    }
+    if (settings) await db.appSettings.update('singleton', { syncHash: nextSyncHash(settings.syncHash, writeId) });
   }
 
   /** Stores on the local copies what Google handed out for them. */

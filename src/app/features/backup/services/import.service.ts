@@ -62,7 +62,7 @@ export class BackupImportService {
     }
     await this.appSettings.update({
       backupMetadata: { ...(await this.appSettings.get()).backupMetadata, lastImportAt: new Date().toISOString() },
-      lastSyncId: undefined,
+      syncHash: undefined,
     });
   }
 

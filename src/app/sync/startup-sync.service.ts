@@ -20,7 +20,7 @@ export class StartupSyncService {
   private readonly _skipped = signal(false);
   readonly state = this._state.asReadonly();
   readonly error = this._error.asReadonly();
-  /** The last run found nothing new on Google (same syncId) and pulled nothing. */
+  /** The last run found nothing new on Google (same sync hash) and pulled nothing. */
   readonly skipped = this._skipped.asReadonly();
 
   constructor(
@@ -37,10 +37,10 @@ export class StartupSyncService {
       this._skipped.set(false);
       if (await syncEnabled()) {
         await this.writer.flush();
-        // Nothing changed on Google since this device last caught up → no pull at all.
-        const remote = (await sendPing()).syncId;
+        // Same hash as Google: this device has seen every write → no pull at all.
+        const remote = (await sendPing()).syncHash;
         const settings = await this.settings.get();
-        if (remote && remote === settings.lastSyncId) {
+        if (remote && remote === settings.syncHash) {
           this._skipped.set(true);
         } else {
           await this.reader.pull({
@@ -49,7 +49,7 @@ export class StartupSyncService {
             exercises: settings.autoSyncExercises,
           });
           // The value read before pulling: anything written meanwhile makes the next start pull again.
-          await this.settings.update({ lastSyncId: remote });
+          await this.settings.update({ syncHash: remote });
         }
       }
       this._state.set('done');

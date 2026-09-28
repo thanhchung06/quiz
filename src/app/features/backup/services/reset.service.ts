@@ -25,7 +25,7 @@ export class ResetService {
       db.outbox,
     ];
     await db.transaction('rw', tables, () => tables.reduce((chain, table) => chain.then(() => table.clear()), Dexie.Promise.resolve()));
-    await db.appSettings.update('singleton', { lastSyncId: undefined });
+    await db.appSettings.update('singleton', { syncHash: undefined });
     await seedFixedProfiles();
   }
 }

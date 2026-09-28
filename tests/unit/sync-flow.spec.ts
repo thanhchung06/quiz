@@ -349,7 +349,7 @@ describe('sync redesign end to end (real Apps Script code, fake Sheet)', () => {
     // Changing what the pull covers makes the next start pull even with nothing new.
     await openApp();
     expect(startup.skipped()).toBe(true);
-    await settings.update({ lastSyncId: undefined });
+    await settings.update({ syncHash: undefined });
     await openApp();
     expect(startup.skipped()).toBe(false);
   }, 60_000);

@@ -199,13 +199,14 @@ Kept: shared secret, `spreadsheets.currentonly` scope, cell chunking, schema ver
 ## 5. App flows
 
 - **App start** (sync on): loading screen, login disabled → send what the outbox still holds → PING:
-  if Google's `syncId` equals the device's `lastSyncId`, nothing changed — no pull; otherwise pull Profile,
+  if Google's sync hash equals the device's, it has seen every write — no pull; otherwise pull Profile,
   Assignment, Session, HistoryResult, PointUsage, Result, and Exercise / Question / Category per settings,
-  then store the `syncId` read before pulling → login enabled. Error → message + Thử lại.
-- **syncId**: Metadata holds a UUID replaced on every write that changes something; PING and WRITE return
-  it (WRITE also returns the one before). After its own write the device stores the new one only if the one
-  before was its own `lastSyncId` (nobody else wrote in between). Cleared when the pull settings, the
-  connection, a reset or an import change what the device holds.
+  then take the hash read before pulling → login enabled. Error → message + Thử lại.
+- **Sync hash chain**: every write that changes something gets a new write id (UUID); Google sets its
+  hash to `nextSyncHash(hash, writeId)` and returns the write id; the writing device does the same with
+  its own hash. Another device's write in between is in Google's chain but not in this device's, so the
+  hashes differ and the next start pulls. The device's hash is cleared when the pull settings, the
+  connection, a reset or an import change what it holds.
 - **Child login** with a Session → straight into that exercise.
 - **Every write** → its operation is sent immediately; failure → error + Thử lại.
 - **"Đồng bộ ngay"** (manual) keeps today's behavior and dialog, on the new sheets: one direction per run,

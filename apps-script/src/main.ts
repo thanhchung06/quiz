@@ -2,6 +2,7 @@ import { withExclusiveLock } from './lock';
 import { readMetadata, writeMetadata, Metadata } from './sheets/metadata';
 import { readAllRows, readIndex, readIndexAfter, readRowBodies, writeChangedRows, StoredRow } from './sheets/generic-table';
 import {
+  nextSyncHash,
   DATA_SCHEMA_VERSION,
   JsonRecord,
   OpResult,
@@ -56,7 +57,7 @@ export function handle(request: SyncRequest): SyncResponse {
     return { ok: false, error: 'SCHEMA_MISMATCH', sheetSchemaVersion: metadata.schemaVersion ?? 1 };
   }
 
-  if (request.action === 'PING') return { ok: true, syncId: metadata?.syncId };
+  if (request.action === 'PING') return { ok: true, syncHash: metadata?.syncHash };
   if (request.action === 'READ') return read(spreadsheet, request.read);
 
   const outcome = withExclusiveLock(LOCK_TIMEOUT_MS, () => write(spreadsheet, request.ops));
@@ -186,12 +187,15 @@ function write(spreadsheet: GoogleSpreadsheet, ops: SyncOp[]): SyncResponse {
 
   ws.flush();
   for (const { result, row } of pendingRows) result.row = row.rowIndex;
-  // A new syncId whenever something changed. previousSyncId lets the device tell whether anyone else
-  // wrote since it last caught up (then it must still pull on its next start).
-  const previousSyncId = metadata.syncId;
-  if (ws.changedAnything) metadata.syncId = Utilities.getUuid();
+  // Every write that changed something extends the hash chain with its own id; the device that wrote
+  // does the same with the returned id, so it matches Google only if nobody else wrote in between.
+  let writeId: string | undefined;
+  if (ws.changedAnything) {
+    writeId = Utilities.getUuid();
+    metadata.syncHash = nextSyncHash(metadata.syncHash, writeId);
+  }
   writeMetadata(spreadsheet, metadata);
-  return { ok: true, results, syncId: metadata.syncId, previousSyncId };
+  return { ok: true, results, writeId };
 }
 
 /** Fields that only mean something on one device, or that the sheet's number column holds. */

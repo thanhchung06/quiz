@@ -3,7 +3,7 @@
  */
 import { resetSheets, rowCount, sheets } from '../support/fake-apps-script';
 import { handle } from '../../apps-script/src/main';
-import { JsonRecord, ReadSpec, SyncOp, SyncResponse } from '../../src/app/sync/protocol';
+import { JsonRecord, nextSyncHash, ReadSpec, SyncOp, SyncResponse } from '../../src/app/sync/protocol';
 
 const write = (...ops: SyncOp[]) => handle({ action: 'WRITE', sharedSecret: 'secret', deviceId: 'd', ops }) as Extract<SyncResponse, { ok: true }>;
 const read = (spec: ReadSpec) => handle({ action: 'READ', sharedSecret: 'secret', deviceId: 'd', read: spec }) as Extract<SyncResponse, { ok: true }>;
@@ -107,19 +107,19 @@ describe('Apps Script sync (new layout)', () => {
     expect(read({ mode: 'ROWS_AFTER', sheet: 'PointUsage', after: 0 }).records).toEqual([{ id: 'u1', points: 30, row: 1 }]);
   });
 
-  it('a new syncId after every write that changed something, returned by PING and WRITE with the one before', () => {
-    expect(handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' })).toEqual({ ok: true, syncId: undefined });
+  it('every write that changed something extends the hash chain; PING returns the hash, WRITE the write id', () => {
+    const ping = () => (handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' }) as { syncHash?: string }).syncHash;
+    expect(ping()).toBeUndefined();
     const first = write({ op: 'WRITE_RECORD', sheet: 'QuizItem', record: rec('q1') });
-    expect(first.previousSyncId).toBeUndefined();
-    expect(first.syncId).toBeTruthy();
+    expect(first.writeId).toBeTruthy();
+    expect(ping()).toBe(nextSyncHash(undefined, first.writeId!));
     const second = write({ op: 'APPEND_HISTORY', history: rec('h1') });
-    expect(second.previousSyncId).toBe(first.syncId);
-    expect(second.syncId).not.toBe(first.syncId);
-    // Nothing changed (a repeated insert) → same syncId.
-    const repeat = write({ op: 'APPEND_HISTORY', history: rec('h1') });
-    expect(repeat.syncId).toBe(second.syncId);
-    expect(repeat.previousSyncId).toBe(second.syncId);
-    expect(handle({ action: 'PING', sharedSecret: 'secret', deviceId: 'd' })).toEqual({ ok: true, syncId: second.syncId });
+    expect(ping()).toBe(nextSyncHash(nextSyncHash(undefined, first.writeId!), second.writeId!));
+    // Nothing changed (a repeated insert): no write id, same hash.
+    const before = ping();
+    expect(write({ op: 'APPEND_HISTORY', history: rec('h1') }).writeId).toBeUndefined();
+    expect(ping()).toBe(before);
+    expect(nextSyncHash('a', 'b')).not.toBe(nextSyncHash('b', 'a'));
   });
 
   it('big records are split across cells and pages stop near the size limit', () => {

@@ -64,7 +64,7 @@ export class ManualSyncService {
         summary.sent = Math.min(results.length, ops.length);
         summary.removed = results.reduce((sum, r) => sum + (r.removed ?? 0), 0);
       } else {
-        const remote = (await sendPing()).syncId;
+        const remote = (await sendPing()).syncHash;
         await this.reader.pull({
           questions: !options.skipQuestions,
           addedQuestionsOnly: options.addedQuestionsOnly,
@@ -74,7 +74,7 @@ export class ManualSyncService {
         summary.received = this.reader.received();
         summary.removed = this.reader.removed();
         // A partial pull (without questions, or only new ones) doesn't make this device up to date.
-        await this.settings.update({ lastSyncId: options.skipQuestions || options.addedQuestionsOnly ? undefined : remote });
+        await this.settings.update({ syncHash: options.skipQuestions || options.addedQuestionsOnly ? undefined : remote });
       }
     } catch (error) {
       summary = { ...summary, ok: false, error: error instanceof SyncError ? error.message : String(error) };

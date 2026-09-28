@@ -4,6 +4,28 @@
  * sides (apps-script/src bundles it through esbuild).
  */
 
+/**
+ * The sheet's sync hash chain: every write that changes something gets a new
+ * write id, and the hash becomes nextSyncHash(hash, writeId) — on Google and,
+ * with the returned write id, on the device that wrote. A device whose hash
+ * equals Google's has seen every write; another device's write in between
+ * leaves it behind (plan §5). Shared by both sides so they compute the same.
+ */
+export function nextSyncHash(previous: string | undefined, writeId: string): string {
+  // cyrb53: a fast 53-bit string hash — good enough to tell chains apart, no crypto needed.
+  const text = `${previous ?? ''}|${writeId}`;
+  let h1 = 0xdeadbeef;
+  let h2 = 0x41c6ce57;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
+}
+
 /** Bumped whenever the sheet layout changes; the script refuses a different one, the app drops its local data. */
 export const DATA_SCHEMA_VERSION = 2;
 
@@ -99,9 +121,9 @@ export type SyncResponse =
       results?: OpResult[];
       records?: JsonRecord[];
       truncated?: boolean;
-      /** PING, WRITE: the sheet's current syncId (a new UUID after every write that changed something). */
-      syncId?: string;
-      /** WRITE: the syncId before this write — if the device held it, the device is still up to date. */
-      previousSyncId?: string;
+      /** PING: the sheet's current sync hash (see nextSyncHash). */
+      syncHash?: string;
+      /** WRITE: the id of this write, when it changed something — the device folds it into its own hash. */
+      writeId?: string;
     }
   | { ok: false; error: 'BAD_SECRET' | 'SCHEMA_MISMATCH' | 'BUSY' | 'BAD_REQUEST'; message?: string; sheetSchemaVersion?: number };
