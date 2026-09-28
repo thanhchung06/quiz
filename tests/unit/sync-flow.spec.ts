@@ -56,6 +56,7 @@ global.fetch = jest.fn(async (_url, init) => {
   return { status: 200, text: async () => text } as Response;
 }) as unknown as typeof fetch;
 transportOptions.retryDelaysMs = [0, 0, 0];
+transportOptions.wakeUpDelaysMs = [0, 0, 0, 0, 0];
 
 // --- the app, wired by hand ---------------------------------------------------
 const settings = new AppSettingsRepository();

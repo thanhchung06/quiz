@@ -25,6 +25,7 @@ export class ProfileSelectionComponent {
   /** Login waits for the app-start pull from Google (plan §5). */
   readonly startup: StartupSyncService['state'];
   readonly startupError: StartupSyncService['error'];
+  readonly startupStatus: StartupSyncService['status'];
 
   constructor(
     private readonly profileRepo: ProfileRepository,
@@ -35,6 +36,7 @@ export class ProfileSelectionComponent {
   ) {
     this.startup = startupSync.state;
     this.startupError = startupSync.error;
+    this.startupStatus = startupSync.status;
     // Profiles (names, passwords) may have just come from Google.
     effect(() => {
       if (this.startup() === 'done') void this.loadProfiles();

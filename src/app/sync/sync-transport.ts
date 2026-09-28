@@ -55,28 +55,54 @@ export const transportOptions = {
   /** Waits before re-sending a request that failed in transit or came back as an error page (every request is safe to repeat). */
   retryDelaysMs: [2000, 5000, 10000],
   busyDelaysMs: [500, 1000, 2000, 4000],
+  /**
+   * The first request after the script sat idle hits Apps Script's cold start
+   * (can take tens of seconds, sometimes fails): the app-start "connect" ping
+   * gives up on one try after this long and tries again, up to wakeUpDelaysMs.
+   */
+  wakeUpTimeoutMs: 25_000,
+  wakeUpDelaysMs: [3000, 5000, 10000, 15000, 20000],
 };
+
+export interface SendOptions {
+  /** Abandon one try after this long (then retry). */
+  timeoutMs?: number;
+  /** Waits between tries (default transportOptions.retryDelaysMs). */
+  retryDelaysMs?: number[];
+  /** Before each retry: attempt number (2, 3, …) and the total. */
+  onRetry?: (attempt: number, attempts: number) => void;
+}
 
 export async function sendWrite(ops: SyncOp[]): Promise<Extract<SyncResponse, { ok: true }>> {
   return send({ action: 'WRITE', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId(), ops });
 }
 
 /** Google's current sync hash (and a check that the connection works). */
-export async function sendPing(): Promise<Extract<SyncResponse, { ok: true }>> {
-  return send({ action: 'PING', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId() });
+export async function sendPing(options: SendOptions = {}): Promise<Extract<SyncResponse, { ok: true }>> {
+  return send({ action: 'PING', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId() }, options);
+}
+
+/**
+ * Wakes the script up (app start): a PING that allows for Apps Script's cold
+ * start — each try is cut off after wakeUpTimeoutMs and repeated with growing
+ * pauses, reporting each retry so the app can say it is still connecting.
+ */
+export async function wakeUp(onRetry?: SendOptions['onRetry']): Promise<Extract<SyncResponse, { ok: true }>> {
+  return sendPing({ timeoutMs: transportOptions.wakeUpTimeoutMs, retryDelaysMs: transportOptions.wakeUpDelaysMs, onRetry });
 }
 
 export async function sendRead(read: ReadSpec): Promise<Extract<SyncResponse, { ok: true }>> {
   return send({ action: 'READ', sharedSecret: syncSharedSecret(), deviceId: currentDeviceId(), read });
 }
 
-async function send(request: SyncRequest): Promise<Extract<SyncResponse, { ok: true }>> {
+async function send(request: SyncRequest, options: SendOptions = {}): Promise<Extract<SyncResponse, { ok: true }>> {
   const endpoint = syncEndpointUrl();
   if (!endpoint || !request.sharedSecret) throw new SyncError('Chưa cấu hình kết nối Google (URL Web App và mã bí mật).', 'config');
+  const retryDelays = options.retryDelaysMs ?? transportOptions.retryDelaysMs;
   let busyTries = 0;
   for (let retry = 0; ; retry++) {
     try {
-      const response = await postOnce(endpoint, request);
+      const response = await postOnce(endpoint, request, options.timeoutMs);
       if (response.ok) return response;
       if (response.error === 'BUSY' && busyTries < transportOptions.busyDelaysMs.length) {
         await delay(transportOptions.busyDelaysMs[busyTries++]);
@@ -86,8 +112,9 @@ async function send(request: SyncRequest): Promise<Extract<SyncResponse, { ok: t
       throw rejection(response);
     } catch (error) {
       const transient = error instanceof SyncError && (error.kind === 'network' || error.kind === 'server');
-      if (!transient || retry >= transportOptions.retryDelaysMs.length) throw error;
-      await delay(transportOptions.retryDelaysMs[retry]);
+      if (!transient || retry >= retryDelays.length) throw error;
+      await delay(retryDelays[retry]);
+      options.onRetry?.(retry + 2, retryDelays.length + 1);
     }
   }
 }
@@ -108,12 +135,15 @@ function rejection(response: Extract<SyncResponse, { ok: false }>): SyncError {
   }
 }
 
-async function postOnce(endpoint: string, request: SyncRequest): Promise<SyncResponse> {
+async function postOnce(endpoint: string, request: SyncRequest, timeoutMs?: number): Promise<SyncResponse> {
   const payload = JSON.stringify(request);
   let text: string;
   let status = 0;
+  const abort = timeoutMs ? new AbortController() : undefined;
+  const timer = abort ? setTimeout(() => abort.abort(), timeoutMs) : undefined;
   try {
     const res = await fetch(endpoint, {
+      signal: abort?.signal,
       method: 'POST',
       // Apps Script Web Apps don't handle CORS preflight requests, so this must
       // stay a CORS "simple request": text/plain and no custom headers.
@@ -125,7 +155,14 @@ async function postOnce(endpoint: string, request: SyncRequest): Promise<SyncRes
     status = res.status;
     text = await res.text();
   } catch {
-    throw new SyncError('Không kết nối được tới Google. Kiểm tra mạng rồi thử lại.', 'network');
+    throw new SyncError(
+      abort?.signal.aborted
+        ? 'Google không trả lời (Apps Script có thể đang khởi động). Thử lại sau ít phút.'
+        : 'Không kết nối được tới Google. Kiểm tra mạng rồi thử lại.',
+      'network',
+    );
+  } finally {
+    clearTimeout(timer);
   }
   try {
     return JSON.parse(text) as SyncResponse;

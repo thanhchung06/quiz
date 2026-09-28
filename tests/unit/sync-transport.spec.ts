@@ -1,4 +1,4 @@
-import { batchBySize, describeServerError, sendWrite, transportOptions } from '../../src/app/sync/sync-transport';
+import { batchBySize, describeServerError, sendWrite, transportOptions, wakeUp } from '../../src/app/sync/sync-transport';
 import { randomUUID } from 'node:crypto';
 
 if (!globalThis.crypto?.randomUUID) Object.defineProperty(globalThis.crypto, 'randomUUID', { value: randomUUID });
@@ -12,6 +12,31 @@ describe('sync transport', () => {
     localStorage.setItem('quiz-app.sharedSecret', 'secret');
     transportOptions.retryDelaysMs = [0, 0, 0];
     transportOptions.busyDelaysMs = [0, 0];
+    transportOptions.wakeUpDelaysMs = [0, 0, 0, 0, 0];
+    transportOptions.wakeUpTimeoutMs = 50;
+  });
+
+  it('app-start wake-up: a try that hangs (cold start) is cut off and retried, reporting each retry', async () => {
+    let call = 0;
+    global.fetch = jest.fn((_url, init: RequestInit) => {
+      call++;
+      if (call <= 2) {
+        // Never answers until aborted.
+        return new Promise((_resolve, reject) => init.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError'))));
+      }
+      return reply({ ok: true, syncHash: 'h' });
+    }) as unknown as typeof fetch;
+    const retries: string[] = [];
+    await expect(wakeUp((attempt, attempts) => retries.push(`${attempt}/${attempts}`))).resolves.toEqual({ ok: true, syncHash: 'h' });
+    expect(retries).toEqual(['2/6', '3/6']);
+  });
+
+  it('app-start wake-up gives up after its last try with a clear message', async () => {
+    global.fetch = jest.fn((_url, init: RequestInit) =>
+      new Promise((_resolve, reject) => init.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')))),
+    ) as unknown as typeof fetch;
+    await expect(wakeUp()).rejects.toThrow('Google không trả lời');
+    expect(global.fetch).toHaveBeenCalledTimes(6);
   });
 
   it('cuts batches by size: many small items per request, fewer big ones', () => {

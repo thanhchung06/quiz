@@ -1,9 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { AppSettingsRepository } from '../data/repositories/app-settings.repository';
 import { syncEnabled } from '../data/outbox';
+import { db } from '../data/db';
 import { SyncReaderService } from './sync-reader.service';
 import { SyncWriterService } from './sync-writer.service';
-import { sendPing, SyncError } from './sync-transport';
+import { sendPing, SyncError, wakeUp } from './sync-transport';
 
 export type StartupSyncState = 'running' | 'error' | 'done';
 
@@ -18,6 +19,9 @@ export class StartupSyncService {
   private readonly _state = signal<StartupSyncState>('running');
   private readonly _error = signal<string | undefined>(undefined);
   private readonly _skipped = signal(false);
+  private readonly _status = signal('');
+  /** What the running app-start sync is doing, for the login screen. */
+  readonly status = this._status.asReadonly();
   readonly state = this._state.asReadonly();
   readonly error = this._error.asReadonly();
   /** The last run found nothing new on Google (same sync hash) and pulled nothing. */
@@ -36,9 +40,18 @@ export class StartupSyncService {
     try {
       this._skipped.set(false);
       if (await syncEnabled()) {
-        await this.writer.flush();
-        // Same hash as Google: this device has seen every write → no pull at all.
-        const remote = (await sendPing()).syncHash;
+        // Wake the script up first, patiently: after sitting idle, Apps Script's first answer can take long.
+        this._status.set('Đang kết nối Google…');
+        const awake = await wakeUp((attempt, attempts) => this._status.set(`Google đang khởi động — thử lại lần ${attempt}/${attempts}…`));
+        const pending = await db.outbox.count();
+        if (pending > 0) {
+          this._status.set('Đang gửi thay đổi còn chờ…');
+          await this.writer.flush();
+        }
+        this._status.set('Đang lấy dữ liệu mới nhất từ Google…');
+        // Same hash as Google: this device has seen every write → no pull at all. (The wake-up answer
+        // already carries the hash, unless this device just sent writes of its own.)
+        const remote = pending > 0 ? (await sendPing()).syncHash : awake.syncHash;
         const settings = await this.settings.get();
         if (remote && remote === settings.syncHash) {
           this._skipped.set(true);
