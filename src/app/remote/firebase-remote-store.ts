@@ -3,6 +3,8 @@ import { FirebaseApp, initializeApp } from '@firebase/app';
 import { getAuth, onAuthStateChanged, signInAnonymously } from '@firebase/auth';
 import {
   Database,
+  endBefore,
+  equalTo,
   get,
   getDatabase,
   increment as dbIncrement,
@@ -10,15 +12,17 @@ import {
   limitToLast,
   onValue,
   orderByChild,
+  orderByKey,
   query,
   QueryConstraint,
   ref,
   serverTimestamp,
   startAfter,
+  startAt,
   update,
 } from '@firebase/database';
 import { FIREBASE_CONFIG } from '../firebase-config.generated';
-import { isIncrement, ListQuery, RemoteStore, SERVER_TIME } from './remote-store';
+import { isIncrement, ListQuery, RemoteStore, SERVER_TIME, WriteRejectedError } from './remote-store';
 
 /** How long a read waits for a lost connection to come back before failing. */
 const READ_WAIT_MS = 20_000;
@@ -91,8 +95,11 @@ export class FirebaseRemoteStore extends RemoteStore {
     await this.waitForConnection();
     const constraints: QueryConstraint[] = [];
     if (q) {
-      constraints.push(orderByChild(q.orderBy));
+      constraints.push(q.orderBy ? orderByChild(q.orderBy) : orderByKey());
+      if (q.equalTo !== undefined) constraints.push(equalTo(q.equalTo));
+      if (q.startAt !== undefined) constraints.push(startAt(q.startAt));
       if (q.startAfter !== undefined) constraints.push(q.startAfterKey !== undefined ? startAfter(q.startAfter, q.startAfterKey) : startAfter(q.startAfter));
+      if (q.endBefore !== undefined) constraints.push(endBefore(q.endBefore));
       if (q.limitToFirst !== undefined) constraints.push(limitToFirst(q.limitToFirst));
       if (q.limitToLast !== undefined) constraints.push(limitToLast(q.limitToLast));
     }
@@ -114,6 +121,7 @@ export class FirebaseRemoteStore extends RemoteStore {
     try {
       await update(this.path(''), converted);
     } catch (error) {
+      if ((error as { code?: string }).code === 'PERMISSION_DENIED' || /permission_denied/i.test(message(error))) throw new WriteRejectedError(`Máy chủ từ chối ghi: ${message(error)}`);
       throw new RemoteError(`Không lưu được lên máy chủ: ${message(error)}`);
     }
   }

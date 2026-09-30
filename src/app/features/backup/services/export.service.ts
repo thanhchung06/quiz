@@ -25,7 +25,7 @@ export class BackupExportService {
     const children = profiles.filter((p) => p.role === 'child').map((p) => p.id);
     const perChild = async <T>(path: string) => (await Promise.all(children.map((c) => this.records<T>(`${path}/${c}`)))).flat();
     const sessions = (await Promise.all(children.map((c) => this.sessions.forChild(c)))).filter((s): s is PlaySession => !!s);
-    const points = Object.fromEntries(await Promise.all(children.map(async (c) => [c, (await this.remote.get<number>(`points/${c}`)) ?? 0])));
+    const points = Object.fromEntries(profiles.filter((p) => p.role === 'child').map((p) => [p.id, p.points ?? 0]));
     return {
       formatVersion: '2.0',
       exportedAt: new Date().toISOString(),

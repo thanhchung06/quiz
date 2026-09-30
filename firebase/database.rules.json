@@ -14,13 +14,8 @@
         "profiles": {
           "$id": {
             ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
-            ".validate": "newData.child('updatedAt').val() === now"
-          }
-        },
-        "points": {
-          "$child": {
-            ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4'",
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.child('updatedAt').val() === now || (data.exists() && newData.child('json').val() === data.child('json').val() && newData.child('updatedAt').val() === data.child('updatedAt').val())",
+            "points": { ".validate": "newData.isNumber()" }
           }
         },
         "categories": {
@@ -61,28 +56,26 @@
         },
         "results": {
           "$child": {
-            ".indexOn": ["createdAt"],
             "$id": {
               ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4' && (!data.exists() || !newData.exists())",
-              ".validate": "newData.child('createdAt').val() === now"
+              ".validate": "$id.matches(/^[0-9]{10}$/) && newData.child('createdAt').val() === now"
             }
           }
         },
         "history": {
           "$child": {
-            ".indexOn": ["createdAt"],
+            ".indexOn": ["createdAt", "assignmentId", "practiceOf"],
             "$id": {
               ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4' && !data.exists()",
-              ".validate": "newData.child('createdAt').val() === now"
+              ".validate": "$id.matches(/^[0-9]{10}$/) && newData.child('createdAt').val() === now && newData.child('totalEarned').isNumber() && newData.child('totalStars').isNumber()"
             }
           }
         },
         "pointUsage": {
           "$child": {
-            ".indexOn": ["createdAt"],
             "$id": {
               ".write": "auth != null && $family === 'b18c7383e8a365aad9de80456aeca58a4e33dafaf14836e4' && !data.exists()",
-              ".validate": "newData.child('createdAt').val() === now"
+              ".validate": "$id.matches(/^[0-9]{10}$/) && newData.child('createdAt').val() === now && newData.child('totalUsed').isNumber()"
             }
           }
         }

@@ -136,4 +136,15 @@
     color: #8892a6;
     font-size: 0.8rem;
   }
+
+  .load-more {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.6rem auto 0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dfe3ec;
+    background: white;
+  }
 }

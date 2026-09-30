@@ -23,6 +23,12 @@ export interface Profile extends SyncEnvelope {
     feedbackDelayMs: number;
   };
   createdAt: string;
+  /**
+   * A child's spendable points, stored beside the profile (profiles/{id}/points):
+   * always set to the last history row's totalEarned − the last point use's
+   * totalUsed, never added to or taken from.
+   */
+  points?: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -345,16 +351,27 @@ export interface PlayResult extends ResultSummary {
   livesRemaining: number | 'unlimited';
 }
 
-/** Short record of a finished try, kept forever (append-only). */
-export type HistoryResult = ResultSummary;
+/**
+ * Short record of a finished try, kept forever (append-only), numbered per
+ * child (its id is its key, the same as its PlayResult's). The running totals
+ * are set when it is written: the previous row's plus this try's.
+ */
+export interface HistoryResult extends ResultSummary {
+  /** Counted points of all tries up to this one. */
+  totalEarned?: number;
+  /** Stars of all tries up to this one. */
+  totalStars?: number;
+}
 
-/** A parent trading a child's points for something (append-only). */
+/** A parent trading a child's points for something (append-only, numbered per child: its id is its key). */
 export interface PointUsage {
   id: string;
   childId: string;
   points: number;
   note?: string;
   usedAt: string;
+  /** Points used up to this one (the previous row's + points), set when it is written. */
+  totalUsed?: number;
 }
 
 // ---------------------------------------------------------------------------

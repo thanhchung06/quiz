@@ -6,11 +6,13 @@ import { decode, encode, StoredNode } from '../../remote/record-codec';
 
 /**
  * The fixed profiles (2 children + 1 parent, FR-001), stored in Firebase — no
- * create/delete UI. Only the parent edits them. A child's points are kept apart
- * (PointsRepository), so a profile edit never touches them.
+ * create/delete UI. Only the parent edits them. A child's points are stored
+ * beside the profile (PointsRepository), and a profile edit leaves them as they are.
  */
 @Injectable({ providedIn: 'root' })
 export class ProfileRepository extends RemoteRecordRepository<Profile> {
+  protected override readonly storedApart = ['points'];
+
   constructor(remote: RemoteStore) {
     super(remote, 'profiles');
   }

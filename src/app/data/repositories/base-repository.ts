@@ -155,10 +155,16 @@ export class RemoteRecordRepository<T extends SyncEnvelope> {
     return entity;
   }
 
+  /** Fields kept beside the record (a profile's points): an edit leaves them as they are. */
+  protected readonly storedApart: string[] = [];
+
   async update(id: string, patch: Partial<T>): Promise<void> {
     const record = await this.getById(id);
     if (!record) return;
-    await this.remote.update({ [`${this.path}/${id}`]: encode({ ...record, ...patch, updatedByDeviceId: currentDeviceId() }) });
+    const edited: Record<string, unknown> = { ...record, ...patch, updatedByDeviceId: currentDeviceId() };
+    for (const field of this.storedApart) delete edited[field];
+    const node = encode(edited);
+    await this.remote.update(Object.fromEntries(Object.entries(node).map(([field, value]) => [`${this.path}/${id}/${field}`, value])));
   }
 
   async softDelete(id: string): Promise<void> {

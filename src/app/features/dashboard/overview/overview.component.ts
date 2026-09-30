@@ -2,11 +2,11 @@ import { Component, signal } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ProfileRepository } from '../../../data/repositories/profile.repository';
-import { ProgressAggregationService, PeriodFilter, ProgressOverview } from '../services/progress-aggregation.service';
+import { ProgressAggregationService, ProgressOverview } from '../services/progress-aggregation.service';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { Profile } from '../../../shared/models/domain.model';
 
-/** Parent Dashboard Overview (FR-046): child selector, date filter, summary metrics. */
+/** Parent Dashboard Overview (FR-046): child selector, the child's points and last tries. */
 @Component({
   selector: 'app-overview',
   standalone: true,
@@ -17,7 +17,6 @@ import { Profile } from '../../../shared/models/domain.model';
 export class OverviewComponent {
   readonly children = signal<Profile[]>([]);
   readonly selectedChildId = signal('');
-  readonly period = signal<PeriodFilter>(7);
   readonly overview = signal<ProgressOverview | undefined>(undefined);
   readonly statusLabel: Partial<Record<string, string>> = { completed: 'Hoàn thành', timeUp: 'Hết giờ', tryAgain: 'Hết lượt', abandoned: 'Bỏ dở' };
 
@@ -42,14 +41,9 @@ export class OverviewComponent {
     await this.refresh();
   }
 
-  async setPeriod(period: PeriodFilter): Promise<void> {
-    this.period.set(period);
-    await this.refresh();
-  }
-
   private async refresh(): Promise<void> {
     if (!this.selectedChildId()) return;
-    this.overview.set(await this.aggregation.overview(this.selectedChildId(), this.period()));
+    this.overview.set(await this.aggregation.overview(this.selectedChildId()));
   }
 
   goToLearningNeeds(): void {

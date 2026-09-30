@@ -4,6 +4,9 @@ import { QuizItemRepository } from '../../../data/repositories/quiz-item.reposit
 import { CategoryRepository } from '../../../data/repositories/category.repository';
 import { RemoteStore } from '../../../remote/remote-store';
 import { encode, StoredNode } from '../../../remote/record-codec';
+import { lastRow, rowKey } from '../../../remote/numbered-rows';
+import { RESULTS_KEPT, ResultRepository } from '../../../data/repositories/result.repository';
+import { HistoryResult, PointUsage } from '../../../shared/models/domain.model';
 import { PointsService } from '../../rewards/services/points.service';
 import { BackupData, BackupEnvelope, convertLegacyBackup, LegacyBackupEnvelope } from './backup-format';
 
@@ -21,9 +24,11 @@ const CHUNK = 200;
  * Backup import (FR-052) into the family's server data: accepts the current
  * format (2.0) and old files (1.0, converted — see convertLegacyBackup). It
  * adds to what is there: profiles, questions, categories, exercises,
- * assignments and ongoing exercises are written as in the file; results,
- * history and point uses the server already has are left as they are (they can
- * never be changed). Points are then recomputed from the records. A profile
+ * assignments and ongoing exercises are written as in the file. A child's
+ * tries (history, results) and point uses are numbered lists with running
+ * totals, so they are written only for a child the server has none of yet —
+ * renumbered in order, with the totals worked out again and the last
+ * RESULTS_KEPT results. Points are then set from the totals. A profile
  * without a password in the file keeps the one the server has.
  */
 @Injectable({ providedIn: 'root' })
@@ -53,7 +58,7 @@ export class BackupImportService {
     if (!data) throw new Error('Tệp sao lưu không đúng định dạng.');
 
     const values: Array<[string, unknown]> = [];
-    for (const p of data.profiles) values.push([`profiles/${p.id}`, encode(p)]);
+    for (const { points: _points, ...p } of data.profiles) values.push([`profiles/${p.id}`, encode(p)]); // points are set from the totals below
     for (const e of data.exercises) values.push([`exercises/${e.id}`, encode(e)]);
     for (const a of data.assignments) {
       const { tries, ...rest } = a;
@@ -64,11 +69,9 @@ export class BackupImportService {
     }
     const children = [...new Set([...data.historyResults, ...data.results, ...data.pointUsages].map((r) => r.childId))];
     for (const child of children) {
-      const existing = async (path: string) => new Set((await this.remote.list<StoredNode>(`${path}/${child}`)).map((row) => row.key));
-      const [hasResult, hasHistory, hasUsage] = await Promise.all([existing('results'), existing('history'), existing('pointUsage')]);
-      for (const r of data.results.filter((r) => r.childId === child && !hasResult.has(r.id))) values.push([`results/${child}/${r.id}`, encode(r, 'createdAt')]);
-      for (const h of data.historyResults.filter((h) => h.childId === child && !hasHistory.has(h.id))) values.push([`history/${child}/${h.id}`, encode(h, 'createdAt')]);
-      for (const u of data.pointUsages.filter((u) => u.childId === child && !hasUsage.has(u.id))) values.push([`pointUsage/${child}/${u.id}`, encode(u, 'createdAt')]);
+      const [hasHistory, hasUsage] = await Promise.all([lastRow(this.remote, `history/${child}`), lastRow(this.remote, `pointUsage/${child}`)]);
+      if (hasHistory || hasUsage) continue; // numbered lists can't be merged: a child's tries and uses come in only onto an empty server
+      values.push(...numberedRows(child, data));
     }
 
     const total = values.length + data.categories.length + data.quizItems.length;
@@ -99,4 +102,52 @@ export class BackupImportService {
       profiles: data.profiles.map((p) => ({ ...p, password: p.password || serverPasswords.get(p.id) || '' })),
     };
   }
+}
+
+/**
+ * A child's history, results and point uses as numbered rows: in their order
+ * (by number when the file has numbered ids, else by time), from 1, with the
+ * running totals; a result keeps its try's number, and only the last
+ * RESULTS_KEPT are written.
+ */
+function numberedRows(child: string, data: BackupData): Array<[string, unknown]> {
+  const rows: Array<[string, unknown]> = [];
+  const inOrder = <T extends { id: string }>(list: T[], time: (r: T) => string) =>
+    [...list].sort((a, b) => (isNumbered(a.id) && isNumbered(b.id) ? Number(a.id) - Number(b.id) : time(a).localeCompare(time(b))));
+
+  const history = inOrder(
+    data.historyResults.filter((h) => h.childId === child),
+    (h) => h.attemptedAt,
+  );
+  const keyOf = new Map<string, string>();
+  let totalEarned = 0;
+  let totalStars = 0;
+  history.forEach((h: HistoryResult, i) => {
+    const key = rowKey(i + 1);
+    keyOf.set(h.id, key);
+    totalEarned += h.counted ? h.pointsEarned : 0;
+    totalStars += h.stars;
+    const { totalEarned: _e, totalStars: _s, ...record } = h;
+    rows.push([`history/${child}/${key}`, encode({ ...record, id: key }, 'createdAt', { totalEarned, totalStars, ...ResultRepository.lookupFields(h) })]);
+  });
+  for (const r of data.results.filter((r) => r.childId === child)) {
+    const key = keyOf.get(r.id);
+    if (key && Number(key) > history.length - RESULTS_KEPT) rows.push([`results/${child}/${key}`, encode({ ...r, id: key }, 'createdAt')]);
+  }
+
+  let totalUsed = 0;
+  inOrder(
+    data.pointUsages.filter((u) => u.childId === child),
+    (u) => u.usedAt,
+  ).forEach((u: PointUsage, i) => {
+    const key = rowKey(i + 1);
+    totalUsed += u.points;
+    const { totalUsed: _t, ...record } = u;
+    rows.push([`pointUsage/${child}/${key}`, encode({ ...record, id: key }, 'createdAt', { totalUsed })]);
+  });
+  return rows;
+}
+
+function isNumbered(id: string): boolean {
+  return /^[0-9]+$/.test(id);
 }

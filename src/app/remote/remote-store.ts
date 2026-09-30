@@ -15,14 +15,23 @@ export function isIncrement(value: unknown): value is Increment {
 }
 
 export interface ListQuery {
-  /** Child field to order by (must be indexed in the rules). */
-  orderBy: string;
-  /** Only children after this value of the field (and, with startAfterKey, after that key among equal values). */
-  startAfter?: number;
+  /** Child field to order by (must be indexed in the rules); without it, children are in key order. */
+  orderBy?: string;
+  /** Only children whose field (or key) equals this. */
+  equalTo?: string | number;
+  /** Only children from this value of the field on. */
+  startAt?: number;
+  /** Only children after this value of the field or key (and, with startAfterKey, after that key among equal values). */
+  startAfter?: number | string;
   startAfterKey?: string;
+  /** Only children before this key (key order only): the next page back. */
+  endBefore?: string;
   limitToFirst?: number;
   limitToLast?: number;
 }
+
+/** The server refused a write (security rules), e.g. a numbered row another device created first. */
+export class WriteRejectedError extends Error {}
 
 /**
  * The family's online database (specs/003-firebase/plan.md): paths are relative
@@ -44,6 +53,7 @@ export abstract class RemoteStore {
   /**
    * Several writes at once, all or nothing: path → value, `null` removes,
    * SERVER_TIME / increment(n) anywhere in a value are applied by the server.
+   * Throws WriteRejectedError when the rules refuse it (nothing is written).
    */
   abstract update(values: Record<string, unknown>): Promise<void>;
 

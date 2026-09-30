@@ -1,8 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProfileRepository } from '../../../data/repositories/profile.repository';
-import { PointUsageRepository } from '../../../data/repositories/point-usage.repository';
-import { ResultRepository } from '../../../data/repositories/result.repository';
+import { PointUsageRepository, USAGE_PAGE } from '../../../data/repositories/point-usage.repository';
 import { PointsService } from '../services/points.service';
 import { PointsRepository } from '../../../data/repositories/points.repository';
 import { Profile, PointUsage } from '../../../shared/models/domain.model';
@@ -10,9 +9,10 @@ import { IconComponent } from '../../../shared/icon/icon.component';
 
 /**
  * Parent screen for trading a child's points for a real-world item (plan
- * §3.6–3.7): the balance is counted history points minus point usage; each
- * use is an append-only PointUsage record (the history below), after which
- * points go down in the same atomic write; "Tính lại điểm" rebuilds them from the records.
+ * §3.6–3.7): each use is an append-only PointUsage record (the history below,
+ * a page at a time) carrying the running total of points used; the child's
+ * points are set in the same atomic write to totalEarned − totalUsed.
+ * "Tính lại điểm" sets them again from those two totals.
  */
 @Component({
   selector: 'app-redeem-points',
@@ -27,15 +27,17 @@ export class RedeemPointsComponent {
   readonly earnedPoints = signal(0);
   readonly redeemedPoints = signal(0);
   readonly history = signal<PointUsage[]>([]);
+  /** A full page came back, so there may be older uses. */
+  readonly hasMore = signal(false);
 
   readonly pointsToRedeem = signal('');
   readonly note = signal('');
   readonly errorMessage = signal('');
   readonly successMessage = signal('');
 
-  /** The stored points (kept up to date by atomic +/−). */
+  /** The stored points (set from the totals on every finish and point use). */
   readonly balance = signal(0);
-  /** What history − point usage adds up to; differs from balance only if something went wrong. */
+  /** totalEarned − totalUsed; differs from balance only if something went wrong. */
   readonly fromRecords = computed(() => this.earnedPoints() - this.redeemedPoints());
 
   readonly selectedChildName = computed(() => this.children().find((c) => c.id === this.selectedChildId())?.displayName ?? '');
@@ -43,7 +45,6 @@ export class RedeemPointsComponent {
   constructor(
     private readonly profiles: ProfileRepository,
     private readonly usages: PointUsageRepository,
-    private readonly results: ResultRepository,
     private readonly points: PointsService,
     private readonly pointsRepo: PointsRepository,
   ) {
@@ -73,12 +74,27 @@ export class RedeemPointsComponent {
   private async loadBalanceAndHistory(): Promise<void> {
     const profileId = this.selectedChildId();
     if (!profileId) return;
-    const history = await this.results.historyForChild(profileId);
-    this.earnedPoints.set(history.filter((h) => h.counted).reduce((sum, h) => sum + h.pointsEarned, 0));
-    const usages = await this.usages.listForChild(profileId);
-    this.redeemedPoints.set(usages.reduce((sum, u) => sum + u.points, 0));
+    const [earned, used, balance, usages] = await Promise.all([
+      this.pointsRepo.totalEarned(profileId),
+      this.pointsRepo.totalUsed(profileId),
+      this.pointsRepo.get(profileId),
+      this.usages.page(profileId),
+    ]);
+    this.earnedPoints.set(earned);
+    this.redeemedPoints.set(used);
+    this.balance.set(balance);
     this.history.set(usages);
-    this.balance.set(await this.pointsRepo.get(profileId));
+    this.hasMore.set(usages.length === USAGE_PAGE);
+  }
+
+  /** "Xem thêm": the next page of older uses. */
+  async loadMore(): Promise<void> {
+    const profileId = this.selectedChildId();
+    const oldest = this.history().at(-1);
+    if (!profileId || !oldest) return;
+    const older = await this.usages.page(profileId, oldest.id);
+    this.history.update((list) => [...list, ...older]);
+    this.hasMore.set(older.length === USAGE_PAGE);
   }
 
   /** "Tính lại điểm": points from the records (only needed if they ever disagree). */

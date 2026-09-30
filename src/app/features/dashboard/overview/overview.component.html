@@ -10,20 +10,9 @@
     }
   </div>
 
-  <div class="period-tabs">
-    <button type="button" [class.active]="period() === 7" (click)="setPeriod(7)">7 ngày</button>
-    <button type="button" [class.active]="period() === 30" (click)="setPeriod(30)">30 ngày</button>
-    <button type="button" [class.active]="period() === 'all'" (click)="setPeriod('all')">Tất cả</button>
-  </div>
-
   @if (overview(); as o) {
     <div class="metrics">
-      <div class="metric"><span>{{ o.assigned }}</span><label>Đang giao</label></div>
-      <div class="metric"><span>{{ o.completed }}</span><label>Hoàn thành</label></div>
-      <div class="metric"><span>{{ o.passed }}</span><label>Đạt</label></div>
-      <div class="metric"><span>{{ o.unfinished }}</span><label>Bỏ dở</label></div>
-      <div class="metric"><span>{{ o.totalPracticeMinutes }}</span><label>Phút luyện tập</label></div>
-      <div class="metric"><span>{{ o.livesLost }}</span><label>Số lượt sai</label></div>
+      <div class="metric"><span>{{ o.points }}</span><label>Tổng điểm</label></div>
     </div>
 
     <div class="actions-row">

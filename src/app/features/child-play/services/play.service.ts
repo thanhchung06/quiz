@@ -81,8 +81,8 @@ export class PlayService {
     const exercise = assignment.exerciseSnapshot;
     if (exercise.isDaily) {
       const today = localDateOf(new Date().toISOString());
-      const history = await this.results.historyForAssignment(assignment.childId, assignment.id);
-      return history.some((h) => localDateOf(h.attemptedAt) === today) ? 0 : 'unlimited';
+      const last = await this.results.lastTryOfAssignment(assignment.childId, assignment.id);
+      return last && localDateOf(last.attemptedAt) === today ? 0 : 'unlimited';
     }
     const allowed = triesAllowed(exercise);
     return allowed === 'unlimited' ? 'unlimited' : Math.max(0, allowed - assignment.tries);
@@ -101,8 +101,8 @@ export class PlayService {
   }
 
   async startPractice(childId: string, exercise: Exercise): Promise<void> {
-    const earlier = (await this.results.historyForChild(childId)).filter((h) => h.exerciseId === exercise.id && !h.assignmentId);
-    await this.start(childId, exercise, earlier.length + 1, !!exercise.practiceEarnsPoints);
+    const last = await this.results.lastPracticeTry(childId, exercise.id);
+    await this.start(childId, exercise, (last?.tryNumber ?? 0) + 1, !!exercise.practiceEarnsPoints);
   }
 
   private async start(childId: string, exercise: Exercise, tryNumber: number, earnsPoints: boolean, assignmentId?: string): Promise<void> {
@@ -284,7 +284,7 @@ export class PlayService {
     const now = new Date().toISOString();
 
     const summary: ResultSummary = {
-      id: crypto.randomUUID(),
+      id: '', // the number the finish is stored under
       childId: session.childId,
       exerciseId: session.exerciseId,
       assignmentId: session.assignmentId,
@@ -321,9 +321,9 @@ export class PlayService {
       removeAssignment = outcome.passed || (allowed !== 'unlimited' && session.tryNumber >= allowed);
     }
 
-    await this.results.recordFinish(result, history, session, removeAssignment);
+    const stored = await this.results.recordFinish(result, history, session, removeAssignment);
     this._session.set({ ...session, progress });
-    this._result.set(result);
+    this._result.set(stored);
     this._status.set(status);
   }
 }

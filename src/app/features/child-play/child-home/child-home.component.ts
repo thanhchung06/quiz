@@ -43,7 +43,7 @@ export class ChildHomeComponent implements OnInit {
   readonly totalPoints = signal(0);
   readonly totalStars = signal(0);
   readonly last7Days = signal<HistoryResult[]>([]);
-  readonly availableResultIds = signal<Set<string>>(new Set());
+  private readonly latest = signal<HistoryResult | undefined>(undefined);
 
   constructor(
     private readonly session: SessionService,
@@ -77,12 +77,15 @@ export class ChildHomeComponent implements OnInit {
     this.practice.set((await this.exercises.list()).filter((e) => e.allowPractice && e.status === 'active'));
 
     this.totalPoints.set(await this.points.get(child.id));
-    const history = await this.results.historyForChild(child.id);
-    this.totalStars.set(history.reduce((sum, h) => sum + h.stars, 0));
-    const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString();
-    this.last7Days.set(history.filter((h) => h.attemptedAt >= weekAgo));
-    const stored = await this.results.resultsForChild(child.id);
-    this.availableResultIds.set(new Set(stored.map((r) => r.id)));
+    const latest = await this.results.latestHistory(child.id);
+    this.totalStars.set(latest?.totalStars ?? 0);
+    this.last7Days.set(await this.results.historySince(child.id, new Date(now - 7 * 24 * 60 * 60 * 1000)));
+    this.latest.set(latest);
+  }
+
+  /** The full result of an older try may have been removed (only the last RESULTS_KEPT are kept). */
+  canView(history: HistoryResult): boolean {
+    return ResultRepository.isKept(history.id, this.latest());
   }
 
   formatDateTime(iso: string): string {

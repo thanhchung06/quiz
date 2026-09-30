@@ -1,25 +1,18 @@
 import { Injectable } from '@angular/core';
 import { PointsRepository } from '../../../data/repositories/points.repository';
-import { PointUsageRepository } from '../../../data/repositories/point-usage.repository';
-import { ResultRepository } from '../../../data/repositories/result.repository';
 
 /**
- * "Tính lại điểm" (specs/003 §4): a child's points are normally kept up to
- * date by atomic +/− on every counted try and every point use; this rebuilds
- * them from the records — counted history points minus points used.
+ * "Tính lại điểm" (specs/003 §4): a child's points are set on every finish
+ * and every point use from the two running totals; this sets them again from
+ * the last history row and the last point use (two small reads).
  */
 @Injectable({ providedIn: 'root' })
 export class PointsService {
-  constructor(
-    private readonly points: PointsRepository,
-    private readonly results: ResultRepository,
-    private readonly usages: PointUsageRepository,
-  ) {}
+  constructor(private readonly points: PointsRepository) {}
 
-  /** What the records add up to. */
+  /** What the records add up to: totalEarned − totalUsed. */
   async fromRecords(childId: string): Promise<number> {
-    const earned = (await this.results.historyForChild(childId)).filter((h) => h.counted).reduce((sum, h) => sum + h.pointsEarned, 0);
-    const used = (await this.usages.listForChild(childId)).reduce((sum, u) => sum + u.points, 0);
+    const [earned, used] = await Promise.all([this.points.totalEarned(childId), this.points.totalUsed(childId)]);
     return earned - used;
   }
 

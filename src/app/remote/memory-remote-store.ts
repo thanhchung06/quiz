@@ -1,13 +1,14 @@
 import { signal } from '@angular/core';
-import { isIncrement, ListQuery, RemoteStore, SERVER_TIME } from './remote-store';
+import { isIncrement, ListQuery, RemoteStore, SERVER_TIME, WriteRejectedError } from './remote-store';
 
 type Tree = Record<string, unknown>;
 
 /**
  * In-memory stand-in for the Firebase database (tests, and nothing else):
  * same paths, multi-path updates, server time, atomic increments and queries.
- * Security rules are not applied here — they are checked against the real
- * database (firebase/database.rules.json).
+ * Of the security rules (firebase/database.rules.json) only one is copied: a
+ * numbered row (history, results, point uses) can be created or removed, never
+ * overwritten — the rest is checked against the real database.
  */
 export class MemoryRemoteStore extends RemoteStore {
   readonly connected = signal(true);
@@ -15,6 +16,8 @@ export class MemoryRemoteStore extends RemoteStore {
   /** Fails the next N calls (to test error handling). */
   failNext = 0;
   calls = 0;
+  /** Runs before each update is applied, with its values (to make another device's write land in between). */
+  beforeUpdate?: (values: Record<string, unknown>) => void;
   private lastTime = 0;
   private readonly watchers: Array<{ path: string; callback: (value: unknown) => void }> = [];
 
@@ -33,13 +36,18 @@ export class MemoryRemoteStore extends RemoteStore {
     if (!node || typeof node !== 'object') return [];
     let entries = Object.entries(node as Tree).map(([key, value]) => ({ key, value: clone(value) as T }));
     if (query) {
-      const field = (e: { value: T }) => ((e.value as Tree)?.[query.orderBy] as number) ?? 0;
-      entries.sort((a, b) => field(a) - field(b) || a.key.localeCompare(b.key));
+      const field = query.orderBy;
+      const valueOf = (e: { key: string; value: T }): string | number => (field ? (((e.value as Tree)?.[field] as number | string) ?? 0) : e.key);
+      const compare = (a: string | number, b: string | number) => (a < b ? -1 : a > b ? 1 : 0);
+      entries.sort((a, b) => compare(valueOf(a), valueOf(b)) || compare(a.key, b.key));
+      if (query.equalTo !== undefined) entries = entries.filter((e) => valueOf(e) === query.equalTo);
+      if (query.startAt !== undefined) entries = entries.filter((e) => valueOf(e) >= query.startAt!);
       if (query.startAfter !== undefined) {
         const v = query.startAfter;
         const k = query.startAfterKey;
-        entries = entries.filter((e) => field(e) > v || (k !== undefined && field(e) === v && e.key > k));
+        entries = entries.filter((e) => valueOf(e) > v || (k !== undefined && valueOf(e) === v && e.key > k));
       }
+      if (query.endBefore !== undefined) entries = entries.filter((e) => e.key < query.endBefore!);
       if (query.limitToFirst !== undefined) entries = entries.slice(0, query.limitToFirst);
       if (query.limitToLast !== undefined) entries = entries.slice(-query.limitToLast);
     }
@@ -48,6 +56,10 @@ export class MemoryRemoteStore extends RemoteStore {
 
   async update(values: Record<string, unknown>): Promise<void> {
     this.check();
+    this.beforeUpdate?.(values);
+    for (const [path, value] of Object.entries(values)) {
+      if (value !== null && CREATE_ONLY.test(path) && this.at(path) !== undefined) throw new WriteRejectedError(`PERMISSION_DENIED: ${path} already exists`);
+    }
     const now = this.now();
     for (const [path, value] of Object.entries(values)) {
       const current = this.at(path);
@@ -99,6 +111,9 @@ export class MemoryRemoteStore extends RemoteStore {
     prune(this.root);
   }
 }
+
+/** Numbered rows the rules let only be created or removed. */
+const CREATE_ONLY = /^\/?(history|results|pointUsage)\/[^/]+\/[^/]+\/?$/;
 
 function parts(path: string): string[] {
   return path.split('/').filter(Boolean);

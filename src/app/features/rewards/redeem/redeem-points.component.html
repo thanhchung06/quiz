@@ -74,6 +74,9 @@
           </li>
         }
       </ul>
+      @if (hasMore()) {
+        <button type="button" class="load-more" (click)="loadMore()"><app-icon name="history" />Xem thêm</button>
+      }
     </section>
   }
 </main>

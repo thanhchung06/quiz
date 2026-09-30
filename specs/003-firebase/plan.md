@@ -22,17 +22,26 @@ Status: **agreed, being implemented.** Replaces the Apps Script + Google Sheet s
 ```
 families/<familyKey>/
   meta/quizVersion              write counter: +1 (atomic) on every question/category write
-  profiles/{profileId}          role, name, avatar, grade, preferences, password, updatedAt
-  points/{childId}              the child's spendable points (number; atomic +/−)
+  profiles/{profileId}          role, name, avatar, grade, preferences, password, updatedAt;
+                                a child's points beside it (profiles/{id}/points, set from the totals)
   categories/{id}               ┐ quiz bank — also cached on every device (§3),
   questions/{id}                ┘ updatedAt indexed for incremental pulls
   exercises/{id}                read online; practice list = allowPractice
   assignments/{childId}/{id}    exerciseSnapshot, availableFrom, deadline, tries (atomic +1), updatedAt
   sessions/{childId}            the ongoing exercise: questions snapshot + progress, updatedAt
-  results/{childId}/{id}        full detail of a finished try (last 500 per child), createdAt
-  history/{childId}/{id}        short record of every finished try, append-only, createdAt
-  pointUsage/{childId}/{id}     points traded by the parent, append-only, createdAt
+  results/{childId}/{n}         full detail of a finished try (last 1000 per child), createdAt
+  history/{childId}/{n}         short record of every finished try, append-only, createdAt,
+                                totalEarned, totalStars; indexed by createdAt, assignmentId, practiceOf
+  pointUsage/{childId}/{n}      points traded by the parent, append-only, createdAt, totalUsed
 ```
+
+History, results and point uses are numbered per child (`0000000001`, `0000000002`, …, the key is the
+record's id); a try's history row and result share its number. The next row is written at the last
+row's number + 1 (`limitToLast(1)` on the key); rows can only be created, never overwritten, so when two
+devices take the same number one write is refused and redone at the next. Running totals: each row adds
+its points (and stars) to the previous row's. Reads ask for what they show (the last row, the last 7
+tries, a date range, one assignment's last try, a page of point uses), never a whole list — except
+results, all of which (≤ 1000) the learning-needs view reads.
 
 ## 3. Quiz bank cache (the only synced part)
 
@@ -52,15 +61,18 @@ families/<familyKey>/
 
 - **App start:** anonymous sign-in (kept by the SDK) → quiz version check / pull → login enabled. Errors:
   message + "Thử lại".
-- **Finishing an exercise** — one atomic multi-path update: `results/c/id`, `history/c/id`,
-  `sessions/c` = removed, `assignments/c/id` = removed when passed or no tries left, `points/c` +=
-  points when counted. Then results beyond 500 for the child are pruned.
+- **Finishing an exercise** — read the last history row and the last point use, then one atomic
+  multi-path update at n = last + 1: `history/c/n` (with totals), `results/c/n`, `results/c/(n − 1000)` =
+  removed, `sessions/c` = removed, `assignments/c/id` = removed when passed or no tries left,
+  `profiles/c/points` = totalEarned − totalUsed. Refused (n taken) → done again at the next number.
 - **Starting:** `assignments/c/id/tries` += 1, then `sessions/c` is written.
 - **Each answer:** `sessions/c/progress` + `updatedAt`. The running clock is saved every few seconds and
   when the app is hidden.
-- **Point use:** `pointUsage/c/id` + `points/c` −= n, one atomic update.
-- **"Tính lại điểm":** points = Σ counted history − Σ point usage, written to `points/c`.
-- **Backup:** export reads everything from Firebase; import (2.0 and old 1.0 files) writes everything.
+- **Point use:** the same way: `pointUsage/c/n` (with totalUsed) + `profiles/c/points` = totalEarned −
+  totalUsed, one atomic update. Points are always set from the two totals, never added to or taken from.
+- **"Tính lại điểm":** sets `profiles/c/points` again from the last history row and the last point use.
+- **Backup:** export reads everything from Firebase; import (2.0 and old 1.0 files) writes everything; a
+  child's tries and point uses only when the server has none for that child (renumbered, totals redone).
 
 ## 5. Scoring, stars, tries, sessions
 
