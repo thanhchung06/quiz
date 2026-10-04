@@ -10,6 +10,7 @@ import { QuizImageComponent, withImageRef } from '../../../shared/quiz-image/qui
 import { AnswerRule, Choice, PassageContext, QuizDifficulty, QuizItem, QuizItemType, Subject } from '../../../shared/models/domain.model';
 import { newSyncEnvelope } from '../../../shared/models/sync.model';
 import { currentDeviceId } from '../../../data/repositories/base-repository';
+import { numberAnswerText, numberRuleFromText } from '../../child-play/services/answer-evaluator';
 
 /** match-pairs is excluded here: it has no child-play rendering yet (pre-existing gap), so new passage content should stick to fully-playable types. */
 export type PassageQuestionType = Exclude<QuizItemType, 'match-pairs'>;
@@ -28,7 +29,8 @@ export interface SubQuestionRow {
   choices: Choice[];
   correctChoiceIds: string[];
   acceptedAnswer: string;
-  acceptedValue?: number;
+  /** The number answer as typed: "12", "3,5", "7/2" or "3 1/2". */
+  acceptedNumber: string;
 }
 
 function blankRow(): SubQuestionRow {
@@ -46,7 +48,7 @@ function blankRow(): SubQuestionRow {
     ],
     correctChoiceIds: [],
     acceptedAnswer: '',
-    acceptedValue: undefined,
+    acceptedNumber: '',
   };
 }
 
@@ -120,7 +122,7 @@ export class PassageEditorComponent implements OnInit {
       ],
       correctChoiceIds: item.answerRule.kind === 'choice' ? item.answerRule.correctChoiceIds : [],
       acceptedAnswer: item.answerRule.kind === 'text' ? item.answerRule.acceptedAnswer : '',
-      acceptedValue: item.answerRule.kind === 'number' ? item.answerRule.acceptedValue : undefined,
+      acceptedNumber: item.answerRule.kind === 'number' ? numberAnswerText(item.answerRule) : '',
     };
   }
 
@@ -177,7 +179,7 @@ export class PassageEditorComponent implements OnInit {
       case 'short-text':
         return { kind: 'text', acceptedAnswer: row.acceptedAnswer, caseSensitive: false, punctuationSensitive: false };
       case 'number':
-        return { kind: 'number', acceptedValue: row.acceptedValue };
+        return numberRuleFromText(row.acceptedNumber);
       default:
         return { kind: 'text', acceptedAnswer: '', caseSensitive: false, punctuationSensitive: false };
     }

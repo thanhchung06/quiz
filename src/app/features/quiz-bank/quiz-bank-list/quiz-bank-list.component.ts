@@ -1,6 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuizItemRepository, QuizItemFilter } from '../../../data/repositories/quiz-item.repository';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
 import { QuizExportFormat, QuizExportService } from '../export/export.service';
@@ -64,6 +64,8 @@ export class QuizBankListComponent {
   readonly collapsedKeys = signal<Set<string>>(new Set());
   readonly selectedItemId = signal<string | undefined>(undefined);
   readonly creatingNew = signal(false);
+  /** While creating: the question being copied ("Nhân bản"), shown prefilled until saved. */
+  readonly cloneSource = signal<QuizItem | undefined>(undefined);
   readonly difficultyLabel = difficultyLabel;
   readonly grades = [1, 2, 3, 4, 5];
   /** File format used by every export button on this screen — Excel by default, since it's the one a parent can edit by hand. */
@@ -148,7 +150,11 @@ export class QuizBankListComponent {
     private readonly categoryRepo: CategoryRepository,
     private readonly exportService: QuizExportService,
     private readonly router: Router,
+    route: ActivatedRoute,
   ) {
+    // Coming back from the preview page: reopen the question that was previewed.
+    const itemId = route.snapshot.queryParamMap.get('item');
+    if (itemId) this.selectedItemId.set(itemId);
     void this.reload();
   }
 
@@ -257,11 +263,13 @@ export class QuizBankListComponent {
       return;
     }
     this.creatingNew.set(false);
+    this.cloneSource.set(undefined);
     this.selectedItemId.set(item.id);
   }
 
   addNew(): void {
     this.creatingNew.set(true);
+    this.cloneSource.set(undefined);
     this.selectedItemId.set(undefined);
   }
 
@@ -271,11 +279,13 @@ export class QuizBankListComponent {
 
   closeDetail(): void {
     this.creatingNew.set(false);
+    this.cloneSource.set(undefined);
     this.selectedItemId.set(undefined);
   }
 
   async onSaved(item: QuizItem): Promise<void> {
     this.creatingNew.set(false);
+    this.cloneSource.set(undefined);
     // A new passage group is edited as a whole in the passage editor, never item by item here.
     this.selectedItemId.set(item.passage ? undefined : item.id);
     await this.reload();
@@ -285,14 +295,15 @@ export class QuizBankListComponent {
     void this.router.navigateByUrl(`/quiz-bank/${item.id}/preview`);
   }
 
-  async duplicate(item: QuizItem): Promise<void> {
-    // A duplicated passage sub-question becomes a standalone item rather than
-    // silently claiming its sibling's shared passageId/order — editing a
-    // whole passage's question set is done from the passage editor instead.
-    const copy: QuizItem = { ...item, id: crypto.randomUUID(), passage: undefined };
-    await this.quizItems.create(copy);
-    await this.reload();
-    this.selectedItemId.set(copy.id);
+  /**
+   * Opens a prefilled copy of the question as a new, unsaved one, so the parent
+   * sees it's a copy and can change it before saving. A passage sub-question's
+   * copy is a standalone question — a passage is copied as a whole elsewhere.
+   */
+  duplicate(item: QuizItem): void {
+    this.selectedItemId.set(undefined);
+    this.cloneSource.set(item);
+    this.creatingNew.set(true);
   }
 
   async archive(item: QuizItem): Promise<void> {

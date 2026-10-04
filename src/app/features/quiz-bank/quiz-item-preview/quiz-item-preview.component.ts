@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { evaluateAnswer } from '../../child-play/services/answer-evaluator';
 import { QuizItem } from '../../../shared/models/domain.model';
@@ -15,7 +16,7 @@ import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.compon
 @Component({
   selector: 'app-quiz-item-preview',
   standalone: true,
-  imports: [IconComponent, QuizImageComponent],
+  imports: [FormsModule, IconComponent, QuizImageComponent],
   templateUrl: './quiz-item-preview.component.html',
   styleUrl: './quiz-item-preview.component.scss',
 })
@@ -23,12 +24,15 @@ export class QuizItemPreviewComponent implements OnInit {
   readonly item = signal<QuizItem | undefined>(undefined);
   readonly displayedChoiceIds = signal<string[]>([]);
   readonly selected = signal<string[]>([]);
+  /** Typed answer for short-text and number questions. */
+  readonly typedAnswer = signal('');
   readonly submitted = signal(false);
   readonly isCorrect = signal(false);
 
   constructor(
     private readonly quizItems: QuizItemRepository,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -39,7 +43,15 @@ export class QuizItemPreviewComponent implements OnInit {
     this.shuffleAgain();
   }
 
+  /** Back to the quiz bank with this question still open in the detail panel. */
+  back(): void {
+    const id = this.item()?.id;
+    void this.router.navigate(['/quiz-bank'], { queryParams: id ? { item: id } : {} });
+  }
+
   shuffleAgain(): void {
+    this.typedAnswer.set('');
+    this.submitted.set(false);
     const item = this.item();
     if (!item?.choices) return;
     const rng = mulberry32(Math.floor(Math.random() * 0xffffffff));
@@ -65,7 +77,7 @@ export class QuizItemPreviewComponent implements OnInit {
   submit(): void {
     const item = this.item();
     if (!item) return;
-    this.isCorrect.set(evaluateAnswer(item, this.selected()));
+    this.isCorrect.set(evaluateAnswer(item, item.choices ? this.selected() : this.typedAnswer()));
     this.submitted.set(true);
   }
 

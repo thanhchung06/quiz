@@ -5,6 +5,7 @@ import { Choice, PlayResult, QuizItemType } from '../../../shared/models/domain.
 import { vi } from '../../../shared/i18n/vi';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
+import { numberAnswerText } from '../services/answer-evaluator';
 
 /** How a chosen/correct option is named in the review summary — picture-only options have no text. */
 function choiceLabel(c: Choice): string {
@@ -104,7 +105,7 @@ export function buildBreakdown(resultRecord: PlayResult): QuestionReview[] {
           correctText = rule.acceptedAnswer;
           if (result) selectedText = String(result.submittedAnswer ?? '');
         } else if (rule.kind === 'number') {
-          correctText = rule.acceptedValue !== undefined ? String(rule.acceptedValue) : `${rule.min ?? ''}–${rule.max ?? ''}`;
+          correctText = rule.acceptedValue !== undefined ? numberAnswerText(rule) : `${rule.min ?? ''}–${rule.max ?? ''}`;
           if (result) selectedText = String(result.submittedAnswer ?? '');
         } else if (rule.kind === 'boolean') {
           correctText = rule.correctValue ? 'Đúng' : 'Sai';

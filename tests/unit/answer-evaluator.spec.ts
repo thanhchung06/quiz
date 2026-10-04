@@ -1,4 +1,4 @@
-import { evaluateAnswer, parseNumberAnswer } from '../../src/app/features/child-play/services/answer-evaluator';
+import { evaluateAnswer, numberAnswerText, numberRuleFromText, parseNumberAnswer } from '../../src/app/features/child-play/services/answer-evaluator';
 import { QuizItem } from '../../src/app/shared/models/domain.model';
 
 function numberItem(acceptedValue: number): QuizItem {
@@ -23,5 +23,27 @@ describe('number answers', () => {
     expect(evaluateAnswer(numberItem(0.3), 0.1 + 0.2)).toBe(true);
     expect(evaluateAnswer(numberItem(12.75), '1275')).toBe(false);
     expect(evaluateAnswer(numberItem(56), 56)).toBe(true);
+  });
+
+  it('reads fractions and mixed numbers', () => {
+    expect(parseNumberAnswer('7/2')).toBe(3.5);
+    expect(parseNumberAnswer('3 1/2')).toBe(3.5);
+    expect(parseNumberAnswer(' 3  1 / 2 ')).toBe(3.5);
+    expect(parseNumberAnswer('-3 1/2')).toBe(-3.5);
+    expect(parseNumberAnswer('1/0')).toBeNaN();
+    expect(parseNumberAnswer('3 1/2/4')).toBeNaN();
+  });
+
+  it('keeps a fraction answer as written, and grades its equivalents', () => {
+    const rule = numberRuleFromText('3 1/2');
+    expect(rule).toEqual({ kind: 'number', acceptedValue: 3.5, acceptedText: '3 1/2' });
+    expect(numberAnswerText(rule)).toBe('3 1/2');
+    expect(numberRuleFromText('3,5')).toEqual({ kind: 'number', acceptedValue: 3.5 });
+    expect(numberRuleFromText('abc')).toEqual({ kind: 'number' });
+    const item = { type: 'number', answerRule: numberRuleFromText('1/3') } as QuizItem;
+    expect(evaluateAnswer(item, '1/3')).toBe(true);
+    expect(evaluateAnswer(item, '2/6')).toBe(true);
+    expect(evaluateAnswer(numberItem(3.5), '3 1/2')).toBe(true);
+    expect(evaluateAnswer(numberItem(3.5), '7/2')).toBe(true);
   });
 });

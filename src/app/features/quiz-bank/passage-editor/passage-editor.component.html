@@ -132,7 +132,12 @@
         @if (row.type === 'number') {
           <label>
             Đáp án đúng
-            <input type="number" [ngModel]="row.acceptedValue" (ngModelChange)="row.acceptedValue = $event" />
+            <input
+              inputmode="decimal"
+              placeholder="Ví dụ: 12 · 3,5 · 7/2 · 3 1/2"
+              [ngModel]="row.acceptedNumber"
+              (ngModelChange)="row.acceptedNumber = $event"
+            />
           </label>
         }
 

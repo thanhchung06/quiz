@@ -8,6 +8,7 @@ import { AnswerRule, PassageContext, QuizItem, Subject } from '../../../../share
 import { newSyncEnvelope } from '../../../../shared/models/sync.model';
 import { currentDeviceId } from '../../../../data/repositories/base-repository';
 import { withImageRef } from '../../../../shared/quiz-image/quiz-image.component';
+import { numberRuleFromText } from '../../../child-play/services/answer-evaluator';
 
 export interface CommitOptions {
   /** Quiz indexes to skip entirely (e.g., duplicates the parent chose to skip). */
@@ -43,7 +44,7 @@ function toAnswerRule(item: QuizPackageItem): AnswerRule {
     return { kind: 'text', acceptedAnswer: item.acceptedAnswer ?? '', caseSensitive: false, punctuationSensitive: false };
   }
   if (item.type === 'number') {
-    return { kind: 'number', acceptedValue: item.acceptedAnswer ? Number(item.acceptedAnswer) : undefined, ...item.acceptedRange };
+    return { ...numberRuleFromText(item.acceptedAnswer ?? ''), ...item.acceptedRange };
   }
   return { kind: 'choice', correctChoiceIds: item.correctAnswerIds ?? [] };
 }

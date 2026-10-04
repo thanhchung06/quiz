@@ -1,5 +1,6 @@
 @if (item(); as q) {
   <main class="preview-screen">
+    <button type="button" class="back" (click)="back()"><app-icon name="arrow_back" /> Quay lại</button>
     <p class="badge">Xem trước — không tính vào tiến trình của trẻ</p>
 
     @if (q.passage; as p) {
@@ -33,6 +34,16 @@
           </button>
         }
       </div>
+    }
+
+    @if (q.type === 'short-text' || q.type === 'number') {
+      <input
+        class="typed-answer"
+        [attr.inputmode]="q.type === 'number' ? 'decimal' : null"
+        [placeholder]="q.type === 'number' ? 'Nhập số…' : 'Nhập câu trả lời…'"
+        [ngModel]="typedAnswer()"
+        (ngModelChange)="typedAnswer.set($event); submitted.set(false)"
+      />
     }
 
     @if (!submitted()) {

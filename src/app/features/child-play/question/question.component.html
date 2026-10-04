@@ -140,13 +140,14 @@
           actual `number`, which would silently break the string-typed
           numberAnswer signal below. inputmode="numeric" still gives a
           numeric keypad on mobile. "decimal" (not "numeric") so the keypad has a
-          decimal separator — Vietnamese decimals use a comma, e.g. 3,5.
+          decimal separator — Vietnamese decimals use a comma, e.g. 3,5. Fractions
+          ("7/2", "3 1/2") are accepted too.
         -->
           <input
             class="text-answer number"
             type="text"
             inputmode="decimal"
-            pattern="-?[0-9., ]*"
+            pattern="-?[0-9., /]*"
             [ngModel]="numberAnswer()"
             (ngModelChange)="numberAnswer.set($event)"
             name="numberAnswer"

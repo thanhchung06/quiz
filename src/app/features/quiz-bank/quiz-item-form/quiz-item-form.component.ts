@@ -10,6 +10,7 @@ import { AnswerRule, Choice, PassageContext, QuizDifficulty, QuizItem, QuizItemT
 import { newSyncEnvelope } from '../../../shared/models/sync.model';
 import { currentDeviceId } from '../../../data/repositories/base-repository';
 import { coerceDifficulty, DIFFICULTY_LEVELS } from '../../../shared/difficulty';
+import { numberAnswerText, numberRuleFromText, parseNumberAnswer } from '../../child-play/services/answer-evaluator';
 
 /** One question being written in the form; everything not shared by the whole batch. */
 export interface QuestionDraft {
@@ -21,7 +22,8 @@ export interface QuestionDraft {
   choices: Choice[];
   correctChoiceIds: string[];
   acceptedAnswer: string;
-  acceptedValue?: number;
+  /** The number answer as typed: "12", "3,5", "7/2" or "3 1/2". */
+  acceptedNumber: string;
 }
 
 const CHOICE_TYPES: QuizItemType[] = ['single-choice', 'multiple-choice', 'true-false', 'match-pairs'];
@@ -48,7 +50,7 @@ function blankDraft(type: QuizItemType = 'single-choice'): QuestionDraft {
     choices: blankChoices(type),
     correctChoiceIds: [],
     acceptedAnswer: '',
-    acceptedValue: undefined,
+    acceptedNumber: '',
   };
 }
 
@@ -81,6 +83,8 @@ function blankDraft(type: QuizItemType = 'single-choice'): QuestionDraft {
 export class QuizItemFormComponent implements OnInit, OnChanges {
   @Input() itemId?: string;
   @Input() embedded = false;
+  /** Embedded only, with no `itemId`: starts a new question prefilled from this one ("Nhân bản"). */
+  @Input() cloneFrom?: QuizItem;
   @Output() readonly saved = new EventEmitter<QuizItem>();
 
   // Shared by every question in the batch.
@@ -101,6 +105,8 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
   readonly passageImageUrl = signal('');
   readonly errors = signal<string[]>([]);
   readonly editingId = signal<string | undefined>(undefined);
+  /** The form holds an unsaved copy of another question. */
+  readonly cloning = signal(false);
 
   constructor(
     private readonly quizItems: QuizItemRepository,
@@ -116,8 +122,9 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (!this.embedded || !changes['itemId']) return;
-    await this.loadItem(this.itemId);
+    if (!this.embedded || (!changes['itemId'] && !changes['cloneFrom'])) return;
+    if (!this.itemId && this.cloneFrom) this.fillFrom(this.cloneFrom, true);
+    else await this.loadItem(this.itemId);
   }
 
   setDifficulty(value: string): void {
@@ -126,6 +133,7 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
 
   private resetToBlank(): void {
     this.editingId.set(undefined);
+    this.cloning.set(false);
     this.subject.set('math');
     this.grade.set(1);
     this.tags.set('');
@@ -157,7 +165,14 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
       this.resetToBlank();
       return;
     }
-    this.editingId.set(existing.id);
+    this.fillFrom(existing, false);
+  }
+
+  /** Shows `existing` for editing, or (`asCopy`) as a new, unsaved question with the same content. */
+  private fillFrom(existing: QuizItem, asCopy: boolean): void {
+    this.editingId.set(asCopy ? undefined : existing.id);
+    this.cloning.set(asCopy);
+    this.mode.set('single');
     this.subject.set(existing.subject);
     this.grade.set(existing.grade);
     this.tags.set(existing.tags.join(', '));
@@ -168,15 +183,15 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
     const rule = existing.answerRule;
     this.drafts.set([
       {
-        key: existing.id,
+        key: asCopy ? crypto.randomUUID() : existing.id,
         type: existing.type,
         prompt: existing.prompt,
         imageUrl: existing.media?.imageRef ?? '',
         explanation: existing.explanation ?? '',
-        choices: existing.choices ?? blankChoices(existing.type),
-        correctChoiceIds: rule.kind === 'choice' ? rule.correctChoiceIds : [],
+        choices: existing.choices ? existing.choices.map((c) => ({ ...c })) : blankChoices(existing.type),
+        correctChoiceIds: rule.kind === 'choice' ? [...rule.correctChoiceIds] : [],
         acceptedAnswer: rule.kind === 'text' ? rule.acceptedAnswer : '',
-        acceptedValue: rule.kind === 'number' ? rule.acceptedValue : undefined,
+        acceptedNumber: rule.kind === 'number' ? numberAnswerText(rule) : '',
       },
     ]);
     this.errors.set([]);
@@ -188,12 +203,8 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
     this.drafts.update((list) => list.map((d, i) => (i === index ? { ...d, ...change } : d)));
   }
 
-  setField<K extends 'prompt' | 'imageUrl' | 'explanation' | 'acceptedAnswer'>(index: number, field: K, value: string): void {
+  setField<K extends 'prompt' | 'imageUrl' | 'explanation' | 'acceptedAnswer' | 'acceptedNumber'>(index: number, field: K, value: string): void {
     this.patch(index, { [field]: value } as Partial<QuestionDraft>);
-  }
-
-  setAcceptedValue(index: number, value: number | null | undefined): void {
-    this.patch(index, { acceptedValue: value ?? undefined });
   }
 
   setType(index: number, type: QuizItemType): void {
@@ -280,7 +291,7 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
       case 'short-text':
         return { kind: 'text', acceptedAnswer: draft.acceptedAnswer, caseSensitive: false, punctuationSensitive: false };
       case 'number':
-        return { kind: 'number', acceptedValue: draft.acceptedValue };
+        return numberRuleFromText(draft.acceptedNumber);
       case 'match-pairs':
         return { kind: 'pairs', pairs: [] };
       default:
@@ -305,6 +316,10 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
     for (const [i, draft] of drafts.entries()) {
       const label = many ? `Câu ${i + 1}: ` : '';
       if (!draft.prompt.trim()) errors.push(`${label}Chưa nhập nội dung câu hỏi.`);
+      if (draft.type === 'number' && draft.acceptedNumber.trim() && Number.isNaN(parseNumberAnswer(draft.acceptedNumber))) {
+        errors.push(`${label}Đáp án số không hợp lệ (ví dụ: 12, 3,5, 7/2 hoặc 3 1/2).`);
+        continue;
+      }
       const result = this.validation.validate(
         draft.type,
         this.usesChoices(draft.type) ? draft.choices : undefined,
@@ -382,6 +397,7 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
         this.resetToBlank();
       } else if (created.length === 1) {
         this.editingId.set(saved.id);
+        this.cloning.set(false);
       } else {
         // Keep the shared settings so the parent can go straight on to the next batch.
         this.drafts.set([blankDraft(drafts[drafts.length - 1].type)]);

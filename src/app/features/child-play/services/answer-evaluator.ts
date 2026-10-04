@@ -1,17 +1,44 @@
 import { AnswerRule, QuizItem } from '../../../shared/models/domain.model';
 
+/** One plain number, Vietnamese style: "3,5", "10 000", "1.000,5", or "3.5". NaN otherwise. */
+function parseDecimal(input: string): number {
+  let s = input.replace(/\s+/g, '');
+  if (!s) return NaN;
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  return /^-?(\d+\.?\d*|\.\d+)$/.test(s) ? Number(s) : NaN;
+}
+
 /**
  * Reads a typed number the way a Vietnamese pupil writes it: comma as the
  * decimal separator ("3,5"), spaces or dots as thousands separators
- * ("10 000", "1.000,5"). A plain "3.5" (no comma) still reads as 3.5.
+ * ("10 000", "1.000,5"), a fraction ("7/2") or a mixed number ("3 1/2",
+ * "-3 1/2"). A plain "3.5" (no comma) still reads as 3.5.
  * Returns NaN for anything that isn't a number.
  */
 export function parseNumberAnswer(input: unknown): number {
   if (typeof input === 'number') return input;
-  let s = String(input ?? '').trim().replace(/\s+/g, '');
-  if (!s) return NaN;
-  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
-  return /^-?(\d+\.?\d*|\.\d+)$/.test(s) ? Number(s) : NaN;
+  const s = String(input ?? '').trim();
+  const fraction = /^(-)?\s*(?:(\d+)\s+)?(\d+)\s*\/\s*(\d+)$/.exec(s);
+  if (fraction) {
+    const [, minus, whole, numerator, denominator] = fraction;
+    if (Number(denominator) === 0) return NaN;
+    const value = Number(whole ?? 0) + Number(numerator) / Number(denominator);
+    return minus ? -value : value;
+  }
+  return parseDecimal(s);
+}
+
+/** A number rule's answer as the parent wrote it ("3 1/2"), not as the stored value (3.5). */
+export function numberAnswerText(rule: { acceptedValue?: number; acceptedText?: string }): string {
+  return rule.acceptedText ?? (rule.acceptedValue !== undefined ? String(rule.acceptedValue) : '');
+}
+
+/** The number rule for an answer typed by the parent; `acceptedText` keeps a fraction's spelling for display. */
+export function numberRuleFromText(text: string): { kind: 'number'; acceptedValue?: number; acceptedText?: string } {
+  const trimmed = text.trim();
+  const value = parseNumberAnswer(trimmed);
+  if (!trimmed || Number.isNaN(value)) return { kind: 'number' };
+  return trimmed.includes('/') ? { kind: 'number', acceptedValue: value, acceptedText: trimmed } : { kind: 'number', acceptedValue: value };
 }
 
 /**

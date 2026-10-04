@@ -4,6 +4,7 @@ import { CategoryRepository } from '../../../data/repositories/category.reposito
 import { QuizPackage, QuizPackageItem, QuizPackagePassage, choicesToPackage } from '../import/quiz-package.model';
 import { QuizItem } from '../../../shared/models/domain.model';
 import { quizPackageToXlsx, XLSX_MIME } from '../excel/quiz-excel';
+import { numberAnswerText } from '../../child-play/services/answer-evaluator';
 
 export type QuizExportFormat = 'json' | 'xlsx';
 
@@ -101,7 +102,7 @@ export class QuizExportService {
     if (item.answerRule.kind === 'choice') correctAnswerIds = item.answerRule.correctChoiceIds;
     if (item.answerRule.kind === 'text') acceptedAnswer = item.answerRule.acceptedAnswer;
     if (item.answerRule.kind === 'number') {
-      acceptedAnswer = item.answerRule.acceptedValue?.toString();
+      acceptedAnswer = item.answerRule.acceptedValue !== undefined ? numberAnswerText(item.answerRule) : undefined;
       if (item.answerRule.min !== undefined && item.answerRule.max !== undefined) {
         acceptedRange = { min: item.answerRule.min, max: item.answerRule.max };
       }

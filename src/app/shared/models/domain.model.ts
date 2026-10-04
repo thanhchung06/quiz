@@ -74,7 +74,8 @@ export interface Choice {
 export type AnswerRule =
   | { kind: 'choice'; correctChoiceIds: string[] }
   | { kind: 'text'; acceptedAnswer: string; caseSensitive: boolean; punctuationSensitive: boolean }
-  | { kind: 'number'; acceptedValue?: number; min?: number; max?: number }
+  /** `acceptedText`: the answer as written when it's a fraction ("3 1/2"), for display; grading uses `acceptedValue`. */
+  | { kind: 'number'; acceptedValue?: number; acceptedText?: string; min?: number; max?: number }
   | { kind: 'boolean'; correctValue: boolean }
   | { kind: 'pairs'; pairs: Array<{ leftId: string; rightId: string }> };
 

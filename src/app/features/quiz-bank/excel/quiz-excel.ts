@@ -2,6 +2,7 @@ import type { Workbook, Worksheet } from 'exceljs';
 import { QuizPackage, QuizPackageChoice, QuizPackageItem, QuizPackagePassage } from '../import/quiz-package.model';
 import { Choice, QuizDifficulty, QuizItemType, Subject } from '../../../shared/models/domain.model';
 import { DIFFICULTY_LABELS } from '../../../shared/difficulty';
+import { parseNumberAnswer } from '../../child-play/services/answer-evaluator';
 import { CategorySuggestion, gradesLabel } from '../import/category-suggestions';
 
 /**
@@ -754,8 +755,10 @@ function applyAnswer(
         item.acceptedRange = { min: Math.min(min, max), max: Math.max(min, max) };
       } else if (!Number.isNaN(Number(toNumberString(part)))) {
         item.acceptedAnswer = toNumberString(part);
+      } else if (part.includes('/') && !Number.isNaN(parseNumberAnswer(part))) {
+        item.acceptedAnswer = part; // a fraction or mixed number, kept as written: "7/2", "3 1/2"
       } else {
-        problems.push(`${where}: "${part}" không phải là số hoặc khoảng số (ví dụ 12 hoặc 10..20).`);
+        problems.push(`${where}: "${part}" không phải là số, phân số hoặc khoảng số (ví dụ 12, 3 1/2 hoặc 10..20).`);
       }
     }
     return;

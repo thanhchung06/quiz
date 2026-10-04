@@ -1,6 +1,10 @@
 <main class="quiz-item-form">
   <h1>{{ editingId() ? 'Sửa câu hỏi' : 'Thêm câu hỏi' }}</h1>
 
+  @if (cloning()) {
+    <p class="clone-note">Đây là bản sao chưa lưu — sửa nếu cần rồi bấm Lưu để tạo câu hỏi mới.</p>
+  }
+
   @if (errors().length) {
     <ul class="errors">
       @for (e of errors(); track e) {
@@ -188,7 +192,12 @@
       @if (draft.type === 'number') {
         <label>
           Đáp án đúng
-          <input type="number" [ngModel]="draft.acceptedValue" (ngModelChange)="setAcceptedValue(i, $event)" />
+          <input
+            inputmode="decimal"
+            placeholder="Ví dụ: 12 · 3,5 · 7/2 · 3 1/2"
+            [ngModel]="draft.acceptedNumber"
+            (ngModelChange)="setField(i, 'acceptedNumber', $event)"
+          />
         </label>
       }
 

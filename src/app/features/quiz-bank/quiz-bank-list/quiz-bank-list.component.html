@@ -207,7 +207,12 @@
             <app-icon name="close" label="Đóng" />
           </button>
         </div>
-        <app-quiz-item-form [itemId]="selectedItemId()" [embedded]="true" (saved)="onSaved($event)" />
+        <app-quiz-item-form
+          [itemId]="selectedItemId()"
+          [cloneFrom]="cloneSource()"
+          [embedded]="true"
+          (saved)="onSaved($event)"
+        />
       } @else {
         <p class="empty-detail">Chọn một câu hỏi trong danh sách bên trái để xem/sửa, hoặc bấm "Thêm câu hỏi".</p>
       }
