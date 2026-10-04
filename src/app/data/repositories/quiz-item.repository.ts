@@ -16,6 +16,24 @@ export interface QuizItemFilter {
   searchText?: string;
 }
 
+/** Whether one question passes a quiz-bank filter (the same test `search` uses). */
+export function matchesFilter(item: QuizItem, filter: QuizItemFilter): boolean {
+  if (filter.subject && item.subject !== filter.subject) return false;
+  if (filter.grade && item.grade !== filter.grade) return false;
+  if (filter.type && item.type !== filter.type) return false;
+  if (filter.difficulty && (item.difficulty ?? 2) !== filter.difficulty) return false; // legacy items predating this field default to Trung bình
+  if (filter.tag && !item.tags.includes(filter.tag)) return false;
+  if (filter.categoryId && item.categoryId !== filter.categoryId) return false;
+  if (filter.reviewStatus && item.reviewStatus !== filter.reviewStatus) return false;
+  if (filter.status && item.status !== filter.status) return false;
+  if (filter.searchText) {
+    const needle = filter.searchText.toLowerCase();
+    const haystack = `${item.prompt} ${item.id} ${item.tags.join(' ')}`.toLowerCase();
+    if (!haystack.includes(needle)) return false;
+  }
+  return true;
+}
+
 /**
  * Plain CRUD for QuizItem (data-model.md §3). Filtering/search (FR-019),
  * duplicate/answer-config validation, and authoring UI live in US2/US4;
@@ -29,23 +47,7 @@ export class QuizItemRepository extends QuizBankRepository<QuizItem> {
   }
 
   async search(filter: QuizItemFilter): Promise<QuizItem[]> {
-    const all = await this.list();
-    return all.filter((item) => {
-      if (filter.subject && item.subject !== filter.subject) return false;
-      if (filter.grade && item.grade !== filter.grade) return false;
-      if (filter.type && item.type !== filter.type) return false;
-      if (filter.difficulty && (item.difficulty ?? 2) !== filter.difficulty) return false; // legacy items predating this field default to Trung bình
-      if (filter.tag && !item.tags.includes(filter.tag)) return false;
-      if (filter.categoryId && item.categoryId !== filter.categoryId) return false;
-      if (filter.reviewStatus && item.reviewStatus !== filter.reviewStatus) return false;
-      if (filter.status && item.status !== filter.status) return false;
-      if (filter.searchText) {
-        const needle = filter.searchText.toLowerCase();
-        const haystack = `${item.prompt} ${item.id} ${item.tags.join(' ')}`.toLowerCase();
-        if (!haystack.includes(needle)) return false;
-      }
-      return true;
-    });
+    return (await this.list()).filter((item) => matchesFilter(item, filter));
   }
 
   async byCategory(categoryId: string): Promise<QuizItem[]> {

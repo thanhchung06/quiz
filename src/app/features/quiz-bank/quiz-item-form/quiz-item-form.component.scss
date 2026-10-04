@@ -89,13 +89,50 @@
   font-size: 1rem;
 }
 
+.save-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .save {
+  flex: 1 1 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 1rem;
   font-size: 1.1rem;
   border-radius: 0.75rem;
   border: none;
   background: #2f6fed;
   color: white;
+
+  &.secondary {
+    background: white;
+    color: #2f6fed;
+    border: 2px solid #2f6fed;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: progress;
+  }
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .mode-switch {

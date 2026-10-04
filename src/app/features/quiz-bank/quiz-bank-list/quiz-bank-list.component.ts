@@ -1,7 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuizItemRepository, QuizItemFilter } from '../../../data/repositories/quiz-item.repository';
+import { matchesFilter, QuizItemRepository, QuizItemFilter } from '../../../data/repositories/quiz-item.repository';
+import { QuizBankSyncService } from '../../../remote/quiz-bank-sync.service';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
 import { QuizExportFormat, QuizExportService } from '../export/export.service';
 import { downloadFile, todayStamp } from '../../../shared/download/download-file';
@@ -32,6 +33,14 @@ interface SubjectGroup {
 
 const SUBJECT_LABELS: Record<Subject, string> = { math: 'Toán', language: 'Tiếng Việt' };
 
+/** How long opening a category waits for the server before showing this device's copy. */
+const SYNC_WAIT_MS = 5000;
+
+/** The tree's category-node key for a question (matches CategoryGroup.key). */
+function categoryKeyOf(item: QuizItem): string {
+  return `${item.subject}|${item.grade}|${item.categoryId}`;
+}
+
 /** "Phép cộng" → "phep-cong", for export file names. */
 function fileSlug(value: string): string {
   return value
@@ -58,10 +67,29 @@ function fileSlug(value: string): string {
   styleUrl: './quiz-bank-list.component.scss',
 })
 export class QuizBankListComponent {
-  readonly items = signal<QuizItem[]>([]);
+  /** Every question in the bank; `filter` narrows it to what the tree shows. */
+  readonly allItems = signal<QuizItem[]>([]);
   readonly categories = signal<Category[]>([]);
   readonly filter = signal<QuizItemFilter>({});
+  readonly items = computed(() => this.allItems().filter((i) => matchesFilter(i, this.filter())));
   readonly collapsedKeys = signal<Set<string>>(new Set());
+  /** The one category node whose questions are listed (CategoryGroup.key); opening another closes it. */
+  readonly expandedCategoryKey = signal<string | undefined>(undefined);
+  /** Category node whose questions are being refreshed from the server. */
+  readonly loadingCategoryKey = signal<string | undefined>(undefined);
+
+  /** The filter's category choices: categories with questions for the chosen subject and grade. */
+  readonly filterCategoryOptions = computed(() => {
+    const { subject, grade } = this.filter();
+    const counts = new Map<string, number>();
+    for (const i of this.allItems()) {
+      if (matchesFilter(i, { subject, grade })) counts.set(i.categoryId, (counts.get(i.categoryId) ?? 0) + 1);
+    }
+    return this.categories()
+      .filter((c) => counts.has(c.id))
+      .map((c) => ({ id: c.id, name: c.name, count: counts.get(c.id)! }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+  });
   readonly selectedItemId = signal<string | undefined>(undefined);
   readonly creatingNew = signal(false);
   /** While creating: the question being copied ("Nhân bản"), shown prefilled until saved. */
@@ -111,7 +139,7 @@ export class QuizBankListComponent {
   /** Category tree node currently showing its bulk-delete confirmation, if any. */
   readonly bulkDeleteConfirmKey = signal<string | undefined>(undefined);
 
-  readonly selectedItem = computed(() => this.items().find((i) => i.id === this.selectedItemId()));
+  readonly selectedItem = computed(() => this.allItems().find((i) => i.id === this.selectedItemId()));
 
   readonly tree = computed<SubjectGroup[]>(() => {
     const categoryNameById = new Map(this.categories().map((c) => [c.id, c.name]));
@@ -149,13 +177,17 @@ export class QuizBankListComponent {
     private readonly quizItems: QuizItemRepository,
     private readonly categoryRepo: CategoryRepository,
     private readonly exportService: QuizExportService,
+    private readonly quizBank: QuizBankSyncService,
     private readonly router: Router,
     route: ActivatedRoute,
   ) {
     // Coming back from the preview page: reopen the question that was previewed.
     const itemId = route.snapshot.queryParamMap.get('item');
     if (itemId) this.selectedItemId.set(itemId);
-    void this.reload();
+    void this.reload().then(() => {
+      const item = this.selectedItem();
+      if (item) this.expandedCategoryKey.set(categoryKeyOf(item));
+    });
   }
 
   async openExportPanel(): Promise<void> {
@@ -229,19 +261,56 @@ export class QuizBankListComponent {
   }
 
   async reload(): Promise<void> {
-    const [items, categories] = await Promise.all([this.quizItems.search(this.filter()), this.categoryRepo.list()]);
-    this.items.set(items);
+    const [items, categories] = await Promise.all([this.quizItems.list(), this.categoryRepo.list()]);
+    this.allItems.set(items);
     this.categories.set(categories);
   }
 
   setSubjectFilter(subject: string): void {
     this.filter.update((f) => ({ ...f, subject: (subject || undefined) as Subject | undefined }));
-    void this.reload();
+    this.dropUnavailableFilterCategory();
+  }
+
+  setGradeFilter(grade: string): void {
+    this.filter.update((f) => ({ ...f, grade: grade ? +grade : undefined }));
+    this.dropUnavailableFilterCategory();
+  }
+
+  /** Showing one category opens its (first) node straight away. */
+  setCategoryFilter(categoryId: string): void {
+    this.filter.update((f) => ({ ...f, categoryId: categoryId || undefined }));
+    const first = this.tree()[0]?.grades[0]?.categories[0];
+    if (categoryId && first) void this.toggleCategory(first, true);
+  }
+
+  private dropUnavailableFilterCategory(): void {
+    const id = this.filter().categoryId;
+    if (id && !this.filterCategoryOptions().some((c) => c.id === id)) this.filter.update((f) => ({ ...f, categoryId: undefined }));
   }
 
   setSearchText(text: string): void {
     this.filter.update((f) => ({ ...f, searchText: text || undefined }));
-    void this.reload();
+  }
+
+  /**
+   * Opens one category (closing whichever was open) and refreshes the quiz bank
+   * from the server first, so its list shows other devices' latest changes.
+   */
+  async toggleCategory(group: CategoryGroup, open = false): Promise<void> {
+    if (!open && this.expandedCategoryKey() === group.key) {
+      this.expandedCategoryKey.set(undefined);
+      return;
+    }
+    this.expandedCategoryKey.set(group.key);
+    this.loadingCategoryKey.set(group.key);
+    try {
+      // Offline, or a slow connection: fall back to this device's copy rather than waiting.
+      await Promise.race([this.quizBank.sync(), new Promise((resolve) => setTimeout(resolve, SYNC_WAIT_MS))]);
+    } catch {
+      // Same: the copy on this device is shown.
+    }
+    await this.reload();
+    if (this.loadingCategoryKey() === group.key) this.loadingCategoryKey.set(undefined);
   }
 
   isCollapsed(key: string): boolean {
@@ -289,6 +358,14 @@ export class QuizBankListComponent {
     // A new passage group is edited as a whole in the passage editor, never item by item here.
     this.selectedItemId.set(item.passage ? undefined : item.id);
     await this.reload();
+    // Follow the question to its (possibly new) category.
+    this.expandedCategoryKey.set(categoryKeyOf(item));
+  }
+
+  /** "Lưu và đóng": the form saved, now close the panel. */
+  async onSavedAndClosed(item: QuizItem): Promise<void> {
+    await this.onSaved(item);
+    this.closeDetail();
   }
 
   preview(item: QuizItem): void {

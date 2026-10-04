@@ -214,7 +214,24 @@
     </button>
   }
 
-  <button type="button" class="save" (click)="save()">
-    {{ mode() === 'passage' && !editingId() ? 'Lưu đoạn văn và ' + drafts().length + ' câu hỏi' : drafts().length > 1 ? 'Lưu ' + drafts().length + ' câu hỏi' : 'Lưu' }}
-  </button>
+  <div class="save-actions">
+    <button type="button" class="save" [disabled]="!!saving()" (click)="save()">
+      @if (saving() === 'stay') {
+        <span class="spinner" aria-hidden="true"></span> Đang lưu…
+      } @else {
+        {{ mode() === 'passage' && !editingId() ? 'Lưu đoạn văn và ' + drafts().length + ' câu hỏi' : drafts().length > 1 ? 'Lưu ' + drafts().length + ' câu hỏi' : 'Lưu' }}
+      }
+    </button>
+    <button type="button" class="save secondary" [disabled]="!!saving()" (click)="save(true)">
+      @if (saving() === 'close') {
+        <span class="spinner" aria-hidden="true"></span> Đang lưu…
+      } @else {
+        Lưu và đóng
+      }
+    </button>
+  </div>
+
+  @if (showSaved()) {
+    <app-success-popup (closed)="showSaved.set(false)" />
+  }
 </main>

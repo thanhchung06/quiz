@@ -10,6 +10,7 @@ import { AnswerRule, Choice, PassageContext, QuizDifficulty, QuizItem, QuizItemT
 import { newSyncEnvelope } from '../../../shared/models/sync.model';
 import { currentDeviceId } from '../../../data/repositories/base-repository';
 import { coerceDifficulty, DIFFICULTY_LEVELS } from '../../../shared/difficulty';
+import { SuccessPopupComponent } from '../../../shared/success-popup/success-popup.component';
 import { numberAnswerText, numberRuleFromText, parseNumberAnswer } from '../../child-play/services/answer-evaluator';
 
 /** One question being written in the form; everything not shared by the whole batch. */
@@ -76,7 +77,7 @@ function blankDraft(type: QuizItemType = 'single-choice'): QuestionDraft {
 @Component({
   selector: 'app-quiz-item-form',
   standalone: true,
-  imports: [FormsModule, CategoryPickerComponent, QuizImageComponent, ChoiceImageFieldComponent],
+  imports: [FormsModule, CategoryPickerComponent, QuizImageComponent, ChoiceImageFieldComponent, SuccessPopupComponent],
   templateUrl: './quiz-item-form.component.html',
   styleUrl: './quiz-item-form.component.scss',
 })
@@ -86,6 +87,8 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
   /** Embedded only, with no `itemId`: starts a new question prefilled from this one ("Nhân bản"). */
   @Input() cloneFrom?: QuizItem;
   @Output() readonly saved = new EventEmitter<QuizItem>();
+  /** Embedded: saved with "Lưu và đóng" — the host closes the panel. */
+  @Output() readonly savedAndClosed = new EventEmitter<QuizItem>();
 
   // Shared by every question in the batch.
   readonly subject = signal<Subject>('math');
@@ -107,6 +110,9 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
   readonly editingId = signal<string | undefined>(undefined);
   /** The form holds an unsaved copy of another question. */
   readonly cloning = signal(false);
+  /** Which save button is busy, while a save is in flight. */
+  readonly saving = signal<'stay' | 'close' | undefined>(undefined);
+  readonly showSaved = signal(false);
 
   constructor(
     private readonly quizItems: QuizItemRepository,
@@ -299,10 +305,41 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
     }
   }
 
-  async save(): Promise<void> {
+  /**
+   * "Lưu" keeps the form open and confirms with a popup; "Lưu và đóng"
+   * (`close`) hands back to the quiz bank, which closes the panel.
+   */
+  async save(close = false): Promise<void> {
+    if (this.saving()) return;
+    this.saving.set(close ? 'close' : 'stay');
+    let saved: QuizItem | undefined;
+    try {
+      saved = await this.persist();
+    } catch {
+      this.errors.set(['Không lưu được — kiểm tra kết nối mạng rồi thử lại.']);
+    } finally {
+      this.saving.set(undefined);
+    }
+    if (!saved) return;
+
+    if (this.embedded) {
+      if (close) this.savedAndClosed.emit(saved);
+      else {
+        this.showSaved.set(true);
+        this.saved.emit(saved);
+      }
+    } else if (close) {
+      await this.router.navigate(['/quiz-bank'], { queryParams: { item: saved.passage ? undefined : saved.id } });
+    } else {
+      this.showSaved.set(true);
+    }
+  }
+
+  /** Validates and writes the form; the last question saved, or undefined when something needs fixing. */
+  private async persist(): Promise<QuizItem | undefined> {
     if (!this.categoryId()) {
       this.errors.set(['Vui lòng chọn danh mục.']);
-      return;
+      return undefined;
     }
     const drafts = this.drafts();
     const many = drafts.length > 1;
@@ -329,7 +366,7 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
     }
     if (errors.length) {
       this.errors.set(errors);
-      return;
+      return undefined;
     }
     this.errors.set([]);
 
@@ -404,10 +441,6 @@ export class QuizItemFormComponent implements OnInit, OnChanges {
       }
     }
 
-    if (this.embedded) {
-      this.saved.emit(saved);
-    } else {
-      await this.router.navigateByUrl('/quiz-bank');
-    }
+    return saved;
   }
 }

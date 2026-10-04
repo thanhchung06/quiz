@@ -321,3 +321,19 @@
     color: #555;
   }
 }
+
+.spinner {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-left: auto;
+  border: 2px solid #cfd8dc;
+  border-top-color: #1976d2;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

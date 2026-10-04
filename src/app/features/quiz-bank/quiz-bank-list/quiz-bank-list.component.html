@@ -71,10 +71,22 @@
   }
 
   <div class="filters">
-    <select (change)="setSubjectFilter($any($event.target).value)">
+    <select title="Lọc theo môn" [ngModel]="filter().subject ?? ''" (ngModelChange)="setSubjectFilter($event)">
       <option value="">Tất cả môn</option>
       <option value="math">Toán</option>
       <option value="language">Tiếng Việt</option>
+    </select>
+    <select title="Lọc theo lớp" [ngModel]="filter().grade ?? ''" (ngModelChange)="setGradeFilter($event)">
+      <option value="">Tất cả lớp</option>
+      @for (g of grades; track g) {
+        <option [value]="g">Lớp {{ g }}</option>
+      }
+    </select>
+    <select title="Lọc theo danh mục" [ngModel]="filter().categoryId ?? ''" (ngModelChange)="setCategoryFilter($event)">
+      <option value="">Tất cả danh mục</option>
+      @for (c of filterCategoryOptions(); track c.id) {
+        <option [value]="c.id">{{ c.name }} ({{ c.count }})</option>
+      }
     </select>
     <input placeholder="Tìm kiếm…" (input)="setSearchText($any($event.target).value)" />
   </div>
@@ -112,10 +124,18 @@
                   @for (c of g.categories; track c.key) {
                     <div class="tree-node category-node">
                       <div class="category-header">
-                        <button type="button" class="tree-toggle" (click)="toggle(c.key)">
-                          <app-icon name="chevron_right" class="chevron" [class.rotated]="!isCollapsed(c.key)" />
+                        <button
+                          type="button"
+                          class="tree-toggle"
+                          [attr.aria-expanded]="expandedCategoryKey() === c.key"
+                          (click)="toggleCategory(c)"
+                        >
+                          <app-icon name="chevron_right" class="chevron" [class.rotated]="expandedCategoryKey() === c.key" />
                           <span>{{ c.categoryName }}</span>
                           <span class="count">({{ c.items.length }})</span>
+                          @if (loadingCategoryKey() === c.key) {
+                            <span class="spinner" aria-label="Đang tải lại câu hỏi"></span>
+                          }
                         </button>
                         <div class="category-bulk-actions">
                           <button type="button" title="Xuất câu hỏi của danh mục này" [disabled]="isExporting()" (click)="exportCategory(c)">
@@ -152,7 +172,7 @@
                         </div>
                       }
 
-                      @if (!isCollapsed(c.key)) {
+                      @if (expandedCategoryKey() === c.key) {
                         <ul class="quiz-leaf-list">
                           @for (item of c.items; track item.id) {
                             <li
@@ -212,6 +232,7 @@
           [cloneFrom]="cloneSource()"
           [embedded]="true"
           (saved)="onSaved($event)"
+          (savedAndClosed)="onSavedAndClosed($event)"
         />
       } @else {
         <p class="empty-detail">Chọn một câu hỏi trong danh sách bên trái để xem/sửa, hoặc bấm "Thêm câu hỏi".</p>
