@@ -258,6 +258,68 @@ describe('online-first data (Firebase layout, in-memory database)', () => {
     expect(await sessions.forChild(KID2)).toBeUndefined();
   });
 
+  it('when the time is up no answer counts any more, and the play ends once however many times the timers fire', async () => {
+    await becomeDevice('pc');
+    await openApp();
+    for (let i = 0; i < 3; i++) await quizItems.create(question(i));
+    const exercise = await createExercise('Hết giờ', ['q0', 'q1', 'q2'], { allowPractice: true });
+    await play.startPractice(KID, exercise);
+    await play.submitAnswer(['a']);
+    // The clock is only read before the first wait, so it can go back right after the timers fire.
+    const now = jest.spyOn(Date, 'now').mockReturnValue(play.deadlineAt() + 1000);
+    const ends = [play.expireDueToTimeout(), play.expireDueToTimeout(), play.submitAnswer(['a']), play.expirePerQuestionTimeout()];
+    now.mockRestore();
+    expect(play.ending()).toBe('timeUp');
+    expect(await play.submitAnswer(['a'])).toBe(false);
+    await Promise.all(ends);
+    expect(play.status()).toBe('timeUp');
+    expect(play.result()).toMatchObject({ status: 'timeUp', correctCount: 1, wrongCount: 0 });
+    expect(await allRows(`history/${KID}`)).toHaveLength(1);
+    expect(await sessions.forChild(KID)).toBeUndefined();
+  });
+
+  it('a finish that fails to save stays ending (no more answers, no session write) until it is saved again', async () => {
+    await becomeDevice('pc');
+    await openApp();
+    for (let i = 0; i < 2; i++) await quizItems.create(question(i));
+    const exercise = await createExercise('Mất mạng', ['q0', 'q1'], { allowPractice: true });
+    await play.startPractice(KID, exercise);
+    await play.submitAnswer(['a']);
+    remote.failNext = 1;
+    await play.submitAnswer(['a']);
+    expect(play.status()).toBe('inProgress');
+    expect(play.ending()).toBe('completed');
+    expect(play.endError()).toContain('offline');
+    expect(await play.submitAnswer(['a'])).toBe(false);
+    const before = await remote.get(`sessions/${KID}`);
+    await play.saveClock();
+    expect(await remote.get(`sessions/${KID}`)).toEqual(before);
+
+    await play.retryFinish();
+    expect(play.status()).toBe('completed');
+    expect(play.ending()).toBeUndefined();
+    expect(play.result()).toMatchObject({ correctCount: 2 });
+    expect(await allRows(`history/${KID}`)).toHaveLength(1);
+    expect(await sessions.forChild(KID)).toBeUndefined();
+  });
+
+  it('a session saved past its last question is finished when resumed, not left open with nothing to answer', async () => {
+    await becomeDevice('pc');
+    await openApp();
+    await quizItems.create(question(0));
+    const exercise = await createExercise('Kẹt', ['q0'], { allowPractice: true });
+    await play.startPractice(KID, exercise);
+    const session = play.session()!;
+    await sessions.saveProgress(session, { ...session.progress, currentIndex: 1, answers: { q0: { submittedAnswer: ['a'], isCorrect: true, pointsEarned: 10, submittedAt: new Date().toISOString() } }, score: 10 });
+
+    await becomeDevice('phone');
+    await openApp();
+    expect(await play.resume(KID)).toBe(true);
+    expect(play.status()).toBe('completed');
+    expect(play.result()).toMatchObject({ correctCount: 1 });
+    expect(await sessions.forChild(KID)).toBeUndefined();
+  });
+
   it('only the newest results are kept per child (each finish removes the one RESULTS_KEPT back); history keeps every try', async () => {
     await becomeDevice('pc');
     await openApp();

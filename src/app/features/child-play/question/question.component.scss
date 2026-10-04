@@ -319,3 +319,41 @@ header {
   cursor: pointer;
   color: inherit;
 }
+
+.ending-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  text-align: center;
+  color: #444;
+
+  > app-icon {
+    width: 3rem;
+    height: 3rem;
+    color: #2f6fed;
+  }
+
+  .ending-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .ending-error {
+    color: #d3402a;
+  }
+
+  .submit {
+    align-self: stretch;
+  }
+
+  .leave-link {
+    border: none;
+    background: none;
+    color: #2f6fed;
+    font-size: 1rem;
+    text-decoration: underline;
+  }
+}

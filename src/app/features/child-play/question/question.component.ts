@@ -32,6 +32,10 @@ export class QuestionComponent implements OnDestroy {
   readonly total: PlayService['totalQuestions'];
   readonly isEvaluating: PlayService['isEvaluating'];
   readonly session: PlayService['session'];
+  /** Set from the moment the play ends (time up, last answer, no lives) until its result is saved — the question is closed meanwhile. */
+  readonly ending: PlayService['ending'];
+  readonly endError: PlayService['endError'];
+  readonly retrying = signal(false);
 
   readonly choiceAnswer = signal<string[]>([]);
   readonly textAnswer = signal('');
@@ -115,6 +119,8 @@ export class QuestionComponent implements OnDestroy {
     this.total = this.play.totalQuestions;
     this.isEvaluating = this.play.isEvaluating;
     this.session = this.play.session;
+    this.ending = this.play.ending;
+    this.endError = this.play.endError;
 
     effect(() => {
       // Reset local answer state whenever the current question changes.
@@ -141,7 +147,7 @@ export class QuestionComponent implements OnDestroy {
   }
 
   private updateRemainingSeconds(): void {
-    if (!this.session() || this.play.status() !== 'inProgress') return;
+    if (!this.session() || this.play.status() !== 'inProgress' || this.play.ending()) return;
     const now = Date.now();
     const remaining = Math.max(0, Math.floor((this.play.deadlineAt() - now) / 1000));
     this.remainingSeconds.set(remaining);
@@ -170,7 +176,7 @@ export class QuestionComponent implements OnDestroy {
   }
 
   async submit(): Promise<void> {
-    if (!this.isValidResponse() || this.isEvaluating()) return;
+    if (!this.isValidResponse() || this.isEvaluating() || this.ending()) return;
     const item = this.item();
     if (!item) return;
 
@@ -180,6 +186,15 @@ export class QuestionComponent implements OnDestroy {
     else value = this.choiceAnswer();
 
     await this.play.submitAnswer(value);
+  }
+
+  async retryFinish(): Promise<void> {
+    this.retrying.set(true);
+    try {
+      await this.play.retryFinish();
+    } finally {
+      this.retrying.set(false);
+    }
   }
 
   /** Leaves the exercise without ending it: it stays open and continues from here next time. */

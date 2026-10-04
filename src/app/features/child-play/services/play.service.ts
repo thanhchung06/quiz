@@ -49,6 +49,10 @@ export class PlayService {
   /** Wall-clock moments the running timers reach zero (ms), recomputed from the stored time left whenever a play is (re)loaded. */
   private readonly _deadlineAt = signal(0);
   private readonly _questionDeadlineAt = signal<number | undefined>(undefined);
+  /** How the play ended while that end is being saved (or failed to save and waits for retryFinish); no more answers once set. */
+  private readonly _ending = signal<EndStatus | undefined>(undefined);
+  private readonly _endError = signal<string | undefined>(undefined);
+  private endingSave?: Promise<void>;
 
   readonly session = this._session.asReadonly();
   readonly status = this._status.asReadonly();
@@ -57,6 +61,8 @@ export class PlayService {
   readonly isEvaluating = this._isEvaluating.asReadonly();
   readonly deadlineAt = this._deadlineAt.asReadonly();
   readonly questionDeadlineAt = this._questionDeadlineAt.asReadonly();
+  readonly ending = this._ending.asReadonly();
+  readonly endError = this._endError.asReadonly();
 
   readonly currentIndex = computed(() => this._session()?.progress.currentIndex ?? 0);
   readonly totalQuestions = computed(() => this._session()?.itemOrder.length ?? 0);
@@ -146,20 +152,27 @@ export class PlayService {
     const session = await this.sessions.forChild(childId);
     if (!session) return false;
     this.load(session);
-    if (session.progress.timeLeftSeconds <= 0) await this.finish('timeUp');
+    const { progress } = session;
+    if (progress.timeLeftSeconds <= 0) await this.finish('timeUp');
+    else if (progress.livesRemaining !== 'unlimited' && progress.livesRemaining <= 0) await this.finish('tryAgain');
+    else if (progress.currentIndex >= session.itemOrder.length) await this.finish('completed');
     return true;
   }
 
   /** Gives up the ongoing exercise (counts as a try, never passes). */
   async abandon(childId: string): Promise<void> {
     if (!(await this.resume(childId))) return;
-    if (this._status() === 'inProgress') await this.finish('abandoned');
+    if (this._status() === 'inProgress') await this.finish(this._ending() ?? 'abandoned');
+    const error = this._endError();
+    if (error) throw new Error(error);
   }
 
   private load(session: PlaySession): void {
     this._session.set(session);
     this._status.set('inProgress');
     this._result.set(undefined);
+    this._ending.set(undefined);
+    this._endError.set(undefined);
     const now = Date.now();
     this._deadlineAt.set(now + session.progress.timeLeftSeconds * 1000);
     const q = session.progress.questionTimeLeftSeconds;
@@ -169,6 +182,8 @@ export class PlayService {
   /** Shows a past result (from the local circle). */
   viewResult(result: PlayResult): void {
     this._session.set(undefined);
+    this._ending.set(undefined);
+    this._endError.set(undefined);
     this._result.set(result);
     this._status.set(result.status);
   }
@@ -178,7 +193,8 @@ export class PlayService {
   /** Stores the running clock (the app calls it every few seconds and when hidden), so another device resumes with the right time left. */
   async saveClock(): Promise<void> {
     const session = this._session();
-    if (!session || this._status() !== 'inProgress') return;
+    // Once the play is ending the session is about to be removed: a late write must not bring it back.
+    if (!session || this._status() !== 'inProgress' || this._ending()) return;
     await this.sessions.saveProgress(session, this.withClock(session.progress));
   }
 
@@ -200,7 +216,12 @@ export class PlayService {
     if (this._isEvaluating()) return false;
     const session = this._session();
     const item = this.currentQuizItem();
-    if (!session || !item || this._status() !== 'inProgress') return false;
+    if (!session || !item || this._status() !== 'inProgress' || this._ending()) return false;
+    if (Date.now() >= this._deadlineAt()) {
+      // Too late: the time ran out before this answer, which isn't scored.
+      await this.finish('timeUp');
+      return false;
+    }
     this._isEvaluating.set(true);
     try {
       const isCorrect = evaluateAnswer(item, rawAnswer);
@@ -221,7 +242,8 @@ export class PlayService {
     if (this._isEvaluating()) return;
     const session = this._session();
     const item = this.currentQuizItem();
-    if (!session || !item || this._status() !== 'inProgress') return;
+    if (!session || !item || this._status() !== 'inProgress' || this._ending()) return;
+    if (Date.now() >= this._deadlineAt()) return this.finish('timeUp');
     this._isEvaluating.set(true);
     try {
       await this.recordAndAdvance(session, item, {
@@ -238,7 +260,7 @@ export class PlayService {
 
   /** The exercise's overall time ran out: ends as Time Up without scoring the unsubmitted response. */
   async expireDueToTimeout(): Promise<void> {
-    if (this._status() !== 'inProgress' || !this._session()) return;
+    if (this._status() !== 'inProgress' || !this._session() || this._ending()) return;
     await this.finish('timeUp');
   }
 
@@ -272,7 +294,29 @@ export class PlayService {
 
   // --- End ----------------------------------------------------------------------
 
-  private async finish(status: EndStatus): Promise<void> {
+  /** Saves the end again after it failed (the question screen offers this with the error). */
+  async retryFinish(): Promise<void> {
+    const status = this._ending();
+    if (status && this._status() === 'inProgress') await this.finish(status);
+  }
+
+  /**
+   * Ends the play once: answers and timers stop at once, and a second call
+   * while saving waits for the same save. A failed save keeps the play
+   * ending (endError says why) until retryFinish, never back to answering.
+   */
+  private finish(status: EndStatus): Promise<void> {
+    if (this.endingSave) return this.endingSave;
+    if (!this._session()) return Promise.resolve();
+    this._ending.set(status);
+    this._endError.set(undefined);
+    this.endingSave = this.recordEnd(status)
+      .catch((error: unknown) => this._endError.set(error instanceof Error ? error.message : String(error)))
+      .finally(() => (this.endingSave = undefined));
+    return this.endingSave;
+  }
+
+  private async recordEnd(status: EndStatus): Promise<void> {
     const session = this._session();
     if (!session) return;
     const progress = this.withClock(session.progress);
@@ -325,5 +369,6 @@ export class PlayService {
     this._session.set({ ...session, progress });
     this._result.set(stored);
     this._status.set(status);
+    this._ending.set(undefined);
   }
 }

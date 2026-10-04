@@ -1,110 +1,140 @@
-@if (item(); as q) {
+@if (ending(); as end) {
   <main class="question-screen">
-    <div class="progress-track">
-      <div class="progress-fill" [style.width.%]="progressPercent()"></div>
+    <div class="ending-panel" role="status">
+      <app-icon [name]="end === 'timeUp' ? 'timer' : end === 'completed' ? 'check_circle' : 'cancel'" />
+      <p class="ending-title">
+        {{ end === 'timeUp' ? 'Hết giờ!' : end === 'completed' ? 'Hoàn thành!' : 'Kết thúc bài' }}
+      </p>
+      @if (endError(); as error) {
+        <p class="ending-error">Chưa lưu được kết quả: {{ error }}</p>
+        <button type="button" class="submit" [disabled]="retrying()" (click)="retryFinish()">
+          <app-icon name="refresh" />
+          Thử lại
+        </button>
+        <button type="button" class="leave-link" (click)="leave()">Về trang chủ</button>
+      } @else {
+        <p>Đang lưu kết quả…</p>
+      }
     </div>
-
-    <header>
-      <button type="button" class="leave" (click)="leave()" aria-label="Về trang chủ (làm tiếp sau)"><app-icon name="home" /></button>
-      <span class="position">Câu {{ index() + 1 }} / {{ total() }}</span>
-
-      <span class="lives" aria-label="Số lượt sai còn lại">
-        @if (isUnlimitedLives()) {
-          <app-icon name="favorite" />
-          <span class="unlimited-mark">∞</span>
-        } @else {
-          @for (held of livesDots(); track $index) {
-            <app-icon [name]="held ? 'favorite' : 'close'" [class.lost]="!held" />
-          }
-        }
-      </span>
-
-      <span class="timer" [class.low]="timeIsLow()" [style.--pct]="timeRatio()">
-        <span class="fuse-ring" aria-hidden="true"></span>
-        <app-icon [name]="timeIsLow() ? 'bomb' : 'timer'" />
-        {{ timeLabel() }}
-      </span>
-
-      @if (hasQuestionTimer()) {
-        <span class="question-timer" [class.low]="questionTimeIsLow()" aria-label="Thời gian cho câu này">
-          <app-icon name="hourglass_bottom" />
-          {{ questionTimeLabel() }}
-        </span>
-      }
-    </header>
-
-    @if (q.passage; as p) {
-      <div class="passage-panel">
-        <p class="passage-heading">
-          <app-icon name="auto_stories" />
-          {{ p.title }}
-          <span class="passage-progress">Câu {{ p.order }}/{{ p.total }} của đoạn này</span>
-        </p>
-        <p class="passage-text">{{ p.text }}</p>
-        <app-quiz-image [src]="p.imageUrl" />
+  </main>
+} @else {
+  @if (item(); as q) {
+    <main class="question-screen">
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="progressPercent()"></div>
       </div>
-    }
 
-    <p class="prompt">{{ q.prompt }}</p>
-    <app-quiz-image [src]="q.media?.imageRef" />
+      <header>
+        <button type="button" class="leave" (click)="leave()" aria-label="Về trang chủ (làm tiếp sau)">
+          <app-icon name="home" />
+        </button>
+        <span class="position">Câu {{ index() + 1 }} / {{ total() }}</span>
 
-    <div class="answer-area">
-      @if (q.type === 'single-choice' || q.type === 'true-false') {
-        <div class="choices">
-          @for (choice of q.choices; track choice.id; let i = $index) {
-            <button
-              type="button"
-              class="choice"
-              [class.selected]="choiceAnswer().includes(choice.id)"
-              (click)="toggleChoice(choice.id, false)"
-            >
-              <span class="choice-letter">{{ choiceLetters[i] }}</span>
-              <span class="choice-body">
-                @if (choice.text) {
-                  <span class="choice-text">{{ choice.text }}</span>
-                }
-                @if (choice.imageRef) {
-                  <app-quiz-image class="choice-image" [src]="choice.imageRef" [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]" />
-                }
-              </span>
-            </button>
+        <span class="lives" aria-label="Số lượt sai còn lại">
+          @if (isUnlimitedLives()) {
+            <app-icon name="favorite" />
+            <span class="unlimited-mark">∞</span>
+          } @else {
+            @for (held of livesDots(); track $index) {
+              <app-icon [name]="held ? 'favorite' : 'close'" [class.lost]="!held" />
+            }
           }
+        </span>
+
+        <span class="timer" [class.low]="timeIsLow()" [style.--pct]="timeRatio()">
+          <span class="fuse-ring" aria-hidden="true"></span>
+          <app-icon [name]="timeIsLow() ? 'bomb' : 'timer'" />
+          {{ timeLabel() }}
+        </span>
+
+        @if (hasQuestionTimer()) {
+          <span class="question-timer" [class.low]="questionTimeIsLow()" aria-label="Thời gian cho câu này">
+            <app-icon name="hourglass_bottom" />
+            {{ questionTimeLabel() }}
+          </span>
+        }
+      </header>
+
+      @if (q.passage; as p) {
+        <div class="passage-panel">
+          <p class="passage-heading">
+            <app-icon name="auto_stories" />
+            {{ p.title }}
+            <span class="passage-progress">Câu {{ p.order }}/{{ p.total }} của đoạn này</span>
+          </p>
+          <p class="passage-text">{{ p.text }}</p>
+          <app-quiz-image [src]="p.imageUrl" />
         </div>
       }
-      @if (q.type === 'multiple-choice') {
-        <div class="choices">
-          @for (choice of q.choices; track choice.id; let i = $index) {
-            <button
-              type="button"
-              class="choice"
-              [class.selected]="choiceAnswer().includes(choice.id)"
-              (click)="toggleChoice(choice.id, true)"
-            >
-              <span class="choice-letter">{{ choiceLetters[i] }}</span>
-              <span class="choice-body">
-                @if (choice.text) {
-                  <span class="choice-text">{{ choice.text }}</span>
-                }
-                @if (choice.imageRef) {
-                  <app-quiz-image class="choice-image" [src]="choice.imageRef" [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]" />
-                }
-              </span>
-            </button>
-          }
-        </div>
-      }
-      @if (q.type === 'short-text') {
-        <input
-          class="text-answer"
-          type="text"
-          [ngModel]="textAnswer()"
-          (ngModelChange)="textAnswer.set($event)"
-          name="textAnswer"
-          placeholder="Nhập câu trả lời…"
-        />
-      }
-      @if (q.type === 'number') {
-        <!--
+
+      <p class="prompt">{{ q.prompt }}</p>
+      <app-quiz-image [src]="q.media?.imageRef" />
+
+      <div class="answer-area">
+        @if (q.type === 'single-choice' || q.type === 'true-false') {
+          <div class="choices">
+            @for (choice of q.choices; track choice.id; let i = $index) {
+              <button
+                type="button"
+                class="choice"
+                [class.selected]="choiceAnswer().includes(choice.id)"
+                (click)="toggleChoice(choice.id, false)"
+              >
+                <span class="choice-letter">{{ choiceLetters[i] }}</span>
+                <span class="choice-body">
+                  @if (choice.text) {
+                    <span class="choice-text">{{ choice.text }}</span>
+                  }
+                  @if (choice.imageRef) {
+                    <app-quiz-image
+                      class="choice-image"
+                      [src]="choice.imageRef"
+                      [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]"
+                    />
+                  }
+                </span>
+              </button>
+            }
+          </div>
+        }
+        @if (q.type === 'multiple-choice') {
+          <div class="choices">
+            @for (choice of q.choices; track choice.id; let i = $index) {
+              <button
+                type="button"
+                class="choice"
+                [class.selected]="choiceAnswer().includes(choice.id)"
+                (click)="toggleChoice(choice.id, true)"
+              >
+                <span class="choice-letter">{{ choiceLetters[i] }}</span>
+                <span class="choice-body">
+                  @if (choice.text) {
+                    <span class="choice-text">{{ choice.text }}</span>
+                  }
+                  @if (choice.imageRef) {
+                    <app-quiz-image
+                      class="choice-image"
+                      [src]="choice.imageRef"
+                      [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]"
+                    />
+                  }
+                </span>
+              </button>
+            }
+          </div>
+        }
+        @if (q.type === 'short-text') {
+          <input
+            class="text-answer"
+            type="text"
+            [ngModel]="textAnswer()"
+            (ngModelChange)="textAnswer.set($event)"
+            name="textAnswer"
+            placeholder="Nhập câu trả lời…"
+          />
+        }
+        @if (q.type === 'number') {
+          <!--
           type="text" (not "number") deliberately: Angular's
           NumberValueAccessor coerces type="number" ngModel values to an
           actual `number`, which would silently break the string-typed
@@ -112,22 +142,28 @@
           numeric keypad on mobile. "decimal" (not "numeric") so the keypad has a
           decimal separator — Vietnamese decimals use a comma, e.g. 3,5.
         -->
-        <input
-          class="text-answer number"
-          type="text"
-          inputmode="decimal"
-          pattern="-?[0-9., ]*"
-          [ngModel]="numberAnswer()"
-          (ngModelChange)="numberAnswer.set($event)"
-          name="numberAnswer"
-          placeholder="Nhập số…"
-        />
-      }
+          <input
+            class="text-answer number"
+            type="text"
+            inputmode="decimal"
+            pattern="-?[0-9., ]*"
+            [ngModel]="numberAnswer()"
+            (ngModelChange)="numberAnswer.set($event)"
+            name="numberAnswer"
+            placeholder="Nhập số…"
+          />
+        }
 
-      <button type="button" class="submit" [disabled]="!isValidResponse() || isEvaluating()" (click)="submit()">
-        <app-icon name="check_circle" />
-        {{ strings.common.submit }}
-      </button>
-    </div>
-  </main>
+        <button
+          type="button"
+          class="submit"
+          [disabled]="!isValidResponse() || isEvaluating() || !!ending()"
+          (click)="submit()"
+        >
+          <app-icon name="check_circle" />
+          {{ strings.common.submit }}
+        </button>
+      </div>
+    </main>
+  }
 }
