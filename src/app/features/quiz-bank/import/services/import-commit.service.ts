@@ -39,7 +39,8 @@ export interface CommitResult {
   updatedIds: string[];
 }
 
-function toAnswerRule(item: QuizPackageItem): AnswerRule {
+/** How a package question's answer is stored and graded. */
+export function toAnswerRule(item: QuizPackageItem): AnswerRule {
   if (item.type === 'short-text') {
     return { kind: 'text', acceptedAnswer: item.acceptedAnswer ?? '', caseSensitive: false, punctuationSensitive: false };
   }

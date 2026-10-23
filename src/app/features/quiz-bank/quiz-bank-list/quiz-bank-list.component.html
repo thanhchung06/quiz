@@ -32,6 +32,7 @@
             <option value="">Tất cả môn</option>
             <option value="math">Toán</option>
             <option value="language">Tiếng Việt</option>
+            <option value="english">Tiếng Anh</option>
           </select>
         </label>
         <label>
@@ -75,6 +76,7 @@
       <option value="">Tất cả môn</option>
       <option value="math">Toán</option>
       <option value="language">Tiếng Việt</option>
+      <option value="english">Tiếng Anh</option>
     </select>
     <select title="Lọc theo lớp" [ngModel]="filter().grade ?? ''" (ngModelChange)="setGradeFilter($event)">
       <option value="">Tất cả lớp</option>

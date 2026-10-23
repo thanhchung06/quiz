@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
 import { Category, CategorySubject } from '../../../shared/models/domain.model';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { CATEGORY_SUBJECT_LABELS } from '../../../shared/subjects';
 
 interface CategoryRow {
   category: Category;
@@ -18,6 +19,7 @@ interface CategoryRow {
   styleUrl: './categories.component.scss',
 })
 export class CategoriesComponent {
+  readonly subjectLabels = CATEGORY_SUBJECT_LABELS;
   readonly rows = signal<CategoryRow[]>([]);
   readonly newName = signal('');
   readonly newSubject = signal<CategorySubject>('math');

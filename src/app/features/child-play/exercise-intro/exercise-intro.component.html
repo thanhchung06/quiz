@@ -2,7 +2,7 @@
   <main class="intro-screen">
     <h1>{{ ex.title }}</h1>
     <ul class="rules">
-      <li>{{ ex.subject }} · Lớp {{ ex.grade }}</li>
+      <li>{{ subjectLabels[ex.subject] }} · Lớp {{ ex.grade }}</li>
       <li>{{ ex.items.length }} câu hỏi</li>
       <li>❤️ {{ strings.exercise.lives }}: {{ ex.lives === 'unlimited' ? 'Không giới hạn' : ex.lives }}</li>
       <li>⏱ {{ strings.exercise.timeLimit }}: {{ ex.timeLimitMinutes }} phút</li>

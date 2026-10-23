@@ -7,6 +7,7 @@ import { CategoryRepository } from '../../../data/repositories/category.reposito
 import { QuizExportFormat, QuizExportService } from '../export/export.service';
 import { downloadFile, todayStamp } from '../../../shared/download/download-file';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { SUBJECT_LABELS } from '../../../shared/subjects';
 import { QuizItemFormComponent } from '../quiz-item-form/quiz-item-form.component';
 import { Category, QuizItem, Subject } from '../../../shared/models/domain.model';
 import { difficultyLabel } from '../../../shared/difficulty';
@@ -31,7 +32,6 @@ interface SubjectGroup {
   grades: GradeGroup[];
 }
 
-const SUBJECT_LABELS: Record<Subject, string> = { math: 'Toán', language: 'Tiếng Việt' };
 
 /** How long opening a category waits for the server before showing this device's copy. */
 const SYNC_WAIT_MS = 5000;

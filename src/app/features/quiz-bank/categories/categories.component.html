@@ -9,7 +9,8 @@
     <select [ngModel]="newSubject()" (ngModelChange)="newSubject.set($event)" name="newSubject">
       <option value="math">Toán</option>
       <option value="language">Tiếng Việt</option>
-      <option value="both">Cả hai</option>
+      <option value="english">Tiếng Anh</option>
+      <option value="both">Tất cả các môn</option>
     </select>
     <button type="submit"><app-icon name="add" />Thêm</button>
   </form>
@@ -34,7 +35,7 @@
             <td>
               <input [value]="row.category.name" #nameInput (change)="rename(row.category, nameInput.value)" />
             </td>
-            <td>{{ row.category.subject }}</td>
+            <td>{{ subjectLabels[row.category.subject] }}</td>
             <td>{{ row.itemCount }}</td>
             <td>{{ row.category.status }}</td>
             <td class="actions">

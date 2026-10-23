@@ -16,6 +16,9 @@ import { QuizPackage, QuizPackagePassage } from './quiz-package.model';
  * clear, stable convention for AI-authored packages — not a hard grading
  * requirement.
  *
+ * A Tiếng Anh passage and a few Tiếng Anh standalone quizzes show the
+ * "english" subject with the same question types.
+ *
  * The standalone quizzes give one short example per question type (number
  * twice: an exact answer and an accepted range), plus `imageUrl` examples —
  * a bare file name and a path under public/assets/images, and an internet
@@ -78,6 +81,45 @@ const PASSAGE_EXAMPLE: QuizPackagePassage = {
   ],
 };
 
+/** A Tiếng Anh reading example: prompts in English, any question type works the same. */
+const ENGLISH_PASSAGE_EXAMPLE: QuizPackagePassage = {
+  subject: 'english',
+  grade: 3,
+  category: { name: 'Đọc hiểu tiếng Anh', subject: 'english' },
+  title: 'My dog Max',
+  text: 'My name is Tom. I am nine years old. I have a small dog. His name is Max. Max is brown and white. Every afternoon, Max and I play in the park.',
+  questions: [
+    {
+      type: 'single-choice',
+      prompt: 'How old is Tom?',
+      choices: [
+        { id: 'a', text: 'Seven' },
+        { id: 'b', text: 'Eight' },
+        { id: 'c', text: 'Nine' },
+      ],
+      correctAnswerIds: ['c'],
+      points: 10,
+    },
+    {
+      type: 'true-false',
+      prompt: 'Max is a cat. Đúng hay Sai?',
+      choices: [
+        { id: 'true', text: 'Đúng' },
+        { id: 'false', text: 'Sai' },
+      ],
+      correctAnswerIds: ['false'],
+      explanation: 'Max is a dog.',
+      points: 10,
+    },
+    {
+      type: 'short-text',
+      prompt: "What is the dog's name?",
+      acceptedAnswer: 'Max',
+      points: 10,
+    },
+  ],
+};
+
 /**
  * A public-domain photo (Wikimedia Commons) for the internet-image example.
  * Internet images need a connection to show; files in public/assets/images
@@ -89,7 +131,7 @@ export const QUIZ_PACKAGE_TEMPLATE: QuizPackage = {
   formatVersion: '1.1',
   packageTitle: 'Mẫu gói câu hỏi',
   language: 'vi',
-  passages: [PASSAGE_EXAMPLE],
+  passages: [PASSAGE_EXAMPLE, ENGLISH_PASSAGE_EXAMPLE],
   quizzes: [
     // --- Chọn một (single-choice): exactly one correct choice id ---
     {
@@ -261,6 +303,100 @@ export const QUIZ_PACKAGE_TEMPLATE: QuizPackage = {
         { id: 'a', text: 'Quả táo' },
         { id: 'b', text: 'Quả cam' },
         { id: 'c', text: 'Quả chuối' },
+      ],
+      correctAnswerIds: ['a'],
+      points: 10,
+    },
+    // --- Tiếng Anh (subject "english"): the same question types ---
+    {
+      externalId: 'mau-tieng-anh-tu-vung',
+      subject: 'english',
+      grade: 1,
+      category: { name: 'Từ vựng theo chủ đề', subject: 'english' },
+      tags: ['animals'],
+      difficulty: 1,
+      type: 'single-choice',
+      prompt: 'Chọn từ tiếng Anh có nghĩa là "con mèo".',
+      choices: [
+        { id: 'a', text: 'cat' },
+        { id: 'b', text: 'dog' },
+        { id: 'c', text: 'bird' },
+      ],
+      correctAnswerIds: ['a'],
+      shuffleChoices: true,
+      points: 10,
+    },
+    {
+      externalId: 'mau-tieng-anh-mau-sac',
+      subject: 'english',
+      grade: 2,
+      category: { name: 'Từ vựng theo chủ đề', subject: 'english' },
+      tags: ['colors'],
+      difficulty: 1,
+      type: 'multiple-choice',
+      prompt: 'Chọn tất cả các từ chỉ màu sắc.',
+      choices: [
+        { id: 'a', text: 'red' },
+        { id: 'b', text: 'apple' },
+        { id: 'c', text: 'green' },
+        { id: 'd', text: 'book' },
+      ],
+      correctAnswerIds: ['a', 'c'],
+      shuffleChoices: true,
+      explanation: 'red = màu đỏ, green = màu xanh lá; apple = quả táo, book = quyển sách.',
+      points: 10,
+    },
+    {
+      externalId: 'mau-tieng-anh-chu-cai',
+      subject: 'english',
+      grade: 1,
+      category: { name: 'Chữ cái và số đếm', subject: 'english' },
+      difficulty: 1,
+      type: 'short-text',
+      prompt: 'Điền chữ cái còn thiếu: c _ t (con mèo)',
+      acceptedAnswer: 'a',
+      explanation: 'cat = con mèo.',
+      points: 10,
+    },
+    {
+      externalId: 'mau-tieng-anh-so-dem',
+      subject: 'english',
+      grade: 2,
+      category: { name: 'Chữ cái và số đếm', subject: 'english' },
+      difficulty: 1,
+      type: 'number',
+      prompt: '"twelve" là số mấy?',
+      acceptedAnswer: '12',
+      points: 10,
+    },
+    {
+      externalId: 'mau-tieng-anh-ngu-phap',
+      subject: 'english',
+      grade: 3,
+      category: { name: 'Ngữ pháp cơ bản', subject: 'english' },
+      difficulty: 2,
+      type: 'true-false',
+      prompt: '"She are my sister." là câu đúng. Đúng hay Sai?',
+      choices: [
+        { id: 'true', text: 'Đúng' },
+        { id: 'false', text: 'Sai' },
+      ],
+      correctAnswerIds: ['false'],
+      explanation: 'Viết đúng là "She is my sister."',
+      points: 10,
+    },
+    {
+      externalId: 'mau-tieng-anh-giao-tiep',
+      subject: 'english',
+      grade: 3,
+      category: { name: 'Mẫu câu giao tiếp', subject: 'english' },
+      difficulty: 2,
+      type: 'single-choice',
+      prompt: 'A: "How old are you?" — B: "…"',
+      choices: [
+        { id: 'a', text: "I'm eight years old." },
+        { id: 'b', text: "I'm fine, thank you." },
+        { id: 'c', text: 'My name is Nam.' },
       ],
       correctAnswerIds: ['a'],
       points: 10,

@@ -5,6 +5,7 @@ import { QuizItemRepository } from '../../../data/repositories/quiz-item.reposit
 import { Category, Exercise, ExerciseItem, QuestionTimingMode, QuizDifficulty, QuizItem, QuizItemType, RandomGroupConfig, Subject } from '../../../shared/models/domain.model';
 import { DIFFICULTY_LEVELS, coerceDifficulty, difficultyLabel } from '../../../shared/difficulty';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { SUBJECTS, SUBJECT_LABELS, categoryFitsSubject } from '../../../shared/subjects';
 import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
 import { QUESTION_TYPE_GROUPS, QuestionTypeGroupKey, allowedTypesLabel, typesForGroups } from '../../../shared/question-type-groups';
 
@@ -25,7 +26,6 @@ const TYPE_LABELS: Record<QuizItemType, string> = {
   'match-pairs': 'Ghép đôi',
 };
 
-const SUBJECT_LABELS: Record<Subject, string> = { math: 'Toán', language: 'Tiếng Việt' };
 
 /** The bulk-add/daily-slot difficulty picker also offers "All", unlike a single QuizItem's own difficulty field which must always be one concrete level. */
 type BulkDifficultySelection = QuizDifficulty | 'all';
@@ -95,7 +95,7 @@ export class QuizPickerComponent {
   @Input() defaultQuestionPoints?: number;
   /** The exercise's own grade — the browser only ever shows bank items matching it. */
   @Input({ required: true }) grade!: number;
-  /** The exercise's own subject — 'math'/'language' restricts the browser to that subject only; 'mixed' shows both. */
+  /** The exercise's own subject — a single subject restricts the browser to it; 'mixed' shows every subject. */
   @Input({ required: true }) exerciseSubject!: Exercise['subject'];
   /** Daily exercise mode (FR-091): disables individual-item selection entirely; the detail panel's form always adds a random *slot* instead of resolving concrete items now. */
   @Input() dailyMode = false;
@@ -201,7 +201,7 @@ export class QuizPickerComponent {
   readonly selectedTypeGroups = signal<ReadonlySet<QuestionTypeGroupKey>>(new Set(QUESTION_TYPE_GROUPS.map((g) => g.key)));
   readonly selectedTypes = computed(() => typesForGroups(this.selectedTypeGroups()));
 
-  /** allItems narrowed to this exercise's grade AND subject ('mixed' keeps both subjects) — every other view (tree counts, list, "all" count) is built from this. */
+  /** allItems narrowed to this exercise's grade AND subject ('mixed' keeps every subject) — every other view (tree counts, list, "all" count) is built from this. */
   private readonly scopedItems = computed(() =>
     this.allItems().filter((q) => q.grade === this.grade && (this.exerciseSubject === 'mixed' || q.subject === this.exerciseSubject)),
   );
@@ -216,21 +216,16 @@ export class QuizPickerComponent {
     const counts = new Map<string, number>();
     for (const q of this.typedItems()) counts.set(q.categoryId, (counts.get(q.categoryId) ?? 0) + 1);
 
-    const wantMath = this.exerciseSubject === 'mixed' || this.exerciseSubject === 'math';
-    const wantLanguage = this.exerciseSubject === 'mixed' || this.exerciseSubject === 'language';
-    const groups: SubjectGroup[] = [];
-    if (wantMath) groups.push({ subject: 'math', label: SUBJECT_LABELS.math, categories: [] });
-    if (wantLanguage) groups.push({ subject: 'language', label: SUBJECT_LABELS.language, categories: [] });
+    const groups: SubjectGroup[] = SUBJECTS.filter((s) => this.exerciseSubject === 'mixed' || this.exerciseSubject === s).map(
+      (subject) => ({ subject, label: SUBJECT_LABELS[subject], categories: [] }),
+    );
 
     for (const category of this.categories()) {
       const count = counts.get(category.id) ?? 0;
       // A category with nothing for this exercise's grade/subject/types is only noise here (e.g. a grade-1 category in a grade-5 exercise).
       if (count === 0) continue;
       const node: CategoryNode = { category, count };
-      const mathGroup = groups.find((g) => g.subject === 'math');
-      const langGroup = groups.find((g) => g.subject === 'language');
-      if (mathGroup && (category.subject === 'math' || category.subject === 'both')) mathGroup.categories.push(node);
-      if (langGroup && (category.subject === 'language' || category.subject === 'both')) langGroup.categories.push(node);
+      for (const g of groups) if (categoryFitsSubject(category.subject, g.subject)) g.categories.push(node);
     }
     for (const g of groups) g.categories.sort((a, b) => a.category.name.localeCompare(b.category.name, 'vi'));
     return groups.filter((g) => g.categories.length > 0);

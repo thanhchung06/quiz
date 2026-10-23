@@ -1,7 +1,7 @@
 # Luyện Tập Mỗi Ngày — Child Learning Exercise App
 
 Offline-first Angular PWA for two children and one parent to practice daily
-mathematics and Vietnamese-language exercises. See `specs/001-child-learning-exercise-app/`
+mathematics, Vietnamese-language and English exercises. See `specs/001-child-learning-exercise-app/`
 for the full spec, plan, data model, contracts, and task list this codebase implements.
 
 ## Local development

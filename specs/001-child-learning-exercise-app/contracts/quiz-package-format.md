@@ -28,12 +28,12 @@ When authoring a prompt for that external tool by hand, the same rules as the te
 ```json
 {
   "externalId": "string, optional — used for duplicate detection across re-imports",
-  "subject": "math | language — required for a top-level quizzes[] entry; optional inside passages[].questions[], where it defaults to the passage's own subject",
+  "subject": "math | language | english — required for a top-level quizzes[] entry; optional inside passages[].questions[], where it defaults to the passage's own subject",
   "grade": "1-5 — same optionality rule as subject",
   "category": {
     "externalKey": "string, optional",
     "name": "string",
-    "subject": "math | language, optional — defaults to the item's own subject"
+    "subject": "math | language | english, optional — defaults to the item's own subject"
   },
   "tags": ["string"],
   "difficulty": 1,
@@ -70,9 +70,9 @@ A shared reading passage or problem statement with two or more linked sub-questi
 ```json
 {
   "externalKey": "string, optional",
-  "subject": "math | language",
+  "subject": "math | language | english",
   "grade": 1,
-  "category": { "externalKey": "string, optional", "name": "string", "subject": "math | language, optional" },
+  "category": { "externalKey": "string, optional", "name": "string", "subject": "math | language | english, optional" },
   "title": "string",
   "text": "string — the reading passage, or the full problem statement",
   "imageUrl": "string, optional — same rules as QuizPackageItem.imageUrl",

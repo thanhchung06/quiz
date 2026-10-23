@@ -4,14 +4,14 @@
  */
 const QUIZ_PACKAGE_ITEM_PROPERTIES = {
   externalId: { type: 'string' },
-  subject: { enum: ['math', 'language'] },
+  subject: { enum: ['math', 'language', 'english'] },
   grade: { type: 'integer', minimum: 1, maximum: 5 },
   category: {
     type: 'object',
     properties: {
       externalKey: { type: 'string' },
       name: { type: 'string' },
-      subject: { enum: ['math', 'language'] },
+      subject: { enum: ['math', 'language', 'english'] },
     },
   },
   tags: { type: 'array', items: { type: 'string' } },
@@ -70,14 +70,14 @@ export const QUIZ_PACKAGE_SCHEMA = {
         required: ['subject', 'grade', 'title', 'text', 'questions'],
         properties: {
           externalKey: { type: 'string' },
-          subject: { enum: ['math', 'language'] },
+          subject: { enum: ['math', 'language', 'english'] },
           grade: { type: 'integer', minimum: 1, maximum: 5 },
           category: {
             type: 'object',
             properties: {
               externalKey: { type: 'string' },
               name: { type: 'string' },
-              subject: { enum: ['math', 'language'] },
+              subject: { enum: ['math', 'language', 'english'] },
             },
           },
           title: { type: 'string', minLength: 1 },

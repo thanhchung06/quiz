@@ -7,6 +7,163 @@
   gap: 1.25rem;
 }
 
+/* Only vertical scrolling on this screen: long words wrap instead of pushing the page sideways. */
+.question-screen {
+  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-wrap: anywhere;
+}
+
+.play-body,
+.pane-track,
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/*
+ * A question with a reading passage fills the screen under the header; the
+ * passage and the question each scroll on their own. Narrow screens show one
+ * pane at a time (swipe or the tabs switch), wide screens both side by side.
+ */
+.question-screen.with-passage {
+  box-sizing: border-box;
+  height: 100dvh;
+  padding-bottom: 0;
+  overflow: hidden;
+
+  > header,
+  > .progress-track {
+    flex: none;
+  }
+}
+
+.play-body.has-passage {
+  flex: 1;
+  min-height: 0;
+  gap: 0.75rem;
+
+  .pane-track {
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+  }
+
+  .pane {
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: 1.5rem;
+  }
+
+  .passage-text {
+    max-height: none;
+    overflow: visible;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+}
+
+.pane-switch {
+  flex: none;
+  display: flex;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: #e6ebf5;
+
+  button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.55rem 0.75rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #555;
+    font-size: 1rem;
+    font-weight: 600;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+
+    &[aria-selected='true'] {
+      background: white;
+      color: #2f6fed;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+    }
+  }
+}
+
+.to-question {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.7rem 1.5rem;
+  border: 2px solid #2f6fed;
+  border-radius: 999px;
+  background: white;
+  color: #2f6fed;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+@media (max-width: 767.98px) {
+  .play-body.has-passage {
+    overflow: hidden;
+    overflow: clip;
+
+    /* Two screen-wide panes side by side; the track slides to show one. Panes only scroll vertically. */
+    .pane-track {
+      flex-direction: row;
+      width: 200%;
+      transition: transform 0.3s ease;
+    }
+
+    .pane {
+      flex: none;
+      width: 50%;
+      touch-action: pan-y;
+      transition: visibility 0s;
+    }
+
+    /* The pane slid out of view can't be focused or read aloud (hidden once the slide finishes). */
+    &.show-question .pane-track {
+      transform: translateX(-50%);
+    }
+
+    &.show-question .passage-pane,
+    &:not(.show-question) .question-pane {
+      visibility: hidden;
+      transition: visibility 0s 0.3s;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .question-screen.with-passage {
+    max-width: 72rem;
+  }
+
+  .play-body.has-passage {
+    .pane-switch,
+    .to-question {
+      display: none;
+    }
+
+    .pane-track {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+  }
+}
+
 .progress-track {
   height: 0.4rem;
   background: #e6ebf5;

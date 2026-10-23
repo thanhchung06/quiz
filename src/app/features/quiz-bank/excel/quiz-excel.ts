@@ -1,6 +1,7 @@
 import type { Workbook, Worksheet } from 'exceljs';
 import { QuizPackage, QuizPackageChoice, QuizPackageItem, QuizPackagePassage } from '../import/quiz-package.model';
 import { Choice, QuizDifficulty, QuizItemType, Subject } from '../../../shared/models/domain.model';
+import { SUBJECT_LABELS } from '../../../shared/subjects';
 import { DIFFICULTY_LABELS } from '../../../shared/difficulty';
 import { parseNumberAnswer } from '../../child-play/services/answer-evaluator';
 import { CategorySuggestion, gradesLabel } from '../import/category-suggestions';
@@ -11,7 +12,7 @@ import { CategorySuggestion, gradesLabel } from '../import/category-suggestions'
  * opened and edited directly in Excel / Google Sheets / LibreOffice:
  *
  * - sheet "Câu hỏi": one row per question, Vietnamese headers and labels
- *   (Toán/Tiếng Việt, Chọn một/Đúng/Sai…), one column per choice (Lựa chọn
+ *   (Toán/Tiếng Việt/Tiếng Anh, Chọn một/Đúng/Sai…), one column per choice (Lựa chọn
  *   A, B, C…) and the correct answer written as letters ("A" or "A, C");
  * - sheet "Đoạn văn": one row per shared reading text / problem statement;
  *   its questions are the "Câu hỏi" rows whose "Mã đoạn văn" matches, in
@@ -37,7 +38,7 @@ export const SUGGESTION_SHEET = 'Danh mục gợi ý';
 
 export const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-const SUBJECT_LABELS: Record<Subject, string> = { math: 'Toán', language: 'Tiếng Việt' };
+const SUBJECT_CHOICES = 'Toán, Tiếng Việt hoặc Tiếng Anh';
 
 /** Same wording as the quiz item form's type <select>. */
 const TYPE_LABELS: Record<QuizItemType, string> = {
@@ -105,7 +106,7 @@ const QUESTION_COLUMNS_BEFORE_CHOICES: ColumnSpec<QuestionField>[] = [
     aliases: ['subject', 'mon hoc'],
     width: 12,
     required: 'Có*',
-    help: 'Toán hoặc Tiếng Việt. *Câu thuộc đoạn văn có thể để trống — lấy theo đoạn văn.',
+    help: `${SUBJECT_CHOICES}. *Câu thuộc đoạn văn có thể để trống — lấy theo đoạn văn.`,
     example: 'Toán',
   },
   {
@@ -235,7 +236,7 @@ const PASSAGE_COLUMNS: ColumnSpec<PassageField>[] = [
     help: 'Mã tự đặt, không trùng nhau (ví dụ DV1, DV2). Các câu hỏi của đoạn văn ghi mã này ở cột "Mã đoạn văn" trang "Câu hỏi". Mỗi đoạn văn cần ít nhất 2 câu hỏi.',
     example: 'DV1',
   },
-  { field: 'subject', header: 'Môn', aliases: ['subject'], width: 12, required: 'Có', help: 'Toán hoặc Tiếng Việt.', example: 'Tiếng Việt' },
+  { field: 'subject', header: 'Môn', aliases: ['subject'], width: 12, required: 'Có', help: `${SUBJECT_CHOICES}.`, example: 'Tiếng Việt' },
   { field: 'grade', header: 'Lớp', aliases: ['grade'], width: 7, required: 'Có', help: 'Số từ 1 đến 5.', example: '3' },
   {
     field: 'category',
@@ -338,6 +339,7 @@ function parseSubject(value: string): Subject | undefined {
   const key = normalizeKey(value);
   if (['toan', 'math', 'maths'].includes(key)) return 'math';
   if (['tiengviet', 'tv', 'language', 'vietnamese'].includes(key)) return 'language';
+  if (['tienganh', 'ta', 'anh', 'english'].includes(key)) return 'english';
   return undefined;
 }
 
@@ -637,7 +639,7 @@ export async function quizPackageToXlsx(pkg: QuizPackage, options: XlsxExportOpt
 
   const lastQuestionRow = questions.rowCount + EXTRA_VALIDATED_ROWS;
   const colOf = (field: string) => questionSpecs.findIndex((s) => s.field === field) + 1;
-  addListValidation(questions, colOf('subject'), lastQuestionRow, Object.values(SUBJECT_LABELS), 'Chọn Toán hoặc Tiếng Việt.');
+  addListValidation(questions, colOf('subject'), lastQuestionRow, Object.values(SUBJECT_LABELS), `Chọn ${SUBJECT_CHOICES}.`);
   addListValidation(questions, colOf('grade'), lastQuestionRow, ['1', '2', '3', '4', '5'], 'Lớp từ 1 đến 5.');
   addListValidation(
     questions,
@@ -667,7 +669,7 @@ export async function quizPackageToXlsx(pkg: QuizPackage, options: XlsxExportOpt
   });
   styleHeader(passages, PASSAGE_COLUMNS);
   const lastPassageRow = passages.rowCount + EXTRA_VALIDATED_ROWS;
-  addListValidation(passages, 2, lastPassageRow, Object.values(SUBJECT_LABELS), 'Chọn Toán hoặc Tiếng Việt.');
+  addListValidation(passages, 2, lastPassageRow, Object.values(SUBJECT_LABELS), `Chọn ${SUBJECT_CHOICES}.`);
   addListValidation(passages, 3, lastPassageRow, ['1', '2', '3', '4', '5'], 'Lớp từ 1 đến 5.');
 
   // --- Hướng dẫn ---
@@ -803,7 +805,7 @@ function parseQuestionSheet(sheet: Worksheet, problems: string[]): ParsedQuestio
     const subjectText = get('subject');
     if (subjectText) {
       item.subject = parseSubject(subjectText);
-      if (!item.subject) problems.push(`${where}: môn "${subjectText}" không hợp lệ (Toán hoặc Tiếng Việt).`);
+      if (!item.subject) problems.push(`${where}: môn "${subjectText}" không hợp lệ (${SUBJECT_CHOICES}).`);
     }
     const gradeText = get('grade');
     if (gradeText) {
@@ -890,7 +892,7 @@ function parsePassageSheet(
       const text = get('text');
       const qs = byKey.get(key) ?? [];
       const missing = [
-        !subject && 'Môn (Toán/Tiếng Việt)',
+        !subject && 'Môn (Toán/Tiếng Việt/Tiếng Anh)',
         grade === undefined && 'Lớp (1–5)',
         !title && 'Tiêu đề',
         !text && 'Nội dung',

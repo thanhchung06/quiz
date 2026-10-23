@@ -35,7 +35,7 @@ export interface Profile extends SyncEnvelope {
 // Category (data-model.md §2)
 // ---------------------------------------------------------------------------
 
-export type Subject = 'math' | 'language';
+export type Subject = 'math' | 'language' | 'english';
 export type CategorySubject = Subject | 'both';
 
 export interface Category extends SyncEnvelope {
@@ -272,6 +272,8 @@ export interface AnswerRecord {
   submittedAt: string;
   /** The per-question timer ran out before an answer: counted wrong and cost a life. */
   timedOut?: boolean;
+  /** The child switched away from the app on this question: counted wrong and cost a life. */
+  leftApp?: boolean;
 }
 
 export interface SessionProgress {
@@ -392,4 +394,6 @@ export interface AppSettings {
   backupMetadata: { lastExportAt?: string; lastImportAt?: string };
   /** Set once the curriculum's default categories have been created, so a category the parent deletes is not re-added. */
   defaultCategoriesSeeded?: boolean;
+  /** Subjects whose default categories have been created (absent with defaultCategoriesSeeded = math and Tiếng Việt, from before Tiếng Anh). */
+  defaultCategorySubjects?: Subject[];
 }

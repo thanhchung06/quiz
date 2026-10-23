@@ -1,0 +1,656 @@
+{
+  "formatVersion": "1.1",
+  "packageTitle": "Tiếng Anh lớp 3: ngữ pháp, mẫu câu, từ vựng, đọc hiểu",
+  "language": "vi",
+  "quizzes": [
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Ngữ pháp cơ bản",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "I ___ a student.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "am"
+        },
+        {
+          "id": "b",
+          "text": "is"
+        },
+        {
+          "id": "c",
+          "text": "are"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-001",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Ngữ pháp cơ bản",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "They ___ my friends.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "are"
+        },
+        {
+          "id": "b",
+          "text": "is"
+        },
+        {
+          "id": "c",
+          "text": "am"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-002",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Ngữ pháp cơ bản",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "This is ___ apple.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "an"
+        },
+        {
+          "id": "b",
+          "text": "a"
+        },
+        {
+          "id": "c",
+          "text": "two"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "explanation": "Trước từ bắt đầu bằng nguyên âm (a, e, i, o, u) dùng \"an\".",
+      "externalId": "ta3-003",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Ngữ pháp cơ bản",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Số nhiều của \"book\" là gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "books"
+        },
+        {
+          "id": "b",
+          "text": "bookes"
+        },
+        {
+          "id": "c",
+          "text": "book"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-004",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Ngữ pháp cơ bản",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "true-false",
+      "prompt": "\"I can swim.\" là câu đúng. Đúng hay Sai?",
+      "choices": [
+        {
+          "id": "true",
+          "text": "Đúng"
+        },
+        {
+          "id": "false",
+          "text": "Sai"
+        }
+      ],
+      "correctAnswerIds": [
+        "true"
+      ],
+      "points": 10,
+      "externalId": "ta3-005",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Ngữ pháp cơ bản",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "single-choice",
+      "prompt": "The cat is ___ the box. (Con mèo ở trong cái hộp.)",
+      "choices": [
+        {
+          "id": "a",
+          "text": "in"
+        },
+        {
+          "id": "b",
+          "text": "on"
+        },
+        {
+          "id": "c",
+          "text": "under"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-006",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Ngữ pháp cơ bản",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "short-text",
+      "prompt": "Điền \"is\" hoặc \"are\": She ___ my sister.",
+      "acceptedAnswer": "is",
+      "points": 10,
+      "externalId": "ta3-007",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Mẫu câu giao tiếp",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "A: \"What is this?\" — B: \"…\"",
+      "choices": [
+        {
+          "id": "a",
+          "text": "It's a pen."
+        },
+        {
+          "id": "b",
+          "text": "I'm a pen."
+        },
+        {
+          "id": "c",
+          "text": "Yes, I do."
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-008",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Mẫu câu giao tiếp",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "single-choice",
+      "prompt": "A: \"Do you like bananas?\" — B: \"…\"",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Yes, I do."
+        },
+        {
+          "id": "b",
+          "text": "Yes, I am."
+        },
+        {
+          "id": "c",
+          "text": "I'm nine."
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-009",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Mẫu câu giao tiếp",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "single-choice",
+      "prompt": "A: \"What time is it?\" — B: \"…\"",
+      "choices": [
+        {
+          "id": "a",
+          "text": "It's seven o'clock."
+        },
+        {
+          "id": "b",
+          "text": "It's Monday."
+        },
+        {
+          "id": "c",
+          "text": "It's a clock."
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-010",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Mẫu câu giao tiếp",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Câu nào dùng để hỏi tên bạn?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "What's your name?"
+        },
+        {
+          "id": "b",
+          "text": "How old are you?"
+        },
+        {
+          "id": "c",
+          "text": "Where are you from?"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-011",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "multiple-choice",
+      "prompt": "Chọn tất cả các từ chỉ đồ dùng học tập.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "pen"
+        },
+        {
+          "id": "b",
+          "text": "ruler"
+        },
+        {
+          "id": "c",
+          "text": "banana"
+        },
+        {
+          "id": "d",
+          "text": "kite"
+        }
+      ],
+      "correctAnswerIds": [
+        "a",
+        "b"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "explanation": "pen = cái bút, ruler = cái thước; banana = quả chuối, kite = con diều.",
+      "externalId": "ta3-012",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "\"Monday\" là ngày nào?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Thứ Hai"
+        },
+        {
+          "id": "b",
+          "text": "Chủ nhật"
+        },
+        {
+          "id": "c",
+          "text": "Thứ Sáu"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-013",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "\"sunny\" nghĩa là gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "trời nắng"
+        },
+        {
+          "id": "b",
+          "text": "trời mưa"
+        },
+        {
+          "id": "c",
+          "text": "trời có gió"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-014",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Từ nào chỉ nghề nghiệp?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "teacher"
+        },
+        {
+          "id": "b",
+          "text": "kitchen"
+        },
+        {
+          "id": "c",
+          "text": "table"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "explanation": "teacher = giáo viên.",
+      "externalId": "ta3-015",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Nghĩa của từ Anh – Việt",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "\"I like ice cream.\" nghĩa là gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Tôi thích kem."
+        },
+        {
+          "id": "b",
+          "text": "Tôi có kem."
+        },
+        {
+          "id": "c",
+          "text": "Tôi ăn kem."
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta3-016",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Nghĩa của từ Anh – Việt",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "short-text",
+      "prompt": "Viết bằng tiếng Anh: \"trường học\"",
+      "acceptedAnswer": "school",
+      "points": 10,
+      "externalId": "ta3-017",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "number",
+      "prompt": "\"twenty\" là số mấy?",
+      "acceptedAnswer": "20",
+      "points": 10,
+      "externalId": "ta3-018",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "externalKey": "ta3-doc-1",
+      "subject": "english",
+      "grade": 3,
+      "category": {
+        "name": "Đọc hiểu tiếng Anh",
+        "subject": "english"
+      },
+      "title": "My family",
+      "text": "Hello! I am Mai. I am eight years old. There are four people in my family: my father, my mother, my brother and me. My father is a doctor. My mother is a teacher. My brother is ten years old. I love my family.",
+      "questions": [
+        {
+          "type": "number",
+          "difficulty": 1,
+          "prompt": "How many people are there in Mai's family?",
+          "acceptedAnswer": "4",
+          "points": 10,
+          "tags": [
+            "Tiếng Anh"
+          ]
+        },
+        {
+          "type": "single-choice",
+          "difficulty": 1,
+          "prompt": "What does Mai's father do?",
+          "choices": [
+            {
+              "id": "a",
+              "text": "He is a doctor."
+            },
+            {
+              "id": "b",
+              "text": "He is a teacher."
+            },
+            {
+              "id": "c",
+              "text": "He is a farmer."
+            }
+          ],
+          "correctAnswerIds": [
+            "a"
+          ],
+          "shuffleChoices": true,
+          "points": 10,
+          "tags": [
+            "Tiếng Anh"
+          ]
+        },
+        {
+          "type": "true-false",
+          "difficulty": 2,
+          "prompt": "Mai is ten years old. Đúng hay Sai?",
+          "choices": [
+            {
+              "id": "true",
+              "text": "Đúng"
+            },
+            {
+              "id": "false",
+              "text": "Sai"
+            }
+          ],
+          "correctAnswerIds": [
+            "false"
+          ],
+          "explanation": "Mai is eight years old. Her brother is ten.",
+          "points": 10,
+          "tags": [
+            "Tiếng Anh"
+          ]
+        },
+        {
+          "type": "short-text",
+          "difficulty": 2,
+          "prompt": "Mai's mother is a ___.",
+          "acceptedAnswer": "teacher",
+          "points": 10,
+          "tags": [
+            "Tiếng Anh"
+          ]
+        }
+      ]
+    }
+  ]
+}

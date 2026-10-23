@@ -19,7 +19,7 @@
   </main>
 } @else {
   @if (item(); as q) {
-    <main class="question-screen">
+    <main class="question-screen" [class.with-passage]="!!q.passage">
       <div class="progress-track">
         <div class="progress-fill" [style.width.%]="progressPercent()"></div>
       </div>
@@ -55,86 +55,119 @@
         }
       </header>
 
-      @if (q.passage; as p) {
-        <div class="passage-panel">
-          <p class="passage-heading">
-            <app-icon name="auto_stories" />
-            {{ p.title }}
-            <span class="passage-progress">Câu {{ p.order }}/{{ p.total }} của đoạn này</span>
-          </p>
-          <p class="passage-text">{{ p.text }}</p>
-          <app-quiz-image [src]="p.imageUrl" />
-        </div>
-      }
-
-      <p class="prompt">{{ q.prompt }}</p>
-      <app-quiz-image [src]="q.media?.imageRef" />
-
-      <div class="answer-area">
-        @if (q.type === 'single-choice' || q.type === 'true-false') {
-          <div class="choices">
-            @for (choice of q.choices; track choice.id; let i = $index) {
-              <button
-                type="button"
-                class="choice"
-                [class.selected]="choiceAnswer().includes(choice.id)"
-                (click)="toggleChoice(choice.id, false)"
-              >
-                <span class="choice-letter">{{ choiceLetters[i] }}</span>
-                <span class="choice-body">
-                  @if (choice.text) {
-                    <span class="choice-text">{{ choice.text }}</span>
-                  }
-                  @if (choice.imageRef) {
-                    <app-quiz-image
-                      class="choice-image"
-                      [src]="choice.imageRef"
-                      [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]"
-                    />
-                  }
-                </span>
-              </button>
-            }
+      <div
+        class="play-body"
+        [class.has-passage]="!!q.passage"
+        [class.show-question]="pane() === 'question'"
+        (touchstart)="onTouchStart($event)"
+        (touchend)="onTouchEnd($event)"
+      >
+        @if (q.passage; as p) {
+          <div class="pane-switch" role="tablist" aria-label="Chuyển giữa bài đọc và câu hỏi">
+            <button type="button" role="tab" [attr.aria-selected]="pane() === 'passage'" (click)="pane.set('passage')">
+              <app-icon name="auto_stories" />
+              Bài đọc
+            </button>
+            <button
+              type="button"
+              role="tab"
+              [attr.aria-selected]="pane() === 'question'"
+              (click)="pane.set('question')"
+            >
+              <app-icon name="quiz" />
+              Câu hỏi
+            </button>
           </div>
         }
-        @if (q.type === 'multiple-choice') {
-          <div class="choices">
-            @for (choice of q.choices; track choice.id; let i = $index) {
-              <button
-                type="button"
-                class="choice"
-                [class.selected]="choiceAnswer().includes(choice.id)"
-                (click)="toggleChoice(choice.id, true)"
-              >
-                <span class="choice-letter">{{ choiceLetters[i] }}</span>
-                <span class="choice-body">
-                  @if (choice.text) {
-                    <span class="choice-text">{{ choice.text }}</span>
-                  }
-                  @if (choice.imageRef) {
-                    <app-quiz-image
-                      class="choice-image"
-                      [src]="choice.imageRef"
-                      [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]"
-                    />
-                  }
-                </span>
+
+        <div class="pane-track">
+          @if (q.passage; as p) {
+            <section #passagePane class="pane passage-pane" aria-label="Bài đọc">
+              <div class="passage-panel">
+                <p class="passage-heading">
+                  <app-icon name="auto_stories" />
+                  {{ p.title }}
+                  <span class="passage-progress">Câu {{ p.order }}/{{ p.total }} của đoạn này</span>
+                </p>
+                <p class="passage-text">{{ p.text }}</p>
+                <app-quiz-image [src]="p.imageUrl" />
+              </div>
+              <button type="button" class="to-question" (click)="pane.set('question')">
+                Trả lời câu hỏi
+                <app-icon name="chevron_right" />
               </button>
-            }
-          </div>
-        }
-        @if (q.type === 'short-text') {
-          <input
-            class="text-answer"
-            type="text"
-            [ngModel]="textAnswer()"
-            (ngModelChange)="textAnswer.set($event)"
-            name="textAnswer"
-            placeholder="Nhập câu trả lời…"
-          />
-        }
-        @if (q.type === 'number') {
-          <!--
+            </section>
+          }
+
+          <section #questionPane class="pane question-pane" aria-label="Câu hỏi">
+            <p class="prompt">{{ q.prompt }}</p>
+            <app-quiz-image [src]="q.media?.imageRef" />
+
+            <div class="answer-area">
+              @if (q.type === 'single-choice' || q.type === 'true-false') {
+                <div class="choices">
+                  @for (choice of q.choices; track choice.id; let i = $index) {
+                    <button
+                      type="button"
+                      class="choice"
+                      [class.selected]="choiceAnswer().includes(choice.id)"
+                      (click)="toggleChoice(choice.id, false)"
+                    >
+                      <span class="choice-letter">{{ choiceLetters[i] }}</span>
+                      <span class="choice-body">
+                        @if (choice.text) {
+                          <span class="choice-text">{{ choice.text }}</span>
+                        }
+                        @if (choice.imageRef) {
+                          <app-quiz-image
+                            class="choice-image"
+                            [src]="choice.imageRef"
+                            [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]"
+                          />
+                        }
+                      </span>
+                    </button>
+                  }
+                </div>
+              }
+              @if (q.type === 'multiple-choice') {
+                <div class="choices">
+                  @for (choice of q.choices; track choice.id; let i = $index) {
+                    <button
+                      type="button"
+                      class="choice"
+                      [class.selected]="choiceAnswer().includes(choice.id)"
+                      (click)="toggleChoice(choice.id, true)"
+                    >
+                      <span class="choice-letter">{{ choiceLetters[i] }}</span>
+                      <span class="choice-body">
+                        @if (choice.text) {
+                          <span class="choice-text">{{ choice.text }}</span>
+                        }
+                        @if (choice.imageRef) {
+                          <app-quiz-image
+                            class="choice-image"
+                            [src]="choice.imageRef"
+                            [alt]="choice.text || 'Lựa chọn ' + choiceLetters[i]"
+                          />
+                        }
+                      </span>
+                    </button>
+                  }
+                </div>
+              }
+              @if (q.type === 'short-text') {
+                <input
+                  class="text-answer"
+                  type="text"
+                  [ngModel]="textAnswer()"
+                  (ngModelChange)="textAnswer.set($event)"
+                  name="textAnswer"
+                  placeholder="Nhập câu trả lời…"
+                />
+              }
+              @if (q.type === 'number') {
+                <!--
           type="text" (not "number") deliberately: Angular's
           NumberValueAccessor coerces type="number" ngModel values to an
           actual `number`, which would silently break the string-typed
@@ -143,27 +176,30 @@
           decimal separator — Vietnamese decimals use a comma, e.g. 3,5. Fractions
           ("7/2", "3 1/2") are accepted too.
         -->
-          <input
-            class="text-answer number"
-            type="text"
-            inputmode="decimal"
-            pattern="-?[0-9., /]*"
-            [ngModel]="numberAnswer()"
-            (ngModelChange)="numberAnswer.set($event)"
-            name="numberAnswer"
-            placeholder="Nhập số…"
-          />
-        }
+                <input
+                  class="text-answer number"
+                  type="text"
+                  inputmode="decimal"
+                  pattern="-?[0-9., /]*"
+                  [ngModel]="numberAnswer()"
+                  (ngModelChange)="numberAnswer.set($event)"
+                  name="numberAnswer"
+                  placeholder="Nhập số…"
+                />
+              }
 
-        <button
-          type="button"
-          class="submit"
-          [disabled]="!isValidResponse() || isEvaluating() || !!ending()"
-          (click)="submit()"
-        >
-          <app-icon name="check_circle" />
-          {{ strings.common.submit }}
-        </button>
+              <button
+                type="button"
+                class="submit"
+                [disabled]="!isValidResponse() || isEvaluating() || !!ending()"
+                (click)="submit()"
+              >
+                <app-icon name="check_circle" />
+                {{ strings.common.submit }}
+              </button>
+            </div>
+          </section>
+        </div>
       </div>
     </main>
   }

@@ -1,5 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 import {
+  AnswerRecord,
   Assignment,
   EndStatus,
   Exercise,
@@ -238,7 +239,16 @@ export class PlayService {
   }
 
   /** The current question's own timer ran out: counted wrong, costs a life, play moves on. */
-  async expirePerQuestionTimeout(): Promise<void> {
+  expirePerQuestionTimeout(): Promise<void> {
+    return this.failCurrentQuestion({ timedOut: true });
+  }
+
+  /** The child switched away from the app: the question on screen is counted wrong, costs a life, play moves on. */
+  failCurrentQuestionOnLeave(): Promise<void> {
+    return this.failCurrentQuestion({ leftApp: true });
+  }
+
+  private async failCurrentQuestion(reason: Pick<AnswerRecord, 'timedOut' | 'leftApp'>): Promise<void> {
     if (this._isEvaluating()) return;
     const session = this._session();
     const item = this.currentQuizItem();
@@ -251,7 +261,7 @@ export class PlayService {
         isCorrect: false,
         pointsEarned: 0,
         submittedAt: new Date().toISOString(),
-        timedOut: true,
+        ...reason,
       });
     } finally {
       this._isEvaluating.set(false);

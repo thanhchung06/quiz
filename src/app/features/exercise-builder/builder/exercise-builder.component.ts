@@ -6,7 +6,7 @@ import { ExerciseRepository } from '../../../data/repositories/exercise.reposito
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
 import { RandomGroupCheckService } from '../services/random-group-check.service';
-import { Category, Exercise, ExerciseItem, QuizItem, RandomGroupConfig } from '../../../shared/models/domain.model';
+import { Category, Exercise, ExerciseItem, QuizItem, RandomGroupConfig, Subject } from '../../../shared/models/domain.model';
 import { difficultyLabel } from '../../../shared/difficulty';
 import { QuizPickerComponent } from '../quiz-picker/quiz-picker.component';
 import { allowedTypesLabel } from '../../../shared/question-type-groups';
@@ -323,7 +323,7 @@ export class ExerciseBuilderComponent implements OnInit {
     const itemSubjects = this.items()
       .filter((i): i is Extract<ExerciseItem, { kind: 'fixed' }> => i.kind === 'fixed')
       .map((i) => this.bankItems().find((q) => q.id === i.quizItemId)?.subject)
-      .filter((s): s is 'math' | 'language' => !!s);
+      .filter((s): s is Subject => !!s);
 
     const subjectErrors = this.exercises.validateSubject(this.subject(), itemSubjects);
 

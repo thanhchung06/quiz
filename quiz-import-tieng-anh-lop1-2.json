@@ -1,0 +1,664 @@
+{
+  "formatVersion": "1.1",
+  "packageTitle": "Tiếng Anh cơ bản lớp 1–2: từ vựng, chữ cái, số đếm, chào hỏi",
+  "language": "vi",
+  "quizzes": [
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "\"dog\" nghĩa là gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "con chó"
+        },
+        {
+          "id": "b",
+          "text": "con mèo"
+        },
+        {
+          "id": "c",
+          "text": "con cá"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "tags": [
+        "Tiếng Anh",
+        "con vật"
+      ],
+      "externalId": "ta12-001"
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Chọn từ tiếng Anh có nghĩa là \"quả táo\".",
+      "choices": [
+        {
+          "id": "a",
+          "text": "apple"
+        },
+        {
+          "id": "b",
+          "text": "banana"
+        },
+        {
+          "id": "c",
+          "text": "orange"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "tags": [
+        "Tiếng Anh",
+        "đồ ăn"
+      ],
+      "externalId": "ta12-002"
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "\"red\" là màu gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Màu đỏ"
+        },
+        {
+          "id": "b",
+          "text": "Màu xanh dương"
+        },
+        {
+          "id": "c",
+          "text": "Màu vàng"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "tags": [
+        "Tiếng Anh",
+        "màu sắc"
+      ],
+      "externalId": "ta12-003"
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Chọn từ tiếng Anh có nghĩa là \"màu xanh dương\".",
+      "choices": [
+        {
+          "id": "a",
+          "text": "blue"
+        },
+        {
+          "id": "b",
+          "text": "black"
+        },
+        {
+          "id": "c",
+          "text": "brown"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "tags": [
+        "Tiếng Anh",
+        "màu sắc"
+      ],
+      "externalId": "ta12-004"
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "\"book\" nghĩa là gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "quyển sách"
+        },
+        {
+          "id": "b",
+          "text": "cái bút"
+        },
+        {
+          "id": "c",
+          "text": "cái cặp"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "tags": [
+        "Tiếng Anh",
+        "đồ dùng học tập"
+      ],
+      "externalId": "ta12-005"
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "multiple-choice",
+      "prompt": "Chọn tất cả các từ chỉ con vật.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "cat"
+        },
+        {
+          "id": "b",
+          "text": "pen"
+        },
+        {
+          "id": "c",
+          "text": "fish"
+        },
+        {
+          "id": "d",
+          "text": "chair"
+        }
+      ],
+      "correctAnswerIds": [
+        "a",
+        "c"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "explanation": "cat = con mèo, fish = con cá; pen = cái bút, chair = cái ghế.",
+      "tags": [
+        "Tiếng Anh",
+        "con vật"
+      ],
+      "externalId": "ta12-006"
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "\"mother\" nghĩa là gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "mẹ"
+        },
+        {
+          "id": "b",
+          "text": "bố"
+        },
+        {
+          "id": "c",
+          "text": "chị gái"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "tags": [
+        "Tiếng Anh",
+        "gia đình"
+      ],
+      "externalId": "ta12-007"
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "true-false",
+      "prompt": "\"pencil\" nghĩa là \"bút chì\". Đúng hay Sai?",
+      "choices": [
+        {
+          "id": "true",
+          "text": "Đúng"
+        },
+        {
+          "id": "false",
+          "text": "Sai"
+        }
+      ],
+      "correctAnswerIds": [
+        "true"
+      ],
+      "points": 10,
+      "externalId": "ta12-008",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "true-false",
+      "prompt": "\"yellow\" nghĩa là \"màu xanh lá\". Đúng hay Sai?",
+      "choices": [
+        {
+          "id": "true",
+          "text": "Đúng"
+        },
+        {
+          "id": "false",
+          "text": "Sai"
+        }
+      ],
+      "correctAnswerIds": [
+        "false"
+      ],
+      "points": 10,
+      "explanation": "yellow = màu vàng; green = màu xanh lá.",
+      "externalId": "ta12-009",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Từ vựng theo chủ đề",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "single-choice",
+      "prompt": "Chọn từ không cùng nhóm với các từ còn lại.",
+      "choices": [
+        {
+          "id": "a",
+          "text": "cat"
+        },
+        {
+          "id": "b",
+          "text": "dog"
+        },
+        {
+          "id": "c",
+          "text": "bird"
+        },
+        {
+          "id": "d",
+          "text": "ruler"
+        }
+      ],
+      "correctAnswerIds": [
+        "d"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "explanation": "ruler (cái thước) không phải con vật.",
+      "externalId": "ta12-010",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "number",
+      "prompt": "\"three\" là số mấy?",
+      "acceptedAnswer": "3",
+      "points": 10,
+      "externalId": "ta12-011",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "number",
+      "prompt": "\"seven\" là số mấy?",
+      "acceptedAnswer": "7",
+      "points": 10,
+      "externalId": "ta12-012",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Số 5 trong tiếng Anh là gì?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "five"
+        },
+        {
+          "id": "b",
+          "text": "four"
+        },
+        {
+          "id": "c",
+          "text": "nine"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta12-013",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "short-text",
+      "prompt": "Điền chữ cái còn thiếu: d _ g (con chó)",
+      "acceptedAnswer": "o",
+      "points": 10,
+      "explanation": "dog = con chó.",
+      "externalId": "ta12-014",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Chữ cái nào đứng sau chữ \"B\"?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A"
+        },
+        {
+          "id": "b",
+          "text": "C"
+        },
+        {
+          "id": "c",
+          "text": "D"
+        }
+      ],
+      "correctAnswerIds": [
+        "b"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta12-015",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "short-text",
+      "prompt": "Viết bằng tiếng Anh: số 10",
+      "acceptedAnswer": "ten",
+      "points": 10,
+      "externalId": "ta12-016",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Chữ cái và số đếm",
+        "subject": "english"
+      },
+      "difficulty": 2,
+      "type": "number",
+      "prompt": "two + three = ? (viết bằng số)",
+      "acceptedAnswer": "5",
+      "points": 10,
+      "externalId": "ta12-017",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Chào hỏi, giới thiệu bản thân",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Khi gặp bạn, em nói:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Hello!"
+        },
+        {
+          "id": "b",
+          "text": "Goodbye!"
+        },
+        {
+          "id": "c",
+          "text": "Thank you!"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta12-018",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 1,
+      "category": {
+        "name": "Chào hỏi, giới thiệu bản thân",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "Khi chia tay bạn, em nói:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Goodbye!"
+        },
+        {
+          "id": "b",
+          "text": "Hello!"
+        },
+        {
+          "id": "c",
+          "text": "Sorry!"
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta12-019",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Chào hỏi, giới thiệu bản thân",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "A: \"What's your name?\" — B: \"…\"",
+      "choices": [
+        {
+          "id": "a",
+          "text": "My name is Lan."
+        },
+        {
+          "id": "b",
+          "text": "I'm fine."
+        },
+        {
+          "id": "c",
+          "text": "I'm seven."
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta12-020",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Chào hỏi, giới thiệu bản thân",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "single-choice",
+      "prompt": "A: \"How are you?\" — B: \"…\"",
+      "choices": [
+        {
+          "id": "a",
+          "text": "I'm fine, thank you."
+        },
+        {
+          "id": "b",
+          "text": "I'm seven years old."
+        },
+        {
+          "id": "c",
+          "text": "My name is Nam."
+        }
+      ],
+      "correctAnswerIds": [
+        "a"
+      ],
+      "shuffleChoices": true,
+      "points": 10,
+      "externalId": "ta12-021",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    },
+    {
+      "subject": "english",
+      "grade": 2,
+      "category": {
+        "name": "Chào hỏi, giới thiệu bản thân",
+        "subject": "english"
+      },
+      "difficulty": 1,
+      "type": "short-text",
+      "prompt": "Điền từ còn thiếu: \"Thank ___!\" (Cảm ơn bạn!)",
+      "acceptedAnswer": "you",
+      "points": 10,
+      "externalId": "ta12-022",
+      "tags": [
+        "Tiếng Anh"
+      ]
+    }
+  ],
+  "passages": []
+}

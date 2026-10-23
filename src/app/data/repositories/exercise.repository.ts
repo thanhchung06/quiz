@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Exercise, ExerciseItem } from '../../shared/models/domain.model';
+import { Exercise, ExerciseItem, Subject } from '../../shared/models/domain.model';
 import { RemoteRecordRepository, currentDeviceId } from './base-repository';
 import { RemoteStore } from '../../remote/remote-store';
 import { newSyncEnvelope } from '../../shared/models/sync.model';
@@ -27,11 +27,11 @@ export class ExerciseRepository extends RemoteRecordRepository<Exercise> {
   }
 
   /** Mixed-subject requires the parent to explicitly select Mixed (FR-031). */
-  validateSubject(subject: Exercise['subject'], itemSubjects: Array<'math' | 'language'>): string[] {
+  validateSubject(subject: Exercise['subject'], itemSubjects: Subject[]): string[] {
     const errors: string[] = [];
     const distinctSubjects = new Set(itemSubjects);
     if (subject !== 'mixed' && distinctSubjects.size > 1) {
-      errors.push('An exercise mixing both subjects must explicitly be set to Mixed.');
+      errors.push('An exercise mixing several subjects must explicitly be set to Mixed.');
     }
     if (subject !== 'mixed' && distinctSubjects.size === 1 && !distinctSubjects.has(subject)) {
       errors.push(`All items must match the exercise subject (${subject}) unless Mixed is selected.`);

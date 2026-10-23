@@ -1,4 +1,4 @@
-import { Component, computed, effect, OnDestroy, signal } from '@angular/core';
+import { Component, computed, effect, ElementRef, OnDestroy, signal, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlayService } from '../services/play.service';
@@ -8,6 +8,11 @@ import { parseNumberAnswer } from '../services/answer-evaluator';
 import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
 
 const CHOICE_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+/** A horizontal swipe must travel this far (px) and be mostly sideways to switch panes. */
+const SWIPE_MIN_DISTANCE = 50;
+
+export type PlayPane = 'passage' | 'question';
 
 /**
  * One quiz item per screen (FR-010): position/lives/time shown, the answer
@@ -54,6 +59,15 @@ export class QuestionComponent implements OnDestroy {
   });
 
   readonly choiceLetters = CHOICE_LETTERS;
+
+  /**
+   * For a question with a reading passage on a narrow screen: which of the two
+   * panes is shown (swipe or the tabs switch them). Wide screens show both side by side.
+   */
+  readonly pane = signal<PlayPane>('question');
+  private readonly passagePane = viewChild<ElementRef<HTMLElement>>('passagePane');
+  private readonly questionPane = viewChild<ElementRef<HTMLElement>>('questionPane');
+  private touchStart?: { x: number; y: number };
 
   readonly isUnlimitedLives = computed(() => this.session()?.exerciseSnapshot.lives === 'unlimited');
 
@@ -105,8 +119,10 @@ export class QuestionComponent implements OnDestroy {
 
   private readonly timerHandle: ReturnType<typeof setInterval>;
   private readonly clockHandle: ReturnType<typeof setInterval>;
+  /** Switching to another app fails the question on screen (wrong, costs a life); the play then moves on and is saved. */
   private readonly onHidden = () => {
-    if (document.visibilityState === 'hidden') void this.play.saveClock();
+    if (document.visibilityState !== 'hidden') return;
+    void this.play.failCurrentQuestionOnLeave().then(() => this.play.saveClock());
   };
   private readonly onPageHide = () => void this.play.saveClock();
 
@@ -128,6 +144,22 @@ export class QuestionComponent implements OnDestroy {
       this.choiceAnswer.set([]);
       this.textAnswer.set('');
       this.numberAnswer.set('');
+    });
+
+    let passageId: string | undefined;
+    effect(() => {
+      // A new question starts at the top; a new passage opens on its text, later questions of the same one on the question.
+      this.index();
+      const passage = this.item()?.passage;
+      untracked(() => {
+        const newPassage = passage?.passageId !== passageId;
+        passageId = passage?.passageId;
+        this.pane.set(passage && newPassage ? 'passage' : 'question');
+        const questionPane = this.questionPane()?.nativeElement;
+        const passagePane = this.passagePane()?.nativeElement;
+        if (questionPane) questionPane.scrollTop = 0;
+        if (passagePane && newPassage) passagePane.scrollTop = 0;
+      });
     });
 
     effect(() => {
@@ -164,6 +196,23 @@ export class QuestionComponent implements OnDestroy {
     } else {
       this.remainingQuestionSeconds.set(undefined);
     }
+  }
+
+  onTouchStart(event: TouchEvent): void {
+    const touch = event.touches[0];
+    this.touchStart = event.touches.length === 1 && touch ? { x: touch.clientX, y: touch.clientY } : undefined;
+  }
+
+  /** Swipe left shows the question, swipe right the passage; vertical drags are left to the pane's own scrolling. */
+  onTouchEnd(event: TouchEvent): void {
+    const start = this.touchStart;
+    const touch = event.changedTouches[0];
+    this.touchStart = undefined;
+    if (!start || !touch || !this.item()?.passage) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (Math.abs(dx) < SWIPE_MIN_DISTANCE || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    this.pane.set(dx < 0 ? 'question' : 'passage');
   }
 
   toggleChoice(choiceId: string, multi: boolean): void {

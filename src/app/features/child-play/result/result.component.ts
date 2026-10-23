@@ -74,7 +74,7 @@ export function buildBreakdown(resultRecord: PlayResult): QuestionReview[] {
         const item = resultRecord.itemSnapshots[quizItemId];
         if (!item) return undefined;
         const answer = resultRecord.answers[quizItemId];
-        const result = answer && !answer.timedOut ? answer : undefined;
+        const result = answer && !answer.timedOut && !answer.leftApp ? answer : undefined;
         const answered = !!result;
         const rule = item.answerRule;
 

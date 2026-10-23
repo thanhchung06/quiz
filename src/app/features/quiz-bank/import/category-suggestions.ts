@@ -14,7 +14,8 @@ export interface CategorySuggestion {
  * knowledge strands of the 2018 general-education curriculum (Chương trình
  * GDPT 2018): Toán — Số và phép tính, Hình học và đo lường, Thống kê và xác
  * suất, with word problems woven through each; Tiếng Việt — đọc hiểu, chính
- * tả, luyện từ và câu. Offered in the import templates (JSON
+ * tả, luyện từ và câu; Tiếng Anh — vocabulary, phonics, simple sentence
+ * patterns and grammar, short reading. Offered in the import templates (JSON
  * `suggestedCategories`, Excel "Danh mục gợi ý" sheet + dropdown) as
  * suggested category names only — any other name still works.
  */
@@ -62,6 +63,15 @@ export const CATEGORY_SUGGESTIONS: CategorySuggestion[] = [
   { subject: 'language', grades: [2, 3, 4, 5], name: 'Dấu câu', examples: 'Dấu chấm, phẩy, chấm hỏi, chấm than, hai chấm, gạch ngang, ngoặc kép' },
   { subject: 'language', grades: [3, 4, 5], name: 'Biện pháp tu từ', examples: 'So sánh, nhân hóa, điệp từ điệp ngữ' },
   { subject: 'language', grades: [3, 4, 5], name: 'Thành ngữ, tục ngữ', examples: 'Hiểu nghĩa và dùng thành ngữ, tục ngữ quen thuộc' },
+
+  // --- Tiếng Anh ---
+  { subject: 'english', grades: [1, 2, 3], name: 'Chào hỏi, giới thiệu bản thân', examples: "Hello, Goodbye, What's your name?, How old are you?, Nice to meet you" },
+  { subject: 'english', grades: [1, 2, 3], name: 'Chữ cái và số đếm', examples: 'Bảng chữ cái, đánh vần từ, số đếm 1–100' },
+  { subject: 'english', grades: [1, 2, 3, 4, 5], name: 'Từ vựng theo chủ đề', examples: 'Màu sắc, con vật, đồ dùng học tập, gia đình, đồ ăn, đồ chơi, thời tiết, nghề nghiệp' },
+  { subject: 'english', grades: [2, 3, 4, 5], name: 'Nghĩa của từ Anh – Việt', examples: 'Chọn nghĩa tiếng Việt của từ/câu tiếng Anh và ngược lại' },
+  { subject: 'english', grades: [3, 4, 5], name: 'Mẫu câu giao tiếp', examples: 'Hỏi đáp về sở thích, đồ vật, giờ, ngày tháng: What is this?, Do you like…?, What time is it?' },
+  { subject: 'english', grades: [3, 4, 5], name: 'Ngữ pháp cơ bản', examples: "am/is/are, a/an, số nhiều, can/can't, thì hiện tại đơn, giới từ chỉ vị trí" },
+  { subject: 'english', grades: [3, 4, 5], name: 'Đọc hiểu tiếng Anh', examples: 'Đọc đoạn văn ngắn tiếng Anh rồi trả lời câu hỏi' },
 ];
 
 export function gradesLabel(grades: number[]): string {

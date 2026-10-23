@@ -7,6 +7,7 @@ import { PlaySessionRepository } from '../../../data/repositories/play-session.r
 import { PlayService } from '../services/play.service';
 import { Assignment, Exercise, PlaySession } from '../../../shared/models/domain.model';
 import { vi } from '../../../shared/i18n/vi';
+import { EXERCISE_SUBJECT_LABELS } from '../../../shared/subjects';
 
 /**
  * Before starting: an assigned exercise (/exercise-intro/:assignmentId, shown
@@ -23,6 +24,7 @@ import { vi } from '../../../shared/i18n/vi';
 })
 export class ExerciseIntroComponent implements OnInit {
   readonly strings = vi;
+  readonly subjectLabels = EXERCISE_SUBJECT_LABELS;
   readonly exercise = signal<Exercise | undefined>(undefined);
   readonly triesLeft = signal<number | 'unlimited' | undefined>(undefined);
   /** Another exercise the child left unfinished — must be given up before this one starts. */

@@ -23,7 +23,7 @@ async function handWrittenWorkbook(questions: unknown[][], passages?: unknown[][
 jest.setTimeout(60_000);
 
 describe('quiz Excel import/export', () => {
-  it('round-trips the package template (standalone quizzes + a passage) through .xlsx', async () => {
+  it('round-trips the package template (standalone quizzes + passages, every subject) through .xlsx', async () => {
     const pkg: QuizPackage = {
       ...QUIZ_PACKAGE_TEMPLATE,
       quizzes: QUIZ_PACKAGE_TEMPLATE.quizzes.map((q, i) => (i === 0 ? { ...q, imageUrl: 'https://example.com/a.png' } : q)),
@@ -53,14 +53,16 @@ describe('quiz Excel import/export', () => {
       expect(back.choices?.map((c) => c.text)).toEqual(original.choices?.map((c) => c.text));
     }
 
-    expect(parsed.passages).toHaveLength(1);
-    const passage = parsed.passages![0];
-    const originalPassage = pkg.passages![0];
-    expect(passage.title).toBe(originalPassage.title);
-    expect(passage.text).toBe(originalPassage.text);
-    expect(passage.imageUrl).toBe('meo.png');
-    expect(passage.category?.name).toBe(originalPassage.category?.name);
-    expect(passage.questions.map((q) => q.prompt)).toEqual(originalPassage.questions.map((q) => q.prompt));
+    expect(parsed.passages).toHaveLength(pkg.passages!.length);
+    for (const [i, originalPassage] of pkg.passages!.entries()) {
+      const passage = parsed.passages![i];
+      expect(passage.title).toBe(originalPassage.title);
+      expect(passage.text).toBe(originalPassage.text);
+      expect(passage.subject).toBe(originalPassage.subject);
+      expect(passage.imageUrl).toBe('meo.png');
+      expect(passage.category?.name).toBe(originalPassage.category?.name);
+      expect(passage.questions.map((q) => q.prompt)).toEqual(originalPassage.questions.map((q) => q.prompt));
+    }
   });
 
   it('reads a hand-typed sheet with Vietnamese labels, reordered columns and number ranges', async () => {
@@ -91,6 +93,36 @@ describe('quiz Excel import/export', () => {
     expect(pkg.quizzes[3]).toMatchObject({ type: 'short-text', subject: 'language', acceptedAnswer: 'thấp' });
     expect(quizSources[4]).toEqual({ sheet: QUESTION_SHEET, row: 7 });
     expect(problems).toEqual([expect.stringContaining('dòng 7')]);
+  });
+
+  it('reads Tiếng Anh in any common spelling as the english subject', async () => {
+    const buffer = await handWrittenWorkbook([
+      ['Loại câu hỏi', 'Nội dung câu hỏi', 'Môn', 'Lớp', 'Đáp án đúng'],
+      ['Điền từ', 'Viết bằng tiếng Anh: số 10', 'Tiếng Anh', 2, 'ten'],
+      ['Điền từ', 'Điền chữ còn thiếu: c _ t', 'tieng anh', 1, 'a'],
+      ['Số', '"three" là số mấy?', 'English', 1, '3'],
+      ['Số', '"seven" là số mấy?', 'TA', 1, '7'],
+    ]);
+
+    const { pkg, problems } = await xlsxToQuizPackage(buffer);
+
+    expect(problems).toEqual([]);
+    expect(pkg.quizzes.map((q) => q.subject)).toEqual(['english', 'english', 'english', 'english']);
+  });
+
+  it('writes Tiếng Anh questions with the "Tiếng Anh" label and reads them back', async () => {
+    const english = QUIZ_PACKAGE_TEMPLATE.quizzes.filter((q) => q.subject === 'english');
+    expect(english.length).toBeGreaterThan(0);
+    const buffer = await quizPackageToXlsx({ ...QUIZ_PACKAGE_TEMPLATE, quizzes: english, passages: [] });
+
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.load(buffer as Parameters<typeof wb.xlsx.load>[0]);
+    const texts: string[] = [];
+    wb.getWorksheet(QUESTION_SHEET)!.eachRow((row) => row.eachCell((cell) => void texts.push(cell.text)));
+    expect(texts).toContain('Tiếng Anh');
+
+    const { pkg } = await xlsxToQuizPackage(buffer);
+    expect(pkg.quizzes.map((q) => q.subject)).toEqual(english.map(() => 'english'));
   });
 
   it('groups passage questions and reports rows it had to skip', async () => {
