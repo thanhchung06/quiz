@@ -23,6 +23,11 @@ export class QuizAppDb extends Dexie {
       quizItems: 'id, subject, grade, type, difficulty, status, reviewStatus, categoryId, *tags',
       appSettings: 'id',
     });
+    // Version 2 adds indexes only (the rows stay): the quiz bank list counts questions per
+    // subject/grade/category from the index keys alone, and finds soft-deleted rows by `deletedAt`.
+    this.version(2).stores({
+      quizItems: 'id, subject, grade, type, difficulty, status, reviewStatus, categoryId, deletedAt, *tags, [subject+grade+categoryId]',
+    });
   }
 }
 

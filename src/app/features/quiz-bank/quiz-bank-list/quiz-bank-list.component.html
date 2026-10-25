@@ -84,10 +84,16 @@
         <option [value]="g">Lớp {{ g }}</option>
       }
     </select>
-    <select title="Lọc theo danh mục" [ngModel]="filter().categoryId ?? ''" (ngModelChange)="setCategoryFilter($event)">
+    <select
+      [title]="filter().subject && filter().grade ? 'Lọc theo danh mục' : 'Chọn môn và lớp để lọc theo danh mục'"
+      [disabled]="!filter().subject || !filter().grade"
+      [ngModel]="filter().categoryId ?? ''" (ngModelChange)="setCategoryFilter($event)"
+    >
       <option value="">Tất cả danh mục</option>
-      @for (c of filterCategoryOptions(); track c.id) {
-        <option [value]="c.id">{{ c.name }} ({{ c.count }})</option>
+      @if (filter().subject && filter().grade) {
+        @for (c of filterCategoryOptions(); track c.id) {
+          <option [value]="c.id">{{ c.name }} ({{ c.count }})</option>
+        }
       }
     </select>
     <input placeholder="Tìm kiếm…" (input)="setSearchText($any($event.target).value)" />
@@ -134,7 +140,7 @@
                         >
                           <app-icon name="chevron_right" class="chevron" [class.rotated]="expandedCategoryKey() === c.key" />
                           <span>{{ c.categoryName }}</span>
-                          <span class="count">({{ c.items.length }})</span>
+                          <span class="count">({{ c.count }})</span>
                           @if (loadingCategoryKey() === c.key) {
                             <span class="spinner" aria-label="Đang tải lại câu hỏi"></span>
                           }
@@ -155,7 +161,7 @@
                       @if (bulkGradeEditKey() === c.key) {
                         <div class="bulk-inline-form">
                           <label>
-                            Đổi lớp cho {{ c.items.length }} câu hỏi thành
+                            Đổi lớp cho {{ c.count }} câu hỏi thành
                             <select [ngModel]="bulkGradeValue()" (ngModelChange)="bulkGradeValue.set(+$event)">
                               @for (g2 of grades; track g2) {
                                 <option [value]="g2">Lớp {{ g2 }}</option>
@@ -168,7 +174,7 @@
                       }
                       @if (bulkDeleteConfirmKey() === c.key) {
                         <div class="bulk-inline-form warn">
-                          <span>Xóa toàn bộ {{ c.items.length }} câu hỏi trong danh mục này?</span>
+                          <span>Xóa toàn bộ {{ c.count }} câu hỏi trong danh mục này?</span>
                           <button type="button" class="danger" (click)="confirmBulkDelete(c)">Xóa tất cả</button>
                           <button type="button" class="secondary" (click)="cancelBulkDelete()">Hủy</button>
                         </div>

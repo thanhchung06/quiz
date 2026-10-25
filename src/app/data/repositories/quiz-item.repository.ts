@@ -16,6 +16,14 @@ export interface QuizItemFilter {
   searchText?: string;
 }
 
+/** How many questions one tree node (subject → grade → category) holds. */
+export interface CategoryCount {
+  subject: Subject;
+  grade: number;
+  categoryId: string;
+  count: number;
+}
+
 /** Whether one question passes a quiz-bank filter (the same test `search` uses). */
 export function matchesFilter(item: QuizItem, filter: QuizItemFilter): boolean {
   if (filter.subject && item.subject !== filter.subject) return false;
@@ -44,6 +52,43 @@ export function matchesFilter(item: QuizItem, filter: QuizItemFilter): boolean {
 export class QuizItemRepository extends QuizBankRepository<QuizItem> {
   constructor(remote: RemoteStore) {
     super(db.quizItems, remote, 'questions');
+  }
+
+  /**
+   * Question counts per subject/grade/category, read from the compound index keys
+   * only — no question is loaded, so it stays fast with tens of thousands of them.
+   */
+  async categoryCounts(): Promise<CategoryCount[]> {
+    const keys = (await db.quizItems.orderBy('[subject+grade+categoryId]').keys()) as unknown as Array<[Subject, number, string]>;
+    const counts = new Map<string, CategoryCount>();
+    const add = (subject: Subject, grade: number, categoryId: string, by: number): void => {
+      const key = `${subject}|${grade}|${categoryId}`;
+      const entry = counts.get(key) ?? { subject, grade, categoryId, count: 0 };
+      entry.count += by;
+      counts.set(key, entry);
+    };
+    for (const [subject, grade, categoryId] of keys) add(subject, grade, categoryId, 1);
+    // Soft-deleted questions stay in the table (and its index) until the next pull; take them back out.
+    for (const gone of await db.quizItems.where('deletedAt').above('').toArray()) add(gone.subject, gone.grade, gone.categoryId, -1);
+    return [...counts.values()].filter((c) => c.count > 0);
+  }
+
+  /** The questions of one tree node. */
+  async byNode(subject: Subject, grade: number, categoryId: string): Promise<QuizItem[]> {
+    return db.quizItems
+      .where('categoryId')
+      .equals(categoryId)
+      .filter((i) => !i.deletedAt && i.subject === subject && i.grade === grade)
+      .toArray();
+  }
+
+  /** The questions of one subject, or of one grade of it. */
+  async bySubjectGrade(subject: Subject, grade?: number): Promise<QuizItem[]> {
+    return db.quizItems
+      .where('subject')
+      .equals(subject)
+      .filter((i) => !i.deletedAt && (!grade || i.grade === grade))
+      .toArray();
   }
 
   async search(filter: QuizItemFilter): Promise<QuizItem[]> {
