@@ -408,6 +408,56 @@ describe('online-first data (Firebase layout, in-memory database)', () => {
     expect(second.map((u) => u.id)).toEqual([rowKey(5), rowKey(4), rowKey(3), rowKey(2), rowKey(1)]);
   });
 
+  it('daily: a failed try can be played again at once with a new random draw, until one passes today', async () => {
+    await becomeDevice('pc');
+    await openApp();
+    for (let i = 0; i < 6; i++) await quizItems.create(question(i));
+    const daily = await createExercise('Hàng ngày', [], {
+      isDaily: true,
+      items: [
+        {
+          id: 'slot',
+          position: 0,
+          kind: 'randomGroup',
+          randomGroup: {
+            count: 3, categoryIds: [], tags: [], difficultyMin: 1, difficultyMax: 5, allowedTypes: [],
+            avoidRecentUse: false, preferWeakAreas: false, mode: 'fullyRandom',
+          },
+        },
+      ],
+    });
+    await assignments.assign(KID, daily);
+    let [a] = await assignments.listForChild(KID);
+    expect(await play.dailyState(a)).toBe('new');
+
+    await play.startAssignment(KID, a);
+    const firstSession = play.session()!;
+    expect(firstSession.itemOrder).toHaveLength(3);
+    await answerAll(1); // 1/3 < 60%: not passed
+    expect(play.result()).toMatchObject({ status: 'completed', stars: 0, counted: false });
+
+    [a] = await assignments.listForChild(KID);
+    expect(a).toBeDefined();
+    expect(await play.dailyState(a)).toBe('retry');
+    expect(await play.triesLeft(a)).toBe('unlimited');
+    expect(await points.get(KID)).toBe(0);
+
+    const draw = jest.spyOn(AttemptResolverService.prototype, 'resolveNew');
+    await play.startAssignment(KID, a);
+    expect(draw).toHaveBeenCalledTimes(1); // a fresh draw, not the failed try's questions replayed
+    draw.mockRestore();
+    expect(play.session()).toMatchObject({ tryNumber: 2 });
+    expect(play.session()!.id).not.toBe(firstSession.id);
+    await answerAll(3);
+    expect(play.result()).toMatchObject({ tryNumber: 2, stars: 3, counted: true });
+
+    [a] = await assignments.listForChild(KID);
+    expect(a).toBeDefined(); // a daily assignment stays for tomorrow
+    expect(await play.dailyState(a)).toBe('passed');
+    expect(await play.triesLeft(a)).toBe(0);
+    expect(await points.get(KID)).toBe(play.result()!.pointsEarned); // only the passing try counts
+  });
+
   it('export → import on an empty server; importing again adds nothing twice', async () => {
     await becomeDevice('pc');
     await openApp();

@@ -37,12 +37,15 @@
           @if (card.opensAt) {
             <p class="device-notice"><app-icon name="info" />Mở lúc {{ formatDateTime(card.opensAt) }}</p>
           } @else if (card.triesLeft === 0) {
-            <p class="done-notice"><app-icon name="check_circle" />Đã làm hôm nay — quay lại vào ngày mai</p>
+            <p class="done-notice"><app-icon name="check_circle" />Đã đạt bài hôm nay — quay lại vào ngày mai</p>
           } @else {
+            @if (card.daily === 'retry') {
+              <p class="device-notice"><app-icon name="info" />Chưa đạt — làm lại với bộ câu hỏi mới cho đến khi đạt nhé!</p>
+            }
             @if (card.triesLeft !== 'unlimited' && card.triesLeft > 1) {
               <p class="meta">{{ strings.childHome.attemptsRemainingPrefix }} {{ card.triesLeft }} {{ strings.childHome.attemptsRemainingSuffix }}</p>
             }
-            <button type="button" class="start-button" (click)="open(card)"><app-icon name="rocket_launch" />{{ strings.common.start }}</button>
+            <button type="button" class="start-button" (click)="open(card)"><app-icon [name]="card.daily === 'retry' ? 'refresh' : 'rocket_launch'" />{{ card.daily === 'retry' ? 'Làm lại' : strings.common.start }}</button>
           }
         </div>
       }

@@ -6,7 +6,7 @@ import { AssignmentRepository } from '../../../data/repositories/assignment.repo
 import { PlaySessionRepository } from '../../../data/repositories/play-session.repository';
 import { ResultRepository } from '../../../data/repositories/result.repository';
 import { PointsRepository } from '../../../data/repositories/points.repository';
-import { PlayService } from '../services/play.service';
+import { DailyState, PlayService } from '../services/play.service';
 import { Assignment, Exercise, HistoryResult, PlaySession } from '../../../shared/models/domain.model';
 import { vi } from '../../../shared/i18n/vi';
 import { IconComponent } from '../../../shared/icon/icon.component';
@@ -17,6 +17,8 @@ interface AssignmentCard {
   /** Not open yet (availableFrom in the future). */
   opensAt?: string;
   triesLeft: number | 'unlimited';
+  /** A daily one only: not tried today, tried but not passed yet, or passed. */
+  daily?: DailyState;
 }
 
 const END_ICON: Partial<Record<string, string>> = { completed: 'check_circle', timeUp: 'timer', tryAgain: 'cancel', abandoned: 'close' };
@@ -71,6 +73,7 @@ export class ChildHomeComponent implements OnInit {
         exercise: assignment.exerciseSnapshot,
         opensAt: this.play.isAvailable(assignment, now) ? undefined : assignment.availableFrom,
         triesLeft,
+        daily: assignment.exerciseSnapshot.isDaily ? await this.play.dailyState(assignment) : undefined,
       });
     }
     this.cards.set(cards);

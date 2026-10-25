@@ -207,8 +207,9 @@ export interface Exercise extends SyncEnvelope {
    * parent picks a category/difficulty/count/time/points "slot" instead of
    * a specific quiz — see `QuizPickerComponent`'s `dailyMode`). It is also
    * exempt from the normal one-attempt-per-child rule (FR-015/FR-081): a
-   * child may start a fresh attempt once per local calendar day, and each
-   * day's attempt gets its own independent random draw. Defaults to false
+   * child may play it each local calendar day until one try that day passes
+   * (a failed try may be played again at once), and every try gets its own
+   * independent random draw. Defaults to false
    * (a normal, one-time exercise) wherever absent.
    */
   isDaily?: boolean;
@@ -217,7 +218,7 @@ export interface Exercise extends SyncEnvelope {
    * exercise before it's considered exhausted — defaults to 1 wherever
    * absent (older records predate this field), which is exactly today's
    * hardcoded "one attempt forever" rule. Independent of `isDaily`, whose
-   * own once-per-calendar-day exemption (see AttemptLifecycleService) is
+   * own until-passed-each-day exemption (see AttemptLifecycleService) is
    * untouched by this field.
    */
   repeatLimit?: RepeatLimit;

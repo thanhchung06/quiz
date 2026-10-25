@@ -20,12 +20,20 @@ import { outcomeOf } from './scoring.service';
 
 export type PlayStatus = 'inProgress' | EndStatus;
 
+/** Where a daily assignment stands today: not tried yet, tried but not passed (play again, new questions), or passed (done until tomorrow). */
+export type DailyState = 'new' | 'retry' | 'passed';
+
+/** A try passed when it met the pass rate (at least one star — see outcomeOf; an abandoned try has none). */
+export function passedTry(history: Pick<HistoryResult, 'stars'>): boolean {
+  return history.stars >= 1;
+}
+
 function localDateOf(iso: string): string {
   const d = new Date(iso);
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 }
 
-/** How many tries an exercise allows (daily: one per day, never used up). */
+/** How many tries an exercise allows (daily: until passed each day, never used up). */
 export function triesAllowed(exercise: Exercise): number | 'unlimited' {
   if (exercise.isDaily) return 'unlimited';
   return exercise.repeatLimit ?? 1;
@@ -83,16 +91,23 @@ export class PlayService {
 
   // --- Can the child play? ------------------------------------------------------
 
-  /** Tries left for an assignment ('unlimited', or 0 when used up / already played today for a daily one). */
+  /** Tries left for an assignment ('unlimited', or 0 when used up / a daily one already passed today). */
   async triesLeft(assignment: Assignment): Promise<number | 'unlimited'> {
     const exercise = assignment.exerciseSnapshot;
-    if (exercise.isDaily) {
-      const today = localDateOf(new Date().toISOString());
-      const last = await this.results.lastTryOfAssignment(assignment.childId, assignment.id);
-      return last && localDateOf(last.attemptedAt) === today ? 0 : 'unlimited';
-    }
+    if (exercise.isDaily) return (await this.dailyState(assignment)) === 'passed' ? 0 : 'unlimited';
     const allowed = triesAllowed(exercise);
     return allowed === 'unlimited' ? 'unlimited' : Math.max(0, allowed - assignment.tries);
+  }
+
+  /**
+   * A daily assignment is done for the day once a try today passed; a failed
+   * try leaves it open, and each new try draws its own random questions.
+   * Only the last try matters: no try follows a pass on the same day.
+   */
+  async dailyState(assignment: Assignment): Promise<DailyState> {
+    const last = await this.results.lastTryOfAssignment(assignment.childId, assignment.id);
+    if (!last || localDateOf(last.attemptedAt) !== localDateOf(new Date().toISOString())) return 'new';
+    return passedTry(last) ? 'passed' : 'retry';
   }
 
   isAvailable(assignment: Assignment, now = Date.now()): boolean {
