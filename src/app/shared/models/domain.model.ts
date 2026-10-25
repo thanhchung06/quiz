@@ -132,8 +132,22 @@ export interface QuizItem extends SyncEnvelope {
 
 export type RandomMode = 'fullyRandom' | 'balanced' | 'practiceWeakAreas';
 
+/**
+ * Draws whole reading passages (a passage plus *all* its sub-questions) instead
+ * of single questions: `by: 'passages'` picks exactly `value` passages;
+ * `by: 'questions'` keeps picking random passages until the added question
+ * total is >= `value`.
+ */
+export interface PassageDrawConfig {
+  by: 'passages' | 'questions';
+  value: number;
+}
+
 export interface RandomGroupConfig {
+  /** Number of questions to draw; for a passage draw only an estimate (the real total depends on the passages picked). */
   count: number;
+  /** Set => this group draws whole passages (and ONLY passages) rather than standalone questions. */
+  passageDraw?: PassageDrawConfig;
   subject?: Subject;
   grade?: number;
   categoryIds: string[];

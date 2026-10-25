@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { Category, Exercise, ExerciseItem, QuestionTimingMode, QuizDifficulty, QuizItem, QuizItemType, RandomGroupConfig, Subject } from '../../../shared/models/domain.model';
+import { drawPassages } from '../../../shared/random/passage-draw';
 import { DIFFICULTY_LEVELS, coerceDifficulty, difficultyLabel } from '../../../shared/difficulty';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { SUBJECTS, SUBJECT_LABELS, categoryFitsSubject } from '../../../shared/subjects';
@@ -259,6 +260,66 @@ export class QuizPickerComponent {
     ).length;
   });
 
+  /** What a random add draws: standalone questions, or whole reading passages (a passage + all its questions). */
+  readonly drawKind = signal<'questions' | 'passages'>('questions');
+  /** Passage draw: a fixed number of passages, or keep adding passages until the question total reaches the target. */
+  readonly passageBy = signal<'passages' | 'questions'>('passages');
+
+  setDrawKind(value: string): void {
+    this.drawKind.set(value === 'passages' ? 'passages' : 'questions');
+    this.bulkMessage.set('');
+  }
+
+  setPassageBy(value: string): void {
+    this.passageBy.set(value === 'questions' ? 'questions' : 'passages');
+    this.bulkMessage.set('');
+  }
+
+  /**
+   * Every passage (each as ALL its questions, in order) in the chosen category
+   * at the chosen difficulty/types, with the questions of a passage already in
+   * the exercise excluded. A plain method, not a `computed()`, for the same
+   * reason as `bulkPool()` (reads the non-signal `existingItems`). In daily
+   * mode nothing is ever "already added", so this is the bank's full supply.
+   */
+  passagePool(): QuizItem[][] {
+    const categoryId = this.selectedCategoryId();
+    const difficulty = this.bulkDifficulty();
+    const seen = new Set<string>();
+    const groups: QuizItem[][] = [];
+    for (const q of this.typedItems()) {
+      if (!q.passage || seen.has(q.passage.passageId)) continue;
+      if (categoryId !== 'all' && q.categoryId !== categoryId) continue;
+      if (difficulty !== 'all' && (q.difficulty ?? 2) !== difficulty) continue;
+      seen.add(q.passage.passageId);
+      const siblings = this.passageSiblings(q);
+      if (!this.dailyMode && siblings.some((s) => this.isAdded(s.id))) continue;
+      groups.push(siblings);
+    }
+    return groups;
+  }
+
+  passagePoolQuestionCount(): number {
+    return this.passagePool().reduce((sum, g) => sum + g.length, 0);
+  }
+
+  /** Passage draw: the entered target is satisfiable by the current pool. */
+  hasEnoughPassages(): boolean {
+    const target = this.requestedCount();
+    const pool = this.passagePool();
+    if (pool.length === 0) return false;
+    return this.passageBy() === 'passages' ? pool.length >= target : this.passagePoolQuestionCount() >= target;
+  }
+
+  private requestedCount(): number {
+    return Math.max(1, Math.round(Number(this.bulkCount()) || 1));
+  }
+
+  /** Whether the "random add" button may be used, for whichever draw kind is chosen. */
+  canRandomAdd(): boolean {
+    return this.drawKind() === 'passages' ? this.hasEnoughPassages() : this.hasEnoughRandomMatches();
+  }
+
   readonly hasEnoughRandomMatches = computed(() => this.randomMatchCount() >= MIN_RANDOM_MATCHES);
 
   /**
@@ -427,6 +488,12 @@ export class QuizPickerComponent {
     return this.categories().find((c) => c.id === item.categoryId)?.name ?? '—';
   }
 
+  randomGroupCountLabel(config: RandomGroupConfig): string {
+    const draw = config.passageDraw;
+    if (!draw) return `${config.count} câu`;
+    return draw.by === 'passages' ? `${draw.value} đoạn văn (trọn bộ câu hỏi)` : `đoạn văn, tối thiểu ${draw.value} câu`;
+  }
+
   randomGroupCategoryLabel(config: RandomGroupConfig): string {
     if (config.categoryIds.length === 0) return 'Tất cả danh mục';
     return config.categoryIds.map((id) => this.categories().find((c) => c.id === id)?.name ?? '—').join(', ');
@@ -507,6 +574,10 @@ export class QuizPickerComponent {
 
   /** Draws `bulkCount` distinct, not-already-added items at random from `bulkPool()` and emits them all in one `pickedMany`. */
   confirmBulkAdd(): void {
+    if (this.drawKind() === 'passages') {
+      this.confirmBulkAddPassages();
+      return;
+    }
     if (!this.hasEnoughRandomMatches()) return;
     const pool = this.bulkPool();
     if (pool.length === 0) {
@@ -536,6 +607,17 @@ export class QuizPickerComponent {
     this.mobileStep.set('added');
   }
 
+  /** Draws random whole passages from `passagePool()` and emits every question of each in one `pickedMany`. */
+  private confirmBulkAddPassages(): void {
+    if (!this.hasEnoughPassages()) return;
+    const chosen = drawPassages(this.passagePool(), { by: this.passageBy(), value: this.requestedCount() }, Math.random);
+    const timeLimitSeconds = this.bulkSeconds().trim() ? Math.max(1, Math.round(Number(this.bulkSeconds()))) : undefined;
+    const points = this.bulkPoints().trim() ? Math.max(0, Math.round(Number(this.bulkPoints()))) : undefined;
+    this.pickedMany.emit(chosen.flat().map((q) => ({ quizItemId: q.id, timeLimitSeconds, points })));
+    this.bulkMessage.set(`Đã thêm ${chosen.length} đoạn văn (${chosen.reduce((n, g) => n + g.length, 0)} câu hỏi).`);
+    this.mobileStep.set('added');
+  }
+
   /**
    * `dailyMode` only: adds a random "slot" — no concrete quiz is chosen now.
    * Scoped to the exercise's own grade/subject (same as everything else in
@@ -544,8 +626,15 @@ export class QuizPickerComponent {
    * attempt, by `AttemptResolverService` every time the exercise starts.
    */
   confirmAddRandomGroup(): void {
-    if (!this.hasEnoughRandomMatches()) return;
-    const count = Math.max(1, Math.round(Number(this.bulkCount()) || 1));
+    const passages = this.drawKind() === 'passages';
+    if (!this.canRandomAdd()) return;
+    const requested = Math.max(1, Math.round(Number(this.bulkCount()) || 1));
+    let count = requested;
+    if (passages && this.passageBy() === 'passages') {
+      // Estimate for time/points previews only: the real total depends on which passages get drawn.
+      const pool = this.passagePool();
+      count = Math.max(1, Math.round((this.passagePoolQuestionCount() / Math.max(1, pool.length)) * requested));
+    }
     const timeLimitSeconds = this.bulkSeconds().trim() ? Math.max(1, Math.round(Number(this.bulkSeconds()))) : undefined;
     const pointsOverride = this.bulkPoints().trim() ? Math.max(0, Math.round(Number(this.bulkPoints()))) : undefined;
     const categoryIds = this.selectedCategoryId() === 'all' ? [] : [this.selectedCategoryId()];
@@ -567,12 +656,15 @@ export class QuizPickerComponent {
       avoidRecentUse: false,
       preferWeakAreas: false,
       mode: 'balanced',
+      passageDraw: passages ? { by: this.passageBy(), value: requested } : undefined,
       timeLimitSeconds,
       pointsOverride,
     };
     this.addedRandomGroup.emit(config);
     this.bulkMessage.set(
-      `Đã thêm mục ngẫu nhiên: ${count} câu, ${allowedTypesLabel(config.allowedTypes).toLowerCase()}, độ khó ${this.bulkDifficultyLabel()}.`,
+      passages
+        ? `Đã thêm mục ngẫu nhiên: ${requested} ${this.passageBy() === 'passages' ? 'đoạn văn' : 'câu (tối thiểu, thêm trọn đoạn văn)'}, độ khó ${this.bulkDifficultyLabel()}.`
+        : `Đã thêm mục ngẫu nhiên: ${count} câu, ${allowedTypesLabel(config.allowedTypes).toLowerCase()}, độ khó ${this.bulkDifficultyLabel()}.`,
     );
     this.mobileStep.set('added');
   }

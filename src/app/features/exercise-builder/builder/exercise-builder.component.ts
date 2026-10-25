@@ -304,6 +304,13 @@ export class ExerciseBuilderComponent implements OnInit {
     return item.passage ? `📖 ${item.passage.title} — Câu ${item.passage.order}/${item.passage.total}: ${item.prompt}` : item.prompt;
   }
 
+  /** "5 câu", "2 đoạn văn" or "đoạn văn, tối thiểu 8 câu" for the main item-list row. */
+  randomGroupCountLabel(config: RandomGroupConfig): string {
+    const draw = config.passageDraw;
+    if (!draw) return `${config.count} câu`;
+    return draw.by === 'passages' ? `${draw.value} đoạn văn (trọn bộ câu hỏi)` : `đoạn văn, tối thiểu ${draw.value} câu`;
+  }
+
   /** Human-readable summary of a random group's config for the main item-list row, e.g. "Số học · Khó · 3 điểm/câu · 30s". */
   randomGroupSummaryLabel(config: RandomGroupConfig): string {
     const categoryPart =

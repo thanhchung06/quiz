@@ -11,6 +11,12 @@
     "watch": "node scripts/angular-with-build-info.mjs build --watch --configuration development",
     "pretest": "node scripts/generate-build-info.mjs",
     "test": "jest",
+    "pretest:firebase": "node scripts/generate-build-info.mjs",
+    "pretest:perf": "node scripts/generate-build-info.mjs",
+    "pretest:all": "node scripts/generate-build-info.mjs",
+    "test:firebase": "jest -c jest.firebase.config.js",
+    "test:perf": "jest -c jest.perf.config.js",
+    "test:all": "jest && jest -c jest.firebase.config.js && jest -c jest.perf.config.js",
     "e2e": "playwright test",
     "lint": "eslint .",
     "extractI": "node scripts/extract-images.mjs"

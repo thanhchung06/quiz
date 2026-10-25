@@ -135,7 +135,7 @@
           <span>{{ quizItemLabel(item.quizItemId) }}</span>
         } @else {
           <span>
-            Ngẫu nhiên: {{ item.randomGroup.count }} câu · {{ randomGroupSummaryLabel(item.randomGroup) }}
+            Ngẫu nhiên: {{ randomGroupCountLabel(item.randomGroup) }} · {{ randomGroupSummaryLabel(item.randomGroup) }}
           </span>
         }
         @if (questionTimingMode() === 'custom') {

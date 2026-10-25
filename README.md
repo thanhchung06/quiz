@@ -26,9 +26,29 @@ These can still be changed from Settings after logging in (FR-006), but
 ## Testing
 
 ```bash
-npm test            # Jest unit/component tests
+npm test             # Sanity suite: fast Jest unit/component/integration tests (the default)
+npm run test:firebase # Firebase data-layer flow tests (slow, ~1 min) — see below
+npm run test:perf    # Quiz-bank list load performance test (very slow, ~3 min) — see below
+npm run test:all     # sanity + firebase + perf
 npm run e2e          # Playwright end-to-end tests (starts the dev server automatically)
 ```
+
+### Which tests to run
+
+| Situation | Run |
+|---|---|
+| Normal fix or feature | `npm test` only (sanity suite) |
+| Change touching the Firebase integration — remote store, record codec, sync services (`src/app/remote/`), repositories' remote reads/writes, results/points/backup flows | `npm test` **and** `npm run test:firebase` |
+| Investigating a performance problem (e.g. slow quiz bank list with a large bank) | `npm run test:perf` on demand |
+
+- `tests/unit`, `tests/integration` and `src/**/*.spec.ts` are the sanity suite.
+- `tests/firebase/firebase-flow.spec.ts` exercises the online-first data layer against an in-memory
+  Firebase layout. It is excluded from `npm test` because it takes about a minute, so it must be run
+  explicitly whenever the Firebase integration is changed.
+- `tests/perf/quiz-bank-list-load.spec.ts` seeds 30,000 questions / 1,500 categories into fake-indexeddb
+  and times the quiz bank screen. It takes minutes and is never part of the normal run; run it only
+  when you need to investigate or compare performance. Its time ceilings are loose by design — read the
+  printed timings rather than relying on pass/fail.
 
 ## Production build
 

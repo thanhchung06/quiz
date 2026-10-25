@@ -3,6 +3,7 @@ import { Exercise, ExerciseItem, QuizItem, RandomGroupConfig } from '../../../sh
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { QuizBankSyncService } from '../../../remote/quiz-bank-sync.service';
 import { mulberry32, generateSeed, seededShuffle, seededSample } from '../../../shared/random/seeded-random';
+import { drawPassages, groupByPassage } from '../../../shared/random/passage-draw';
 import { ResultRepository } from '../../../data/repositories/result.repository';
 
 export interface ResolvedAttemptPlan {
@@ -119,20 +120,14 @@ export class AttemptResolverService {
     profileId: string,
     rng: () => number,
   ): Promise<QuizItem[]> {
-    const candidates = (
-      await this.quizItems.search({
-        subject: group.subject,
-        grade: group.grade,
-        categoryId: undefined,
-        status: 'active',
-        reviewStatus: 'approved',
-      })
-    ).filter((item) => {
-      if (alreadyUsed.has(item.id)) return false;
-      // Passage sub-questions must only ever be added together as a fixed
-      // block (see exercise-builder's addFixedItem) — never split apart by
-      // a random draw pulling in some but not all of a passage's questions.
-      if (item.passage) return false;
+    const approved = await this.quizItems.search({
+      subject: group.subject,
+      grade: group.grade,
+      categoryId: undefined,
+      status: 'active',
+      reviewStatus: 'approved',
+    });
+    const matches = (item: QuizItem): boolean => {
       if (group.categoryIds.length > 0 && !group.categoryIds.includes(item.categoryId)) return false;
       if (group.tags.length > 0 && !group.tags.some((t) => item.tags.includes(t))) return false;
       // Legacy items predating the difficulty field default to 2/Trung bình, same as every other place this field is read.
@@ -140,6 +135,23 @@ export class AttemptResolverService {
       if (difficulty < group.difficultyMin || difficulty > group.difficultyMax) return false;
       if (group.allowedTypes.length > 0 && !group.allowedTypes.includes(item.type)) return false;
       return true;
+    };
+
+    if (group.passageDraw) {
+      // A passage is eligible when any of its questions matches the filters and
+      // none is already used; once chosen, ALL its questions are added.
+      const eligible = groupByPassage(approved).filter(
+        (g) => g.some(matches) && !g.some((q) => alreadyUsed.has(q.id)),
+      );
+      return drawPassages(eligible, group.passageDraw, rng).flat();
+    }
+
+    const candidates = approved.filter((item) => {
+      if (alreadyUsed.has(item.id)) return false;
+      // Passage sub-questions are only ever drawn together by a passageDraw
+      // group (or added as a fixed block) — never split apart here.
+      if (item.passage) return false;
+      return matches(item);
     });
 
     if (group.mode === 'fullyRandom') {

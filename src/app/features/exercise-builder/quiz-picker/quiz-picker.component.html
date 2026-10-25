@@ -151,7 +151,23 @@
               </select>
             </label>
             <label>
-              Số lượng câu hỏi
+              Loại thêm ngẫu nhiên
+              <select [ngModel]="drawKind()" (ngModelChange)="setDrawKind($event)">
+                <option value="questions">Câu hỏi riêng lẻ</option>
+                <option value="passages">Đoạn văn (thêm tất cả câu hỏi của đoạn)</option>
+              </select>
+            </label>
+            @if (drawKind() === 'passages') {
+              <label>
+                Cách chọn
+                <select [ngModel]="passageBy()" (ngModelChange)="setPassageBy($event)">
+                  <option value="passages">Theo số đoạn văn</option>
+                  <option value="questions">Theo tổng số câu hỏi tối thiểu</option>
+                </select>
+              </label>
+            }
+            <label>
+              {{ drawKind() === 'passages' ? (passageBy() === 'passages' ? 'Số đoạn văn' : 'Tổng số câu hỏi tối thiểu') : 'Số lượng câu hỏi' }}
               <input
                 type="text"
                 inputmode="numeric"
@@ -186,12 +202,27 @@
             </label>
             <p class="bulk-pool-count">
               Loại: {{ allowedTypesLabel(selectedTypes()) }} ·
-              {{ randomMatchCount() }} câu phù hợp trong ngân hàng
-              @if (!dailyMode) {
-                ({{ bulkPool().length }} câu chưa có trong bài tập)
+              @if (drawKind() === 'passages') {
+                {{ passagePool().length }} đoạn văn phù hợp ({{ passagePoolQuestionCount() }} câu hỏi)
+                @if (passageBy() === 'questions') {
+                  — thêm ngẫu nhiên từng đoạn cho đến khi đủ tổng số câu tối thiểu
+                }
+              } @else {
+                {{ randomMatchCount() }} câu phù hợp trong ngân hàng
+                @if (!dailyMode) {
+                  ({{ bulkPool().length }} câu chưa có trong bài tập)
+                }
               }
             </p>
-            @if (!hasEnoughRandomMatches()) {
+            @if (drawKind() === 'passages') {
+              @if (!hasEnoughPassages()) {
+                <p class="not-enough">
+                  <app-icon name="warning" />
+                  Không đủ đoạn văn phù hợp với danh mục, loại câu hỏi và độ khó đã chọn để đạt mục tiêu
+                  (hiện có {{ passagePool().length }} đoạn / {{ passagePoolQuestionCount() }} câu).
+                </p>
+              }
+            } @else if (!hasEnoughRandomMatches()) {
               <p class="not-enough">
                 <app-icon name="warning" />
                 Cần hơn 4 câu hỏi phù hợp với danh mục, loại câu hỏi và độ khó đã chọn mới thêm ngẫu nhiên được
@@ -199,7 +230,7 @@
               </p>
             }
             @if (dailyMode) {
-              <button type="button" class="confirm-add" [disabled]="!hasEnoughRandomMatches()" (click)="confirmAddRandomGroup()">
+              <button type="button" class="confirm-add" [disabled]="!canRandomAdd()" (click)="confirmAddRandomGroup()">
                 <app-icon name="refresh" />
                 Thêm mục ngẫu nhiên
               </button>
@@ -207,7 +238,7 @@
               <button
                 type="button"
                 class="confirm-add"
-                [disabled]="!hasEnoughRandomMatches() || bulkPool().length === 0"
+                [disabled]="!canRandomAdd() || (drawKind() === 'questions' && bulkPool().length === 0)"
                 (click)="confirmBulkAdd()"
               >
                 <app-icon name="shuffle" />
@@ -344,7 +375,7 @@
                 </p>
               } @else {
                 <p class="added-summary">
-                  Ngẫu nhiên: {{ i.randomGroup.count }} câu · {{ randomGroupCategoryLabel(i.randomGroup) }}
+                  Ngẫu nhiên: {{ randomGroupCountLabel(i.randomGroup) }} · {{ randomGroupCategoryLabel(i.randomGroup) }}
                 </p>
                 <p class="added-meta">
                   <span class="tag"><app-icon name="quiz" />{{ randomGroupDifficultyLabel(i.randomGroup) }}</span>
