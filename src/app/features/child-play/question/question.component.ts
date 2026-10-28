@@ -1,4 +1,4 @@
-import { Component, computed, effect, ElementRef, OnDestroy, signal, untracked, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, OnDestroy, signal, untracked, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlayService } from '../services/play.service';
@@ -8,6 +8,15 @@ import { parseNumberAnswer } from '../services/answer-evaluator';
 import { QuizImageComponent } from '../../../shared/quiz-image/quiz-image.component';
 
 const CHOICE_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+/** Keys the mobile decimal keypad lacks (or has only one of) for decimals, fractions ("3 1/2") and negatives. */
+const NUMBER_SYMBOL_KEYS = [
+  { symbol: ',', text: ',', label: 'Dấu phẩy' },
+  { symbol: '.', text: '.', label: 'Dấu chấm' },
+  { symbol: '/', text: '/', label: 'Dấu phân số' },
+  { symbol: '-', text: '−', label: 'Dấu trừ' },
+  { symbol: ' ', text: '␣', label: 'Dấu cách' },
+] as const;
 
 /** A horizontal swipe must travel this far (px) and be mostly sideways to switch panes. */
 const SWIPE_MIN_DISTANCE = 50;
@@ -29,6 +38,7 @@ export type PlayPane = 'passage' | 'question';
   imports: [FormsModule, IconComponent, QuizImageComponent],
   templateUrl: './question.component.html',
   styleUrl: './question.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuestionComponent implements OnDestroy {
   readonly strings = vi;
@@ -59,6 +69,8 @@ export class QuestionComponent implements OnDestroy {
   });
 
   readonly choiceLetters = CHOICE_LETTERS;
+  readonly numberSymbolKeys = NUMBER_SYMBOL_KEYS;
+  private readonly numberInput = viewChild<ElementRef<HTMLInputElement>>('numberInput');
 
   /**
    * For a question with a reading passage on a narrow screen: which of the two
@@ -222,6 +234,22 @@ export class QuestionComponent implements OnDestroy {
       }
       return [choiceId];
     });
+  }
+
+  /** Types `symbol` at the number input's caret (replacing any selection), keeping it focused. */
+  insertNumberSymbol(symbol: string): void {
+    const input = this.numberInput()?.nativeElement;
+    if (!input) {
+      this.numberAnswer.update((value) => value + symbol);
+      return;
+    }
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    // Written to the element directly so the caret can be placed now; ngModel then writes back the same string, which leaves the caret alone.
+    input.value = input.value.slice(0, start) + symbol + input.value.slice(end);
+    input.focus();
+    input.setSelectionRange(start + symbol.length, start + symbol.length);
+    this.numberAnswer.set(input.value);
   }
 
   async submit(): Promise<void> {

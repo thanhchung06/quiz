@@ -29,6 +29,8 @@
  */
 .question-screen.with-passage {
   box-sizing: border-box;
+  /* 100vh first: browsers without dvh (iOS < 15.4, older Android WebViews) would otherwise leave the height indefinite. */
+  height: 100vh;
   height: 100dvh;
   padding-bottom: 0;
   overflow: hidden;
@@ -40,12 +42,13 @@
 }
 
 .play-body.has-passage {
-  flex: 1;
+  /* auto basis, not flex: 1 (0%): older WebKit collapses a 0% basis to zero height, leaving the panes blank. */
+  flex: 1 1 auto;
   min-height: 0;
   gap: 0.75rem;
 
   .pane-track {
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 0;
     gap: 0;
   }
@@ -122,6 +125,10 @@
     .pane-track {
       flex-direction: row;
       width: 200%;
+      /* Always transformed and on its own layer, so switching panes never creates/drops a
+         compositing layer mid-slide — some mobile GPUs then leave the scrollable pane unpainted. */
+      transform: translateX(0);
+      will-change: transform;
       transition: transform 0.3s ease;
     }
 
@@ -129,6 +136,7 @@
       flex: none;
       width: 50%;
       touch-action: pan-y;
+      visibility: visible;
       transition: visibility 0s;
     }
 
@@ -360,6 +368,29 @@ header {
   &:focus {
     outline: none;
     border-color: #2f6fed;
+  }
+}
+
+.symbol-keys {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+
+  button {
+    flex: 1;
+    max-width: 3.5rem;
+    min-height: 3rem;
+    border: 2px solid #dfe3ec;
+    border-radius: 0.75rem;
+    background: white;
+    color: #2f6fed;
+    font-size: 1.5rem;
+    font-weight: 700;
+    touch-action: manipulation;
+
+    &:active {
+      background: #eef2fb;
+    }
   }
 }
 

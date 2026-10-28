@@ -18,9 +18,11 @@ body::after {
   position: fixed;
   z-index: -1;
   border-radius: 50%;
-  filter: blur(60px);
+  /* No filter: blur() — the radial gradients already fade out softly, and a
+     blur re-rasterized on every animation frame is costly on low-end tablets. */
   opacity: 0.35;
   pointer-events: none;
+  will-change: transform;
 }
 
 body::before {

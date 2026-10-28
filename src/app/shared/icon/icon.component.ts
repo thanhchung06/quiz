@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, computed, signal } from '@angular/core';
 
 /**
  * Renders a self-hosted Material Symbols icon (public/icons/material/*.svg,
@@ -11,6 +11,7 @@ import { Component, Input, computed, signal } from '@angular/core';
   selector: 'app-icon',
   standalone: true,
   template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       :host {

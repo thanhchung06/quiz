@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, computed, signal } from '@angular/core';
 import { QuizItem } from '../models/domain.model';
 
 /** Folder (under `public/`, served at the app root) that a bare image filename resolves into. */
@@ -36,6 +36,7 @@ export function withImageRef(media: QuizItem['media'], imageUrl: string | undefi
 @Component({
   selector: 'app-quiz-image',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (resolvedSrc(); as url) {
       @if (!failed()) {

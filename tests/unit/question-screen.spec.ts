@@ -237,3 +237,73 @@ describe('reading passage layout', () => {
     expect(pane()).toBe('question');
   });
 });
+
+describe('number answer symbol keys', () => {
+  const numberQuestion = (id: string): QuizItem =>
+    ({ id, type: 'number', prompt: `Câu ${id}`, answerRule: { kind: 'number', acceptedValue: 3.5 }, points: 10 }) as unknown as QuizItem;
+
+  /** Lets ngModel write its initial (empty) value, as it would before the child starts typing; the question timer keeps the zone from ever being stable. */
+  const settle = async () => {
+    await new Promise((resolve) => setTimeout(resolve));
+    fixture.detectChanges();
+  };
+  const input = () => el('input[name="numberAnswer"]') as HTMLInputElement;
+  /** Taps a symbol key, then lets ngModel's write-back run, as the browser does before the next keystroke. */
+  const pressKey = async (label: string) => {
+    const key = [...fixture.nativeElement.querySelectorAll('.symbol-keys button')].find(
+      (b: HTMLElement) => b.getAttribute('aria-label') === label,
+    ) as HTMLButtonElement;
+    key.click();
+    fixture.detectChanges();
+    await settle();
+  };
+  /** Types as a child would: the text ends up in the input with the caret after it. */
+  const type = (text: string) => {
+    input().value = text;
+    input().setSelectionRange(text.length, text.length);
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+  };
+
+  it('only appears on a number question', () => {
+    render([question('q0')]);
+    expect(el('.symbol-keys')).toBeNull();
+  });
+
+  it('types "/", space, "," and "-" so fractions, mixed numbers and decimals can be entered', async () => {
+    render([numberQuestion('q0')]);
+    await settle();
+
+    type('3');
+    await pressKey('Dấu cách');
+    type(input().value + '1');
+    await pressKey('Dấu phân số');
+    type(input().value + '2');
+    expect(fixture.componentInstance.numberAnswer()).toBe('3 1/2');
+    expect(fixture.componentInstance.isValidResponse()).toBe(true);
+
+    type('');
+    await pressKey('Dấu trừ');
+    type(input().value + '3');
+    await pressKey('Dấu phẩy');
+    type(input().value + '5');
+    expect(fixture.componentInstance.numberAnswer()).toBe('-3,5');
+
+    await fixture.componentInstance.submit();
+    expect(play.submitAnswer).toHaveBeenCalledWith(-3.5);
+  });
+
+  it('inserts at the caret, replacing a selection, and keeps the input focused', async () => {
+    render([numberQuestion('q0')]);
+    await settle();
+    type('72');
+    input().focus();
+    input().setSelectionRange(1, 1);
+
+    await pressKey('Dấu phân số');
+
+    expect(fixture.componentInstance.numberAnswer()).toBe('7/2');
+    expect(document.activeElement).toBe(input());
+    expect(input().selectionStart).toBe(2);
+  });
+});

@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CategoryRepository } from '../../../data/repositories/category.repository';
 import { QuizItemRepository } from '../../../data/repositories/quiz-item.repository';
 import { Category, Exercise, ExerciseItem, QuestionTimingMode, QuizDifficulty, QuizItem, QuizItemType, RandomGroupConfig, Subject } from '../../../shared/models/domain.model';
-import { drawPassages } from '../../../shared/random/passage-draw';
+import { drawPassages, groupByPassage } from '../../../shared/random/passage-draw';
 import { DIFFICULTY_LEVELS, coerceDifficulty, difficultyLabel } from '../../../shared/difficulty';
 import { IconComponent } from '../../../shared/icon/icon.component';
 import { SUBJECTS, SUBJECT_LABELS, categoryFitsSubject } from '../../../shared/subjects';
@@ -86,9 +86,17 @@ interface SubjectGroup {
   imports: [FormsModule, IconComponent, QuizImageComponent],
   templateUrl: './quiz-picker.component.html',
   styleUrl: './quiz-picker.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizPickerComponent {
-  @Input({ required: true }) existingItems: ExerciseItem[] = [];
+  /** Signal-backed so the pools/"added" lookups below can be `computed()` and still refresh when the exercise gains items. */
+  private readonly existing = signal<ExerciseItem[]>([]);
+  @Input({ required: true }) set existingItems(value: ExerciseItem[]) {
+    this.existing.set(value);
+  }
+  get existingItems(): ExerciseItem[] {
+    return this.existing();
+  }
   @Input() questionTimingMode: QuestionTimingMode = 'none';
   /** The exercise's default seconds per question ('uniform' mode, and fallback in 'custom'); only for display/placeholders here. */
   @Input() defaultQuestionSeconds?: number;
@@ -99,7 +107,13 @@ export class QuizPickerComponent {
   /** The exercise's own subject — a single subject restricts the browser to it; 'mixed' shows every subject. */
   @Input({ required: true }) exerciseSubject!: Exercise['subject'];
   /** Daily exercise mode (FR-091): disables individual-item selection entirely; the detail panel's form always adds a random *slot* instead of resolving concrete items now. */
-  @Input() dailyMode = false;
+  private readonly daily = signal(false);
+  @Input() set dailyMode(value: boolean) {
+    this.daily.set(value);
+  }
+  get dailyMode(): boolean {
+    return this.daily();
+  }
   @Output() readonly picked = new EventEmitter<{ quizItemId: string; timeLimitSeconds?: number; points?: number }>();
   /** Emitted once per bulk random-add, carrying every drawn item's id plus the same time/points override applied to all of them. Never fired in `dailyMode` — see `addedRandomGroup`. */
   @Output() readonly pickedMany = new EventEmitter<Array<{ quizItemId: string; timeLimitSeconds?: number; points?: number }>>();
@@ -112,6 +126,17 @@ export class QuizPickerComponent {
   readonly selectedCategoryId = signal<string>('all');
   readonly searchText = signal('');
   readonly selectedItem = signal<QuizItem | undefined>(undefined);
+
+  /** Lookup indexes so per-row template calls are O(1) instead of scanning the whole bank on every change detection. */
+  private readonly itemsById = computed(() => new Map(this.allItems().map((q) => [q.id, q])));
+  private readonly categoriesById = computed(() => new Map(this.categories().map((c) => [c.id, c])));
+  /** Every passage's sub-questions, in passage order. */
+  private readonly passageItems = computed(
+    () => new Map(groupByPassage(this.allItems()).map((group) => [group[0].passage!.passageId, group])),
+  );
+  private readonly addedIds = computed(
+    () => new Set(this.existing().flatMap((i) => (i.kind === 'fixed' ? [i.quizItemId] : []))),
+  );
 
   /**
    * Phone layout shows one of the three columns at a time: the question tree,
@@ -278,11 +303,10 @@ export class QuizPickerComponent {
   /**
    * Every passage (each as ALL its questions, in order) in the chosen category
    * at the chosen difficulty/types, with the questions of a passage already in
-   * the exercise excluded. A plain method, not a `computed()`, for the same
-   * reason as `bulkPool()` (reads the non-signal `existingItems`). In daily
-   * mode nothing is ever "already added", so this is the bank's full supply.
+   * the exercise excluded. In daily mode nothing is ever "already added", so
+   * this is the bank's full supply.
    */
-  passagePool(): QuizItem[][] {
+  readonly passagePool = computed<QuizItem[][]>(() => {
     const categoryId = this.selectedCategoryId();
     const difficulty = this.bulkDifficulty();
     const seen = new Set<string>();
@@ -297,28 +321,26 @@ export class QuizPickerComponent {
       groups.push(siblings);
     }
     return groups;
-  }
+  });
 
-  passagePoolQuestionCount(): number {
-    return this.passagePool().reduce((sum, g) => sum + g.length, 0);
-  }
+  readonly passagePoolQuestionCount = computed(() => this.passagePool().reduce((sum, g) => sum + g.length, 0));
 
   /** Passage draw: the entered target is satisfiable by the current pool. */
-  hasEnoughPassages(): boolean {
+  readonly hasEnoughPassages = computed(() => {
     const target = this.requestedCount();
     const pool = this.passagePool();
     if (pool.length === 0) return false;
     return this.passageBy() === 'passages' ? pool.length >= target : this.passagePoolQuestionCount() >= target;
-  }
+  });
 
   private requestedCount(): number {
     return Math.max(1, Math.round(Number(this.bulkCount()) || 1));
   }
 
   /** Whether the "random add" button may be used, for whichever draw kind is chosen. */
-  canRandomAdd(): boolean {
-    return this.drawKind() === 'passages' ? this.hasEnoughPassages() : this.hasEnoughRandomMatches();
-  }
+  readonly canRandomAdd = computed(() =>
+    this.drawKind() === 'passages' ? this.hasEnoughPassages() : this.hasEnoughRandomMatches(),
+  );
 
   readonly hasEnoughRandomMatches = computed(() => this.randomMatchCount() >= MIN_RANDOM_MATCHES);
 
@@ -326,15 +348,8 @@ export class QuizPickerComponent {
    * The current bulk-add candidate pool: whatever's already filtered/listed
    * in the middle panel, narrowed to the chosen difficulty, non-passage
    * (never split a passage apart), and not already in the exercise.
-   *
-   * Deliberately a plain method, not a `computed()`, for the same reason
-   * `isAdded()`/`totalPoints()` below are: it reads the plain `@Input()
-   * existingItems`, which isn't a signal, so a `computed()` around it would
-   * never invalidate when the exercise gains new items — it would only
-   * recompute when `filteredItems()`/`bulkDifficulty()` themselves change,
-   * silently going stale after every add.
    */
-  bulkPool(): QuizItem[] {
+  readonly bulkPool = computed(() => {
     const difficulty = this.bulkDifficulty();
     return this.filteredItems().filter((q) => {
       if (q.passage || this.isAdded(q.id)) return false;
@@ -342,16 +357,15 @@ export class QuizPickerComponent {
       // Legacy items predating the difficulty field default to 2/Trung bình, same as everywhere else this field is read.
       return (q.difficulty ?? 2) === difficulty;
     });
-  }
+  });
 
   /**
    * Everything "Thêm tất cả" would add: the chosen category's listed questions
    * (types, search) at the chosen difficulty, with each passage expanded to
    * all its sub-questions in order, minus what the exercise already has.
    * Empty while "Tất cả câu hỏi" is selected — this adds one category.
-   * A plain method for the same reason as `bulkPool()`.
    */
-  addAllPool(): QuizItem[] {
+  readonly addAllPool = computed(() => {
     if (this.selectedCategoryId() === 'all') return [];
     const difficulty = this.bulkDifficulty();
     const result: QuizItem[] = [];
@@ -364,14 +378,10 @@ export class QuizPickerComponent {
       }
       if (seenPassages.has(q.passage.passageId)) continue;
       seenPassages.add(q.passage.passageId);
-      result.push(
-        ...this.allItems()
-          .filter((s) => s.passage?.passageId === q.passage!.passageId)
-          .sort((a, b) => (a.passage?.order ?? 0) - (b.passage?.order ?? 0)),
-      );
+      result.push(...this.passageSiblings(q));
     }
     return result.filter((q) => !this.isAdded(q.id));
-  }
+  });
 
   /** Adds every question of the chosen category (see `addAllPool()`), with the form's time/points override, in one `pickedMany`. */
   confirmAddAll(): void {
@@ -446,9 +456,7 @@ export class QuizPickerComponent {
   passageSiblings(item: QuizItem): QuizItem[] {
     const passageId = item.passage?.passageId;
     if (!passageId) return [item];
-    return this.allItems()
-      .filter((q) => q.passage?.passageId === passageId)
-      .sort((a, b) => (a.passage?.order ?? 0) - (b.passage?.order ?? 0));
+    return this.passageItems().get(passageId) ?? [item];
   }
 
   /** A passage counts as added only once all of its sub-questions are in the exercise. */
@@ -463,7 +471,7 @@ export class QuizPickerComponent {
   }
 
   isAdded(quizItemId: string): boolean {
-    return this.existingItems.some((i) => i.kind === 'fixed' && i.quizItemId === quizItemId);
+    return this.addedIds().has(quizItemId);
   }
 
   typeLabel(type: QuizItemType): string {
@@ -477,15 +485,15 @@ export class QuizPickerComponent {
   }
 
   quizItemLabel(quizItemId: string): string {
-    const item = this.allItems().find((q) => q.id === quizItemId);
+    const item = this.itemsById().get(quizItemId);
     if (!item) return quizItemId;
     return item.passage ? `📖 ${item.passage.title} — Câu ${item.passage.order}/${item.passage.total}: ${item.prompt}` : item.prompt;
   }
 
   categoryNameFor(quizItemId: string): string {
-    const item = this.allItems().find((q) => q.id === quizItemId);
+    const item = this.itemsById().get(quizItemId);
     if (!item) return '—';
-    return this.categories().find((c) => c.id === item.categoryId)?.name ?? '—';
+    return this.categoriesById().get(item.categoryId)?.name ?? '—';
   }
 
   randomGroupCountLabel(config: RandomGroupConfig): string {
@@ -496,7 +504,7 @@ export class QuizPickerComponent {
 
   randomGroupCategoryLabel(config: RandomGroupConfig): string {
     if (config.categoryIds.length === 0) return 'Tất cả danh mục';
-    return config.categoryIds.map((id) => this.categories().find((c) => c.id === id)?.name ?? '—').join(', ');
+    return config.categoryIds.map((id) => this.categoriesById().get(id)?.name ?? '—').join(', ');
   }
 
   readonly allowedTypesLabel = allowedTypesLabel;
@@ -519,7 +527,7 @@ export class QuizPickerComponent {
     if (item.kind === 'fixed') {
       if (item.points !== undefined) return item.points;
       if (this.defaultQuestionPoints !== undefined) return this.defaultQuestionPoints;
-      return this.allItems().find((q) => q.id === item.quizItemId)?.points ?? 0;
+      return this.itemsById().get(item.quizItemId)?.points ?? 0;
     }
     const perQuestion = item.randomGroup.pointsOverride ?? this.defaultQuestionPoints;
     return perQuestion !== undefined ? perQuestion * item.randomGroup.count : 0;

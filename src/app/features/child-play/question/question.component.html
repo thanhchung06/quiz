@@ -174,9 +174,11 @@
           numberAnswer signal below. inputmode="numeric" still gives a
           numeric keypad on mobile. "decimal" (not "numeric") so the keypad has a
           decimal separator — Vietnamese decimals use a comma, e.g. 3,5. Fractions
-          ("7/2", "3 1/2") are accepted too.
+          ("7/2", "3 1/2") are accepted too — but the decimal keypad has no
+          "/", "-" or space key, hence the symbol keys below the input.
         -->
                 <input
+                  #numberInput
                   class="text-answer number"
                   type="text"
                   inputmode="decimal"
@@ -186,6 +188,19 @@
                   name="numberAnswer"
                   placeholder="Nhập số…"
                 />
+                <!-- pointerdown is cancelled so tapping a key keeps the input focused and the keypad open. -->
+                <div class="symbol-keys" role="group" aria-label="Ký hiệu">
+                  @for (key of numberSymbolKeys; track key.symbol) {
+                    <button
+                      type="button"
+                      [attr.aria-label]="key.label"
+                      (pointerdown)="$event.preventDefault()"
+                      (click)="insertNumberSymbol(key.symbol)"
+                    >
+                      {{ key.text }}
+                    </button>
+                  }
+                </div>
               }
 
               <button
